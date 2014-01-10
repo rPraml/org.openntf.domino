@@ -1963,6 +1963,8 @@ public class Document extends Base<org.openntf.domino.Document, lotus.domino.Doc
 	}
 
 	public static int MAX_NATIVE_VECTOR_SIZE = 255;
+	public static int MAX_NATIVE_STRING_SIZE = 32000;
+	public static int MAX_NATIVE_SUMMARY_SIZE = 14000;
 
 	/*
 	 * (non-Javadoc)
@@ -2037,12 +2039,12 @@ public class Document extends Base<org.openntf.domino.Document, lotus.domino.Doc
 							}
 							if (domNode instanceof String) {
 								totalStringSize += ((String) domNode).length();
-								if (totalStringSize > 14000)
+								if (totalStringSize > MAX_NATIVE_SUMMARY_SIZE)
 									isNonSummary = true;
 
 								// Escape to serializing if there's too much text data
 								// Leave fudge room for multibyte? This is clearly not the best way to do it
-								if (totalStringSize > 32000) {
+								if (totalStringSize > MAX_NATIVE_STRING_SIZE) {
 									throw new IllegalArgumentException();
 								}
 							}
@@ -2074,14 +2076,25 @@ public class Document extends Base<org.openntf.domino.Document, lotus.domino.Doc
 						} else {
 							DominoUtils.handleException(ne);
 						}
+					} finally {
+						enc_recycle(resultList);
 					}
-					enc_recycle(resultList);
 				} else {
 					if (value instanceof BigString)
 						isNonSummary = true;
 					Object domNode = toDominoFriendly(value, this);
-					if (domNode instanceof String && ((String) domNode).length() > 60000) {
-						throw new IllegalArgumentException();
+					if (domNode instanceof String) {
+						String s = (String) domNode;
+						if (s.equals("\n") || s.equals("\r") || s.equals("\r\n")) {
+							// Domino can't store linefeed only in item
+							throw new IllegalArgumentException();
+						}
+						if (s.length() > MAX_NATIVE_SUMMARY_SIZE) {
+							isNonSummary = true;
+						}
+						if (s.length() > MAX_NATIVE_STRING_SIZE) {
+							throw new IllegalArgumentException();
+						}
 					}
 					try {
 						MIMEEntity mimeChk = getMIMEEntity(itemName);
@@ -2096,8 +2109,9 @@ public class Document extends Base<org.openntf.domino.Document, lotus.domino.Doc
 						log_.warning("Native error occured when replacing " + itemName + " item on doc " + this.noteid_
 								+ " with a value of type " + (domNode == null ? "null" : domNode.getClass().getName()) + " of value "
 								+ String.valueOf(domNode));
+					} finally {
+						Base.enc_recycle(domNode);
 					}
-					Base.enc_recycle(domNode);
 				}
 			} catch (IllegalArgumentException iae) {
 				// if (getItemValueString("form").equalsIgnoreCase("container") && itemName.equals(DominoVertex.IN_NAME)) {
@@ -2342,6 +2356,7 @@ public class Document extends Base<org.openntf.domino.Document, lotus.domino.Doc
 				try {
 					lotus.domino.Document del = getDelegate();
 					if (del != null) {
+
 						result = del.save(force, makeResponse, markRead);
 						if (noteid_ == null || !noteid_.equals(del.getNoteID())) {
 							// System.out.println("Resetting note id from " + noteid_ + " to " + del.getNoteID());
@@ -2351,6 +2366,7 @@ public class Document extends Base<org.openntf.domino.Document, lotus.domino.Doc
 							// System.out.println("Resetting unid from " + unid_ + " to " + del.getUniversalID());
 							unid_ = del.getUniversalID();
 						}
+						lastModified_ = DominoUtils.toJavaDateSafe(del.getLastModified());
 					} else {
 						log_.severe("Delegate document for " + unid_ + " is NULL!??!");
 					}
@@ -2652,7 +2668,7 @@ public class Document extends Base<org.openntf.domino.Document, lotus.domino.Doc
 		}
 	}
 
-	void markDirty() {
+	public void markDirty() {
 		isDirty_ = true;
 		if (!isQueued_) {
 			DatabaseTransaction txn = getParentDatabase().getTransaction();
