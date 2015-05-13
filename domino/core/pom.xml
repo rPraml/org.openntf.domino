@@ -20,6 +20,12 @@
 				<extensions>true</extensions>
 				<configuration>
 					<singleton>true</singleton>
+					<manifestLocation>META-INF</manifestLocation>
+					<source>${compiler}</source>
+					<target>${compiler}</target>
+					
+					<showWarnings>false</showWarnings>
+					<showDeprecation>false</showDeprecation>
 					<instructions>
 
 						<!-- TODO 1: We must specify exportPackage, otherwise .impl. is not exported -->
