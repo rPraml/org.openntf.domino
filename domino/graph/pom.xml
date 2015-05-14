@@ -5,8 +5,15 @@
 		<artifactId>root</artifactId>
 		<version>1.5.1-SNAPSHOT</version>
 	</parent>
+	<groupId>org.openntf.domino</groupId>
 	<artifactId>graph</artifactId>
+	
+	<version>1.5.1-SNAPSHOT</version>
+	<packaging>bundle</packaging>
 	<name>OpenNTF Domino Graph API</name>
+	<description>
+		Implementation of graph and frames functionality to interact with a Domino backend.
+	</description>
 
 	<dependencies>
 		<!-- The notes-api is bundled by the ibm-build-management -->
@@ -37,8 +44,9 @@
 		
 	</dependencies>
 
-	<packaging>bundle</packaging>
 	<build>
+        <finalName>${project.artifactId}-${project.version}
+        </finalName>
 		<plugins>
 			<plugin>  
 				<groupId>org.apache.felix</groupId>
@@ -60,6 +68,11 @@
 
 						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+						
+						<Require-Bundle>
+							com.tinkerpop.frames;bundle-version="[2.6.0.ODA-151-SNAPSHOT)",
+ 							org.openntf.domino.core;bundle-version="1.5.0";visibility:=reexport,
+						</Require-Bundle>
 
 					</instructions>
 				</configuration>

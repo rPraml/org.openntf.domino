@@ -10,10 +10,6 @@ Includes content from OpenLog under Apache License 2.0
   http://www.openntf.org/internal/home.nsf/project.xsp?action=openDocument&name=OpenLog
   Copyright Julian Robichaux  
 
-Includes the Tinkerpop Open Source Graph Framework under Apache License 2.0
-  Copyright (c) 2009-2014, TinkerPop
-  Details: https://github.com/tinkerpop/tinkerpop3/blob/master/LICENSE.txt
-
 Includes ICU4J, the International Components for Unicode
   Copyright (c) 1995-2014 International Business Machines Corporation and others
   Full details can be found here: http://source.icu-project.org/repos/icu/icu/trunk/license.html
