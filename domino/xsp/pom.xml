@@ -7,7 +7,6 @@
 	</parent>
 	<artifactId>xsp</artifactId>
 
-	<packaging>bundle</packaging>
 	<build>
 		<plugins>
 			<plugin>  
@@ -46,8 +45,7 @@
 						<Require-Bundle>
 							com.ibm.xsp.extlib;bundle-version="9.0.1",
 							org.openntf.domino.core;bundle-version="1.5.0";visibility:=reexport,
-							org.openntf.formula;bundle-version="1.5.0";visibility:=reexport,
-							org.openntf.domino.graph;bundle-version="1.5.0";visibility:=reexport
+							org.openntf.formula;bundle-version="1.5.0";visibility:=reexport
 						</Require-Bundle>
 <!--						
 							com.ibm.xsp.domino;bundle-version="9.0.1",
@@ -66,7 +64,15 @@
 -->
 					</instructions>
 				</configuration>
-			
+				<executions>
+      <execution>
+       <id>bundle-manifest</id>
+       <phase>process-classes</phase>
+       <goals>
+        <goal>manifest</goal>
+       </goals>
+      </execution>
+     </executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -77,12 +83,6 @@
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
 			<artifactId>core</artifactId>
-			<version>1.5.1-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.openntf.domino</groupId>
-			<artifactId>graph</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
 		
