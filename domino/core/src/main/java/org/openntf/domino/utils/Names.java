@@ -35,7 +35,7 @@ import org.openntf.domino.Name;
 import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.ViewEntry;
-import org.openntf.domino.ext.Name.NamePartKey;
+import org.openntf.domino.commons.NameEnums.NamePartKey;
 
 /**
  * Name handling utilities

@@ -25,8 +25,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
-import org.openntf.domino.ext.Name.NameFormat;
-import org.openntf.domino.ext.Name.NamePartKey;
+import org.openntf.domino.commons.NameEnums.NameFormat;
+import org.openntf.domino.commons.NameEnums.NamePartKey;
 import org.openntf.domino.utils.DominoUtils;
 
 /**
@@ -513,14 +513,14 @@ public class NamePartsMap extends EnumMap<NamePartKey, String> implements Serial
 		return false;
 
 	} /*
-		* ******************************************************************
-		* ******************************************************************
-		* 
-		* private methods
-		* 
-		* ******************************************************************
-		* ******************************************************************
-		*/
+	 * ******************************************************************
+	 * ******************************************************************
+	 * 
+	 * private methods
+	 * 
+	 * ******************************************************************
+	 * ******************************************************************
+	 */
 
 	/**
 	 * Retrieves and sets the various name values by parsing an input source string.

@@ -25,11 +25,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.openntf.domino.design.DxlConverter;
 import org.openntf.domino.design.VFSNode;
 import org.openntf.domino.design.VFSRootNode;
+import org.openntf.formula.impl.ConcurrentStringMap;
 
 /**
  * Abstract implementation of a VFS-Node
@@ -45,7 +45,7 @@ public abstract class VFSAbstractNode<T> implements VFSNode, Serializable {
 	private VFSNode parent;
 	private String name;
 	private boolean initialized;
-	private Map<String, VFSNode> children = new ConcurrentHashMap<String, VFSNode>();
+	private Map<String, VFSNode> children = new ConcurrentStringMap<VFSNode>(true);
 
 	/**
 	 * Constructor. Create new node

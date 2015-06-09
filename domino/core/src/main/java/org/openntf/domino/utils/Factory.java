@@ -51,6 +51,7 @@ import org.openntf.domino.DocumentCollection;
 import org.openntf.domino.Session;
 import org.openntf.domino.Session.RunContext;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.impl.NameParser;
 import org.openntf.domino.exceptions.DataNotCompatibleException;
 import org.openntf.domino.exceptions.UndefinedDelegateTypeException;
 import org.openntf.domino.ext.Session.Fixes;
@@ -64,7 +65,6 @@ import org.openntf.domino.session.SessionFullAccessFactory;
 import org.openntf.domino.session.TrustedSessionFactory;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.SessionDescendant;
-import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.service.IServiceLocator;
 import org.openntf.service.ServiceLocatorFinder;
 
@@ -1286,6 +1286,7 @@ public enum Factory {
 		File iniFile;
 		try {
 			localServerName = session.getUserName();
+			NameParser.setLocalServerName(localServerName);
 			iniFile = new File(session.evaluate("@ConfigFile").get(0).toString());
 		} catch (NotesException e) {
 			Factory.println("WARNING: @ConfigFile returned " + e.getMessage() + " Using fallback to locate notes.ini");

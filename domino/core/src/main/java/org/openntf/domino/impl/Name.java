@@ -22,12 +22,17 @@ import java.util.Collection;
 import java.util.TreeSet;
 //import java.util.logging.Logger;
 
+
+
 import lotus.domino.NotesException;
 import lotus.notes.addins.DominoServer;
 
 import org.openntf.arpa.NamePartsMap;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.NameEnums.NameError;
+import org.openntf.domino.commons.NameEnums.NameFormat;
+import org.openntf.domino.commons.NameEnums.NamePartKey;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
@@ -39,7 +44,7 @@ import org.openntf.domino.utils.Strings;
  */
 
 public class Name extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.domino.Name, Session> implements org.openntf.domino.Name,
-Comparable<Name>, Cloneable {
+		Comparable<Name>, Cloneable {
 	//	private static final Logger log_ = Logger.getLogger(Name.class.getName());
 	private static final long serialVersionUID = 1L;
 	private NamePartsMap _namePartsMap;

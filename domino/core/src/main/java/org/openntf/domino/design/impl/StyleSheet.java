@@ -18,7 +18,7 @@ package org.openntf.domino.design.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.logging.Logger;
 
 import org.openntf.domino.Document;
@@ -49,11 +49,7 @@ public final class StyleSheet extends AbstractDesignNapiFileResource implements 
 
 	@Override
 	public void setContent(final String content) {
-		try {
-			fileData = content.getBytes("UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			DominoUtils.handleException(e);
-		}
+		fileData = content.getBytes(Charset.forName("UTF-8"));
 	}
 
 	@Override
