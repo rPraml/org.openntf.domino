@@ -1,4 +1,4 @@
-package org.openntf.formula.impl;
+package org.openntf.domino.commons.utils;
 
 public class StringSplitSimple {
 
@@ -19,7 +19,7 @@ public class StringSplitSimple {
 	}
 
 	private void setWhatToSplit(final String whatToSplit) {
-		if (whatToSplit != null && !whatToSplit.isEmpty())
+		if (!SimpleStringUtils.isEmptyString(whatToSplit))
 			_whatToSplit = whatToSplit.toCharArray();
 	}
 

@@ -69,6 +69,7 @@
 			</activation>
 			<modules>
 				<module>ci-env</module>
+				<module>commons</module>
 				<module>formula</module>
 				<module>core</module>
 				<module>xsp</module>

@@ -6,3 +6,4 @@ javacore*
 /formula
 /target
 /target-ide/
+/src/main/resources/*.git.properties

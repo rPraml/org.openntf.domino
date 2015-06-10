@@ -27,11 +27,12 @@ import lotus.notes.addins.DominoServer;
 
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.INameParser;
 import org.openntf.domino.commons.NameEnums.NameError;
 import org.openntf.domino.commons.NameEnums.NameFormat;
 import org.openntf.domino.commons.NameEnums.NamePartKey;
-import org.openntf.domino.commons.INameParser;
 import org.openntf.domino.commons.impl.NameParser;
+import org.openntf.domino.commons.utils.SimpleStringUtils;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
@@ -43,7 +44,7 @@ import org.openntf.domino.utils.Factory.SessionType;
  */
 
 public class NameODA extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.domino.Name, Session> implements org.openntf.domino.Name,
-Comparable<org.openntf.domino.Name>, Cloneable {
+		Comparable<org.openntf.domino.Name>, Cloneable {
 	@SuppressWarnings("unused")
 	private static final Logger log_ = Logger.getLogger(NameODA.class.getName());
 
@@ -63,7 +64,7 @@ Comparable<org.openntf.domino.Name>, Cloneable {
 	// Called from WrapperFactory.create
 	protected NameODA(final Session sess, final String name, final String lang) {
 		super(null, sess, NOTES_NAME);
-		_language = NameParser.null2Empty(lang);
+		_language = SimpleStringUtils.null2Empty(lang);
 		_parserDelegate = new NameParser(name);
 	}
 

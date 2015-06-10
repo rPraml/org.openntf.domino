@@ -26,10 +26,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.openntf.domino.commons.utils.ConcurrentStringMap;
 import org.openntf.domino.design.DxlConverter;
 import org.openntf.domino.design.VFSNode;
 import org.openntf.domino.design.VFSRootNode;
-import org.openntf.formula.impl.ConcurrentStringMap;
 
 /**
  * Abstract implementation of a VFS-Node

@@ -52,6 +52,7 @@ import org.openntf.domino.Session;
 import org.openntf.domino.Session.RunContext;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.impl.NameParser;
+import org.openntf.domino.commons.utils.GitProperties;
 import org.openntf.domino.exceptions.DataNotCompatibleException;
 import org.openntf.domino.exceptions.UndefinedDelegateTypeException;
 import org.openntf.domino.ext.Session.Fixes;
@@ -65,6 +66,7 @@ import org.openntf.domino.session.SessionFullAccessFactory;
 import org.openntf.domino.session.TrustedSessionFactory;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.SessionDescendant;
+import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.service.IServiceLocator;
 import org.openntf.service.ServiceLocatorFinder;
 
@@ -395,7 +397,7 @@ public enum Factory {
 								if ((pos = bundleName.indexOf(';')) != -1) {
 									bundleName = bundleName.substring(0, pos);
 								}
-								if ("org.openntf.domino".equals(bundleName)) {
+								if ("org.openntf.domino.core".equals(bundleName)) {
 									ENVIRONMENT.put("version", attrib.getValue("Bundle-Version"));
 									ENVIRONMENT.put("title", attrib.getValue("Implementation-Title"));
 									ENVIRONMENT.put("url", attrib.getValue("Implementation-Vendor-URL"));
@@ -1268,12 +1270,9 @@ public enum Factory {
 		return napiPresent_;
 	}
 
-	public static synchronized void startup(final lotus.domino.Session session) {
+	private static synchronized void startup(final lotus.domino.Session session) {
 		if (session instanceof org.openntf.domino.Session) {
 			throw new UnsupportedOperationException("Initialization must be done on the raw session! How did you get that session?");
-		}
-		if (startups != 0) {
-			Factory.println("OpenNTF Domino API is already started. Cannot start it again");
 		}
 		try {
 			NapiUtil.init();
@@ -1341,7 +1340,14 @@ public enum Factory {
 		setDefaultSessionFactory(new SessionFullAccessFactory(defaultApiPath), SessionType.FULL_ACCESS);
 
 		startups = 1;
-		Factory.println("OpenNTF API Version " + ENVIRONMENT.get("version") + " started");
+		//		Factory.println("OpenNTF API Version " + ENVIRONMENT.get("version") + " started");
+		Factory.println("########################################################################");
+		Factory.println("# OpenNTF API started");
+		GitProperties gp = GitProperties.getInstance(Factory.class.getClassLoader(), "org.openntf.domino.core");
+		Factory.println("# Commit-ID:          " + gp.getCommitId());
+		Factory.println("# Commit-ID-Describe: " + gp.getCommitIdDescribe());
+		Factory.println("# Commit-Timestamp:   " + gp.getCommitTime());
+		Factory.println("########################################################################");
 
 		// Start up logging
 		try {
