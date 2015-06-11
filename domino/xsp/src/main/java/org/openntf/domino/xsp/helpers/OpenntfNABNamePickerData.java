@@ -21,7 +21,7 @@ import lotus.domino.ViewEntry;
 import lotus.domino.ViewEntryCollection;
 import lotus.domino.ViewNavigator;
 
-import org.openntf.domino.ext.Name.NamePartKey;
+import org.openntf.domino.commons.NameEnums.NamePartKey;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.utils.Names;

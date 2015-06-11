@@ -20,11 +20,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.TypeUtils;
 import org.openntf.domino.utils.xml.XMLNode;
-
-import com.ibm.commons.util.StringUtil;
 
 /**
  * @author jgallagher
@@ -214,7 +213,7 @@ public class FormField implements org.openntf.domino.design.FormField {
 	@Override
 	public RTLType getFirstDisplay() {
 		String firstDisplay = node_.getAttribute("firstdisplay");
-		if (!StringUtil.isEmpty(firstDisplay)) {
+		if (!StringsUtils.isEmptyString(firstDisplay)) {
 			return RTLType.valueOf(firstDisplay.toUpperCase());
 		}
 		return null;
@@ -234,7 +233,7 @@ public class FormField implements org.openntf.domino.design.FormField {
 		String values = node_.getAttribute("onlyallow");
 		Set<RTLType> result = new HashSet<RTLType>();
 		for (String val : values.split("\\s")) {
-			if (StringUtil.isNotEmpty(val)) {
+			if (!StringsUtils.isEmptyString(val)) {
 				result.add(RTLType.valueOf(val.toUpperCase()));
 			}
 		}

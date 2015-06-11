@@ -31,6 +31,7 @@ import java.util.Vector;
 import lotus.domino.NotesException;
 
 import org.openntf.domino.Document;
+import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.iterators.DocumentList;
 
 /**
@@ -128,7 +129,7 @@ public enum CollectionUtils {
 		if (null == source) {
 			throw new IllegalArgumentException("Source document is null");
 		}
-		if (Strings.isBlankString(itemname)) {
+		if (StringsUtils.isBlankString(itemname)) {
 			throw new IllegalArgumentException("ItemName is blank or null");
 		}
 
@@ -204,7 +205,7 @@ public enum CollectionUtils {
 	 * @return List of Strings retrieved or generated from the input. Returns null on error.
 	 */
 	public static List<String> getListStrings(final String string) {
-		if (!Strings.isBlankString(string)) {
+		if (!StringsUtils.isBlankString(string)) {
 			final List<String> result = new ArrayList<String>();
 			result.add(string);
 			return result;
@@ -433,7 +434,7 @@ public enum CollectionUtils {
 		if ((null != temp) && (temp.size() > 0)) {
 			final TreeSet<String> result = new TreeSet<String>();
 			for (final String s : temp) {
-				if (Strings.startsWithIgnoreCase(s, prefix)) {
+				if (StringsUtils.startsWithIgnoreCase(s, prefix)) {
 					result.add(s);
 				}
 			}

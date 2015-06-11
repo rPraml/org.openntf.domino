@@ -17,8 +17,6 @@ import java.util.Map;
 
 import javolution.io.Struct;
 
-import com.ibm.commons.util.StringUtil;
-
 public abstract class AbstractStruct extends Struct implements Externalizable {
 
 	public void init() {
@@ -287,7 +285,7 @@ public abstract class AbstractStruct extends Struct implements Externalizable {
 					int extra = String.class.equals(element.dataClass) && !element.isAscii ? length % 2 : 0;
 					//					int extra = String.class.equals(element.dataClass) ? length % 2 : 0;
 
-					if (StringUtil.equals(name, element.name)) {
+					if (name.equals(element.name)) {
 						if (String.class.equals(element.dataClass)) {
 							ByteBuffer data = getData().duplicate();
 							data.order(ByteOrder.LITTLE_ENDIAN);
@@ -391,7 +389,7 @@ public abstract class AbstractStruct extends Struct implements Externalizable {
 					// LMBCS strings are always even length
 					int extra = String.class.equals(element.dataClass) && !element.isAscii ? length % 2 : 0;
 
-					if (StringUtil.equals(name, element.name)) {
+					if (name.equals(element.name)) {
 						//						System.out.println("determined length for existing data in " + name + " is " + length);
 
 						ByteBuffer data = getData().duplicate().order(ByteOrder.LITTLE_ENDIAN);

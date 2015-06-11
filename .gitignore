@@ -25,3 +25,4 @@
 /domino/externals/rxjava
 /domino/externals/tinkerpop
 /domino/junit4xpages
+**/src/main/resources/*.git.properties

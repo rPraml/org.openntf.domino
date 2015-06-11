@@ -1,0 +1,7 @@
+OpenNTF Domino Commons - Stuff, not relying on lotus.*
+(c) Copyright 2015
+  https://www.foconis.de
+
+Includes ICU4J, the International Components for Unicode
+  Copyright (c) 1995-2014 International Business Machines Corporation and others
+  Full details can be found here: http://source.icu-project.org/repos/icu/icu/trunk/license.html

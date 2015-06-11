@@ -1,4 +1,4 @@
-package org.openntf.formula.impl;
+package org.openntf.domino.commons.utils;
 
 /*----------------------------------------------------------------------------*/
 import java.util.Comparator;

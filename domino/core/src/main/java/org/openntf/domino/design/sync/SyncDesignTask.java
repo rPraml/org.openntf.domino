@@ -27,6 +27,7 @@ import java.util.logging.Level;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
+import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.design.DatabaseDesign;
 import org.openntf.domino.design.DesignBase;
 import org.openntf.domino.design.DesignBaseNamed;
@@ -37,8 +38,6 @@ import org.openntf.domino.design.impl.DesignFactory;
 import org.openntf.domino.design.impl.HasMetadata;
 import org.openntf.domino.design.impl.HasXspConfig;
 import org.openntf.domino.utils.DominoUtils;
-
-import com.ibm.commons.util.StringUtil;
 
 /**
  * 
@@ -101,7 +100,7 @@ public class SyncDesignTask extends SyncTask<DesignBase, OnDiskDesign> implement
 		//			((DesignBaseNamed) dbElem).setName(name); // TODO: decode!!!
 		//		}
 
-		if (StringUtil.isNotEmpty(unid)) {
+		if (!StringsUtils.isEmptyString(unid)) {
 			dbElem.setUniversalID(unid);
 		}
 

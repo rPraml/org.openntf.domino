@@ -7,10 +7,10 @@ import java.util.logging.Logger;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.NoteCollection;
+import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.design.DesignBase;
 import org.openntf.domino.ext.NoteClass;
 
-import com.ibm.commons.util.StringUtil;
 import com.ibm.designer.domino.napi.NotesAPIException;
 import com.ibm.designer.domino.napi.NotesCollection;
 import com.ibm.designer.domino.napi.NotesCollectionEntry;
@@ -159,7 +159,7 @@ public class NapiDatabaseDesign {
 			coll.add(database_.getDocumentByID(Integer.toHexString(0xFFFF0000 | mapping.getNoteClass().nativeValue)));
 			break;
 		default:
-			if (!StringUtil.isEmpty(name)) {
+			if (!StringsUtils.isEmptyString(name)) {
 				name = "|" + name + "|";
 			}
 

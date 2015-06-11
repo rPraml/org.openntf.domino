@@ -20,14 +20,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.URL;
 import java.security.AccessControlException;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -36,8 +34,6 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,6 +47,9 @@ import org.openntf.domino.DocumentCollection;
 import org.openntf.domino.Session;
 import org.openntf.domino.Session.RunContext;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.impl.NameParser;
+import org.openntf.domino.commons.utils.GitProperties;
+import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.exceptions.DataNotCompatibleException;
 import org.openntf.domino.exceptions.UndefinedDelegateTypeException;
 import org.openntf.domino.ext.Session.Fixes;
@@ -64,7 +63,6 @@ import org.openntf.domino.session.SessionFullAccessFactory;
 import org.openntf.domino.session.TrustedSessionFactory;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.SessionDescendant;
-import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.service.IServiceLocator;
 import org.openntf.service.ServiceLocatorFinder;
 
@@ -354,6 +352,12 @@ public enum Factory {
 		return tv.threadConfig;
 	}
 
+	public static final String _bundleName = "org.openntf.domino.core";
+
+	public static final GitProperties getGitProperties() {
+		return GitProperties.getInstance(Factory.class.getClassLoader(), _bundleName);
+	}
+
 	private static Map<String, String> ENVIRONMENT;
 
 	/**
@@ -375,51 +379,10 @@ public enum Factory {
 				}
 			}
 		}
-		try {
-			AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
-				@Override
-				public Object run() throws Exception {
-					try {
-						ClassLoader cl = Factory.class.getClassLoader();
-						// we MUST use the Factory-classloader to find the correct MANIFEST
-						Enumeration<URL> resources = cl.getResources("META-INF/MANIFEST.MF");
-						while (resources.hasMoreElements()) {
-
-							Manifest manifest = new Manifest(resources.nextElement().openStream());
-							// check that this is your manifest and do what you need or get the next one
-							Attributes attrib = manifest.getMainAttributes();
-
-							String bundleName = attrib.getValue("Bundle-SymbolicName");
-							if (bundleName != null) {
-								int pos;
-								if ((pos = bundleName.indexOf(';')) != -1) {
-									bundleName = bundleName.substring(0, pos);
-								}
-								if ("org.openntf.domino".equals(bundleName)) {
-									ENVIRONMENT.put("version", attrib.getValue("Bundle-Version"));
-									ENVIRONMENT.put("title", attrib.getValue("Implementation-Title"));
-									ENVIRONMENT.put("url", attrib.getValue("Implementation-Vendor-URL"));
-									return null;
-								}
-							}
-
-						}
-
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					return null;
-				}
-			});
-		} catch (AccessControlException e) {
-			e.printStackTrace();
-		} catch (PrivilegedActionException e) {
-			e.printStackTrace();
-		}
-		if (!ENVIRONMENT.containsKey("version")) {
-			ENVIRONMENT.put("version", "0.0.0.unknown");
-		}
-
+		GitProperties gp = getGitProperties();
+		ENVIRONMENT.put("version", gp.getCommitIdDescribe());
+		ENVIRONMENT.put("title", _bundleName);
+		ENVIRONMENT.put("url", "org.openntf");
 	}
 
 	public static String getEnvironment(final String key) {
@@ -1268,12 +1231,9 @@ public enum Factory {
 		return napiPresent_;
 	}
 
-	public static synchronized void startup(final lotus.domino.Session session) {
+	private static synchronized void startup(final lotus.domino.Session session) {
 		if (session instanceof org.openntf.domino.Session) {
 			throw new UnsupportedOperationException("Initialization must be done on the raw session! How did you get that session?");
-		}
-		if (startups != 0) {
-			Factory.println("OpenNTF Domino API is already started. Cannot start it again");
 		}
 		try {
 			NapiUtil.init();
@@ -1286,6 +1246,7 @@ public enum Factory {
 		File iniFile;
 		try {
 			localServerName = session.getUserName();
+			NameParser.setLocalServerName(localServerName);
 			iniFile = new File(session.evaluate("@ConfigFile").get(0).toString());
 		} catch (NotesException e) {
 			Factory.println("WARNING: @ConfigFile returned " + e.getMessage() + " Using fallback to locate notes.ini");
@@ -1340,7 +1301,14 @@ public enum Factory {
 		setDefaultSessionFactory(new SessionFullAccessFactory(defaultApiPath), SessionType.FULL_ACCESS);
 
 		startups = 1;
-		Factory.println("OpenNTF API Version " + ENVIRONMENT.get("version") + " started");
+		//		Factory.println("OpenNTF API Version " + ENVIRONMENT.get("version") + " started");
+		GitProperties gp = getGitProperties();
+		Factory.println("########################################################################");
+		Factory.println("# OpenNTF API started");
+		Factory.println("# Commit-ID:          " + gp.getCommitId());
+		Factory.println("# Commit-ID-Describe: " + gp.getCommitIdDescribe());
+		Factory.println("# Commit-Timestamp:   " + gp.getCommitTime());
+		Factory.println("########################################################################");
 
 		// Start up logging
 		try {
@@ -1861,7 +1829,7 @@ public enum Factory {
 		BufferedReader reader = new BufferedReader(new StringReader(lines));
 		String line;
 		try {
-			if (Strings.isBlankString(prefix)) {
+			if (StringsUtils.isBlankString(prefix)) {
 				prefix = "[ODA] ";
 			} else {
 				prefix = "[ODA::" + prefix + "] ";

@@ -54,9 +54,10 @@ import org.openntf.domino.Item;
 import org.openntf.domino.Name;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.NameEnums.NamePartKey;
+import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.exceptions.InvalidNotesUrlException;
 import org.openntf.domino.exceptions.OpenNTFNotesException;
-import org.openntf.domino.ext.Name.NamePartKey;
 import org.openntf.domino.logging.LogUtils;
 import org.openntf.domino.utils.Factory.SessionType;
 
@@ -446,7 +447,7 @@ public enum DominoUtils {
 	}
 
 	public static boolean isHierarchicalName(final CharSequence name) {
-		return (Strings.isBlankString(name.toString())) ? false : Names.IS_HIERARCHICAL_MATCH.matcher(name).find();
+		return (StringsUtils.isBlankString(name.toString())) ? false : Names.IS_HIERARCHICAL_MATCH.matcher(name).find();
 	}
 
 	public static void parseNamesPartMap(final CharSequence name, final NamePartsMap map) {

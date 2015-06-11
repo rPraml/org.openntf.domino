@@ -19,6 +19,13 @@
 			<artifactId>base</artifactId>
 			<version>3.8.1</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>commons</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+		</dependency>
+		
 	</dependencies>
 	
 	<packaging>bundle</packaging>

@@ -21,10 +21,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.design.DesignBaseNamed;
 import org.openntf.formula.function.TextFunctions;
-
-import com.ibm.commons.util.StringUtil;
 
 /**
  * A named DesignNote
@@ -62,7 +61,7 @@ public abstract class AbstractDesignDxlBaseNamed extends AbstractDesignDxlBase i
 
 		}
 
-		if (StringUtil.isEmpty(aliases)) {
+		if (StringsUtils.isEmptyString(aliases)) {
 			return new ArrayList<String>();
 		} else {
 			return Arrays.asList(aliases.split("\\|"));
@@ -81,7 +80,7 @@ public abstract class AbstractDesignDxlBaseNamed extends AbstractDesignDxlBase i
 			return getDxl().getAttribute("alias");
 		default:
 			String[] aliases = getAliases().toArray(new String[] {});
-			return StringUtil.concatStrings(aliases, '|', false);
+			return StringsUtils.concatStrings(aliases, '|', false);
 		}
 	}
 

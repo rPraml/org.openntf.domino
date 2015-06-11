@@ -32,6 +32,7 @@ import lotus.domino.NotesException;
 
 import org.openntf.domino.DateTime;
 import org.openntf.domino.Item;
+import org.openntf.domino.commons.utils.StringsUtils;
 
 /**
  * Date and Time handling utilities
@@ -191,7 +192,7 @@ public enum Dates {
 	public Date parseInstance(final String string) {
 
 		try {
-			if (Strings.isBlankString(string)) {
+			if (StringsUtils.isBlankString(string)) {
 				throw new IllegalArgumentException("String to parse is null or blank");
 			}
 
@@ -297,7 +298,7 @@ public enum Dates {
 	 */
 	public static String getTimestamp(final Object object, final String format) {
 		try {
-			if (Strings.isBlankString(format)) {
+			if (StringsUtils.isBlankString(format)) {
 				return Dates.DEFAULT.getInstanceTimestamp(object);
 			}
 
@@ -941,7 +942,7 @@ public enum Dates {
 	 * @return First found TimeFormatter. Null if no name or format equality or match found.
 	 */
 	public static Dates get(final String key) {
-		if (!Strings.isBlankString(key)) {
+		if (!StringsUtils.isBlankString(key)) {
 			for (final Dates result : Dates.values()) {
 				if (result.name().equalsIgnoreCase(key) || result.getInstanceTimestampFormat().equalsIgnoreCase(key)) {
 					return result;
@@ -1184,7 +1185,7 @@ public enum Dates {
 	 * @return SimpleDateFormat object for the specified format
 	 */
 	public static SimpleDateFormat getSimpleDateFormat(final String format) {
-		final SimpleDateFormat result = (Strings.isBlankString(format)) ? new SimpleDateFormat() : new SimpleDateFormat(format);
+		final SimpleDateFormat result = (StringsUtils.isBlankString(format)) ? new SimpleDateFormat() : new SimpleDateFormat(format);
 		result.setLenient(true);
 		return result;
 	}
@@ -1200,7 +1201,7 @@ public enum Dates {
 	public static Date parse(final String string) {
 
 		try {
-			if (Strings.isBlankString(string)) {
+			if (StringsUtils.isBlankString(string)) {
 				throw new IllegalArgumentException("String to parse is null or blank");
 			}
 
@@ -1243,7 +1244,7 @@ public enum Dates {
 	 */
 	public static Date parse(final String dateText, final String format) {
 		if (null != dateText) {
-			if (Strings.isBlankString(format)) {
+			if (StringsUtils.isBlankString(format)) {
 				return Dates.parse(dateText);
 			}
 

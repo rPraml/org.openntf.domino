@@ -18,9 +18,8 @@ package org.openntf.domino.design.impl;
 
 import java.util.logging.Logger;
 
+import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.utils.xml.XMLNode;
-
-import com.ibm.commons.util.StringUtil;
 
 /**
  * @author jgallagher
@@ -94,7 +93,7 @@ public class DesignColumn implements org.openntf.domino.design.DesignColumn {
 	@Override
 	public void setItemName(final String itemName) {
 		node_.setAttribute("itemname", itemName);
-		if (StringUtil.isEmpty(getFormulaActual())) {
+		if (StringsUtils.isEmptyString(getFormulaActual())) {
 			setFormula(itemName);
 		}
 	}
@@ -140,7 +139,7 @@ public class DesignColumn implements org.openntf.domino.design.DesignColumn {
 	public String getFormula() {
 		String formulaActual = getFormulaActual();
 
-		return StringUtil.isEmpty(formulaActual) ? this.getItemName() : formulaActual;
+		return StringsUtils.isEmptyString(formulaActual) ? this.getItemName() : formulaActual;
 	}
 
 	// This is used so that the DXL can remain accurate - empty column formulas are illegal

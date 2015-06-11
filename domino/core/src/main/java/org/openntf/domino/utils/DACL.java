@@ -19,6 +19,7 @@
 package org.openntf.domino.utils;
 
 import java.util.TreeSet;
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +29,7 @@ import org.openntf.domino.Document;
 import org.openntf.domino.Item;
 import org.openntf.domino.Name;
 import org.openntf.domino.Session;
+import org.openntf.domino.commons.utils.StringsUtils;
 
 /**
  * Document Access Control List Utilities
@@ -290,7 +292,7 @@ public enum DACL {
 	 * @return Flag indicating the success / failure of the operation.
 	 */
 	public boolean set(final Document document, final TreeSet<String> members, final String override, final boolean doNotAddRole) {
-		String itemname = (Strings.isBlankString(override)) ? this.getItemname() : override;
+		String itemname = (StringsUtils.isBlankString(override)) ? this.getItemname() : override;
 		return DACL.set(document, members, itemname, this, doNotAddRole);
 	}
 
@@ -421,7 +423,7 @@ public enum DACL {
 			}
 
 			final String role = Names.formatAsRole(string);
-			if (Strings.isBlankString(role)) {
+			if (StringsUtils.isBlankString(role)) {
 				throw new IllegalArgumentException("Role is null or blank: " + string);
 			}
 
@@ -487,7 +489,7 @@ public enum DACL {
 			if (null == document) {
 				throw new IllegalArgumentException("Document is null");
 			}
-			if (Strings.isBlankString(member)) {
+			if (StringsUtils.isBlankString(member)) {
 				throw new IllegalArgumentException("Members is null");
 			}
 
@@ -559,7 +561,7 @@ public enum DACL {
 			}
 
 			final String role = Names.formatAsRole(string);
-			if (Strings.isBlankString(role)) {
+			if (StringsUtils.isBlankString(role)) {
 				throw new IllegalArgumentException("Role is null or blank: " + string);
 			}
 
@@ -590,11 +592,11 @@ public enum DACL {
 			if (null == document) {
 				throw new IllegalArgumentException("Document is null");
 			}
-			if (Strings.isBlankString(newrole)) {
+			if (StringsUtils.isBlankString(newrole)) {
 				throw new IllegalArgumentException("New Role is null or blank");
 			}
 
-			if (!Strings.isBlankString(oldrole)) {
+			if (!StringsUtils.isBlankString(oldrole)) {
 				this.removeRole(document, oldrole);
 			}
 
@@ -754,7 +756,7 @@ public enum DACL {
 			if (null == daclType) {
 				throw new IllegalArgumentException("DACL is null");
 			}
-			if (Strings.isBlankString(itemname)) {
+			if (StringsUtils.isBlankString(itemname)) {
 				throw new IllegalArgumentException("Item Name is blank or null");
 			}
 
@@ -765,7 +767,7 @@ public enum DACL {
 
 			if (null != values) {
 				for (final String entry : values) {
-					if (!Strings.isBlankString(entry)) {
+					if (!StringsUtils.isBlankString(entry)) {
 						dacl.add(entry);
 					}
 				}
@@ -777,8 +779,9 @@ public enum DACL {
 				}
 
 			} else {
-
-				final Item item = document.replaceItemValue(itemname, Strings.getVectorizedStrings(dacl));
+				Vector<String> v = new Vector<String>();
+				v.addAll(dacl);
+				final Item item = document.replaceItemValue(itemname, v);
 				switch (daclType) {
 				case AUTHORS: {
 					item.setAuthors(true);
@@ -937,7 +940,7 @@ public enum DACL {
 			if (null == roles) {
 				throw new IllegalArgumentException("Roles is null");
 			}
-			if (Strings.isBlankString(role)) {
+			if (StringsUtils.isBlankString(role)) {
 				throw new IllegalArgumentException("Role is null or blank");
 			}
 

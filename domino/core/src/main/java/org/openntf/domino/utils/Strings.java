@@ -43,6 +43,7 @@ import org.openntf.domino.utils.Factory.SessionType;
  * @author Devin S. Olson (dolson@czarnowski.com)
  * 
  */
+@Deprecated
 public enum Strings {
 	;
 
