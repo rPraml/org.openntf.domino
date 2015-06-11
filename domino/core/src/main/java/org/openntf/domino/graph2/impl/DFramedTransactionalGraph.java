@@ -171,8 +171,8 @@ public class DFramedTransactionalGraph<T extends TransactionalGraph> extends Fra
 							if (raw instanceof Integer) {
 								edgeCounts.put(key, (Integer) raw);
 							} else {
-								System.out.println("Count method " + crystal.getName() + " on a frame of type "
-										+ frame.getClass().getName() + " returned a " + (raw == null ? "null" : raw.getClass().getName()));
+								System.out.println("Count method " + crystal.getName() + " on a frame of type " + frame.getClass().getName()
+										+ " returned a " + (raw == null ? "null" : raw.getClass().getName()));
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -542,6 +542,7 @@ public class DFramedTransactionalGraph<T extends TransactionalGraph> extends Fra
 	//		return frame(vertex, kind);
 	//	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <F> F frame(final Edge edge, final Class<F> kind) {
 		Class<F> klazz = (Class<F>) (kind == null ? DEdgeFrame.class : kind);
@@ -562,6 +563,7 @@ public class DFramedTransactionalGraph<T extends TransactionalGraph> extends Fra
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@Deprecated
 	public <F> F frame(final Edge edge, final Direction direction, final Class<F> kind) {
@@ -582,13 +584,16 @@ public class DFramedTransactionalGraph<T extends TransactionalGraph> extends Fra
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <F> F frame(final Vertex vertex, final Class<F> kind) {
 		Class<F> klazz = (Class<F>) (kind == null ? DEdgeFrame.class : kind);
 		DConfiguration config = (DConfiguration) this.getConfig();
 		DTypeManager manager = config.getTypeManager();
-		if (manager == null)
+		if (manager == null) {
 			System.out.println("TypeManager is null!??!??! How?");
+			throw new NullPointerException("TypeManager is null somehow. This is likely a serious issue.");
+		}
 		manager.initElement(klazz, this, vertex);
 		for (FrameInitializer initializer : getConfig().getFrameInitializers()) {
 			if (!(initializer instanceof JavaFrameInitializer)) {

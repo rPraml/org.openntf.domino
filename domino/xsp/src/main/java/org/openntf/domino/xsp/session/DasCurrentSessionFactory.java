@@ -21,6 +21,7 @@ import com.ibm.domino.osgi.core.context.ContextInfo;
 public class DasCurrentSessionFactory extends AbstractXPageSessionFactory {
 
 	private static final long serialVersionUID = 1L;
+	@SuppressWarnings("unused")
 	private String runAs_;
 
 	public DasCurrentSessionFactory() {

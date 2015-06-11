@@ -39,7 +39,7 @@ public class IncidenceUniqueHandler implements AnnotationHandler<IncidenceUnique
 		return result;
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unused" })
 	private int countEdges(final IncidenceUnique incidence, final Vertex vertex) {
 		int result = 0;
 		switch (incidence.direction()) {

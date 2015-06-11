@@ -42,8 +42,8 @@ public class AdjacencyUniqueHandler implements AnnotationHandler<AdjacencyUnique
 		Class<?> returnType = method.getReturnType();
 
 		if (ClassUtilities.isGetMethod(method)) {
-			final FramedVertexIterable r = new FramedVertexIterable(framedGraph, vertex.getVertices(adjacency.direction(),
-					adjacency.label()), ClassUtilities.getGenericClass(method));
+			final FramedVertexIterable r = new FramedVertexIterable(framedGraph,
+					vertex.getVertices(adjacency.direction(), adjacency.label()), ClassUtilities.getGenericClass(method));
 			if (ClassUtilities.returnsIterable(method)) {
 				return r;
 			} else {
@@ -114,7 +114,7 @@ public class AdjacencyUniqueHandler implements AnnotationHandler<AdjacencyUnique
 		return result;
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unused" })
 	private int countEdges(final AdjacencyUnique adjacency, final Vertex vertex) {
 		int result = 0;
 		switch (adjacency.direction()) {

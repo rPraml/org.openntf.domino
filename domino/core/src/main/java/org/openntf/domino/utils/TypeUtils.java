@@ -108,8 +108,8 @@ public enum TypeUtils {
 					return null;
 				}
 			} else if (type.isPrimitive()) {
-				throw new ItemNotFoundException("Item " + itemName + " was not found on document " + noteid + " so we cannot return a "
-						+ type.getName());
+				throw new ItemNotFoundException(
+						"Item " + itemName + " was not found on document " + noteid + " so we cannot return a " + type.getName());
 			} else {
 				return null;
 			}
@@ -153,8 +153,8 @@ public enum TypeUtils {
 			throw new DataNotCompatibleException(e.getMessage() + " for field " + item.getName() + " in document " + noteid, e);
 		} catch (UnimplementedException e) {
 			String noteid = item.getAncestorDocument().getNoteID();
-			throw new UnimplementedException(
-					e.getMessage() + ", so cannot auto-box for field " + item.getName() + " in document " + noteid, e);
+			throw new UnimplementedException(e.getMessage() + ", so cannot auto-box for field " + item.getName() + " in document " + noteid,
+					e);
 		}
 
 		return result;
@@ -163,7 +163,7 @@ public enum TypeUtils {
 	public static boolean isNumerical(final Object rawObject) {
 		boolean result = true;
 		if (rawObject == null || rawObject instanceof String)
-			return false;	//NTF: we know this is going to be true a LOT, so we'll have a fast out
+			return false;//NTF: we know this is going to be true a LOT, so we'll have a fast out
 		if (rawObject instanceof Collection) {
 			for (Object obj : (Collection<?>) rawObject) {
 				if (!isNumerical(obj)) {
@@ -185,7 +185,7 @@ public enum TypeUtils {
 	public static boolean isCalendrical(final Object rawObject) {
 		boolean result = true;
 		if (rawObject == null || rawObject instanceof String)
-			return false;	//NTF: we know this is going to be true a LOT, so we'll have a fast out
+			return false;//NTF: we know this is going to be true a LOT, so we'll have a fast out
 		if (rawObject instanceof Collection) {
 			for (Object obj : (Collection<?>) rawObject) {
 				if (!isCalendrical(obj)) {
@@ -205,7 +205,7 @@ public enum TypeUtils {
 	public static boolean isNameish(final Object rawObject) {
 		boolean result = true;
 		if (rawObject == null)
-			return false;	//NTF: we know this is going to be true a LOT, so we'll have a fast out
+			return false;//NTF: we know this is going to be true a LOT, so we'll have a fast out
 		if (rawObject instanceof Collection) {
 			for (Object obj : (Collection<?>) rawObject) {
 				if (!isNameish(obj)) {
@@ -338,15 +338,15 @@ public enum TypeUtils {
 				if (session != null) {
 					result = session.createDateTime(toDate(o));
 				} else {
-					throw new IllegalArgumentException("Cannont convert a " + o.getClass().getName()
-							+ " to DateTime without a valid Session object");
+					throw new IllegalArgumentException(
+							"Cannont convert a " + o.getClass().getName() + " to DateTime without a valid Session object");
 				}
 			} else if (org.openntf.domino.Name.class.isAssignableFrom(type)) {
 				if (session != null) {
 					result = session.createName(String.valueOf(o));
 				} else {
-					throw new IllegalArgumentException("Cannont convert a " + o.getClass().getName()
-							+ " to Name without a valid Session object");
+					throw new IllegalArgumentException(
+							"Cannont convert a " + o.getClass().getName() + " to Name without a valid Session object");
 				}
 			} else if (Boolean.class.equals(type)) {
 				result = toBoolean(o);
@@ -1325,6 +1325,7 @@ public enum TypeUtils {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static NoteCoordinate[] toNoteCoordinates(final Object value) throws DataNotCompatibleException {
 		if (value == null)
 			return null;
