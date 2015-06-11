@@ -24,8 +24,7 @@ import org.openntf.domino.commons.INameParser;
 import org.openntf.domino.commons.NameEnums.NameError;
 import org.openntf.domino.commons.NameEnums.NameFormat;
 import org.openntf.domino.commons.NameEnums.NamePartKey;
-import org.openntf.domino.commons.utils.SimpleStringUtils;
-import org.openntf.domino.commons.utils.StringSplitSimple;
+import org.openntf.domino.commons.utils.StringsUtils;
 
 /**
  * The class NameODA - alternative implementation for Name
@@ -77,7 +76,7 @@ public class NameParser implements INameParser, Comparable<INameParser> {
 	private String[] _hierParts = new String[_hpSize];
 
 	private static final String[] _hierPartPrefices = { "A=", "CN=", "C=", "Q=", "G=", "I=", "O=", //
-		"OU1=", "OU2=", "OU3=", "OU4=", "P=", "S=", "OU=" };
+			"OU1=", "OU2=", "OU3=", "OU4=", "P=", "S=", "OU=" };
 
 	private String _routingHint;	// For addresses like CN=John Smith/OU=HR/O=Shell/C=US@SHELL@Esso
 	// In this case, the hint will be "SHELL@Esso"
@@ -132,110 +131,110 @@ public class NameParser implements INameParser, Comparable<INameParser> {
 	public String getAbbreviated() {
 		if (_abbreviated == null)
 			_abbreviated = (_nameFormat == NameFormat.HIERARCHICAL) ? buildX400Path(false, false) : _sourceString;
-			return _abbreviated;
+		return _abbreviated;
 	}
 
 	@Override
 	public String getAddr821() {
-		return SimpleStringUtils.null2Empty(_addr821);
+		return StringsUtils.null2Empty(_addr821);
 	}
 
 	@Override
 	public String getAddr822Comment1() {
-		return SimpleStringUtils.null2Empty(_addr822Comments[0]);
+		return StringsUtils.null2Empty(_addr822Comments[0]);
 	}
 
 	@Override
 	public String getAddr822Comment2() {
-		return SimpleStringUtils.null2Empty(_addr822Comments[1]);
+		return StringsUtils.null2Empty(_addr822Comments[1]);
 	}
 
 	@Override
 	public String getAddr822Comment3() {
-		return SimpleStringUtils.null2Empty(_addr822Comments[2]);
+		return StringsUtils.null2Empty(_addr822Comments[2]);
 	}
 
 	@Override
 	public String getAddr822LocalPart() {
-		return SimpleStringUtils.null2Empty(_addr822LocalPart);
+		return StringsUtils.null2Empty(_addr822LocalPart);
 	}
 
 	@Override
 	public String getAddr822Phrase() {
-		return SimpleStringUtils.null2Empty(_addr822Phrase);
+		return StringsUtils.null2Empty(_addr822Phrase);
 	}
 
 	@Override
 	public String getADMD() {
-		return SimpleStringUtils.null2Empty(_hierParts[_iA]);
+		return StringsUtils.null2Empty(_hierParts[_iA]);
 	}
 
 	@Override
 	public String getCanonical() {
 		if (_canonical == null)
 			_canonical = _nameFormat.isHierarchical() && !_nameFormat.isError() ? buildX400Path(true, true) : // 
-					SimpleStringUtils.null2Empty(_sourceString);
-			return _canonical;
+				StringsUtils.null2Empty(_sourceString);
+		return _canonical;
 	}
 
 	@Override
 	public String getCommon() {
-		return SimpleStringUtils.null2Empty(_hierParts[_iCN]);
+		return StringsUtils.null2Empty(_hierParts[_iCN]);
 	}
 
 	@Override
 	public String getCountry() {
-		return SimpleStringUtils.null2Empty(_hierParts[_iC]);
+		return StringsUtils.null2Empty(_hierParts[_iC]);
 	}
 
 	@Override
 	public String getGeneration() {
-		return SimpleStringUtils.null2Empty(_hierParts[_iQ]);
+		return StringsUtils.null2Empty(_hierParts[_iQ]);
 	}
 
 	@Override
 	public String getGiven() {
-		return SimpleStringUtils.null2Empty(_hierParts[_iG]);
+		return StringsUtils.null2Empty(_hierParts[_iG]);
 	}
 
 	@Override
 	public String getInitials() {
-		return SimpleStringUtils.null2Empty(_hierParts[_iI]);
+		return StringsUtils.null2Empty(_hierParts[_iI]);
 	}
 
 	@Override
 	public String getKeyword() {
 		if (_keyword == null) {
 			if (_nameFormat != NameFormat.HIERARCHICAL)
-				_keyword = SimpleStringUtils._emptyString;
+				_keyword = StringsUtils._emptyString;
 			else {
 				StringBuilder sb = new StringBuilder();
-				if (!SimpleStringUtils.isEmptyString(_hierParts[_iC])) {
+				if (!StringsUtils.isEmptyString(_hierParts[_iC])) {
 					if (sb.length() != 0)
 						sb.append('\\');
 					sb.append(_hierParts[_iC]);
 				}
-				if (!SimpleStringUtils.isEmptyString(_hierParts[_iO])) {
+				if (!StringsUtils.isEmptyString(_hierParts[_iO])) {
 					if (sb.length() != 0)
 						sb.append('\\');
 					sb.append(_hierParts[_iO]);
 				}
-				if (!SimpleStringUtils.isEmptyString(_hierParts[_iOU1])) {
+				if (!StringsUtils.isEmptyString(_hierParts[_iOU1])) {
 					if (sb.length() != 0)
 						sb.append('\\');
 					sb.append(_hierParts[_iOU1]);
 				}
-				if (!SimpleStringUtils.isEmptyString(_hierParts[_iOU2])) {
+				if (!StringsUtils.isEmptyString(_hierParts[_iOU2])) {
 					if (sb.length() != 0)
 						sb.append('\\');
 					sb.append(_hierParts[_iOU2]);
 				}
-				if (!SimpleStringUtils.isEmptyString(_hierParts[_iOU3])) {
+				if (!StringsUtils.isEmptyString(_hierParts[_iOU3])) {
 					if (sb.length() != 0)
 						sb.append('\\');
 					sb.append(_hierParts[_iOU3]);
 				}
-				if (!SimpleStringUtils.isEmptyString(_hierParts[_iOU4])) {
+				if (!StringsUtils.isEmptyString(_hierParts[_iOU4])) {
 					if (sb.length() != 0)
 						sb.append('\\');
 					sb.append(_hierParts[_iOU4]);
@@ -248,37 +247,37 @@ public class NameParser implements INameParser, Comparable<INameParser> {
 
 	@Override
 	public String getOrganization() {
-		return SimpleStringUtils.null2Empty(_hierParts[_iO]);
+		return StringsUtils.null2Empty(_hierParts[_iO]);
 	}
 
 	@Override
 	public String getOrgUnit1() {
-		return SimpleStringUtils.null2Empty(_hierParts[_iOU1]);
+		return StringsUtils.null2Empty(_hierParts[_iOU1]);
 	}
 
 	@Override
 	public String getOrgUnit2() {
-		return SimpleStringUtils.null2Empty(_hierParts[_iOU2]);
+		return StringsUtils.null2Empty(_hierParts[_iOU2]);
 	}
 
 	@Override
 	public String getOrgUnit3() {
-		return SimpleStringUtils.null2Empty(_hierParts[_iOU3]);
+		return StringsUtils.null2Empty(_hierParts[_iOU3]);
 	}
 
 	@Override
 	public String getOrgUnit4() {
-		return SimpleStringUtils.null2Empty(_hierParts[_iOU4]);
+		return StringsUtils.null2Empty(_hierParts[_iOU4]);
 	}
 
 	@Override
 	public String getPRMD() {
-		return SimpleStringUtils.null2Empty(_hierParts[_iP]);
+		return StringsUtils.null2Empty(_hierParts[_iP]);
 	}
 
 	@Override
 	public String getSurname() {
-		return SimpleStringUtils.null2Empty(_hierParts[_iS]);
+		return StringsUtils.null2Empty(_hierParts[_iS]);
 	}
 
 	/*-------------------------------------------------------------------------------------*/
@@ -288,28 +287,28 @@ public class NameParser implements INameParser, Comparable<INameParser> {
 	private String buildX400Path(final boolean withPref, final boolean includeOthers) {
 		StringBuilder sb = new StringBuilder();
 		if (includeOthers) {
-			if (!SimpleStringUtils.isEmptyString(_hierParts[_iI])) {
+			if (!StringsUtils.isEmptyString(_hierParts[_iI])) {
 				if (sb.length() != 0)
 					sb.append('/');
 				if (withPref)
 					sb.append(_hierPartPrefices[_iI]);
 				sb.append(_hierParts[_iI]);
 			}
-			if (!SimpleStringUtils.isEmptyString(_hierParts[_iG])) {
+			if (!StringsUtils.isEmptyString(_hierParts[_iG])) {
 				if (sb.length() != 0)
 					sb.append('/');
 				if (withPref)
 					sb.append(_hierPartPrefices[_iG]);
 				sb.append(_hierParts[_iG]);
 			}
-			if (!SimpleStringUtils.isEmptyString(_hierParts[_iS])) {
+			if (!StringsUtils.isEmptyString(_hierParts[_iS])) {
 				if (sb.length() != 0)
 					sb.append('/');
 				if (withPref)
 					sb.append(_hierPartPrefices[_iS]);
 				sb.append(_hierParts[_iS]);
 			}
-			if (!SimpleStringUtils.isEmptyString(_hierParts[_iQ])) {
+			if (!StringsUtils.isEmptyString(_hierParts[_iQ])) {
 				if (sb.length() != 0)
 					sb.append('/');
 				if (withPref)
@@ -317,7 +316,7 @@ public class NameParser implements INameParser, Comparable<INameParser> {
 				sb.append(_hierParts[_iQ]);
 			}
 		}
-		if (!SimpleStringUtils.isEmptyString(_hierParts[_iCN])) {
+		if (!StringsUtils.isEmptyString(_hierParts[_iCN])) {
 			if (sb.length() != 0)
 				sb.append('/');
 			if (withPref && _hierParts[_iCN].charAt(0) != '*')
@@ -325,14 +324,14 @@ public class NameParser implements INameParser, Comparable<INameParser> {
 			sb.append(_hierParts[_iCN]);
 		}
 		if (includeOthers) {
-			if (!SimpleStringUtils.isEmptyString(_hierParts[_iA])) {
+			if (!StringsUtils.isEmptyString(_hierParts[_iA])) {
 				if (sb.length() != 0)
 					sb.append('/');
 				if (withPref)
 					sb.append(_hierPartPrefices[_iA]);
 				sb.append(_hierParts[_iA]);
 			}
-			if (!SimpleStringUtils.isEmptyString(_hierParts[_iP])) {
+			if (!StringsUtils.isEmptyString(_hierParts[_iP])) {
 				if (sb.length() != 0)
 					sb.append('/');
 				if (withPref)
@@ -340,49 +339,49 @@ public class NameParser implements INameParser, Comparable<INameParser> {
 				sb.append(_hierParts[_iP]);
 			}
 		}
-		if (!SimpleStringUtils.isEmptyString(_hierParts[_iOU4])) {
+		if (!StringsUtils.isEmptyString(_hierParts[_iOU4])) {
 			if (sb.length() != 0)
 				sb.append('/');
 			if (withPref)
 				sb.append(_hierPartPrefices[_iOU]);
 			sb.append(_hierParts[_iOU4]);
 		}
-		if (!SimpleStringUtils.isEmptyString(_hierParts[_iOU3])) {
+		if (!StringsUtils.isEmptyString(_hierParts[_iOU3])) {
 			if (sb.length() != 0)
 				sb.append('/');
 			if (withPref)
 				sb.append(_hierPartPrefices[_iOU]);
 			sb.append(_hierParts[_iOU3]);
 		}
-		if (!SimpleStringUtils.isEmptyString(_hierParts[_iOU2])) {
+		if (!StringsUtils.isEmptyString(_hierParts[_iOU2])) {
 			if (sb.length() != 0)
 				sb.append('/');
 			if (withPref)
 				sb.append(_hierPartPrefices[_iOU]);
 			sb.append(_hierParts[_iOU2]);
 		}
-		if (!SimpleStringUtils.isEmptyString(_hierParts[_iOU1])) {
+		if (!StringsUtils.isEmptyString(_hierParts[_iOU1])) {
 			if (sb.length() != 0)
 				sb.append('/');
 			if (withPref)
 				sb.append(_hierPartPrefices[_iOU]);
 			sb.append(_hierParts[_iOU1]);
 		}
-		if (!SimpleStringUtils.isEmptyString(_hierParts[_iO])) {
+		if (!StringsUtils.isEmptyString(_hierParts[_iO])) {
 			if (sb.length() != 0)
 				sb.append('/');
 			if (withPref)
 				sb.append(_hierPartPrefices[_iO]);
 			sb.append(_hierParts[_iO]);
 		}
-		if (!SimpleStringUtils.isEmptyString(_hierParts[_iC])) {
+		if (!StringsUtils.isEmptyString(_hierParts[_iC])) {
 			if (sb.length() != 0)
 				sb.append('/');
 			if (withPref)
 				sb.append(_hierPartPrefices[_iC]);
 			sb.append(_hierParts[_iC]);
 		}
-		if (!SimpleStringUtils.isEmptyString(_routingHint)) {
+		if (!StringsUtils.isEmptyString(_routingHint)) {
 			sb.append('@');
 			sb.append(_routingHint);
 		}
@@ -396,11 +395,11 @@ public class NameParser implements INameParser, Comparable<INameParser> {
 	@Override
 	public String getRFC82xInternetAddress() {
 		if (_nameFormat != NameFormat.RFC822)
-			return SimpleStringUtils._emptyString;
+			return StringsUtils._emptyString;
 		// Works like javax.mail.internet.InternetAddress.toString (only difference: phrase is always quoted)
-		if (SimpleStringUtils.isEmptyString(_addr822Phrase) && SimpleStringUtils.isEmptyString(_addr822Comments[0]))
+		if (StringsUtils.isEmptyString(_addr822Phrase) && StringsUtils.isEmptyString(_addr822Comments[0]))
 			return _addr821;
-		String phrase = SimpleStringUtils.isEmptyString(_addr822Phrase) ? _addr822Comments[0] : _addr822Phrase;
+		String phrase = StringsUtils.isEmptyString(_addr822Phrase) ? _addr822Comments[0] : _addr822Phrase;
 		int lh = phrase.length();
 		StringBuilder sb = new StringBuilder(lh + _addr821.length() + 32);
 		sb.append('"');
@@ -420,10 +419,10 @@ public class NameParser implements INameParser, Comparable<INameParser> {
 
 	@Override
 	public String getIDprefix() {
-		if (SimpleStringUtils.isEmptyString(_idPrefix)) {
+		if (StringsUtils.isEmptyString(_idPrefix)) {
 			char[] idp = new char[4];
 			int count = 0;
-			if (!SimpleStringUtils.isEmptyString(_hierParts[_iCN])) {
+			if (!StringsUtils.isEmptyString(_hierParts[_iCN])) {
 				String aux = _hierParts[_iCN].toUpperCase().replaceAll("[^A-Z0-9 ]", "");
 				String[] parts = aux.split(" ");
 				if (parts.length >= 1) {
@@ -499,7 +498,7 @@ public class NameParser implements INameParser, Comparable<INameParser> {
 			ret = getIDprefix();
 		else if (key == NamePartKey.SourceString)
 			ret = _sourceString;
-		return SimpleStringUtils.null2Empty(ret);
+		return StringsUtils.null2Empty(ret);
 	}
 
 	/*-------------------------------------------------------------------------------------*/
@@ -567,8 +566,8 @@ public class NameParser implements INameParser, Comparable<INameParser> {
 			_nameError = NameError.EMPTY_NAME;
 			return;
 		}
-		StringSplitSimple sss = new StringSplitSimple(what, '/');
-		int numP1 = sss.split(true);
+		StringsUtils.SplitSimple sss = new StringsUtils.SplitSimple(what, '/');
+		int numP1 = sss.split();
 		String[] parts = new String[numP1];
 		int[] hpis = new int[numP1];
 		int numParts = 0;
@@ -707,7 +706,7 @@ public class NameParser implements INameParser, Comparable<INameParser> {
 			int hpi = hpis[i];
 			if (hpi == -1)
 				continue;
-			if (!SimpleStringUtils.isEmptyString(_hierParts[hpi])) {
+			if (!StringsUtils.isEmptyString(_hierParts[hpi])) {
 				_nameFormat = NameFormat.HIERARCHICALERROR;
 				_nameError = NameError.DOUBLE_PART;
 				return;
@@ -727,11 +726,11 @@ public class NameParser implements INameParser, Comparable<INameParser> {
 		// Lotus only does this special treatment in case of an address CN=xxx, but never, when
 		// "additional" X400 parts are present (G=, Q=, ...). We are not going to imitate that.
 		//
-		if (!SimpleStringUtils.isEmptyString(_hierParts[_iCN]) && SimpleStringUtils.isEmptyString(_hierParts[_iO]) && numOUExpl == 0
+		if (!StringsUtils.isEmptyString(_hierParts[_iCN]) && StringsUtils.isEmptyString(_hierParts[_iO]) && numOUExpl == 0
 				&& _serverName != null && this != _serverName) {
 			for (int i = _iO; i <= _iOU4; i++)
 				_hierParts[i] = _serverName._hierParts[i];
-			if (SimpleStringUtils.isEmptyString(_hierParts[_iC]))
+			if (StringsUtils.isEmptyString(_hierParts[_iC]))
 				_hierParts[_iC] = _serverName._hierParts[_iC];
 		}
 	}
@@ -753,7 +752,7 @@ public class NameParser implements INameParser, Comparable<INameParser> {
 		// At the moment, we don't. (And neither does Notes.)
 		//
 		for (int i = 0; i <= _hpSize; i++)
-			if (SimpleStringUtils.startsWithIgnoreCase(part, _hierPartPrefices[i]))
+			if (StringsUtils.startsWithIgnoreCase(part, _hierPartPrefices[i]))
 				return i;
 		return -1;
 	}
@@ -791,8 +790,8 @@ public class NameParser implements INameParser, Comparable<INameParser> {
 		// In accordance with javax.mail, we set CN to 822Comment1, if phrase is empty, and finally to
 		// 822LocalPart, if both phrase and comment1 are empty
 		//
-		if (SimpleStringUtils.isEmptyString(_hierParts[_iCN]))
-			_hierParts[_iCN] = !SimpleStringUtils.isEmptyString(_addr822Phrase) ? _addr822Phrase : !SimpleStringUtils
+		if (StringsUtils.isEmptyString(_hierParts[_iCN]))
+			_hierParts[_iCN] = !StringsUtils.isEmptyString(_addr822Phrase) ? _addr822Phrase : !StringsUtils
 					.isEmptyString(_addr822Comments[0]) ? _addr822Comments[0] : _addr822LocalPart;
 	}
 

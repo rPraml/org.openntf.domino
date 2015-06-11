@@ -55,6 +55,7 @@ import org.openntf.domino.Name;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.NameEnums.NamePartKey;
+import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.exceptions.InvalidNotesUrlException;
 import org.openntf.domino.exceptions.OpenNTFNotesException;
 import org.openntf.domino.logging.LogUtils;
@@ -446,7 +447,7 @@ public enum DominoUtils {
 	}
 
 	public static boolean isHierarchicalName(final CharSequence name) {
-		return (Strings.isBlankString(name.toString())) ? false : Names.IS_HIERARCHICAL_MATCH.matcher(name).find();
+		return (StringsUtils.isBlankString(name.toString())) ? false : Names.IS_HIERARCHICAL_MATCH.matcher(name).find();
 	}
 
 	public static void parseNamesPartMap(final CharSequence name, final NamePartsMap map) {
@@ -943,7 +944,7 @@ public enum DominoUtils {
 				is = new FileInputStream(dirPath + "/" + fileLoc);
 				returnStream = new BufferedInputStream(is);
 				break;
-				// TODO Need to work out how to get from properties file in NSF
+			// TODO Need to work out how to get from properties file in NSF
 			}
 			return returnStream;
 		} catch (Throwable e) {

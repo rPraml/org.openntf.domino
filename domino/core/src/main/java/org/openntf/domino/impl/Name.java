@@ -22,8 +22,6 @@ import java.util.Collection;
 import java.util.TreeSet;
 //import java.util.logging.Logger;
 
-
-
 import lotus.domino.NotesException;
 import lotus.notes.addins.DominoServer;
 
@@ -33,18 +31,18 @@ import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.NameEnums.NameError;
 import org.openntf.domino.commons.NameEnums.NameFormat;
 import org.openntf.domino.commons.NameEnums.NamePartKey;
+import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.utils.Names;
-import org.openntf.domino.utils.Strings;
 
 /**
  * The Class Name.
  */
 
 public class Name extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.domino.Name, Session> implements org.openntf.domino.Name,
-		Comparable<Name>, Cloneable {
+Comparable<Name>, Cloneable {
 	//	private static final Logger log_ = Logger.getLogger(Name.class.getName());
 	private static final long serialVersionUID = 1L;
 	private NamePartsMap _namePartsMap;
@@ -223,14 +221,14 @@ public class Name extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.domin
 
 	private void initialize(final String name) {
 		try {
-			if (Strings.isBlankString(name)) {
+			if (StringsUtils.isBlankString(name)) {
 				throw new IllegalArgumentException("Source name is null or blank");
 			}
 
 			this.parseRFC82xContent(name);
 			String phrase = this.getAddr822Phrase();
 
-			Name n = (Name) parent.createName((Strings.isBlankString(phrase)) ? name : phrase);
+			Name n = (Name) parent.createName((StringsUtils.isBlankString(phrase)) ? name : phrase);
 			if (null == n) {
 				throw new RuntimeException("Unable to create Name object");
 			}
@@ -299,7 +297,7 @@ public class Name extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.domin
 		sb.append(" [");
 		for (NamePartKey key : NamePartKey.values()) {
 			String s = this.getNamePartsMap().get(key);
-			if (!Strings.isBlankString(s)) {
+			if (!StringsUtils.isBlankString(s)) {
 				sb.append(key.name() + "=" + s);
 			}
 		}
@@ -353,55 +351,55 @@ public class Name extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.domin
 				throw new IllegalArgumentException("Source Name is null");
 			}
 
-			if (!Strings.isBlankString(name.getCanonical())) {
+			if (!StringsUtils.isBlankString(name.getCanonical())) {
 				this.setNamePartsMap(new NamePartsMap(name.getCanonical(), Names.buildAddr822Full(name)));
-			} else if (!Strings.isBlankString(name.getAbbreviated())) {
+			} else if (!StringsUtils.isBlankString(name.getAbbreviated())) {
 				this.setNamePartsMap(new NamePartsMap(name.getAbbreviated(), Names.buildAddr822Full(name)));
 			}
 
-			if (!Strings.isBlankString(name.getADMD())) {
+			if (!StringsUtils.isBlankString(name.getADMD())) {
 				this.getNamePartsMap().put(NamePartKey.ADMD, name.getADMD());
 			}
-			if (!Strings.isBlankString(name.getCommon())) {
+			if (!StringsUtils.isBlankString(name.getCommon())) {
 				this.getNamePartsMap().put(NamePartKey.Common, name.getCommon());
 			}
-			if (!Strings.isBlankString(name.getCountry())) {
+			if (!StringsUtils.isBlankString(name.getCountry())) {
 				this.getNamePartsMap().put(NamePartKey.Country, name.getCountry());
 			}
-			if (!Strings.isBlankString(name.getGeneration())) {
+			if (!StringsUtils.isBlankString(name.getGeneration())) {
 				this.getNamePartsMap().put(NamePartKey.Generation, name.getGeneration());
 			}
-			if (!Strings.isBlankString(name.getGiven())) {
+			if (!StringsUtils.isBlankString(name.getGiven())) {
 				this.getNamePartsMap().put(NamePartKey.Given, name.getGiven());
 			}
-			if (!Strings.isBlankString(name.getInitials())) {
+			if (!StringsUtils.isBlankString(name.getInitials())) {
 				this.getNamePartsMap().put(NamePartKey.Initials, name.getInitials());
 			}
-			if (!Strings.isBlankString(name.getKeyword())) {
+			if (!StringsUtils.isBlankString(name.getKeyword())) {
 				this.getNamePartsMap().put(NamePartKey.Keyword, name.getKeyword());
 			}
-			if (!Strings.isBlankString(name.getLanguage())) {
+			if (!StringsUtils.isBlankString(name.getLanguage())) {
 				this.getNamePartsMap().put(NamePartKey.Language, name.getLanguage());
 			}
-			if (!Strings.isBlankString(name.getOrganization())) {
+			if (!StringsUtils.isBlankString(name.getOrganization())) {
 				this.getNamePartsMap().put(NamePartKey.Organization, name.getOrganization());
 			}
-			if (!Strings.isBlankString(name.getOrgUnit1())) {
+			if (!StringsUtils.isBlankString(name.getOrgUnit1())) {
 				this.getNamePartsMap().put(NamePartKey.OrgUnit1, name.getOrgUnit1());
 			}
-			if (!Strings.isBlankString(name.getOrgUnit2())) {
+			if (!StringsUtils.isBlankString(name.getOrgUnit2())) {
 				this.getNamePartsMap().put(NamePartKey.OrgUnit2, name.getOrgUnit2());
 			}
-			if (!Strings.isBlankString(name.getOrgUnit3())) {
+			if (!StringsUtils.isBlankString(name.getOrgUnit3())) {
 				this.getNamePartsMap().put(NamePartKey.OrgUnit3, name.getOrgUnit3());
 			}
-			if (!Strings.isBlankString(name.getOrgUnit4())) {
+			if (!StringsUtils.isBlankString(name.getOrgUnit4())) {
 				this.getNamePartsMap().put(NamePartKey.OrgUnit4, name.getOrgUnit4());
 			}
-			if (!Strings.isBlankString(name.getPRMD())) {
+			if (!StringsUtils.isBlankString(name.getPRMD())) {
 				this.getNamePartsMap().put(NamePartKey.PRMD, name.getPRMD());
 			}
-			if (!Strings.isBlankString(name.getSurname())) {
+			if (!StringsUtils.isBlankString(name.getSurname())) {
 				this.getNamePartsMap().put(NamePartKey.Surname, name.getSurname());
 			}
 
@@ -795,7 +793,7 @@ public class Name extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.domin
 	 * @return Flag indicating if any of the values are equal to the string.
 	 */
 	public boolean equalsIgnoreCase(final String compString) {
-		return (Strings.isBlankString(compString)) ? false : compString.equalsIgnoreCase(source_);
+		return (StringsUtils.isBlankString(compString)) ? false : compString.equalsIgnoreCase(source_);
 	}
 
 	/**
@@ -816,7 +814,7 @@ public class Name extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.domin
 	 * @return Flag indicating if any of the mapped values begin with the prefix.
 	 */
 	public boolean startsWith(final String prefix, final boolean casesensitive) {
-		if (!Strings.isBlankString(prefix)) {
+		if (!StringsUtils.isBlankString(prefix)) {
 			if (this.getNamePartsMap().startsWith(prefix, casesensitive)) {
 				return true;
 			}
@@ -824,8 +822,8 @@ public class Name extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.domin
 			if (casesensitive) {
 				return ((this.getAbbreviated().startsWith(prefix)) || (this.getCanonical().startsWith(prefix)));
 			} else {
-				return ((Strings.startsWithIgnoreCase(this.getAbbreviated(), prefix)) || (Strings.startsWithIgnoreCase(this.getCanonical(),
-						prefix)));
+				return ((StringsUtils.startsWithIgnoreCase(this.getAbbreviated(), prefix)) || (StringsUtils.startsWithIgnoreCase(
+						this.getCanonical(), prefix)));
 			}
 		}
 
@@ -1016,7 +1014,7 @@ public class Name extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.domin
 	@Override
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		//		out.writeBoolean(this.isHierarchical());
-		out.writeUTF((Strings.isBlankString(this.getCanonical())) ? this.getAddr822Full() : this.getCanonical());
+		out.writeUTF((StringsUtils.isBlankString(this.getCanonical())) ? this.getAddr822Full() : this.getCanonical());
 	}
 
 	private Collection<String> groupNames_;
@@ -1049,7 +1047,7 @@ public class Name extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.domin
 		if (_namePartsMap == null) {
 			this.setNamePartsMap(new NamePartsMap(name));
 		}
-		if (!Strings.isBlankString(lang)) {
+		if (!StringsUtils.isBlankString(lang)) {
 			this.getNamePartsMap().put(NamePartKey.Language, lang);
 		}
 		isParsed_ = true;

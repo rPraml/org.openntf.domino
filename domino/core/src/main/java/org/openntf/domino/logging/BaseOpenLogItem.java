@@ -64,8 +64,6 @@ import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 
-import com.ibm.commons.util.StringUtil;
-
 /**
  * @author withersp The Class OpenLogItem.
  * 
@@ -279,12 +277,13 @@ public class BaseOpenLogItem implements IOpenLogItem {
 		return _currentDatabase;
 	}
 
+	@Override
 	public void setCurrentDatabase() {
 		Database currDb = Factory.getSession(SessionType.CURRENT).getCurrentDatabase();
 		if (null == currDb) {
 			_currentDatabase = null;
 		} else {
-			if (!StringUtil.equals(_currentDbPath, currDb.getFilePath())) {
+			if (!currDb.getFilePath().equals(_currentDbPath)) {
 				try {
 					_currentDatabase = Factory.getSession(SessionType.CURRENT).getCurrentDatabase();
 				} catch (Exception e) {
@@ -294,10 +293,12 @@ public class BaseOpenLogItem implements IOpenLogItem {
 		}
 	}
 
+	@Override
 	public void setCurrentDatabase(final Database db) {
 		_currentDatabase = db;
 	}
 
+	@Override
 	public String getCurrentDatabasePath() {
 		Database db = getCurrentDatabase();
 		if (null == db) {

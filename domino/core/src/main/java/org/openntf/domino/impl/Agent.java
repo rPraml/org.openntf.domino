@@ -32,12 +32,11 @@ import org.openntf.domino.Document;
 import org.openntf.domino.NoteCollection;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
 import org.openntf.domino.ext.Database.Events;
 import org.openntf.domino.utils.DominoUtils;
-
-import com.ibm.commons.util.StringUtil;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -841,7 +840,7 @@ public class Agent extends BaseThreadSafe<org.openntf.domino.Agent, lotus.domino
 
 	private lotus.domino.Agent resurrectAgent() throws NotesException {
 		lotus.domino.Database d = toLotus(getAncestorDatabase());
-		String[] agNames = StringUtil.splitString(names_, '|');
+		String[] agNames = StringsUtils.splitSimple(names_, '|', false);
 
 		lotus.domino.Agent ret = d.getAgent(agNames[0]);
 		if (ret == null) {

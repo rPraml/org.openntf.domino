@@ -36,6 +36,7 @@ import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.ViewEntry;
 import org.openntf.domino.commons.NameEnums.NamePartKey;
+import org.openntf.domino.commons.utils.StringsUtils;
 
 /**
  * Name handling utilities
@@ -118,7 +119,7 @@ public enum Names {
 		//		return (Strings.isBlankString(string)) ? ""
 		//				: ((string.indexOf('[') == 0) && (string.indexOf(']') == (string.length() - 1))) ? string : "[" + string + "]";
 
-		if (!Strings.isBlankString(string)) {
+		if (!StringsUtils.isBlankString(string)) {
 			final String result = "[" + string.replace("[", "").replace("]", "").trim() + "]";
 			return ("[]".equals(result)) ? "" : result;
 		}
@@ -149,7 +150,7 @@ public enum Names {
 				throw new IllegalArgumentException("NamePartsMap.Key is null");
 			}
 
-			final String seed = (Strings.isBlankString(source)) ? session.getEffectiveUserName() : source;
+			final String seed = (StringsUtils.isBlankString(source)) ? session.getEffectiveUserName() : source;
 			org.openntf.domino.Name name = session.createName(seed);
 			return name.getNamePart(key);
 
@@ -195,10 +196,10 @@ public enum Names {
 
 			final List<String> values = new ArrayList<String>();
 			for (final String temp : source) {
-				if (!Strings.isBlankString(temp)) {
+				if (!StringsUtils.isBlankString(temp)) {
 					final String name = Names.getNamePart(session, temp, key);
 
-					if (!Strings.isBlankString(name)) {
+					if (!StringsUtils.isBlankString(name)) {
 						values.add(name);
 					}
 				}
@@ -509,7 +510,7 @@ public enum Names {
 							if (include) {
 								if (Names.LookupType.Person.equals(value)) {
 									String abbrev = Names.getAbbreviated(session, key);
-									if (!Strings.isBlankString(key)) {
+									if (!StringsUtils.isBlankString(key)) {
 										temp.put(abbrev.toLowerCase(), abbrev);
 									}
 								} else {
@@ -663,7 +664,7 @@ public enum Names {
 			}
 
 			String addr822 = Names.buildAddr822Full(name);
-			return (Strings.isBlankString(addr822)) ? new RFC822name() : new RFC822name(addr822);
+			return (StringsUtils.isBlankString(addr822)) ? new RFC822name() : new RFC822name(addr822);
 
 		} catch (final Exception e) {
 			DominoUtils.handleException(e);
@@ -688,7 +689,7 @@ public enum Names {
 			}
 
 			String addr822 = Names.buildAddr822Full(name);
-			return (Strings.isBlankString(addr822)) ? new RFC822name() : new RFC822name(addr822);
+			return (StringsUtils.isBlankString(addr822)) ? new RFC822name() : new RFC822name(addr822);
 
 		} catch (final Exception e) {
 			DominoUtils.handleException(e);
@@ -731,7 +732,7 @@ public enum Names {
 	public static String buildAddr822Full(final lotus.domino.Name name) {
 		try {
 			String addr821 = name.getAddr821();
-			if (Strings.isBlankString(addr821))
+			if (StringsUtils.isBlankString(addr821))
 				return ""; // fast exit, if there is no Addr821
 			return RFC822name.buildAddr822Full(name.getAddr822Phrase(), addr821, name.getAddr822Comment1(), name.getAddr822Comment2(),
 					name.getAddr822Comment3());
@@ -763,14 +764,14 @@ public enum Names {
 			if ((null != sourcenames) && !sourcenames.isEmpty() && (null != sourceroles) && !sourceroles.isEmpty()) {
 				final TreeSet<String> checkroles = new TreeSet<String>();
 				for (final String s : sourceroles) {
-					if (!Strings.isBlankString(s)) {
+					if (!StringsUtils.isBlankString(s)) {
 						checkroles.add(Names.formatAsRole(s));
 					}
 				}
 
 				if (checkroles.size() > 0) {
 					for (final String s : sourcenames) {
-						if (!Strings.isBlankString(s)) {
+						if (!StringsUtils.isBlankString(s)) {
 							final Name name = session.createName(s);
 							if (!result.contains(name)) {
 								final TreeSet<String> roles = CollectionUtils.getTreeSetStrings(database.queryAccessRoles(name
@@ -903,7 +904,7 @@ public enum Names {
 			if (null == names) {
 				throw new IllegalArgumentException("Names is null");
 			}
-			if (Strings.isBlankString(checkname)) {
+			if (StringsUtils.isBlankString(checkname)) {
 				throw new IllegalArgumentException("CheckName is null or blank");
 			}
 			if (names.size() < 1) {
@@ -943,7 +944,7 @@ public enum Names {
 			if (null == database) {
 				throw new IllegalArgumentException("Database is null");
 			}
-			if (Strings.isBlankString(canonical)) {
+			if (StringsUtils.isBlankString(canonical)) {
 				throw new IllegalArgumentException("Canonical  is null");
 			}
 
@@ -994,7 +995,7 @@ public enum Names {
 
 			if ((null != searchfor) && (searchfor.size() > 0)) {
 				for (final String s : searchfor) {
-					if ((!Strings.isBlankString(s)) && (!result.containsKey(s)) && (!searched.containsKey(s))) {
+					if ((!StringsUtils.isBlankString(s)) && (!result.containsKey(s)) && (!searched.containsKey(s))) {
 						String key = s;
 						ViewEntry vent = view.getFirstEntryByKey(key);
 						if (null == vent) {

@@ -32,7 +32,7 @@ import org.openntf.domino.commons.NameEnums.NameError;
 import org.openntf.domino.commons.NameEnums.NameFormat;
 import org.openntf.domino.commons.NameEnums.NamePartKey;
 import org.openntf.domino.commons.impl.NameParser;
-import org.openntf.domino.commons.utils.SimpleStringUtils;
+import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
@@ -64,7 +64,7 @@ public class NameODA extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.do
 	// Called from WrapperFactory.create
 	protected NameODA(final Session sess, final String name, final String lang) {
 		super(null, sess, NOTES_NAME);
-		_language = SimpleStringUtils.null2Empty(lang);
+		_language = StringsUtils.null2Empty(lang);
 		_parserDelegate = new NameParser(name);
 	}
 

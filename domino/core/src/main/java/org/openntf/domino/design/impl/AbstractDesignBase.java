@@ -24,9 +24,8 @@ import java.util.logging.Logger;
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
 import org.openntf.domino.Session;
+import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.design.DesignBase;
-
-import com.ibm.commons.util.StringUtil;
 
 /**
  * This is the Root class of all DesignNotes
@@ -361,7 +360,7 @@ public abstract class AbstractDesignBase implements DesignBase {
 		if (database_ == null) {
 			return null;
 		}
-		if (!StringUtil.isEmpty(universalId_)) {
+		if (!StringsUtils.isEmptyString(universalId_)) {
 			document_ = database_.getDocumentByUNID(universalId_);
 			return document_;
 		}

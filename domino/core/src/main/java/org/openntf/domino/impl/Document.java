@@ -58,6 +58,7 @@ import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Legacy;
+import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
 import org.openntf.domino.exceptions.BlockedCrashException;
@@ -81,7 +82,6 @@ import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.LMBCSUtils;
 import org.openntf.domino.utils.NapiUtil;
-import org.openntf.domino.utils.Strings;
 import org.openntf.domino.utils.TypeUtils;
 import org.openntf.domino.utils.xml.XMLDocument;
 
@@ -171,7 +171,7 @@ org.openntf.domino.Document {
 				System.out.println("Document Items were accessed in a document while MIMEEntities are still open.");
 				System.out.println("This can cause errors leading to JRE crashes.");
 				System.out.println("Document: " + this.noteid_ + " in " + getAncestorDatabase().getApiPath());
-				System.out.println("MIMEEntities: " + Strings.join(openMIMEEntities_.keySet(), ", "));
+				System.out.println("MIMEEntities: " + StringsUtils.join(openMIMEEntities_.keySet(), ", "));
 				Throwable t = new Throwable();
 				StackTraceElement[] elements = t.getStackTrace();
 				for (int i = 0; i < 10; i++) {
@@ -4311,12 +4311,12 @@ org.openntf.domino.Document {
 	@Override
 	public Name getItemValueName(final String itemName) {
 		try {
-			if (Strings.isBlankString(itemName)) {
+			if (StringsUtils.isBlankString(itemName)) {
 				throw new IllegalArgumentException("Item Name is blank or null");
 			}
 
 			final String string = getItemValueString(itemName);
-			return (Strings.isBlankString(string)) ? null : getAncestorSession().createName(string);
+			return (StringsUtils.isBlankString(string)) ? null : getAncestorSession().createName(string);
 		} catch (final Exception e) {
 			DominoUtils.handleException(e);
 			return null;

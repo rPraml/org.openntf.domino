@@ -20,12 +20,11 @@ import org.openntf.domino.MIMEHeader;
 import org.openntf.domino.Session;
 import org.openntf.domino.Stream;
 import org.openntf.domino.annotations.Incomplete;
+import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.email.IEmailAttachment.Type;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
-
-import com.ibm.commons.util.StringUtil;
 
 /**
  * @author withersp
@@ -230,7 +229,7 @@ public class DominoEmail implements IEmail {
 		contentsHTML_.add(content.toString());
 
 		// Add plain text part of email
-		if (StringUtil.isEmpty(content.toString())) {
+		if (StringsUtils.isEmptyString(content.toString())) {
 			contentsText_.add("");
 		} else {
 			contentsText_.add(content.toString().replaceAll("<[a-zA-Z\\/][^>]*>", ""));
@@ -253,7 +252,7 @@ public class DominoEmail implements IEmail {
 		contentsText_.add(content.toString());
 
 		// Add HTML part by replacing all line breaks with br tag
-		contentsHTML_.add(StringUtil.replace(content.toString(), System.getProperty("line.separator"), "<br/>"));
+		contentsHTML_.add(content.toString().replace(System.getProperty("line.separator"), "<br/>"));
 	}
 
 	/* (non-Javadoc)
@@ -389,14 +388,14 @@ public class DominoEmail implements IEmail {
 				if (null == contentType) {
 					contentType = "application/octet-stream";
 				}
-				int idex = StringUtil.indexOfIgnoreCase(fileName, ".", fileName.length() - 6);
+				int idex = fileName.lastIndexOf('.');
 				if (idex > -1) {
 					String extension = fileName.substring(idex);
-					if (StringUtil.equals("gif", extension)) {
+					if ("gif".equals(extension)) {
 						contentType = "image/gif";
-					} else if (StringUtil.equals("jpg", extension) || StringUtil.equals("jpeg", extension)) {
+					} else if ("jpg".equals(extension) || "jpeg".equals(extension)) {
 						contentType = "image/jpeg";
-					} else if (StringUtil.equals("png", extension)) {
+					} else if ("png".equals(extension)) {
 						contentType = "image/png";
 					}
 				}
@@ -676,7 +675,7 @@ public class DominoEmail implements IEmail {
 			}
 
 			//create embedded JSON part
-			if (StringUtil.isEmpty(getJSON())) {
+			if (StringsUtils.isEmptyString(getJSON())) {
 				mimeEntity = mimeRootChild.createChildEntity();
 				stream = currSess.createStream();
 				String json = "{\"url\" : \"" + getJSON() + "\"}" + System.getProperty("line.separator");
@@ -713,7 +712,7 @@ public class DominoEmail implements IEmail {
 	 */
 	private void setSender(final MIMEEntity mimeRoot) {
 
-		if (StringUtil.isEmpty(getSenderEmail())) {
+		if (StringsUtils.isEmptyString(getSenderEmail())) {
 			return;
 		}
 
@@ -725,7 +724,7 @@ public class DominoEmail implements IEmail {
 		mimeHeader = mimeRoot.createHeader("Return-Path");
 		mimeHeader.setHeaderVal(getSenderEmail());
 
-		if (StringUtil.isEmpty(getSenderName())) {
+		if (StringsUtils.isEmptyString(getSenderName())) {
 
 			mimeHeader = mimeRoot.createHeader("From");
 			mimeHeader.setHeaderVal(getSenderEmail());
@@ -757,7 +756,7 @@ public class DominoEmail implements IEmail {
 	 */
 	public static String join(final Collection<String> vals, String separator) {
 		String retVal_ = "";
-		if (StringUtil.isEmpty(separator)) {
+		if (StringsUtils.isEmptyString(separator)) {
 			separator = ",";
 		}
 		for (String s : vals) {
