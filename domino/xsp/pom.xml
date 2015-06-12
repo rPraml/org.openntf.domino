@@ -85,11 +85,11 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}META-INF</outputDirectory>
+							<outputDirectory>META-INF</outputDirectory>
 							<overwrite>true</overwrite>
 							<resources>
 								<resource>
-									<directory>${basedir}target/classes/META-INF</directory>
+									<directory>target/classes/META-INF</directory>
 									<includes>
 										<include>MANIFEST.MF</include>
 									</includes>
@@ -113,7 +113,7 @@
 							<overwrite>true</overwrite>
 							<resources>
 								<resource>
-									<directory>${basedir}src/main/resources</directory>
+									<directory>src/main/resources</directory>
 									<includes>
 										<include>domino-faces-config.xml</include>
 										<include>domino.xsp-config</include>
