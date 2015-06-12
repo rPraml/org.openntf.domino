@@ -5,3 +5,4 @@ javacore*
 /OSGI-OPT
 /target
 /target-ide/
+/META-INF/

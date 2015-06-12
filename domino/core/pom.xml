@@ -12,11 +12,12 @@
 
 	<packaging>bundle</packaging>
 	<build>
+			
 		<plugins>
 			<plugin>  
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.5.3</version>
+
 				<extensions>true</extensions>
 				<configuration>
 					<singleton>true</singleton>
@@ -34,16 +35,9 @@
 						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
 						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
 						<Import-Package>
-							org.junit.*;resolution:=optional,
-							*
+							lotus.domino
 						</Import-Package>
   
-  						<!-- BND generated import-packages does not work in DominoServer -->
-  						<!-- 
-  							so we import just lotus.domino	(do not know why, it was several times added to original MANIFEST.MF 
-   						
-  						
- 						
  
 						<Require-Bundle>
 							com.ibm.notes.java.api;bundle-version="[8.5.3,10.0.0)",
@@ -51,8 +45,7 @@
 							com.ibm.commons;bundle-version="[9.0.0,10.0.0)",
 							org.javolution.core-java;bundle-version="[6.1.0,7.0.0)",
 							org.openntf.formula;bundle-version="1.5.0";visibility=reexport
-						</Require-Bundle>
--->
+ 						</Require-Bundle>
 					</instructions>
 				</configuration>
 			

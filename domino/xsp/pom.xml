@@ -13,7 +13,6 @@
 			<plugin>  
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.5.3</version>
 				<extensions>true</extensions>
 				<configuration>
 					<singleton>true</singleton>
@@ -23,13 +22,10 @@
 							!*.test
 						</Export-Package>
 
-						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
-
 						<Import-Package>
-							com.ibm.domino.xsp.bridge.http.engine;resolution:=optional,
-							!com.ibm.xsp.extlib.*, <!--  extlib cannot be used in combination with BND -->
-							*
 						</Import-Package>
+
+						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
 
 						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
 						<Bundle-Activator>org.openntf.domino.xsp.Activator</Bundle-Activator>
@@ -38,10 +34,21 @@
 						<!-- Unfortunately, we cannot rely on the BND-ImportPackage mechanism, because reexport is
 							not possible, and otherwise, the packages are not available in NSF-Java-Code -->
 						<Require-Bundle>
+							com.ibm.xsp.domino;bundle-version="9.0.1",
 							com.ibm.xsp.extlib;bundle-version="9.0.1",
+							com.ibm.xsp.extsn;bundle-version="9.0.1",
+							com.ibm.designer.runtime;bundle-version="9.0.1",
+							com.ibm.domino.xsp.bootstrap;bundle-version="9.0.1",
+							com.ibm.xsp.designer;bundle-version="9.0.1",
+							com.ibm.domino.napi;bundle-version="9.0.1",
+							org.eclipse.osgi;bundle-version="3.4.3",
+							com.ibm.icu;bundle-version="3.8.1",
+							org.eclipse.core.runtime;bundle-version="3.4.0",
+							com.ibm.designer.lib.jsf,
 							org.openntf.domino.core;bundle-version="1.5.0";visibility:=reexport,
 							org.openntf.formula;bundle-version="1.5.0";visibility:=reexport,
-							org.openntf.domino.graph;bundle-version="1.5.0";visibility:=reexport
+							org.openntf.junit.xsp;bundle-version="1.1.0";resolution:=optional,
+							com.ibm.domino.xsp.bridge.http;bundle-version="9.0.1";resolution:=optional
 						</Require-Bundle>
 <!--						
 							com.ibm.xsp.domino;bundle-version="9.0.1",
@@ -71,12 +78,6 @@
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
 			<artifactId>core</artifactId>
-			<version>1.5.1-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.openntf.domino</groupId>
-			<artifactId>graph</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
 		
