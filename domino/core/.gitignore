@@ -7,3 +7,4 @@ javacore*
 /target
 /target-ide/
 /src/main/resources/*.git.properties
+/META-INF/
