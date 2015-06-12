@@ -6,6 +6,3 @@ javacore*
 /target/
 /target-ide/
 /META-INF/
-/domino-faces-config.xml
-/domino.xsp-config
-/plugin.xml

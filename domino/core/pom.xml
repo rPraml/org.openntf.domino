@@ -1,19 +1,19 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.openntf.domino</groupId>
 		<artifactId>root</artifactId>
 		<version>1.5.1-SNAPSHOT</version>
 	</parent>
-
+	
 	<artifactId>core</artifactId>
 	<name>OpenNTF Domino API core</name>
 	<description>The drop-in replacement for the IBM-supported lotus.domino API</description>
 
+	<packaging>bundle</packaging>
 	<build>
 		<plugins>
-			<plugin>
+			<plugin>  
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
 				<version>2.5.3</version>
@@ -21,13 +21,14 @@
 				<configuration>
 					<singleton>true</singleton>
 					<manifestLocation>META-INF</manifestLocation>
-
+					<source>${compiler}</source>
+					<target>${compiler}</target>
+					
 					<showWarnings>false</showWarnings>
 					<showDeprecation>false</showDeprecation>
 					<instructions>
 
-						<!-- TODO 1: We must specify exportPackage, otherwise .impl. is not 
-							exported -->
+						<!-- TODO 1: We must specify exportPackage, otherwise .impl. is not exported -->
 						<!-- TODO 2: move domino.impl to own package and remove exportPackage -->
 						<Export-Package>
 							!*.test,
@@ -41,49 +42,24 @@
 						<Import-Package>
 							lotus.domino
 						</Import-Package>
-
+  
+  						<!-- BND generated import-packages does not work in DominoServer -->
+  						
+  							so we import just lotus.domino	(do not know why, it was several times added to original MANIFEST.MF 
+   						
+  						
+ 						
+ 
 						<Require-Bundle>
 							com.ibm.notes.java.api;bundle-version="[8.5.3,10.0.0)",
 							com.ibm.domino.napi;bundle-version="[9.0.1,10.0.0)";visibility=reexport,
 							com.ibm.commons;bundle-version="[9.0.0,10.0.0)",
 							org.javolution.core-java;bundle-version="[6.1.0,7.0.0)",
 							org.openntf.formula;bundle-version="1.5.0";visibility=reexport
-						</Require-Bundle>
+ 						</Require-Bundle>
 					</instructions>
 				</configuration>
-				<executions>
-					<execution>
-						<id>bundle-manifest</id>
-						<phase>process-classes</phase>
-						<goals>
-							<goal>manifest</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy-appCtx</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>META-INF</outputDirectory>
-							<overwrite>true</overwrite>
-							<resources>
-								<resource>
-									<directory>target/classes/META-INF</directory>
-									<includes>
-										<include>MANIFEST.MF</include>
-									</includes>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
+			
 			</plugin>
 		</plugins>
 	</build>
@@ -96,45 +72,54 @@
 			<version>4.11</version>
 			<scope>provided</scope>
 		</dependency>
-
+		
 		<!-- The notes-api is bundled by the ibm-build-management -->
 		<dependency>
 			<groupId>com.ibm.notes</groupId>
 			<artifactId>java.api</artifactId>
 			<version>9.0.1</version>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>com.ibm.domino</groupId>
 			<artifactId>napi</artifactId>
 			<version>9.0.1</version>
 		</dependency>
-
-
+		
+		
 		<!-- add to plugin -->
 		<dependency>
 			<groupId>com.ibm.commons</groupId>
 			<artifactId>com.ibm.commons</artifactId>
 			<version>9.0.1</version>
 		</dependency>
-
-		<!-- Javolution: needed by the CD-stuff -->
+		
+		<!-- Javolution: needed by the CD-stuff -->		
 		<dependency>
 			<groupId>org.javolution</groupId>
 			<artifactId>javolution-core-java</artifactId>
 			<version>6.1.0-ODA-151-SNAPSHOT</version>
-		</dependency>
-
+		</dependency> 
+		
 		<dependency>
 			<groupId>org.openntf</groupId>
 			<artifactId>formula</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
-
-		<!-- TODO: Remove these Deps if separated in a own project <dependency> 
-			<groupId>com.tinkerpop.blueprints</groupId> <artifactId>blueprints-core</artifactId> 
-			<version>2.6.0</version> </dependency> <dependency> <groupId>com.tinkerpop</groupId> 
-			<artifactId>frames</artifactId> <version>2.6.0</version> </dependency> -->
+		
+		<!-- TODO: Remove these Deps if separated in a own project 
+		<dependency>
+			<groupId>com.tinkerpop.blueprints</groupId>
+			<artifactId>blueprints-core</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.tinkerpop</groupId>
+			<artifactId>frames</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		-->
 	</dependencies>
 
 	<organization>
