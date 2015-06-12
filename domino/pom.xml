@@ -36,9 +36,7 @@
 
 	<!-- the name of this project Children must refer exactly to this groupID:artifactId:version
 		Note: The maven-release-plugin can change this info in all dependent POMs -->
-	<groupId>org.openntf.domino</groupId>
 	<artifactId>root</artifactId>
-	<version>1.5.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 
@@ -110,6 +108,25 @@
 	</profiles>
 
 	<build>
+		<pluginManagement>
+			<!--  here you can preconfigure all plugins that are used below this POM -->
+			<plugins>
+				<plugin>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>maven-bundle-plugin</artifactId>
+					<version>2.5.3</version>
+					<extensions>true</extensions>
+					<configuration>
+						<manifestLocation>META-INF</manifestLocation>
+						<source>${compiler}</source>
+						<target>${compiler}</target>
+						<showWarnings>false</showWarnings>
+						<showDeprecation>false</showDeprecation>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		
 		<plugins>
 			<!-- The maven compiler plugin. It uses javac - so you will need SDK! -->
 			<plugin>
@@ -301,6 +318,7 @@
                 </configuration>
 
             </plugin>
+
 
 		</plugins>
 	</build>

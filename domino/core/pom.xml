@@ -12,20 +12,15 @@
 
 	<packaging>bundle</packaging>
 	<build>
+			
 		<plugins>
 			<plugin>  
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.5.3</version>
+
 				<extensions>true</extensions>
 				<configuration>
 					<singleton>true</singleton>
-					<manifestLocation>META-INF</manifestLocation>
-					<source>${compiler}</source>
-					<target>${compiler}</target>
-					
-					<showWarnings>false</showWarnings>
-					<showDeprecation>false</showDeprecation>
 					<instructions>
 
 						<!-- TODO 1: We must specify exportPackage, otherwise .impl. is not exported -->
@@ -43,12 +38,6 @@
 							lotus.domino
 						</Import-Package>
   
-  						<!-- BND generated import-packages does not work in DominoServer -->
-  						
-  							so we import just lotus.domino	(do not know why, it was several times added to original MANIFEST.MF 
-   						
-  						
- 						
  
 						<Require-Bundle>
 							com.ibm.notes.java.api;bundle-version="[8.5.3,10.0.0)",
