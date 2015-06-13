@@ -20,8 +20,8 @@ add() {
 	template compile install $1 $2 >> install.temp
 	template deploy deploy $1 $2 >> deploy.temp
 }
-echo. > install.temp
-echo. > deploy.temp
+echo "" > install.temp
+echo "" > deploy.temp
  
 
 add com.ibm.notes.java.api 				target/innerJars/Notes.jar
@@ -63,6 +63,7 @@ add com.ibm.designer.lib.acf			target/UpdateSite/plugins/com.ibm.designer.lib.ac
 add com.ibm.xsp.core					target/innerJars/lwpd.xsp.core.jar
 add com.ibm.jscript.jscript				target/innerJars/lib/lwpd.commons.ibmjs.jar
 add com.ibm.jscript.jscript-lib			target/innerJars/lib/lwpd.commons.ibmjs.jar
+add com.ibm.domino.osgi.core            target/UpdateSite/plugins/com.ibm.domino.osgi.core_9.0.1.20140404-1000.jar
 
 
 awk '

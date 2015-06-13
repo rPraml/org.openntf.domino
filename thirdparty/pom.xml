@@ -591,6 +591,17 @@
 		<pomFile>poms/com.ibm.jscript.jscript-lib.pom</pomFile>
 	</configuration>
 </execution>
+<execution>
+	<phase>compile</phase>
+	<goals>
+		<goal>install-file</goal>
+	</goals>
+	<id>com.ibm.domino.osgi.core</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/com.ibm.domino.osgi.core_9.0.1.20140404-1000.jar</file>
+		<pomFile>poms/com.ibm.domino.osgi.core.pom</pomFile>
+	</configuration>
+</execution>
 <!-- END:INSTALL -->
 				</executions>
 			</plugin>
@@ -1038,6 +1049,17 @@
 	<configuration>
 		<file>target/innerJars/lib/lwpd.commons.ibmjs.jar</file>
 		<pomFile>poms/com.ibm.jscript.jscript-lib.pom</pomFile>
+	</configuration>
+</execution>
+<execution>
+	<phase>deploy</phase>
+	<goals>
+		<goal>deploy-file</goal>
+	</goals>
+	<id>com.ibm.domino.osgi.core</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/com.ibm.domino.osgi.core_9.0.1.20140404-1000.jar</file>
+		<pomFile>poms/com.ibm.domino.osgi.core.pom</pomFile>
 	</configuration>
 </execution>
 <!-- END:DEPLOY -->
