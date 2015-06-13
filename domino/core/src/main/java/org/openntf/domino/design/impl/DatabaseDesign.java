@@ -80,6 +80,7 @@ public class DatabaseDesign implements org.openntf.domino.design.DatabaseDesign 
 		props = null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T extends org.openntf.domino.design.DesignBase> T create(final Class<T> type) {
 		DesignFactory mapping = DesignFactory.valueOf(type);
 		if (mapping == null || mapping.getImplClass() == null) {

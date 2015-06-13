@@ -25,6 +25,8 @@ import org.xml.sax.SAXParseException;
  *
  */
 public class VFSDatabaseDesignElementNode extends VFSAbstractNode<Void> {
+	private static final long serialVersionUID = 1L;
+
 	public static final Logger log_ = Logger.getLogger(VFSDatabaseDesignElementNode.class.getName());
 	//private SoftReference<DesignBase> designElementRef;
 	DesignBase designElement = null;
@@ -104,7 +106,7 @@ public class VFSDatabaseDesignElementNode extends VFSAbstractNode<Void> {
 	public void getContent(final DxlConverter converter, final OutputStream os) throws IOException {
 		DesignBase el = getDesignElement();
 		el.exportDesign(converter, os);
-		el.flush(); // discard internal caches
+		el.flush();// discard internal caches
 	}
 
 	@Override
@@ -151,7 +153,7 @@ public class VFSDatabaseDesignElementNode extends VFSAbstractNode<Void> {
 			doc.sign();
 			doc.save();
 		}
-		contentLength = -1; // TODO set from stream!
+		contentLength = -1;// TODO set from stream!
 		getVFSDatabaseNode().refresh();
 	}
 
