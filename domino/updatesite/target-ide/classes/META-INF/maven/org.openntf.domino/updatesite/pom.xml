@@ -73,7 +73,7 @@
 				<executions>
 					<execution>
 						<id>generate-p2-site</id>
-						<phase>install</phase>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>site</goal>
 						</goals>

@@ -15,72 +15,88 @@
 			<includes>
 				<include>**/*</include>
 			</includes>
-			<outputDirectory>/</outputDirectory>
+			<outputDirectory>.</outputDirectory>
+		</fileSet>
+		
+		<!-- TODO Fix this! This is very fragile, but the module route is fiddly -->
+		<fileSet>
+			<directory>../..</directory>
+			<includes>
+				<include>LICENSE</include>
+				<include>NOTICE.md</include>
+			</includes>
 		</fileSet>
 	</fileSets>
+
+	<dependencySets>
 	
-	<moduleSets>
-	
-		<!-- The source for non-external projects -->
-		<moduleSet>
-			<useAllReactorProjects>true</useAllReactorProjects>
+		<!-- Sources -->
+		<dependencySet>
 			<includes>
-				<include>org.openntf.domino:org.openntf.domino</include>
-				<include>org.openntf.domino:org.openntf.domino.xsp</include>
-				<include>org.openntf.domino:org.openntf.formula</include>
-				<include>org.openntf.domino:org.openntf.junit4xpages</include>
+				<include>org.openntf.domino:core:*:sources</include>
+				<include>org.openntf.domino:xsp:*:sources</include>
+				<include>org.openntf:formula:*:sources</include>
+				<include>org.openntf.domino:graph:*:sources</include>
 			</includes>
+			<useTransitiveDependencies>true</useTransitiveDependencies>
+			<useProjectArtifact>false</useProjectArtifact>
+			<useStrictFiltering>true</useStrictFiltering>
 			
-			<binaries>
-				<attachmentClassifier>src</attachmentClassifier>
-				<outputDirectory>/source/</outputDirectory>
-				<unpack>false</unpack>
-				<outputFileNameMapping>${module.artifactId}.${module.extension}</outputFileNameMapping>
-			</binaries>
-		</moduleSet>
+			<unpack>false</unpack>
+			<outputDirectory>sources</outputDirectory>
+		</dependencySet>
 		
 		<!-- Javadocs -->
-		<moduleSet>
-			<useAllReactorProjects>true</useAllReactorProjects>
+		<dependencySet>
 			<includes>
-				<include>org.openntf.domino:org.openntf.domino</include>
-				<include>org.openntf.domino:org.openntf.domino.xsp</include>
-				<include>org.openntf.domino:org.openntf.formula</include>
+				<include>org.openntf.domino:core:*:javadoc</include>
+				<include>org.openntf.domino:xsp:*:javadoc</include>
+				<include>org.openntf:formula:*:javadoc</include>
+				<include>org.openntf.domino:graph:*:javadoc</include>
 			</includes>
+			<useTransitiveDependencies>true</useTransitiveDependencies>
+			<useProjectArtifact>false</useProjectArtifact>
+			<useStrictFiltering>true</useStrictFiltering>
 			
-			<binaries>
-				<attachmentClassifier>javadoc</attachmentClassifier>
-				<includeDependencies>false</includeDependencies>
-				<outputDirectory>/apidocs/${module.artifactId}</outputDirectory>
-				<unpack>true</unpack>
-			</binaries>
-		</moduleSet>
-	
+			<unpack>true</unpack>
+			<outputDirectory>apidocs/${artifact.groupId}.${artifact.artifactId}</outputDirectory>
+		</dependencySet>
+		
 		<!-- The final update site -->
-		<moduleSet>
-			<useAllReactorProjects>true</useAllReactorProjects>
+		<dependencySet>
 			<includes>
-				<include>org.openntf.domino:org.openntf.domino.updatesite</include>
+				<include>org.openntf.domino:updatesite:*:*</include>
 			</includes>
-			
-			<binaries>
-				<attachmentClassifier>assembly</attachmentClassifier>
-				<outputDirectory>/</outputDirectory>
-				<unpack>false</unpack>
-				<includeDependencies>false</includeDependencies>
-				<outputFileNameMapping>UpdateSite.zip</outputFileNameMapping>
-			</binaries>
-			
-			<sources>
-				<outputDirectory>/</outputDirectory>
-				<includeModuleDirectory>false</includeModuleDirectory>
-				<includes>
-					<include>LICENSE</include>
-					<include>NOTICE</include>
-				</includes>
-			</sources>
-		</moduleSet>
+
+			<outputFileNameMapping>UpdateSite.zip</outputFileNameMapping>
+		</dependencySet>
 		
-		
-	</moduleSets>
+	</dependencySets>
+	
+<!-- 	<moduleSets> -->
+<!-- 		<moduleSet> -->
+<!-- 			<useAllReactorProjects>true</useAllReactorProjects> -->
+			
+<!-- 			<includes> -->
+<!-- 				<include>*:aggregator:pom:*</include> -->
+<!-- 			</includes> -->
+			
+<!-- 			<sources> -->
+<!-- 				<fileSets> -->
+<!-- 					<fileSet> -->
+<!-- 						<includes> -->
+<!-- 							<include>LICENSE</include> -->
+<!-- 							<include>NOTICE.md</include> -->
+<!-- 							<include>README.md</include> -->
+<!-- 						</includes> -->
+						
+<!-- 						<outputDirectory>.</outputDirectory> -->
+<!-- 					</fileSet> -->
+<!-- 				</fileSets> -->
+				
+<!-- 				<includeModuleDirectory>false</includeModuleDirectory> -->
+<!-- 			</sources> -->
+			
+<!-- 		</moduleSet> -->
+<!-- 	</moduleSets> -->
 </assembly>

@@ -8,6 +8,7 @@
 	<artifactId>updatesite</artifactId>
 	<name>OpenNTF Domino UpdateSite</name>
 
+	<packaging>pom</packaging>
 
 	
 	<!-- 
@@ -73,7 +74,7 @@
 				<executions>
 					<execution>
 						<id>generate-p2-site</id>
-						<phase>install</phase>
+						<phase>generate-resources</phase>
 						<goals>
 							<goal>site</goal>
 						</goals>
@@ -167,6 +168,45 @@ Includes google-code-prettify from Google Inc under Apache License 2.0
 									</artifacts>
 							    </feature>
 							</featureDefinitions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		
+			<!-- h/t http://www.vogella.com/tutorials/EclipseTycho/article.html#d308313e928 -->
+			
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-repository-plugin</artifactId>
+				<version>0.22.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>archive-repository</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- Attach zipped P2 repository to be installed and deployed in the Maven 
+				repository during the deploy phase. -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>target/${project.artifactId}-${project.version}.zip</file>
+									<type>jar</type>
+								</artifact>
+							</artifacts>
 						</configuration>
 					</execution>
 				</executions>

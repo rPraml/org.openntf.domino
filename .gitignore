@@ -5,6 +5,8 @@
 /target
 /bin
 
+/*.dylib
+
 # list all deleted folders here
 
 /org.openntf.domino.plugin
