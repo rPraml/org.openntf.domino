@@ -484,9 +484,7 @@ public abstract class AbstractDesignNapiBase extends AbstractDesignBase implemen
 	/**
 	 * Saves the
 	 * 
-	 * @throws IOException
 	 */
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean save(final DxlConverter converter) throws IOException {
 		Document doc = getDocument();

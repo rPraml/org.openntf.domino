@@ -129,7 +129,6 @@ public interface VFSNode extends Comparable<VFSNode> {
 	 * 
 	 * @param converter
 	 *            the DXL-Converter that should be used
-	 * @return the binary content
 	 */
 	public void getContent(DxlConverter converter, OutputStream os) throws IOException;
 

@@ -95,8 +95,6 @@ public abstract class AbstractDesignNapiFileResource extends AbstractDesignNapiB
 	/**
 	 * Return the FileData
 	 * 
-	 * @param os
-	 * @throws IOException
 	 */
 	@Override
 	public void getFileData(final OutputStream os) throws IOException {
@@ -109,9 +107,6 @@ public abstract class AbstractDesignNapiFileResource extends AbstractDesignNapiB
 
 	/**
 	 * Set the FileData
-	 * 
-	 * @param newFileData
-	 * @throws IOException
 	 */
 	@Override
 	public void setFileData(final byte[] newFileData) throws IOException {

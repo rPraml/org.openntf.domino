@@ -32,8 +32,6 @@ public class VFSDirectoryNode extends VFSAbstractNode<DatabaseMetaData> {
 	/**
 	 * Create a new VFSDirectoryNode
 	 * 
-	 * @param parent
-	 * @param name
 	 */
 	public VFSDirectoryNode(final VFSNode parent, final String name) {
 		super(parent, name);
