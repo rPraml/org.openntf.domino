@@ -11,6 +11,9 @@
 		<!-- Specify a URL to download the Domino Binaires for the CI Domain -->
 		<domino.binary.url />
 		<domino.deploy.url />
+		
+		<maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
+		<osgi.qualifier>${maven.build.timestamp}</osgi.qualifier>
 	</properties>
 	
 	<name>OpenNTF Domino Aggregator</name>
@@ -18,8 +21,8 @@
 	    <connection>scm:git:git@github.com:rPraml/org.openntf.domino.git</connection>
         <developerConnection>scm:git:git@github.com:rPraml/org.openntf.domino.git</developerConnection>
         <url>git@github.com:rPraml/org.openntf.domino.git</url>
-      <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+ 	</scm>
 	
 	<profiles>
 		<profile>
@@ -78,7 +81,20 @@
 					<version>2.5.3</version>
 					
 					<configuration>
+						<singleton>true</singleton>
+						<manifestLocation>META-INF</manifestLocation>
+						<source>${compiler}</source>
+						<target>${compiler}</target>
+					
+						<showWarnings>false</showWarnings>
+						<showDeprecation>false</showDeprecation>
+						
 						<instructions>
+							<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
+							<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+							<Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
+						
+							<_snapshot>${osgi.qualifier}</_snapshot>
 							<_removeheaders>Bnd-LastModified,Built-By,Build-Jdk,Created-By,Tool</_removeheaders>
 						</instructions>
 					</configuration>

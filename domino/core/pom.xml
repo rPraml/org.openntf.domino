@@ -18,13 +18,6 @@
 				<artifactId>maven-bundle-plugin</artifactId>
 				<extensions>true</extensions>
 				<configuration>
-					<singleton>true</singleton>
-					<manifestLocation>META-INF</manifestLocation>
-					<source>${compiler}</source>
-					<target>${compiler}</target>
-					
-					<showWarnings>false</showWarnings>
-					<showDeprecation>false</showDeprecation>
 					<instructions>
 
 						<!-- TODO 1: We must specify exportPackage, otherwise .impl. is not exported -->
@@ -36,8 +29,6 @@
 							org.openntf.calendars
 						</Export-Package>
 
-						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
-						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
 						<Import-Package>
 							lotus.domino
 						</Import-Package>

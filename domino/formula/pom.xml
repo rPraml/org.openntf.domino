@@ -28,25 +28,14 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.5.3</version>
 				<extensions>true</extensions>
 				<configuration>
-					<singleton>true</singleton>
-					<manifestLocation>META-INF</manifestLocation>
-					<source>${compiler}</source>
-					<target>${compiler}</target>
-
-					<showWarnings>false</showWarnings>
-					<showDeprecation>false</showDeprecation>
 					<instructions>
 
 						<Export-Package>
 							org.openntf.*,
 							!*.test
 						</Export-Package>
-
-						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
-						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
 
 						<Import-Package>!*</Import-Package>
 						<Require-Bundle>com.ibm.icu.base;bundle-version="[3.8.0,4.0.0)"</Require-Bundle>
