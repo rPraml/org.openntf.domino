@@ -82,7 +82,7 @@ import com.ibm.icu.util.Calendar;
  */
 
 public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.domino.Session, WrapperFactory> implements
-		org.openntf.domino.Session {
+org.openntf.domino.Session {
 	/** The Constant log_. */
 	private static final Logger log_ = Logger.getLogger(Session.class.getName());
 
@@ -1619,21 +1619,21 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 			throw new UnableToAcquireSessionException("SessionFactory could not return a Session");
 		}
 
-		getFactory().setNoRecycle(sess, false);
-
 		lotus.domino.Session d = ((Session) sess).getDelegate_unchecked();
+
 		if (d == null) {
 			throw new UnableToAcquireSessionException("The created Session does not have a valid delegate");
 		}
 		try {
-
-			if (!identCleared_ && !username_.equals(d.getEffectiveUserName())) {
+			if (!allowSessionUsernameChange && !username_.equals(d.getEffectiveUserName())) {
 				throw new UnableToAcquireSessionException("The created Session has the wrong user name. (given:" + d.getEffectiveUserName()
 						+ ", expected:" + username_);
+				// RPr: I'm not really sure, if we must recycle "d" now.
+				// But as it is put in "ownSessions"-Map in factory. I think recycling is not needed
+
 			}
 		} catch (NotesException e) {
 		}
-		identCleared_ = false;
 		setDelegate(d, true);
 		/* No special logging, since by now Session is a BaseThreadSafe */
 	}
@@ -1730,11 +1730,11 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		System.out.println(sb.toString());
 	}
 
-	private boolean identCleared_ = false;
+	private boolean allowSessionUsernameChange = false;
 
 	@Override
 	public void clearIdentity() {
-		identCleared_ = true;
+		allowSessionUsernameChange = true;
 	}
 
 	/* (non-Javadoc)

@@ -54,7 +54,6 @@ import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.exceptions.DataNotCompatibleException;
 import org.openntf.domino.exceptions.UndefinedDelegateTypeException;
 import org.openntf.domino.ext.Session.Fixes;
-import org.openntf.domino.graph.DominoGraph;
 import org.openntf.domino.logging.Logging;
 import org.openntf.domino.session.INamedSessionFactory;
 import org.openntf.domino.session.ISessionFactory;
@@ -65,6 +64,7 @@ import org.openntf.domino.session.SessionFullAccessFactory;
 import org.openntf.domino.session.TrustedSessionFactory;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.SessionDescendant;
+import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.service.IServiceLocator;
 import org.openntf.service.ServiceLocatorFinder;
 
@@ -338,6 +338,7 @@ public enum Factory {
 	private static List<Runnable> shutdownHooks = new ArrayList<Runnable>();
 
 	private static String localServerName;
+	private static boolean napiPresent_;
 
 	private static ThreadVariables getThreadVariables() {
 		ThreadVariables tv = threadVariables_.get();
@@ -354,10 +355,6 @@ public enum Factory {
 	}
 
 	private static Map<String, String> ENVIRONMENT;
-
-	//private static boolean session_init = false;
-	//private static boolean jar_init = false;
-	private static boolean started = false;
 
 	/**
 	 * load the configuration
@@ -670,11 +667,6 @@ public enum Factory {
 	//	public static org.openntf.domino.Document fromLotusDocument(final lotus.domino.Document lotus, final Base parent) {
 	//		return getWrapperFactory().fromLotus(lotus, Document.SCHEMA, (Database) parent);
 	//	}
-
-	//This should not be needed any more
-	//public static void setNoRecycle(final Base<?> base, final boolean value) {
-	//	getWrapperFactory().setNoRecycle(base, value);
-	//}
 
 	/*
 	 * (non-JavaDoc)
@@ -1144,7 +1136,7 @@ public enum Factory {
 	 * 
 	 */
 	public static void initThread(final ThreadConfig tc) { // RPr: Method was deliberately renamed
-		if (!started) {
+		if (startups == 0) {
 			throw new IllegalStateException("Factory is not yet started");
 		}
 		if (log_.isLoggable(Level.FINER)) {
@@ -1187,7 +1179,6 @@ public enum Factory {
 			}
 			//		System.out.println("DEBUG: cleared " + termCount + " references from the queue...");
 			DominoUtils.setBubbleExceptions(null);
-			DominoGraph.clearDocumentCache();
 			// The last step is to recycle ALL own sessions
 			for (Session sess : tv.ownSessions.values()) {
 				if (sess != null) {
@@ -1248,10 +1239,15 @@ public enum Factory {
 		return iniFile;
 	}
 
+	private static int startups = 0;
+
 	public static void startup() {
 
 		synchronized (Factory.class) {
-
+			if (startups > 0) {
+				startups++;
+				return;
+			}
 			NotesThread.sinitThread();
 			try {
 				lotus.domino.Session sess = lotus.domino.NotesFactory.createSession();
@@ -1268,14 +1264,25 @@ public enum Factory {
 		}
 	}
 
+	public static boolean isNapiPresent() {
+		return napiPresent_;
+	}
+
 	public static synchronized void startup(final lotus.domino.Session session) {
 		if (session instanceof org.openntf.domino.Session) {
 			throw new UnsupportedOperationException("Initialization must be done on the raw session! How did you get that session?");
 		}
-		if (started) {
+		if (startups != 0) {
 			Factory.println("OpenNTF Domino API is already started. Cannot start it again");
 		}
-
+		try {
+			NapiUtil.init();
+			napiPresent_ = true;
+			Factory.println("Info", "NAPI is present");
+		} catch (Throwable t) {
+			Factory.println("Info", "NAPI not present (Reason: " + t.toString() + ")");
+			napiPresent_ = false;
+		}
 		File iniFile;
 		try {
 			localServerName = session.getUserName();
@@ -1297,9 +1304,6 @@ public enum Factory {
 			e.printStackTrace();
 		}
 
-		// There is NO(!) Default SessionFactory for the current session. you have to set it!
-		defaultSessionFactories[SessionType.CURRENT.index] = null;
-
 		// For CURRENT_FULL_ACCESS, we return a named session with full access = true
 		defaultSessionFactories[SessionType.CURRENT_FULL_ACCESS.index] = new ISessionFactory() {
 			private static final long serialVersionUID = 1L;
@@ -1317,18 +1321,25 @@ public enum Factory {
 		String defaultApiPath = null; // maybe we set this to ODA.nsf
 
 		// In XPages environment, these factories will be replaced 
-		defaultNamedSessionFactory = new NamedSessionFactory(defaultApiPath);
-		defaultNamedSessionFullAccessFactory = new SessionFullAccessFactory(defaultApiPath);
-		defaultSessionFactories[SessionType.SIGNER.index] = new NativeSessionFactory(defaultApiPath);
+		setNamedFactories4XPages(new NamedSessionFactory(defaultApiPath), new SessionFullAccessFactory(defaultApiPath));
+
+		// 2015-05-05/RPr: Decided to set the CURRENT Session to the "NativeSessionFactory".
+		// So that code can run outside XPages Environment. If we run inside an XPage Request, the SessionType.CURRENT
+		// is routed to "currentSession" XSP Property.
+		// If we run in FOCONIS Servlet container, it is routed to an apropriate Factory
+		setDefaultSessionFactory(new NativeSessionFactory(defaultApiPath), SessionType.CURRENT);
+
+		setDefaultSessionFactory(new NativeSessionFactory(defaultApiPath), SessionType.SIGNER);
+		setDefaultSessionFactory(new SessionFullAccessFactory(defaultApiPath), SessionType.SIGNER_FULL_ACCESS);
+
 		defaultSessionFactories[SessionType.SIGNER_FULL_ACCESS.index] = new SessionFullAccessFactory(defaultApiPath);
 
 		// This will ALWAYS return the native/trusted/full access session (not overridden in XPages)
-		defaultSessionFactories[SessionType.NATIVE.index] = new NativeSessionFactory(defaultApiPath);
-		defaultSessionFactories[SessionType.TRUSTED.index] = new TrustedSessionFactory(defaultApiPath);
-		defaultSessionFactories[SessionType.FULL_ACCESS.index] = new SessionFullAccessFactory(defaultApiPath);
+		setDefaultSessionFactory(new NativeSessionFactory(defaultApiPath), SessionType.NATIVE);
+		setDefaultSessionFactory(new TrustedSessionFactory(defaultApiPath), SessionType.TRUSTED);
+		setDefaultSessionFactory(new SessionFullAccessFactory(defaultApiPath), SessionType.FULL_ACCESS);
 
-		started = true;
-
+		startups = 1;
 		Factory.println("OpenNTF API Version " + ENVIRONMENT.get("version") + " started");
 
 		// Start up logging
@@ -1347,6 +1358,11 @@ public enum Factory {
 		}
 	}
 
+	public static void setDefaultSessionFactory(final ISessionFactory sessionFactory, final SessionType mode) {
+		defaultSessionFactories[mode.index] = sessionFactory;
+
+	}
+
 	public static void setNamedFactories4XPages(final INamedSessionFactory normal, final INamedSessionFactory fullaccess) {
 		defaultNamedSessionFactory = normal;
 		defaultNamedSessionFullAccessFactory = fullaccess;
@@ -1354,6 +1370,10 @@ public enum Factory {
 	}
 
 	public static synchronized void shutdown() {
+		if (startups > 1)
+			return;
+		if (startups != 1)
+			throw new IllegalStateException("Factory.shutdown() was called more than Factory.startup()");
 		Factory.println("Shutting down the OpenNTF Domino API... ");
 		Runnable[] copy = shutdownHooks.toArray(new Runnable[shutdownHooks.size()]);
 		for (Runnable term : copy) {
@@ -1364,11 +1384,11 @@ public enum Factory {
 			}
 		}
 		Factory.println("OpenNTF Domino API shut down");
-		started = false;
+		startups--;
 	}
 
 	public static boolean isStarted() {
-		return started;
+		return startups > 0;
 	}
 
 	public static boolean isInitialized() {

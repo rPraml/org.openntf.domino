@@ -71,4 +71,3 @@ Require-Bundle: com.google.guava;bundle-version="18.0.0";visibility:=reexport,
  com.ibm.notes.java.api;bundle-version="8.5.3";resolution:=optional
 Bundle-ClassPath: .
 Bundle-ActivationPolicy: lazy
-Import-Package: lotus.domino

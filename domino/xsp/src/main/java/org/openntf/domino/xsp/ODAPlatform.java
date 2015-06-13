@@ -52,47 +52,47 @@ public enum ODAPlatform {
 	 * <code>tell http osgi oda start</code><br>
 	 * on the server console.
 	 */
-	public synchronized static void start() {
-		if (!isStarted()) {
-			isStarted_ = true;
-			// Here is all the init/term stuff done
-			ServiceLocatorFinder.setServiceLocatorFactory(new OsgiServiceLocatorFactory());
-			Factory.startup();
-			// Setup the named factories 4 XPages
-			Factory.setNamedFactories4XPages(new XPageNamedSessionFactory(false), new XPageNamedSessionFactory(true));
-			verifyIGetEntryByKey();
-			ServerConfiguration cfg = Configuration.getServerConfiguration();
-			int xotsTasks = cfg.getXotsTasks();
-			// We must read the value here, because in the ShutDown, it is not possible to navigate through views and the code will fail.
-			xotsStopDelay = cfg.getXotsStopDelay();
-			if (xotsTasks > 0) {
-				DominoExecutor executor = new XotsDominoExecutor(xotsTasks);
-				try {
-					Xots.start(executor);
-				} catch (IllegalStateException e) {
-					if (isDebug()) {
-						throw e;
-					}
-				}
-				List<?> tasklets = ExtensionManager.findServices(null, ODAPlatform.class, "org.openntf.domino.xots.tasklet");
-
-				for (Object tasklet : tasklets) {
-					if (tasklet instanceof Callable<?> || tasklet instanceof Runnable) {
-						@SuppressWarnings("unused")
-						ClassLoader cl = tasklet.getClass().getClassLoader();
-
-						Factory.println("XOTS", "Registering tasklet " + tasklet);
-
-						if (tasklet instanceof Callable<?>) {
-							Xots.getService().submit((Callable<?>) tasklet);
-						} else {
-							Xots.getService().submit((Runnable) tasklet);
-						}
-					}
-				}
-
+	public static void start() {
+		// Here is all the init/term stuff done
+		ServiceLocatorFinder.setServiceLocatorFactory(new OsgiServiceLocatorFactory());
+		Factory.startup();
+		// Setup the named factories 4 XPages
+		Factory.setNamedFactories4XPages(new XPageNamedSessionFactory(false), new XPageNamedSessionFactory(true));
+		verifyIGetEntryByKey();
+		ServerConfiguration cfg = Configuration.getServerConfiguration();
+		int xotsTasks = cfg.getXotsTasks();
+		// We must read the value here, because in the ShutDown, it is not possible to navigate through views and the code will fail.
+		xotsStopDelay = cfg.getXotsStopDelay();
+		if (xotsTasks > 0) {
+			DominoExecutor executor = new XotsDominoExecutor(xotsTasks);
+			Xots.start(executor);
+			if (!"false".equals(System.getProperty("oda.tasklet.autostart"))) {
+				startTasklets();
 			}
 		}
+	}
+
+	public static boolean startTasklets() {
+		if (Xots.isStarted()) {
+			List<?> tasklets = ExtensionManager.findServices(null, ODAPlatform.class, "org.openntf.domino.xots.tasklet");
+
+			for (Object tasklet : tasklets) {
+				if (tasklet instanceof Callable<?> || tasklet instanceof Runnable) {
+					@SuppressWarnings("unused")
+					ClassLoader cl = tasklet.getClass().getClassLoader();
+
+					Factory.println("XOTS", "Registering tasklet " + tasklet);
+
+					if (tasklet instanceof Callable<?>) {
+						Xots.getService().submit((Callable<?>) tasklet);
+					} else {
+						Xots.getService().submit((Runnable) tasklet);
+					}
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -140,8 +140,7 @@ public enum ODAPlatform {
 	 * add or remove methods to the View class (and maybe also to the Base class) the position must be checked again. This is done in the
 	 * this method:
 	 * <ol>
-	 * <li>
-	 * We call getViewEntryByKeyWithOptions with the "key parameters" dummyView, null, 42.</li>
+	 * <li>We call getViewEntryByKeyWithOptions with the "key parameters" dummyView, null, 42.</li>
 	 * <li>This will result in a call to dummyView.iGetEntryByKey(null, false, 42);</li>
 	 * <li>If iGetEntryByKey is called with a "null" vector and 42 as int, it will throw a "BackendBridgeSanityCheckException" (which we
 	 * expect)</li>

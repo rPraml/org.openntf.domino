@@ -45,6 +45,7 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 			// RPr: I'm not sure if this should be allowed anyway...
 			throw new IllegalArgumentException("Cannot wrap the NotesThread " + task.getClass().getName() + " into a DominoRunner");
 		}
+		// TODO RPr: Review/fix this 
 		//				if (task instanceof DominoFutureTask) {
 		//					// RPr: don't know if this is possible
 		//					throw new IllegalArgumentException("Cannot wrap the WrappedCallable " + task.getClass().getName() + " into a DominoRunner");
@@ -142,10 +143,9 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 
 	/**
 	 * Returns the wrapped task
-	 * 
-	 * @return
 	 */
-	protected synchronized Object getWrappedTask() {
+	@Override
+	public synchronized Object getWrappedTask() {
 		return wrappedTask;
 	}
 

@@ -16,28 +16,25 @@
 
 package org.openntf.domino.design.impl;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.Scanner;
 
-import org.openntf.domino.Document;
+import org.openntf.domino.design.DxlConverter;
 import org.openntf.domino.nsfdata.structs.ODSUtils;
+import org.openntf.domino.utils.xml.XMLNode;
 
 /**
- * a Java - ScriptLibrary
+ * A Client Side JavaScript Library.
  * 
- * @author Roland Praml
+ * @author Roland Praml, FOCONIS AG
  * 
  */
-public class ScriptLibraryCSJS extends AbstractDesignFileResource implements org.openntf.domino.design.ScriptLibraryCSJS {
+public class ScriptLibraryCSJS extends AbstractDesignDxlFileResource implements org.openntf.domino.design.ScriptLibraryCSJS {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @param document
-	 */
-	protected ScriptLibraryCSJS(final Document document) {
-		super(document);
-	}
 
 	@Override
 	protected boolean enforceRawFormat() {
@@ -56,24 +53,68 @@ public class ScriptLibraryCSJS extends AbstractDesignFileResource implements org
 		return getDxl().selectSingleNode("//code/javascript").getText().getBytes();
 	}
 
-	//	@Override
-	//	protected boolean useNoteFormat() {
-	//		return false;
-	//	}
-	//
-	//	@Override
 	@Override
-	public void writeOnDiskFile(final File odpFile) throws IOException {
-		// TODO Check for $Scriptlib_error => throw exception if item exists
+	public void exportDesign(final DxlConverter converter, final OutputStream os) throws IOException {
 		String content;
 		if (enforceRawFormat()) {
 			content = ODSUtils.fromLMBCS(getFileData());
 		} else {
-			content = getDxl().selectSingleNode("//code/javascript").getText();
+			XMLNode jsNode = getDxl().selectSingleNode("//code/javascript");
+			if (jsNode != null) {
+				content = jsNode.getText();
+			} else {
+				content = "";
+			}
 		}
-		PrintWriter pw = new PrintWriter(odpFile);
-		pw.write(content);
-		pw.close();
-		odpFile.setLastModified(getDocLastModified().getTime());
+		PrintWriter pw = new PrintWriter(os);
+		try {
+			pw.write(content);
+		} finally {
+			pw.close();
+		}
+
+	}
+
+	@Override
+	public void importDesign(final DxlConverter converter, final InputStream is) throws IOException {
+		importDesign(converter, new Scanner(is));
+	}
+
+	public void importDesign(final DxlConverter converter, final Scanner scanner) throws IOException {
+		if (getDxlFormat(true) != DxlFormat.DXL) {
+			throw new UnsupportedOperationException("cannot import raw CSJS-Library");
+		}
+
+		List<XMLNode> fileDataNodes = getDxl().selectNodes("//code");
+		for (int i = fileDataNodes.size() - 1; i >= 0; i--) {
+			fileDataNodes.get(i).getParentNode().removeChild(fileDataNodes.get(i));
+		}
+
+		StringBuilder fileContents = new StringBuilder();
+
+		try {
+			while (scanner.hasNextLine()) {
+				fileContents.append(scanner.nextLine());
+				fileContents.append('\n');
+			}
+		} finally {
+			scanner.close();
+		}
+
+		String fileContent = fileContents.toString();
+
+		XMLNode documentNode = getDxl().selectSingleNode("//scriptlibrary");
+		XMLNode fileDataNode = documentNode.addChildElement("code");
+		fileDataNode.setAttribute("event", "library");
+		fileDataNode.setAttribute("for", "web");
+		fileDataNode = fileDataNode.addChildElement("javascript");
+
+		if (fileContent.trim().length() == 0) {
+			//cannot import empty code/javascript - node
+			fileDataNode.setText("// empty javascript");
+		} else {
+			fileDataNode.setText(fileContent);
+		}
+
 	}
 }

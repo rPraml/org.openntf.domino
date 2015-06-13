@@ -16,27 +16,24 @@
 
 package org.openntf.domino.design.impl;
 
-import org.openntf.domino.Document;
-
 /**
- * @author Roland Praml
+ * Represents a CompositeComponent
+ * 
+ * @author Roland Praml, FOCONIS AG
  * 
  */
-public final class CompositeComponent extends AbstractDesignFileResource implements HasMetadata,
+public final class CompositeComponent extends AbstractDesignNapiFileResource implements HasMetadata,
 		org.openntf.domino.design.CompositeComponent {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @param document
-	 */
-	protected CompositeComponent(final Document document) {
-		super(document);
+	@Override
+	protected String getDefaultFlags() {
+		return "345CgQ_";
 	}
 
 	@Override
-	protected boolean enforceRawFormat() {
-		// CompositeComponent is exported in RAW-format. There is no DXL representation
-		return true;
+	protected String getDefaultFlagsExt() {
+		return "";
 	}
 
 }

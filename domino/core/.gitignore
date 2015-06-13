@@ -5,3 +5,6 @@ javacore*
 /OSGI-OPT
 /formula
 /target
+/target-ide/
+/META-INF/
+/target-ide/

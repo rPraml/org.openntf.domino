@@ -1,0 +1,6 @@
+*.log
+frames.iml
+.idea/
+/target/
+/target-ide/
+/bin

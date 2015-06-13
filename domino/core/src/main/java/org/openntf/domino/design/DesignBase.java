@@ -16,16 +16,16 @@
 
 package org.openntf.domino.design;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
 
-import javax.xml.transform.Transformer;
-
 import org.openntf.domino.Database;
+import org.openntf.domino.design.impl.DesignFactory;
 
 /**
  * @author jgallagher
@@ -38,18 +38,18 @@ public interface DesignBase extends org.openntf.domino.types.Design, org.openntf
 	}
 
 	enum DxlFormat {
-		NONE, RAWNOTE, DXL
+		/** No DXL present (access must be done at doc level */
+		NONE,
+		/** DXL is a raw note */
+		RAWNOTE,
+		/** DXL is in DXL-Format */
+		DXL
 	}
 
 	public static final Set<ItemFlag> FLAG_NONE = EnumSet.noneOf(ItemFlag.class);
 	public static final Set<ItemFlag> FLAG_SIGN = EnumSet.of(ItemFlag._SIGN);
 	public static final Set<ItemFlag> FLAG_SUMMARY = EnumSet.of(ItemFlag._SUMMARY);
 	public static final Set<ItemFlag> FLAG_SIGN_SUMMARY = EnumSet.of(ItemFlag._SIGN, ItemFlag._SUMMARY);
-
-	/**
-	 * @return the DXL of the design element, as a String
-	 */
-	public String getDxlString(Transformer filter);
 
 	/**
 	 * @return whether hidden from web
@@ -96,29 +96,108 @@ public interface DesignBase extends org.openntf.domino.types.Design, org.openntf
 
 	/**
 	 * Save any changes to the design element (may change the Note ID)
+	 * 
+	 * @throws IOException
 	 */
-	public boolean save();
-
-	//	/**
-	//	 * Every element should have an (abstract) name
-	//	 * 
-	//	 * @return
-	//	 */
-	//	public String getName();
+	public boolean save(DxlConverter dxlConverter) throws IOException;
 
 	/**
-	 * Returns the On-Disk folder component
+	 * Exports the design to file by using the dxlConverter
 	 * 
+	 * @param dxlConverter
+	 *            the DxlConverter that converts the file data in a "friendly" format. (e.g. gitFriendly)
+	 * @param outputStream
+	 *            the OutputStream
+	 * @throws IOException
+	 *             if an IO-Error occurs
 	 */
-	//	public String getOnDiskFolder();
-	//
-	//	public String getOnDiskName();
-	//
-	//	public String getOnDiskExtension();
-	//
-	//	public String getOnDiskPath();
+	public void exportDesign(DxlConverter dxlConverter, OutputStream outputStream) throws IOException;
 
-	public void writeOnDiskFile(File odsFile) throws IOException;
+	/**
+	 * Returns the size of this element if it will be exported
+	 * 
+	 * @param converter
+	 *            the converter to use
+	 * @return the size
+	 */
+	public int getExportSize(DxlConverter converter);
 
+	/**
+	 * Imports the design from file by using the dxlConverter
+	 * 
+	 * @param dxlConverter
+	 *            the DxlConverter that converts the file data back.
+	 * @param inputStream
+	 *            the inputStream
+	 * @throws IOException
+	 *             if an IO-Error occurs
+	 */
+	public void importDesign(DxlConverter dxlConverter, InputStream inputStream) throws IOException;
+
+	/**
+	 * Gets the note id.
+	 * 
+	 * @return the note id
+	 */
+	@Override
+	public String getNoteID();
+
+	/**
+	 * Gets the universal id.
+	 * 
+	 * @return the universal id
+	 */
+	@Override
+	public String getUniversalID();
+
+	/**
+	 * Sets the universal id.
+	 * 
+	 * @param unid
+	 *            the universal id
+	 */
+	public void setUniversalID(String unid);
+
+	/**
+	 * Gets the document.
+	 * 
+	 * @return the document
+	 */
+	@Override
+	public org.openntf.domino.Document getDocument();
+
+	/**
+	 * Returns the item names
+	 * 
+	 * @return the item names
+	 */
 	public Collection<String> getItemNames();
+
+	/**
+	 * <code>TRUE</code> if this is a private element. <b>ATTENTION:</b> If the designindex is read with NAPI, you cannot access private
+	 * elements.
+	 * 
+	 * @return true if the element is private
+	 */
+	public boolean isPrivate();
+
+	/**
+	 * <code>TRUE</code> if this is the default element
+	 * 
+	 * @return true if the element is a default element
+	 */
+	boolean isDefault();
+
+	/**
+	 * Returns the mapping of this DesignBase
+	 * 
+	 * @return the mapping
+	 */
+	public DesignFactory getMapping();
+
+	/**
+	 * Frees up memory
+	 */
+	void flush();
+
 }

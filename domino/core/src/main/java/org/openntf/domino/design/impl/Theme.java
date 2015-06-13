@@ -16,26 +16,21 @@
 
 package org.openntf.domino.design.impl;
 
-import org.openntf.domino.Document;
-
 /**
- * @author Roland Praml
+ * @author Roland Praml, FOCONIS AG
  * 
  */
-public final class Theme extends AbstractDesignFileResource implements HasMetadata, org.openntf.domino.design.Theme {
+public final class Theme extends AbstractDesignNapiFileResource implements HasMetadata, org.openntf.domino.design.Theme {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @param document
-	 */
-	protected Theme(final Document document) {
-		super(document);
+	@Override
+	protected String getDefaultFlags() {
+		return "34567Cg~`";
 	}
 
 	@Override
-	protected boolean enforceRawFormat() {
-		// Theme is exported in RAW-format. There is no DXL representation
-		return true;
+	protected String getDefaultFlagsExt() {
+		return "";
 	}
 
 }

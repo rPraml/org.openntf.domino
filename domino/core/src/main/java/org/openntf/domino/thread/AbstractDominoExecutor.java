@@ -3,6 +3,7 @@
  */
 package org.openntf.domino.thread;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -106,7 +107,7 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 	private String executorName_;
 
 	protected Calendar getNow() {
-		now_.clear();
+		now_.setTimeInMillis(System.currentTimeMillis());
 		return now_;
 	}
 
@@ -358,31 +359,32 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 	@Override
 	protected void beforeExecute(final Thread thread, final Runnable runnable) {
 		super.beforeExecute(thread, runnable);
-		if (runnable instanceof DominoFutureTask) {
-			DominoFutureTask<?> task = (DominoFutureTask<?>) runnable;
-			thread.setName(executorName_ + ": " + task.getWrappedTask().getDescription() + " - " + new Date());
-			task.setState(TaskState.RUNNING);
-		} else {
-			thread.setName(executorName_ + ": #" + thread.getId());
-		}
+		if (runnable instanceof DominoFutureTask)
+			((DominoFutureTask<?>) runnable).setState(TaskState.RUNNING);
+		thread.setName(getThreadName(runnable));
 	}
 
 	@Override
 	protected void afterExecute(final Runnable runnable, final Throwable error) {
 		super.afterExecute(runnable, error);
-
 		if (runnable instanceof DominoFutureTask) {
 			DominoFutureTask<?> task = (DominoFutureTask<?>) runnable;
 			if (task.isDone()) {
-				if (error == null) {
-					task.setState(TaskState.DONE);
-				} else {
-					task.setState(TaskState.ERROR);
-				}
+				task.setState(error == null ? TaskState.DONE : TaskState.ERROR);
 				tasks.remove(task.sequenceNumber);
 			}
 		}
+		Thread.currentThread().setName("(IDLE) " + getThreadName(runnable));
+	}
 
+	private String getThreadName(final Runnable runnable) {
+		StringBuilder sb = new StringBuilder(executorName_).append(": ");
+		if (runnable instanceof DominoFutureTask)
+			sb.append(((DominoFutureTask<?>) runnable).getWrappedTask().getDescription()).append(" - "). //
+					append(new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss").format(new Date()));
+		else
+			sb.append('#').append(Thread.currentThread().getId());
+		return sb.toString();
 	}
 
 	//	@Incomplete
@@ -502,7 +504,7 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 	//	protected <T> RunnableFuture<T> newTaskFor(final Runnable runnable, final T type) {
 	//		return super.newTaskFor(wrap(runnable), type);
 	//	};
-
+	// TODO RPr: check if this works now!
 	@Override
 	protected <T> RunnableFuture<T> newTaskFor(final Callable<T> callable) {
 		return new DominoFutureTask<T>(wrap(callable), new PeriodicScheduler(0, 0, TimeUnit.MILLISECONDS));

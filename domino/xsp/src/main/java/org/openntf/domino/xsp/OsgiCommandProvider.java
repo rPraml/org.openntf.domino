@@ -29,6 +29,7 @@ import org.eclipse.osgi.framework.console.CommandInterpreter;
 import org.eclipse.osgi.framework.console.CommandProvider;
 import org.openntf.domino.thread.AbstractDominoExecutor.DominoFutureTask;
 import org.openntf.domino.xots.Xots;
+import org.openntf.domino.xsp.xots.XotsNsfScanner;
 
 import com.ibm.commons.util.StringUtil;
 
@@ -76,11 +77,13 @@ public class OsgiCommandProvider implements CommandProvider {
 	@Override
 	public String getHelp() {
 		StringBuffer sb = new StringBuffer(1024);
-		sb.append(newline); // the previous call forgot newline
+		sb.append(newline);// the previous call forgot newline
 		addHeader("XOTS commands", sb);
 		addCommand("xots tasks", "(filter)", "Show currently running tasks", sb);
 		addCommand("xots schedule", "(filter)", "Show all scheduled tasks", sb);
-		//		addCommand("junit <package> <testclass>", "Run the JUnit runnable", sb);
+		addCommand("xots run <module> <class>", "Run a tasklet manually", sb);
+		addCommand("xots run NsfScanner", "Run the NSF scanner tasklet manually", sb);
+		addCommand("junit <package> <testclass>", "Run the JUnit runnable", sb);
 		addCommand("oda stop", "Stop the ODA-API", sb);
 		addCommand("oda start", "Start the ODA-API", sb);
 		addCommand("oda restart", "ReStart the ODA-API", sb);
@@ -121,7 +124,7 @@ public class OsgiCommandProvider implements CommandProvider {
 			if (StringUtil.isEmpty(cmd)) {
 				// TODO what does XOTS?
 				xotsTasks(ci);
-			} else if (cmp(cmd, "tasks", 1)) { // tasks
+			} else if (cmp(cmd, "tasks", 1)) {// tasks
 				xotsTasks(ci);
 			} else if (cmp(cmd, "schedule", 1)) {
 				xotsSchedule(ci);
@@ -211,8 +214,14 @@ public class OsgiCommandProvider implements CommandProvider {
 	}
 
 	private void xotsRun(final CommandInterpreter ci) {
+
 		String moduleName = ci.nextArgument();
 		String className = ci.nextArgument();
+
+		if (moduleName.equalsIgnoreCase("NsfScanner") && className == null) {
+			Xots.getService().submit(new XotsNsfScanner());
+			return;
+		}
 
 		List<String> args = new ArrayList<String>();
 

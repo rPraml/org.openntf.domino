@@ -1,0 +1,6 @@
+*.log
+*.lst
+/target/
+/target-ide/
+/bin
+/META-INF/

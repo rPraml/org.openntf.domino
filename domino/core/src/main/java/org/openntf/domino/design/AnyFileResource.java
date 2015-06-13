@@ -16,25 +16,35 @@
 
 package org.openntf.domino.design;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+/**
+ * 
+ * @author jgallagher
+ * 
+ */
 public interface AnyFileResource extends DesignBaseNamed, org.openntf.domino.types.DatabaseDescendant {
 
 	/**
 	 * @return the file resource's data as a byte array
 	 */
-	public byte[] getFileData();
+	public void getFileData(OutputStream os) throws IOException;
 
 	/**
-	 * @return the file data in the given item as a byte array
+	 * Get the fileData as Byte-Array.Internally it reads the data with {@link #getFileData(OutputStream)} in a
+	 * {@link ByteArrayOutputStream}
+	 * 
+	 * @return the fileData as Byte-Array
 	 */
-	//public byte[] getFileData(final String itemName);
+	public byte[] getFileData();
 
 	/**
 	 * @param fileData
 	 *            The new data for the file resource, as a byte array
 	 */
-	public void setFileData(final byte[] fileData);
-
-	//public void setFileData(String itemName, byte[] fileData);
+	public void setFileData(byte[] fileData) throws IOException;
 
 	/**
 	 * @return mime type
@@ -53,7 +63,8 @@ public interface AnyFileResource extends DesignBaseNamed, org.openntf.domino.typ
 	public boolean isReadOnly();
 
 	/**
-	 * @return whether the file resource is marked as "deployable", whatever that means
+	 * @return whether the file resource is marked as "deployable", whatever that means <br/>
+	 *         RPr: This means, if it is a WebResource. So a setter makes no sense
 	 */
 	public boolean isDeployable();
 

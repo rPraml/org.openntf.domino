@@ -16,41 +16,33 @@
 
 package org.openntf.domino.design.impl;
 
-import static javax.xml.bind.DatatypeConverter.parseBase64Binary;
-
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
 import org.openntf.domino.Document;
+import org.openntf.domino.design.DxlConverter;
 import org.openntf.domino.utils.DominoUtils;
+
+import com.ibm.commons.util.io.ByteStreamCache;
 
 /**
  * @author jgallagher
  * 
  */
-public final class ImageResource extends AbstractDesignFileResource implements org.openntf.domino.design.ImageResource, HasMetadata {
+public final class ImageResource extends AbstractDesignNapiFileResource implements org.openntf.domino.design.ImageResource, HasMetadata {
 	private static final long serialVersionUID = 1L;
 	@SuppressWarnings("unused")
 	private static final Logger log_ = Logger.getLogger(ImageResource.class.getName());
 
-	public ImageResource(final Document document) {
-		super(document);
-	}
-
-	@Override
-	protected boolean enforceRawFormat() {
-		// RAW-format is set to false, otherwise it is difficult to determine file extension
-		return false;
-	}
-
 	@Override
 	public BufferedImage getImage() {
 		try {
-			return ImageIO.read(new ByteArrayInputStream(getFileData()));
+			ByteStreamCache bsc = new ByteStreamCache();
+			getFileData(bsc.getOutputStream());
+			return ImageIO.read(bsc.getInputStream());
 		} catch (IOException e) {
 			DominoUtils.handleException(e);
 			return null;
@@ -58,14 +50,20 @@ public final class ImageResource extends AbstractDesignFileResource implements o
 	}
 
 	@Override
-	public byte[] getFileData() {
-		switch (getDxlFormat(true)) {
-		case DXL:
-			String rawData = getDxl().selectSingleNode("//jpeg|//gif|//png").getText();
-			return parseBase64Binary(rawData);
-		default:
-			return getFileDataRaw("$ImageData");
+	protected String getDefaultFlags() {
+		return "D34CiQ";
+	}
 
+	@Override
+	protected String getDefaultFlagsExt() {
+		return "D";
+	}
+
+	@Override
+	protected void saveData(final DxlConverter converter, final Document doc) throws IOException {
+		if (fileData != null) {
+			nSaveImageData(doc, fileData);
 		}
 	}
+
 }

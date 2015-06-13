@@ -16,35 +16,21 @@
 
 package org.openntf.domino.design.impl;
 
-import org.openntf.domino.Database;
-import org.openntf.domino.Document;
-
 /**
- * @author Roland Praml
+ * @author Roland Praml, FOCONIS AG
  * 
  */
-public class FileResourceWebContent extends AbstractDesignFileResource implements org.openntf.domino.design.FileResourceWebContent {
+public class FileResourceWebContent extends AbstractDesignNapiFileResource implements org.openntf.domino.design.FileResourceWebContent {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @param document
-	 */
-	protected FileResourceWebContent(final Document document) {
-		super(document);
-	}
-
-	public FileResourceWebContent(final Database database) {
-		super(database);
+	@Override
+	protected String getDefaultFlags() {
+		return "~C4g";
 	}
 
 	@Override
-	protected boolean enforceRawFormat() {
-		// FileResourceWebContainer is exported in RAW-format. There is no DXL representation
-		return true;
+	protected String getDefaultFlagsExt() {
+		return "w";
 	}
 
-	@Override
-	protected boolean mustEncode(final String resName) {
-		return false;
-	}
 }
