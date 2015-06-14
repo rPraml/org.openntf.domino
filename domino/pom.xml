@@ -72,6 +72,7 @@
 				<module>xsp</module>
 				<module>externals</module>
 				<module>graph</module>
+				<module>rest</module>
 				<module>updatesite</module>
 				<module>oda-dist</module>
 				<!-- <module>graph</module> <module>externals</module> <module>formula</module> 

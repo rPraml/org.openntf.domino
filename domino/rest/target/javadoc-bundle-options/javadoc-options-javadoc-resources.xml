@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<javadocOptions>
+  <docletArtifacts>
+    <docletArtifact />
+  </docletArtifacts>
+  <tagletArtifacts>
+    <tagletArtifact />
+  </tagletArtifacts>
+  <excludePackageNames>
+    <excludePackageName>com.sun.*</excludePackageName>
+    <excludePackageName>com.ibm.icu.*</excludePackageName>
+    <excludePackageName>com.ibm.commons.*</excludePackageName>
+    <excludePackageName>com.ibm.sbt.core.*</excludePackageName>
+    <excludePackageName>com.ibm.sbt.plugin.*</excludePackageName>
+    <excludePackageName>com.ibm.sbt.jslibrray.*</excludePackageName>
+    <excludePackageName>com.ibm.sbt.proxy.*</excludePackageName>
+    <excludePackageName>com.ibm.sbt.security.*</excludePackageName>
+    <excludePackageName>*.util.*</excludePackageName>
+    <excludePackageName>com.ibm.sbt.portlet.*</excludePackageName>
+    <excludePackageName>com.ibm.sbt.playground.*</excludePackageName>
+    <excludePackageName>demo.*</excludePackageName>
+    <excludePackageName>acme.*</excludePackageName>
+  </excludePackageNames>
+  <javadocResourcesDirectory>src/main/javadoc</javadocResourcesDirectory>
+</javadocOptions>

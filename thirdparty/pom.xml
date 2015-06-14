@@ -602,6 +602,83 @@
 		<pomFile>poms/com.ibm.domino.osgi.core.pom</pomFile>
 	</configuration>
 </execution>
+<execution>
+	<phase>compile</phase>
+	<goals>
+		<goal>install-file</goal>
+	</goals>
+	<id>org.eclipse.equinox.registry</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/org.eclipse.equinox.registry_3.4.0.v20080516-0950.jar</file>
+		<pomFile>poms/org.eclipse.equinox.registry.pom</pomFile>
+	</configuration>
+</execution>
+<execution>
+	<phase>compile</phase>
+	<goals>
+		<goal>install-file</goal>
+	</goals>
+	<id>org.apache.wink</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/org.apache.wink_1.1.2.20140404-1000.jar</file>
+		<pomFile>poms/org.apache.wink.pom</pomFile>
+	</configuration>
+</execution>
+<execution>
+	<phase>compile</phase>
+	<goals>
+		<goal>install-file</goal>
+	</goals>
+	<id>com.ibm.wink</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/com.ibm.wink_9.0.1.v00_00_20140404-1000.jar</file>
+		<pomFile>poms/com.ibm.wink.pom</pomFile>
+	</configuration>
+</execution>
+<execution>
+	<phase>compile</phase>
+	<goals>
+		<goal>install-file</goal>
+	</goals>
+	<id>org.eclipse.equinox.common</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/org.eclipse.equinox.common_3.4.0.v20080421-2006.jar</file>
+		<pomFile>poms/org.eclipse.equinox.common.pom</pomFile>
+	</configuration>
+</execution>
+<execution>
+	<phase>compile</phase>
+	<goals>
+		<goal>install-file</goal>
+	</goals>
+	<id>org.eclipse.equinox.http.registry</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/org.eclipse.equinox.http.registry_1.0.100.v20080427-0830.jar</file>
+		<pomFile>poms/org.eclipse.equinox.http.registry.pom</pomFile>
+	</configuration>
+</execution>
+<execution>
+	<phase>compile</phase>
+	<goals>
+		<goal>install-file</goal>
+	</goals>
+	<id>com.ibm.domino.commons</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/com.ibm.domino.commons_9.0.1.v00_00_20140404-1000.jar</file>
+		<pomFile>poms/com.ibm.domino.commons.pom</pomFile>
+	</configuration>
+</execution>
+<execution>
+	<phase>compile</phase>
+	<goals>
+		<goal>install-file</goal>
+	</goals>
+	<id>com.ibm.domino.das</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/com.ibm.domino.das_9.0.1.v00_00_20140404-1000.jar</file>
+		<pomFile>poms/com.ibm.domino.das.pom</pomFile>
+	</configuration>
+</execution>
 <!-- END:INSTALL -->
 				</executions>
 			</plugin>
@@ -1060,6 +1137,83 @@
 	<configuration>
 		<file>target/UpdateSite/plugins/com.ibm.domino.osgi.core_9.0.1.20140404-1000.jar</file>
 		<pomFile>poms/com.ibm.domino.osgi.core.pom</pomFile>
+	</configuration>
+</execution>
+<execution>
+	<phase>deploy</phase>
+	<goals>
+		<goal>deploy-file</goal>
+	</goals>
+	<id>org.eclipse.equinox.registry</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/org.eclipse.equinox.registry_3.4.0.v20080516-0950.jar</file>
+		<pomFile>poms/org.eclipse.equinox.registry.pom</pomFile>
+	</configuration>
+</execution>
+<execution>
+	<phase>deploy</phase>
+	<goals>
+		<goal>deploy-file</goal>
+	</goals>
+	<id>org.apache.wink</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/org.apache.wink_1.1.2.20140404-1000.jar</file>
+		<pomFile>poms/org.apache.wink.pom</pomFile>
+	</configuration>
+</execution>
+<execution>
+	<phase>deploy</phase>
+	<goals>
+		<goal>deploy-file</goal>
+	</goals>
+	<id>com.ibm.wink</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/com.ibm.wink_9.0.1.v00_00_20140404-1000.jar</file>
+		<pomFile>poms/com.ibm.wink.pom</pomFile>
+	</configuration>
+</execution>
+<execution>
+	<phase>deploy</phase>
+	<goals>
+		<goal>deploy-file</goal>
+	</goals>
+	<id>org.eclipse.equinox.common</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/org.eclipse.equinox.common_3.4.0.v20080421-2006.jar</file>
+		<pomFile>poms/org.eclipse.equinox.common.pom</pomFile>
+	</configuration>
+</execution>
+<execution>
+	<phase>deploy</phase>
+	<goals>
+		<goal>deploy-file</goal>
+	</goals>
+	<id>org.eclipse.equinox.http.registry</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/org.eclipse.equinox.http.registry_1.0.100.v20080427-0830.jar</file>
+		<pomFile>poms/org.eclipse.equinox.http.registry.pom</pomFile>
+	</configuration>
+</execution>
+<execution>
+	<phase>deploy</phase>
+	<goals>
+		<goal>deploy-file</goal>
+	</goals>
+	<id>com.ibm.domino.commons</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/com.ibm.domino.commons_9.0.1.v00_00_20140404-1000.jar</file>
+		<pomFile>poms/com.ibm.domino.commons.pom</pomFile>
+	</configuration>
+</execution>
+<execution>
+	<phase>deploy</phase>
+	<goals>
+		<goal>deploy-file</goal>
+	</goals>
+	<id>com.ibm.domino.das</id>
+	<configuration>
+		<file>target/UpdateSite/plugins/com.ibm.domino.das_9.0.1.v00_00_20140404-1000.jar</file>
+		<pomFile>poms/com.ibm.domino.das.pom</pomFile>
 	</configuration>
 </execution>
 <!-- END:DEPLOY -->
