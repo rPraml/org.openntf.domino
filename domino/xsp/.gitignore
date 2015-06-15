@@ -5,3 +5,9 @@ javacore*
 /IBM_TECHNICAL_SUPPORT
 /target/
 /target-ide/
+
+# needed to support eclipse compatible layout
+/META-INF/
+/domino.xsp-config
+/domino-faces-config.xml
+/plugin.xml
