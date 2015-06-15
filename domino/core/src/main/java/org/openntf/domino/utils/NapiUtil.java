@@ -61,7 +61,6 @@ public enum NapiUtil {
 	 * <li>Unfortunately, there is no way out of the box to do the same for {@link NotesDocument}
 	 * </ul>
 	 * 
-	 * @throws Exception
 	 */
 	public static void init() throws Exception {
 		com.ibm.domino.napi.c.C.initLibrary(null);

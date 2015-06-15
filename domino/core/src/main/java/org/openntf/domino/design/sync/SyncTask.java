@@ -63,7 +63,7 @@ public abstract class SyncTask<DB, DISK extends OnDiskAbstract<DB>> extends Prog
 	public static final String XSP_CONFIG_SUFFIX = ".xsp-config";
 	public static final String CONFIG_SUFFIX = "-config";
 
-	private static final int FFS_OFFSET = 4000; // FatFileSystem has an accuracy of 2 secs.
+	private static final int FFS_OFFSET = 4000;// FatFileSystem has an accuracy of 2 secs.
 
 	public static final String DOC_DIR = "Documents";
 	//private static final String NOTEINFO_UNID = "noteinfo unid=\"";
@@ -122,7 +122,7 @@ public abstract class SyncTask<DB, DISK extends OnDiskAbstract<DB>> extends Prog
 		} else {
 			dirMap = new HashMap<String, DISK>();
 		}
-		scanDirectory(diskDir_); // now we have the ODS structure in the stateMap
+		scanDirectory(diskDir_);// now we have the ODS structure in the stateMap
 	}
 
 	/**
@@ -188,10 +188,6 @@ public abstract class SyncTask<DB, DISK extends OnDiskAbstract<DB>> extends Prog
 	/**
 	 * Imports the given diskElem into the DB
 	 * 
-	 * @param dbElem
-	 * @param diskElem
-	 * @return
-	 * @throws IOException
 	 */
 	public abstract void doImport(final DB dbElem, final DISK diskElem) throws IOException;
 
@@ -254,8 +250,8 @@ public abstract class SyncTask<DB, DISK extends OnDiskAbstract<DB>> extends Prog
 		progressStart(2, getClass().getSimpleName() + " start");
 		try {
 			setup();
-			processDbToDisk(); // progress#1
-			processDiskToDb(); // progress#2
+			processDbToDisk();// progress#1
+			processDiskToDb();// progress#2
 			tearDown();
 		} catch (IOException e) {
 			DominoUtils.handleException(e);
@@ -265,7 +261,7 @@ public abstract class SyncTask<DB, DISK extends OnDiskAbstract<DB>> extends Prog
 			log(stat.errors == 0 ? Level.INFO : Level.SEVERE, "Stop: " + getClass().getSimpleName() + ". " + stat);
 			progressStop(getClass().getSimpleName() + " done");
 		}
-		return stat; // return statistics
+		return stat;// return statistics
 	}
 
 	/**
@@ -306,13 +302,13 @@ public abstract class SyncTask<DB, DISK extends OnDiskAbstract<DB>> extends Prog
 
 			}
 			stat.deleteDisk++;
-			return; // element removed from map!;
+			return;// element removed from map!;
 
 		case DELETE_NSF:
 			log(Level.FINE, "DELETE_NSF:\t" + dbElem);
 			removeDbElement(dbElem);
 			stat.deleteNSF++;
-			return; // element removed from map!;
+			return;// element removed from map!;
 
 		case FORCE_EXPROT:
 			log(Level.FINE, "FORCE_EXPORT\t" + dbElem + "\t" + diskElem);
@@ -330,7 +326,7 @@ public abstract class SyncTask<DB, DISK extends OnDiskAbstract<DB>> extends Prog
 		case SYNC:
 
 			file = diskElem.getFile();
-			file.getParentFile().mkdirs(); // ensure the path exists
+			file.getParentFile().mkdirs();// ensure the path exists
 
 			if (diskElem.isRenamed()) {
 				System.out.println(diskElem + " was renamed");
@@ -389,7 +385,7 @@ public abstract class SyncTask<DB, DISK extends OnDiskAbstract<DB>> extends Prog
 		DISK diskElem = dirMap.get(key);
 		OnDiskSyncAction state;
 
-		if (diskElem == null) { // element is new in NSF
+		if (diskElem == null) {// element is new in NSF
 			diskElem = createDiskFile(diskDir_, xmlFile);
 			//set state "CREATE", if direction is not Force-Import
 			if (this.direction == OnDiskSyncDirection.IMPORT) {
@@ -399,7 +395,7 @@ public abstract class SyncTask<DB, DISK extends OnDiskAbstract<DB>> extends Prog
 				// otherwise, we export all missing files
 				state = OnDiskSyncAction.FORCE_EXPROT;
 			}
-			dirMap.put(key, diskElem); // add it to the map
+			dirMap.put(key, diskElem);// add it to the map
 		} else {
 			// corresponding element exists on disk
 			if (diskElem.getFile() == null) {

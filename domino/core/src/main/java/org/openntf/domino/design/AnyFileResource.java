@@ -28,7 +28,7 @@ import java.io.OutputStream;
 public interface AnyFileResource extends DesignBaseNamed, org.openntf.domino.types.DatabaseDescendant {
 
 	/**
-	 * @return the file resource's data as a byte array
+	 * Loads the file resource's data as a byte array
 	 */
 	public void getFileData(OutputStream os) throws IOException;
 

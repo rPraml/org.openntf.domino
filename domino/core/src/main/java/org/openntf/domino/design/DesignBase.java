@@ -39,10 +39,8 @@ public interface DesignBase extends org.openntf.domino.types.Design, org.openntf
 
 	enum DxlFormat {
 		/** No DXL present (access must be done at doc level */
-		NONE,
-		/** DXL is a raw note */
-		RAWNOTE,
-		/** DXL is in DXL-Format */
+		NONE, /** DXL is a raw note */
+		RAWNOTE, /** DXL is in DXL-Format */
 		DXL
 	}
 
@@ -97,7 +95,6 @@ public interface DesignBase extends org.openntf.domino.types.Design, org.openntf
 	/**
 	 * Save any changes to the design element (may change the Note ID)
 	 * 
-	 * @throws IOException
 	 */
 	public boolean save(DxlConverter dxlConverter) throws IOException;
 

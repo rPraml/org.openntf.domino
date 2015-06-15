@@ -32,9 +32,9 @@ import org.openntf.domino.utils.DominoUtils;
  * @author jgallagher
  * 
  */
+@SuppressWarnings("unused")
 public abstract class AbstractXspResource extends AbstractDesignNapiFileResource implements XspResource {
 	private static final long serialVersionUID = 1L;
-	@SuppressWarnings("unused")
 	private static final Logger log_ = Logger.getLogger(AbstractXspResource.class.getName());
 
 	private static final String CLASS_INDEX_ITEM = "$ClassIndexItem";
@@ -50,7 +50,7 @@ public abstract class AbstractXspResource extends AbstractDesignNapiFileResource
 			if (path.startsWith("WEB-INF/classes/")) {
 				names.add(DominoUtils.filePathToJavaBinaryName(path.substring(16), "/"));
 			} else {
-				names.add(""); // add blank entries, otherwise the wrong $ClassData item will be located
+				names.add("");// add blank entries, otherwise the wrong $ClassData item will be located
 			}
 		}
 		return names;

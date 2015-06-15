@@ -25,17 +25,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.osgi.framework.console.CommandInterpreter;
 import org.eclipse.osgi.framework.console.CommandProvider;
-import org.junit.internal.TextListener;
-import org.junit.runner.JUnitCore;
-import org.junit.runner.Result;
-import org.junit.runner.notification.RunListener;
 import org.openntf.domino.thread.AbstractDominoExecutor.DominoFutureTask;
 import org.openntf.domino.xots.Xots;
 import org.openntf.domino.xsp.xots.XotsNsfScanner;
-import org.osgi.framework.Bundle;
 
 import com.ibm.commons.util.StringUtil;
 
@@ -83,7 +77,7 @@ public class OsgiCommandProvider implements CommandProvider {
 	@Override
 	public String getHelp() {
 		StringBuffer sb = new StringBuffer(1024);
-		sb.append(newline); // the previous call forgot newline
+		sb.append(newline);// the previous call forgot newline
 		addHeader("XOTS commands", sb);
 		addCommand("xots tasks", "(filter)", "Show currently running tasks", sb);
 		addCommand("xots schedule", "(filter)", "Show all scheduled tasks", sb);
@@ -130,7 +124,7 @@ public class OsgiCommandProvider implements CommandProvider {
 			if (StringUtil.isEmpty(cmd)) {
 				// TODO what does XOTS?
 				xotsTasks(ci);
-			} else if (cmp(cmd, "tasks", 1)) { // tasks
+			} else if (cmp(cmd, "tasks", 1)) {// tasks
 				xotsTasks(ci);
 			} else if (cmp(cmd, "schedule", 1)) {
 				xotsSchedule(ci);
@@ -145,29 +139,32 @@ public class OsgiCommandProvider implements CommandProvider {
 		}
 	}
 
-	public void _junit(final CommandInterpreter ci) throws ClassNotFoundException {
-		try {
-			String bundleName = ci.nextArgument();
-			String className = ci.nextArgument();
-
-			final Bundle bundle = Platform.getBundle(bundleName);
-			Class<?> testclass = bundle.loadClass(className);
-
-			JUnitCore runner = new org.junit.runner.JUnitCore();
-			RunListener listener = new TextListener(System.out);
-			runner.addListener(listener);
-
-			Result result = runner.run(testclass);
-			if (result.wasSuccessful()) {
-				ci.println("SUCCESS");
-			} else {
-				ci.print("FAILURE - " + result.getFailureCount() + " failed");
-			}
-		} catch (Exception e) {
-			printThrowable(ci, e);
-		}
-
-	}
+	/*
+	 * FIXME NTF - Please move this to some other extension so that junit is not required for ordinary runtime execution of ODA.
+	 */
+	//	public void _junit(final CommandInterpreter ci) throws ClassNotFoundException {
+	//		try {
+	//			String bundleName = ci.nextArgument();
+	//			String className = ci.nextArgument();
+	//
+	//			final Bundle bundle = Platform.getBundle(bundleName);
+	//			Class<?> testclass = bundle.loadClass(className);
+	//
+	//			JUnitCore runner = new org.junit.runner.JUnitCore();
+	//			RunListener listener = new TextListener(System.out);
+	//			runner.addListener(listener);
+	//
+	//			Result result = runner.run(testclass);
+	//			if (result.wasSuccessful()) {
+	//				ci.println("SUCCESS");
+	//			} else {
+	//				ci.print("FAILURE - " + result.getFailureCount() + " failed");
+	//			}
+	//		} catch (Exception e) {
+	//			printThrowable(ci, e);
+	//		}
+	//
+	//	}
 
 	public void _oda(final CommandInterpreter ci) {
 		try {

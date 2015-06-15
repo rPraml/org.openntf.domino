@@ -37,8 +37,6 @@ public class VFSRootDirectoryNode extends VFSDirectoryNode implements VFSRootNod
 	/**
 	 * Constructor, called from the DbDirectory
 	 * 
-	 * @param metaDataSet
-	 * @param session
 	 */
 	public VFSRootDirectoryNode(final DbDirectory directory) {
 		super(null, "");

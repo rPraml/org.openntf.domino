@@ -68,6 +68,32 @@ public interface DatabaseDesign extends org.openntf.domino.types.DatabaseDescend
 	public ReplicationFormula getReplicationFormula();
 
 	/**
+	 * @param parent
+	 *            a ClassLoader used to delegate lookups for classes not found in the database
+	 * @return a ClassLoader that looks up classes in all Java resources, XPages, and JAR resources in the database
+	 */
+	public DatabaseClassLoader getDatabaseClassLoader(ClassLoader parent);
+
+	/**
+	 * @param parent
+	 *            a ClassLoader used to delegate lookups for classes not found in the database
+	 * @param includeJars
+	 *            whether or not to include JAR files in the lookup
+	 * @return a ClassLoader that looks up classes in all Java resources, XPages, and, if requested, JAR resources in the database
+	 */
+	public DatabaseClassLoader getDatabaseClassLoader(ClassLoader parent, boolean includeJars);
+
+	/**
+	 * @param parent
+	 *            a ClassLoader used to delegate lookups for classes not found in the database
+	 * @param includeJars
+	 *            whether or not to include JAR files in the lookup
+	 * @return a ClassLoader that looks up classes in all Java resources, XPages, and, if requested, JAR resources in the database and Java
+	 *         script libraries
+	 */
+	public DatabaseClassLoader getDatabaseClassLoader(ClassLoader parent, boolean includeJars, boolean includeLibraries);
+
+	/**
 	 * @param create
 	 *            whether a new using document should be created when one does not yet exist in the database
 	 * @return the Using Document note of the database, or null if no document exists and create is false
@@ -102,9 +128,8 @@ public interface DatabaseDesign extends org.openntf.domino.types.DatabaseDescend
 
 	/**
 	 * Returns all design elements matching to the according formula. The type of the design element is autodetected.<br>
-	 * <b><font color=red>WARNING.</font></b> This method is slow on big databases. <br/>
-	 * Better use {@link #getDesignElements()} if you do not need Private Forms/Views (for private Forms/Views you can also use
-	 * db.getForm())
+	 * <b><font color=red>WARNING.</font></b> This method is slow on big databases. <br/> Better use {@link #getDesignElements()} if you do
+	 * not need Private Forms/Views (for private Forms/Views you can also use db.getForm())
 	 * 
 	 * @param formula
 	 *            the formula
@@ -114,8 +139,8 @@ public interface DatabaseDesign extends org.openntf.domino.types.DatabaseDescend
 
 	/**
 	 * Returns all design elements matching to the according formula and type.<br>
-	 * <b><font color=red>WARNING.</font></b> This method is slow on big databases. <br/>
-	 * Better use {@link #getDesignElements(Class)} or {@link #getDesignElements(Class, String)} db.getForm())
+	 * <b><font color=red>WARNING.</font></b> This method is slow on big databases. <br/> Better use {@link #getDesignElements(Class)} or
+	 * {@link #getDesignElements(Class, String)} db.getForm())
 	 * 
 	 * @param type
 	 *            the type

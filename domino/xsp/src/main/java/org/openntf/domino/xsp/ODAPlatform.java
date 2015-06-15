@@ -30,7 +30,12 @@ public enum ODAPlatform {
 	// TODO: create an OSGI-command
 	public static final boolean _debug = false;
 	public static final boolean debugAll = false;
+	public static boolean isStarted_ = false;
 	private static int xotsStopDelay;
+
+	public synchronized static boolean isStarted() {
+		return isStarted_;
+	}
 
 	/**
 	 * Start up the ODAPlatform.
@@ -97,12 +102,14 @@ public enum ODAPlatform {
 	 * <code>tell http osgi oda stop</code><br>
 	 * on the server console.
 	 */
-	public static void stop() {
-		if (Xots.isStarted()) {
-			Xots.stop(xotsStopDelay);
+	public synchronized static void stop() {
+		if (isStarted()) {
+			if (Xots.isStarted()) {
+				Xots.stop(xotsStopDelay);
+			}
+			Factory.shutdown();
+			isStarted_ = false;
 		}
-		Factory.shutdown();
-
 	}
 
 	/**
@@ -133,8 +140,7 @@ public enum ODAPlatform {
 	 * add or remove methods to the View class (and maybe also to the Base class) the position must be checked again. This is done in the
 	 * this method:
 	 * <ol>
-	 * <li>
-	 * We call getViewEntryByKeyWithOptions with the "key parameters" dummyView, null, 42.</li>
+	 * <li>We call getViewEntryByKeyWithOptions with the "key parameters" dummyView, null, 42.</li>
 	 * <li>This will result in a call to dummyView.iGetEntryByKey(null, false, 42);</li>
 	 * <li>If iGetEntryByKey is called with a "null" vector and 42 as int, it will throw a "BackendBridgeSanityCheckException" (which we
 	 * expect)</li>

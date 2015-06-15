@@ -67,13 +67,13 @@ public class XotsConfiguration extends ConfigurationObject {
 		put("SchedulesDefault", schedules);
 	}
 
-	public boolean isOnAllServers() {
+	public Boolean isOnAllServers() {
 		return get("OnAllServers");
 	}
 
 	public void setOnAllServers(final boolean onAllServers) {
 		if (onAllServers) {
-			put("RunOnServer", "*"); // not changeable
+			put("RunOnServer", "*");// not changeable
 		} else {
 			if (get("RunOnServer") == null) {
 				put("RunOnServer", "$CLUSTER1");
@@ -90,7 +90,7 @@ public class XotsConfiguration extends ConfigurationObject {
 		return get("ApiPaths");
 	}
 
-	public boolean isEnabled() {
+	public Boolean isEnabled() {
 		return get("Enabled");
 	}
 
@@ -128,7 +128,7 @@ public class XotsConfiguration extends ConfigurationObject {
 			db = odaDb_.getAncestorSession().getDatabase(apiPath_);
 			unid = Configuration.computeUNID(taskletName_, db);
 		} else {
-			unid = Configuration.computeUNID(bundle_ + ":" + taskletName_, odaDb_); // use a valid ReplicaID
+			unid = Configuration.computeUNID(bundle_ + ":" + taskletName_, odaDb_);// use a valid ReplicaID
 		}
 
 		Document currentConfig = odaDb_.getDocumentByUNID(unid);
@@ -139,7 +139,7 @@ public class XotsConfiguration extends ConfigurationObject {
 			currentConfig.setUniversalID(unid);
 			currentConfig.replaceItemValue("Form", "XotsTasklet");
 			currentConfig.replaceItemValue("TaskletName", taskletName_);
-			currentConfig.replaceItemValue("ApiPaths", apiPath_); // APIPath is just for UI - internally we always use replica ID
+			currentConfig.replaceItemValue("ApiPaths", apiPath_);// APIPath is just for UI - internally we always use replica ID
 			currentConfig.replaceItemValue("Enabled", true);
 			if (isDatabase_) {
 				if (db != null) {
@@ -152,7 +152,7 @@ public class XotsConfiguration extends ConfigurationObject {
 				currentConfig.replaceItemValue("Location", "BUNDLE");
 			}
 
-			currentConfig.replaceItemValue("$ConflictAction", "3"); // merge - no conflicts
+			currentConfig.replaceItemValue("$ConflictAction", "3");// merge - no conflicts
 			dirty = true;
 		}
 

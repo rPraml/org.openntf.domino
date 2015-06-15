@@ -736,6 +736,10 @@ org.openntf.domino.Session {
 			}
 		}
 
+		if (db == null || db.isEmpty()) {
+			throw new IllegalArgumentException("Filepath argument cannot be null or empty string unless the server is also empty.");
+		}
+
 		// try {
 		lotus.domino.Database database = null;
 		org.openntf.domino.Database result = null;
@@ -803,8 +807,8 @@ org.openntf.domino.Session {
 	public org.openntf.domino.Database getDatabase(final String apiPath) {
 		String server = "";
 		String dbpath = apiPath;
-		int sep;
-		if ((sep = apiPath.indexOf("!!")) > -1) {
+		int sep = apiPath.indexOf("!!");
+		if (sep > -1) {
 			server = apiPath.substring(0, sep);
 			dbpath = apiPath.substring(sep + 2);
 		}

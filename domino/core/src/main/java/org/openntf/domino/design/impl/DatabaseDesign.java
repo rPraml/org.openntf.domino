@@ -80,6 +80,7 @@ public class DatabaseDesign implements org.openntf.domino.design.DatabaseDesign 
 		props = null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T extends org.openntf.domino.design.DesignBase> T create(final Class<T> type) {
 		DesignFactory mapping = DesignFactory.valueOf(type);
 		if (mapping == null || mapping.getImplClass() == null) {
@@ -354,30 +355,30 @@ public class DatabaseDesign implements org.openntf.domino.design.DatabaseDesign 
 	//		return getDesignElementByName(ScriptLibraryJava.class, name);
 	//	}
 	//
-	//	/*
-	//	 * (non-Javadoc)
-	//	 * 
-	//	 * @see org.openntf.domino.design.DatabaseDesign#getDatabaseClassLoader()
-	//	 */
-	//	@Override
-	//	public DatabaseClassLoader getDatabaseClassLoader(final ClassLoader parent) {
-	//		return new DatabaseClassLoader(this, parent, true, false);
-	//	}
-	//
-	//	/*
-	//	 * (non-Javadoc)
-	//	 * 
-	//	 * @see org.openntf.domino.design.DatabaseDesign#getDatabaseClassLoader(java.lang.ClassLoader, boolean)
-	//	 */
-	//	@Override
-	//	public DatabaseClassLoader getDatabaseClassLoader(final ClassLoader parent, final boolean includeJars) {
-	//		return new DatabaseClassLoader(this, parent, includeJars, false);
-	//	}
-	//
-	//	@Override
-	//	public DatabaseClassLoader getDatabaseClassLoader(final ClassLoader parent, final boolean includeJars, final boolean includeLibraries) {
-	//		return new DatabaseClassLoader(this, parent, includeJars, includeLibraries);
-	//	}
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.openntf.domino.design.DatabaseDesign#getDatabaseClassLoader()
+	 */
+	@Override
+	public DatabaseClassLoader getDatabaseClassLoader(final ClassLoader parent) {
+		return new DatabaseClassLoader(this, parent, true, false);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.openntf.domino.design.DatabaseDesign#getDatabaseClassLoader(java.lang.ClassLoader, boolean)
+	 */
+	@Override
+	public DatabaseClassLoader getDatabaseClassLoader(final ClassLoader parent, final boolean includeJars) {
+		return new DatabaseClassLoader(this, parent, includeJars, false);
+	}
+
+	@Override
+	public DatabaseClassLoader getDatabaseClassLoader(final ClassLoader parent, final boolean includeJars, final boolean includeLibraries) {
+		return new DatabaseClassLoader(this, parent, includeJars, includeLibraries);
+	}
 	//
 	//	//	protected NoteCollection getNoteCollection(final String selectionFormula, final Set<SelectOption> options) {
 	//	//		NoteCollection notes = database_.createNoteCollection(false);

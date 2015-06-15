@@ -126,6 +126,7 @@ public abstract class VFSAbstractNode<T> implements VFSNode, Serializable {
 	 * @param level
 	 *            the level of recursive calls
 	 */
+	@SuppressWarnings("unchecked")
 	protected void add(final String[] components, final T t, final int level) {
 
 		if (components.length == level + 1) {
@@ -179,16 +180,16 @@ public abstract class VFSAbstractNode<T> implements VFSNode, Serializable {
 	 */
 	@Override
 	public VFSNode cd(String dir) {
-		if (dir.startsWith("./")) { // ignore
+		if (dir.startsWith("./")) {// ignore
 			dir = dir.substring(2);
 		}
-		if ("".equals(dir)) { // same dir
+		if ("".equals(dir)) {// same dir
 			return this;
 		}
-		if ("..".equals(dir)) { // upper dir 
+		if ("..".equals(dir)) {// upper dir 
 			return this.parent == null ? this : this.parent;
 		}
-		if (dir.startsWith("/")) { // root dir
+		if (dir.startsWith("/")) {// root dir
 			VFSNode ret = this;
 			while (ret.getParent() != null) {
 				ret = ret.getParent();

@@ -20,8 +20,8 @@ add() {
 	template compile install $1 $2 >> install.temp
 	template deploy deploy $1 $2 >> deploy.temp
 }
-echo. > install.temp
-echo. > deploy.temp
+echo "" > install.temp
+echo "" > deploy.temp
  
 
 add com.ibm.notes.java.api 				target/innerJars/Notes.jar
@@ -63,6 +63,14 @@ add com.ibm.designer.lib.acf			target/UpdateSite/plugins/com.ibm.designer.lib.ac
 add com.ibm.xsp.core					target/innerJars/lwpd.xsp.core.jar
 add com.ibm.jscript.jscript				target/innerJars/lib/lwpd.commons.ibmjs.jar
 add com.ibm.jscript.jscript-lib			target/innerJars/lib/lwpd.commons.ibmjs.jar
+add com.ibm.domino.osgi.core            target/UpdateSite/plugins/com.ibm.domino.osgi.core_9.0.1.20140404-1000.jar
+add org.eclipse.equinox.registry		target/UpdateSite/plugins/org.eclipse.equinox.registry_3.4.0.v20080516-0950.jar
+add org.apache.wink						target/UpdateSite/plugins/org.apache.wink_1.1.2.20140404-1000.jar
+add com.ibm.wink						target/UpdateSite/plugins/com.ibm.wink_9.0.1.v00_00_20140404-1000.jar
+add org.eclipse.equinox.common			target/UpdateSite/plugins/org.eclipse.equinox.common_3.4.0.v20080421-2006.jar
+add org.eclipse.equinox.http.registry	target/UpdateSite/plugins/org.eclipse.equinox.http.registry_1.0.100.v20080427-0830.jar
+add com.ibm.domino.commons				target/UpdateSite/plugins/com.ibm.domino.commons_9.0.1.v00_00_20140404-1000.jar
+add com.ibm.domino.das					target/UpdateSite/plugins/com.ibm.domino.das_9.0.1.v00_00_20140404-1000.jar
 
 
 awk '

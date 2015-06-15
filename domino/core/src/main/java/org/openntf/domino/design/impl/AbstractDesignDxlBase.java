@@ -48,10 +48,9 @@ import org.xml.sax.SAXException;
  * @author jgallagher, Roland Praml
  * 
  */
-@SuppressWarnings("serial")
+@SuppressWarnings({ "serial", "unused" })
 public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 
-	@SuppressWarnings("unused")
 	private static final Logger log_ = Logger.getLogger(AbstractDesignDxlBase.class.getName());
 
 	private static final char DESIGN_FLAG_PRESERVE = 'P';
@@ -358,7 +357,7 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 	}
 
 	public final void setDesignTemplateName(final String designTemplateName) {
-		setItemValue(CLASS_ITEM, designTemplateName, FLAG_SUMMARY); // Summary, don't sign
+		setItemValue(CLASS_ITEM, designTemplateName, FLAG_SUMMARY);// Summary, don't sign
 	}
 
 	//	/**
@@ -488,7 +487,7 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 	 */
 	@Override
 	public void flush() {
-		dxl_ = null; // Free memory
+		dxl_ = null;// Free memory
 		dxlFormat_ = DxlFormat.NONE;
 		exportSize = -1;
 	}
@@ -537,7 +536,7 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 	 */
 	protected final XMLDocument getDxl() {
 		if (dxl_ == null) {
-			if (getDocument() == null) { // a new DesignNote
+			if (getDocument() == null) {// a new DesignNote
 				loadTemplate();
 			} else {
 				DxlExporter exporter = getAncestorSession().createDxlExporter();
@@ -624,8 +623,8 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 			dxlFormat_ = DxlFormat.RAWNOTE;
 		} else {
 			if (enforceRawFormat()) {
-				throw new UnsupportedOperationException(getClass().getSimpleName() + ": Raw format was enforced, but we got a "
-						+ docRoot.getNodeName());
+				throw new UnsupportedOperationException(
+						getClass().getSimpleName() + ": Raw format was enforced, but we got a " + docRoot.getNodeName());
 			}
 			dxlFormat_ = DxlFormat.DXL;
 		}
@@ -680,7 +679,7 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 	 *            the value to set
 	 */
 	public final void setItemValue(final String itemName, final Object value, final Set<ItemFlag> flags) {
-		getDxlFormat(true); // load DXL before modification
+		getDxlFormat(true);// load DXL before modification
 		XMLNode node = getDxlNode("//item[@name='" + XMLDocument.escapeXPathValue(itemName) + "']");
 		if (node == null) {
 			node = getDxl().selectSingleNode("/*").addChildElement("item");
