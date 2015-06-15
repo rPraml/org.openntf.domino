@@ -26,6 +26,7 @@
 						<!-- TODO 2: move domino.impl to own package and remove exportPackage -->
 						<Export-Package>
 							!*.test,
+							!org.openntf.domino.commons.*,
 							org.openntf.domino.*,
 							org.openntf.arpa,
 							org.openntf.calendars
