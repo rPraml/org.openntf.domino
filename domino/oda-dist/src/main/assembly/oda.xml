@@ -33,10 +33,12 @@
 		<!-- Sources -->
 		<dependencySet>
 			<includes>
+				<include>org.openntf.domino:commons:*:sources</include>
 				<include>org.openntf.domino:core:*:sources</include>
 				<include>org.openntf.domino:xsp:*:sources</include>
 				<include>org.openntf:formula:*:sources</include>
 				<include>org.openntf.domino:graph:*:sources</include>
+				<include>org.openntf.domino:rest:*:sources</include>
 			</includes>
 			<useTransitiveDependencies>true</useTransitiveDependencies>
 			<useProjectArtifact>false</useProjectArtifact>
@@ -49,10 +51,12 @@
 		<!-- Javadocs -->
 		<dependencySet>
 			<includes>
+				<include>org.openntf.domino:commons:*:javadoc</include>
 				<include>org.openntf.domino:core:*:javadoc</include>
 				<include>org.openntf.domino:xsp:*:javadoc</include>
 				<include>org.openntf:formula:*:javadoc</include>
 				<include>org.openntf.domino:graph:*:javadoc</include>
+				<include>org.openntf.domino:rest:*:javadoc</include>
 			</includes>
 			<useTransitiveDependencies>true</useTransitiveDependencies>
 			<useProjectArtifact>false</useProjectArtifact>

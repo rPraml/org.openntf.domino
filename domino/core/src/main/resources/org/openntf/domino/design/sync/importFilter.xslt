@@ -27,7 +27,7 @@ language governing permissions and limitations under the License
 	
 	<!-- Strip whitespace so that when we remove elements it does not leave	ugly blank gaps 
 		but not for certain problematic elements-->
-	<xsl:preserve-space	elements="javascript|item[@name='$FileData']|rawitemdata|filedata" />
+	<xsl:preserve-space	elements="javascript rawitemdata filedata" />
 	<xsl:strip-space elements="*" />
 
 	<xsl:template match="javascript[not(text())]">

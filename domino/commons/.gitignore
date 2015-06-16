@@ -4,3 +4,6 @@ javacore*
 /target
 /target-ide/
 /META-INF/
+/plugin.xml
+/target-ide/
+/target-ide/

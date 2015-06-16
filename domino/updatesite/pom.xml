@@ -219,7 +219,7 @@ Includes google-code-prettify from Google Inc under Apache License 2.0
 						<configuration>
 							<artifacts>
 								<artifact>
-									<file>target/${project.artifactId}-${project.version}.zip</file>
+									<file>${project.build.directory}/${project.artifactId}-${project.version}.zip</file>
 									<type>jar</type>
 								</artifact>
 							</artifacts>

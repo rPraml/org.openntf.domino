@@ -1,3 +1,23 @@
+Do a normal build:
+
+$ mvn clean install -Dskip.tests 
+
+
+The 'eclipse' profile (do an eclipse-compatible build)
+
+	$ mvn clean install -Peclipse
+	
+
+The 'oda-dist' profile:
+
+	$ mvn clean install -Poda-dist
+
+Creates the ODA-Distributable (with Demo and Javadoc)
+
+
+How to release:
+
+
 1) First do a prepare:
 
 mvn release:prepare -Ddomino.binary.url=https://www.dropbox.com/s/g9xxaccc75v9hw2/server-binaries.zip?dl=1

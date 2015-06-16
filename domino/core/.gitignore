@@ -8,3 +8,5 @@ javacore*
 /target-ide/
 /src/main/resources/*.git.properties
 /META-INF/
+/plugin.xml
+/target/

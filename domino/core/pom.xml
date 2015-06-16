@@ -14,31 +14,28 @@
 	<build>
 			
 		<plugins>
-			<plugin>  
+			<plugin> 
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-
-				<extensions>true</extensions>
 				<configuration>
-					<singleton>true</singleton>
 					<instructions>
 
 						<!-- TODO 1: We must specify exportPackage, otherwise .impl. is not exported -->
 						<!-- TODO 2: move domino.impl to own package and remove exportPackage -->
 						<Export-Package>
 							!*.test,
+							!org.openntf.domino.commons.*,
 							org.openntf.domino.*,
 							org.openntf.arpa,
 							org.openntf.calendars
 						</Export-Package>
 
-						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
-						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+						<!--  TODO: Eclipse build
 						<Import-Package>
 							lotus.domino
 						</Import-Package>
   
- 
+
 						<Require-Bundle>
 							com.ibm.notes.java.api;bundle-version="[8.5.3,10.0.0)",
 							com.ibm.domino.napi;bundle-version="[9.0.1,10.0.0)";visibility=reexport,
@@ -46,10 +43,11 @@
 							org.javolution.core-java;bundle-version="[6.1.0,7.0.0)",
 							org.openntf.formula;bundle-version="1.5.0";visibility=reexport
  						</Require-Bundle>
+ 						-->
 					</instructions>
 				</configuration>
-			
 			</plugin>
+			
 
 		</plugins>
 	</build>
