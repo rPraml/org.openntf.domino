@@ -165,6 +165,22 @@ Includes google-code-prettify from Google Inc under Apache License 2.0
 											</excludes>
 										</artifact>
 										
+										<artifact>
+											<id>org.openntf.domino:rest:${project.version}</id>
+											<transitive>true</transitive>
+											<!-- Transitive dependencies are resolved -->
+											<source>true</source>
+											<excludes>
+												<!-- but exclude these -->
+												<exclude>org.openntf:thirdparty</exclude>
+												<exclude>org.eclipse.*</exclude>
+												<exclude>com.ibm.*</exclude>
+												<!-- if you want to run junit tests on the server, you must provide these packages in an other way -->
+												<exclude>junit:junit</exclude>
+												<exclude>org.hamcrest:hamcrest-core</exclude>
+											</excludes>
+										</artifact>
+										
 									</artifacts>
 							    </feature>
 							</featureDefinitions>
