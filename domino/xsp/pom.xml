@@ -69,7 +69,7 @@
 							<overwrite>true</overwrite>
 							<resources>
 								<resource>
-									<directory>${basedir}src/main/resources</directory>
+									<directory>src/main/resources</directory>
 									<includes>
 										<include>domino-faces-config.xml</include>
 										<include>domino.xsp-config</include>
