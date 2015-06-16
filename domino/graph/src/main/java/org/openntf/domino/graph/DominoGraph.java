@@ -43,6 +43,16 @@ import com.tinkerpop.blueprints.util.DefaultGraphQuery;
 
 @SuppressWarnings({ "rawtypes", "unused" })
 public class DominoGraph implements Graph, MetaGraph, TransactionalGraph {
+
+	static {
+		Factory.addTerminateHook(new Runnable() {
+			@Override
+			public void run() {
+				clearDocumentCache();
+			}
+		}, true);
+	}
+
 	public static class GraphCacheLoader extends CacheLoader {
 		private transient Database rawDb_;
 
