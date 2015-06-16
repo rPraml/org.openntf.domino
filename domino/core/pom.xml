@@ -30,6 +30,12 @@
 							org.openntf.calendars
 						</Export-Package>
 
+						<!-- junit is optional. (if it is not present you cannot run unittests on server) -->
+                        <Import-Package>
+                            org.junit.*;resolution:=optional,
+                            *
+                        </Import-Package>
+
 						<!--  TODO: Eclipse build
 						<Import-Package>
 							lotus.domino

@@ -301,7 +301,7 @@
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
 
                     <!-- The path for the to be generated properties file, it's relative to ${project.basedir} -->
-                    <generateGitPropertiesFilename>${project.build.outputDirectory}/${project.groupId}.${project.artifactId}.git.properties</generateGitPropertiesFilename>
+                    <generateGitPropertiesFilename>src/main/resources/${project.groupId}.${project.artifactId}.git.properties</generateGitPropertiesFilename>
 
                     <!-- @since 2.1.0 -->
                     <!--

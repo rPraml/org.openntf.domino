@@ -17,6 +17,19 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
+			<artifactId>commons</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+			<classifier>sources</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>commons</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+			<classifier>javadoc</classifier>
+		</dependency>	
+			
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
 			<artifactId>core</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 			<classifier>sources</classifier>
@@ -67,6 +80,32 @@
 			<classifier>javadoc</classifier>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>rest</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+			<classifier>sources</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>rest</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+			<classifier>javadoc</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>graph</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+			<classifier>sources</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>graph</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+			<classifier>javadoc</classifier>
+		</dependency>
+				
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
 			<artifactId>updatesite</artifactId>

@@ -35,6 +35,7 @@
 							com.ibm.icu;bundle-version="3.8.1",
 							org.eclipse.core.runtime;bundle-version="3.4.0",
 							com.ibm.designer.lib.jsf,
+							org.openntf.domino.commons;bundle-version="1.5.0";visibility:=reexport,
 							org.openntf.domino.core;bundle-version="1.5.0";visibility:=reexport,
 							org.openntf.formula;bundle-version="1.5.0";visibility:=reexport,
 							<!-- TODO: org.openntf.junit.xsp is not part of this API! -->

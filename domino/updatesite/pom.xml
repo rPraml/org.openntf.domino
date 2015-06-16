@@ -24,6 +24,11 @@
 	<dependencies>
 		<!-- You must enter dependencies here, otherwise, updatesite will not bundle the correct artifact -->
         <dependency>
+            <groupId>org.openntf.domino</groupId>
+            <artifactId>commons</artifactId>
+            <version>1.5.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.openntf</groupId>
             <artifactId>formula</artifactId>
             <version>1.5.1-SNAPSHOT</version>
@@ -38,13 +43,21 @@
             <artifactId>xsp</artifactId>
             <version>1.5.1-SNAPSHOT</version>
         </dependency>
-		
 		<dependency>
             <groupId>org.openntf.domino</groupId>
             <artifactId>java.sharedapi</artifactId>
             <version>1.5.1-SNAPSHOT</version>
         </dependency>
-		
+        <dependency>
+            <groupId>org.openntf.domino</groupId>
+            <artifactId>graph</artifactId>
+            <version>1.5.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openntf.domino</groupId>
+            <artifactId>rest</artifactId>
+            <version>1.5.1-SNAPSHOT</version>
+        </dependency>        		
         <dependency>
             <groupId>org.javolution</groupId>
             <artifactId>javolution-core-java</artifactId>
@@ -148,7 +161,7 @@ Includes google-code-prettify from Google Inc under Apache License 2.0
 
 
 									<artifacts>
-							
+										<!-- TODO RPr: Create a "meta-module" that bundles them all -->
 										<artifact>
 											<id>org.openntf.domino:xsp:${project.version}</id>
 											<transitive>true</transitive>
@@ -181,6 +194,21 @@ Includes google-code-prettify from Google Inc under Apache License 2.0
 											</excludes>
 										</artifact>
 										
+										<artifact>
+											<id>org.openntf.domino:graph:${project.version}</id>
+											<transitive>true</transitive>
+											<!-- Transitive dependencies are resolved -->
+											<source>true</source>
+											<excludes>
+												<!-- but exclude these -->
+												<exclude>org.openntf:thirdparty</exclude>
+												<exclude>org.eclipse.*</exclude>
+												<exclude>com.ibm.*</exclude>
+												<!-- if you want to run junit tests on the server, you must provide these packages in an other way -->
+												<exclude>junit:junit</exclude>
+												<exclude>org.hamcrest:hamcrest-core</exclude>
+											</excludes>
+										</artifact>
 									</artifacts>
 							    </feature>
 							</featureDefinitions>
