@@ -1,4 +1,4 @@
-package org.openntf.domino.logging;
+package org.openntf.domino.commons.logging;
 
 import java.util.logging.Formatter;
 

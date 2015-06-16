@@ -1,10 +1,8 @@
-package org.openntf.domino.logging;
+package org.openntf.domino.commons.logging;
 
 import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
-
-import org.openntf.domino.exceptions.OpenNTFNotesException;
 
 public class LogFormatterConsoleDefault extends Formatter {
 
@@ -18,13 +16,13 @@ public class LogFormatterConsoleDefault extends Formatter {
 	 * @see java.util.logging.Formatter#format(java.util.logging.LogRecord)
 	 */
 	@Override
-	public String format(final LogRecord logRecord) {
+	public String format(final LogRecord logRec) {
 		StringBuffer sb = new StringBuffer();
-		sb.append(Logging.dateToString(new Date(logRecord.getMillis())));
+		sb.append(LoggingAbstract.dateToString(new Date(logRec.getMillis())));
 		sb.append(" [");
-		sb.append(logRecord.getLevel().getName());
+		sb.append(logRec.getLevel().getName());
 		sb.append("]: ");
-		Throwable t = logRecord.getThrown();
+		Throwable t = logRec.getThrown();
 		StackTraceElement ste = null;
 		if (t != null) {
 			StackTraceElement[] stes = t.getStackTrace();
@@ -36,10 +34,10 @@ public class LogFormatterConsoleDefault extends Formatter {
 		else
 			sb.append("***NO STACK TRACE***");
 		sb.append(" - ");
-		sb.append(logRecord.getMessage());
+		sb.append(logRec.getMessage());
 		sb.append('\n');
-		if (logRecord.getThrown() instanceof OpenNTFNotesException) {
-			LogRecordAdditionalInfo lrai = new LogRecordAdditionalInfo(logRecord);
+		if (LoggingAbstract.getInstance().mayContainAdditionalInfo(logRec)) {
+			LogRecordAdditionalInfo lrai = new LogRecordAdditionalInfo(logRec);
 			lrai.writeToLog(sb);
 		}
 		if (ste != null) {

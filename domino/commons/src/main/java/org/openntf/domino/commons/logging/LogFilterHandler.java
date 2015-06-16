@@ -1,9 +1,8 @@
-package org.openntf.domino.logging;
+package org.openntf.domino.commons.logging;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Formatter;
@@ -12,16 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-
-import org.openntf.domino.Database;
-import org.openntf.domino.ExceptionDetails;
-import org.openntf.domino.Session;
-import org.openntf.domino.exceptions.OpenNTFNotesException;
-import org.openntf.domino.utils.Factory;
-import org.openntf.domino.utils.Factory.SessionType;
-import org.openntf.formula.EvaluateException;
-import org.openntf.formula.FormulaContext;
-import org.openntf.formula.Formulas;
 
 public class LogFilterHandler extends Handler {
 
@@ -173,9 +162,9 @@ public class LogFilterHandler extends Handler {
 			}
 		if (_handlerUpdateSet == null)
 			_handlerUpdateSet = new HashSet<L_HandlerUpdateEntry>();
-		_handlerUpdateSet.add(new L_HandlerUpdateEntry(oldHandlerUIF, handlerEnt, oldHex, handlerCfgEnt._handlerConfig,
-				oldHandlerCfgEnt._handlerConfig, useDefaultFormatter, formatter));
-		return true;
+			_handlerUpdateSet.add(new L_HandlerUpdateEntry(oldHandlerUIF, handlerEnt, oldHex, handlerCfgEnt._handlerConfig,
+					oldHandlerCfgEnt._handlerConfig, useDefaultFormatter, formatter));
+			return true;
 	}
 
 	void activateYourself(final LogFilterHandler[] oldLFHs) {
@@ -248,7 +237,7 @@ public class LogFilterHandler extends Handler {
 			return;
 		publishing_.set(Boolean.TRUE);
 		try {
-			if (Logging._verbose)
+			if (LoggingAbstract._verbose)
 				System.out.println("Logging: " + logRec.getLoggerName() + " | " + logRec.getLevel().getName() + ": " + logRec.getMessage());
 
 			resetMightPublish(logRec.getLevel());
@@ -286,7 +275,7 @@ public class LogFilterHandler extends Handler {
 	private void publishConditionally(final LogConfig.L_LogHandler lHandler, final LogRecord logRec) {
 		L_HandlerEx hex = _myHandlers.get(lHandler);
 		if (hex._mightPublish && !hex._invalidated) {
-			if (Logging._verbose)
+			if (LoggingAbstract._verbose)
 				System.out.println("Publishing with Handler " + lHandler._handlerName);
 			hex._handler.publish(logRec);
 			hex._mightPublish = false;
@@ -309,33 +298,23 @@ public class LogFilterHandler extends Handler {
 		if (i >= fce._logHandlerObjs.length)
 			return contextMap;
 		/* Finally, inspect complex condition */
-		if (fce._parsedCond != null) {
+		if (fce._condHandler != null) {
 			if (contextMap == null) {
 				contextMap = new HashMap<String, Object>();
 				contextMap.put(LogConfig.cLoggerName, logRec.getLoggerName());
 				contextMap.put(LogConfig.cLogMessage, logRec.getMessage());
 			}
-			if (fce._condContUserName || fce._condContDBPath) {
-				if (!insertCurrentContext(fce, contextMap, logRec.getThrown()))
+			if (fce._condContUserName || fce._condContDBPath)
+				if (!extendContextByUserDB(fce, contextMap, logRec.getThrown()))
 					return contextMap;
-			}
-			FormulaContext ctx = Formulas.createContext(contextMap,
-					LogConfig.L_LogFilterHandler.L_LogFilterConfigEntry._myFormulaParser.get());
-			List<Object> result = null;
 			try {
-				result = fce._parsedCond.solve(ctx);
-			} catch (EvaluateException e) {
+				if (!fce._condHandler.checkAgainstContext(contextMap))
+					return contextMap;
+			} catch (Exception e) {
 				System.err.println("LogFilterHandler: Exception during condition check:");
 				e.printStackTrace();
-			}
-			Object o = null;
-			if (result != null && result.size() == 1) {
-				o = result.get(0);
-				if (!(o instanceof Boolean) || !((Boolean) o))
-					o = null;
-			}
-			if (o == null) // condition not fulfilled or result not size 1-boolean (or exception)
 				return contextMap;
+			}
 		}
 		/* ... and now we are ready to publish */
 		for (i = 0; i < fce._logHandlerObjs.length; i++)
@@ -351,74 +330,24 @@ public class LogFilterHandler extends Handler {
 	 * @param exception
 	 * @return
 	 */
-	private boolean insertCurrentContext(final LogConfig.L_LogFilterHandler.L_LogFilterConfigEntry fce,
-			final Map<String, Object> publishDocMap, final Throwable exception) {
+	private boolean extendContextByUserDB(final LogConfig.L_LogFilterHandler.L_LogFilterConfigEntry fce,
+			final Map<String, Object> contextMap, final Throwable exception) {
 
-		if (contextComplete(fce, publishDocMap))
+		boolean userRequired = fce._condContUserName && !contextMap.containsKey(LogConfig.cUserName);
+		boolean dbRequired = fce._condContDBPath && !contextMap.containsKey(LogConfig.cDBPath);
+		if (!userRequired && !dbRequired)
 			return true;
-		/* Try first to get from ExceptionDetails - that's cheap */
-		if (exception instanceof OpenNTFNotesException) {
-			List<ExceptionDetails.Entry> excds = ((OpenNTFNotesException) exception).getExceptionDetails();
-			if (excds != null) {
-				contextFromExceptionDetails(publishDocMap, ((OpenNTFNotesException) exception).getExceptionDetails());
-				if (contextComplete(fce, publishDocMap))
-					return true;
-			}
-		}
-
-		/* We have to ask Session - that's not cheap */
-		String errPar = null;
 		try {
-			Session sess = Factory.getSession_unchecked(SessionType.CURRENT);
-			if (sess == null) // then we can't evaluate the condition
-				return false;
-			if (fce._condContUserName && !publishDocMap.containsKey(errPar = LogConfig.cUserName))
-				publishDocMap.put(LogConfig.cUserName, sess.getEffectiveUserName());
-			if (fce._condContDBPath && !publishDocMap.containsKey(errPar = LogConfig.cDBPath))
-				publishDocMap.put(LogConfig.cDBPath, sess.getCurrentDatabase().getApiPath());
+			String[] userDB = LoggingAbstract.getInstance().getCurrentUserAndDB(exception, userRequired, dbRequired);
+			if (userRequired)
+				contextMap.put(LogConfig.cUserName, userDB[0]);
+			if (dbRequired)
+				contextMap.put(LogConfig.cDBPath, userDB[1]);
 		} catch (Exception e) {
-			System.err.println("[WARNING] LogFilterHandler: Exception " + e.getClass().getName() + " in Session.get(" + errPar + ")");
-			//			e.printStackTrace();
+			System.err.println("[WARNING] LogFilterHandler: " + e.getMessage());
 			return false;
 		}
 		return true;
-	}
-
-	/**
-	 * Returns TRUE, if the context is complete available for this FCE
-	 * 
-	 * @param fce
-	 *            the LogFilterConfigEntry
-	 * @param contextMap
-	 * @return
-	 */
-	private boolean contextComplete(final LogConfig.L_LogFilterHandler.L_LogFilterConfigEntry fce, final Map<String, Object> contextMap) {
-		if (fce._condContUserName)
-			if (!contextMap.containsKey(LogConfig.cUserName))
-				return false;
-		if (fce._condContDBPath)
-			if (!contextMap.containsKey(LogConfig.cDBPath))
-				return false;
-		return true;
-	}
-
-	/**
-	 * reads the context from the exception details. Reads userName and database
-	 * 
-	 * @param fce
-	 *            the FilterConfigEntry
-	 * @param contextMap
-	 *            the map used for the formula engine
-	 * @param exceptionDetails
-	 */
-	private void contextFromExceptionDetails(final Map<String, Object> contextMap, final List<ExceptionDetails.Entry> exceptionDetails) {
-		for (ExceptionDetails.Entry detail : exceptionDetails) {
-			if (Session.class.isAssignableFrom(detail.getSource())) {
-				contextMap.put(LogConfig.cUserName, detail.getMessage());
-			} else if (Database.class.isAssignableFrom(detail.getSource())) {
-				contextMap.put(LogConfig.cDBPath, detail.getMessage());
-			}
-		}
 	}
 
 }

@@ -20,6 +20,7 @@ import java.io.Writer;
 import java.util.Map;
 import java.util.Vector;
 
+import org.openntf.domino.commons.types.ExceptionDetails;
 import org.openntf.domino.types.DatabaseDescendant;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.Resurrectable;

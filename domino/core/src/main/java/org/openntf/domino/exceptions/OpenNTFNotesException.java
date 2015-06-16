@@ -3,7 +3,7 @@ package org.openntf.domino.exceptions;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openntf.domino.ExceptionDetails;
+import org.openntf.domino.commons.types.ExceptionDetails;
 
 public class OpenNTFNotesException extends RuntimeException {
 	private static final long serialVersionUID = 1L;

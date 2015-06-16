@@ -49,12 +49,12 @@ import java.util.regex.Matcher;
 
 import org.openntf.arpa.NamePartsMap;
 import org.openntf.domino.DateTime;
-import org.openntf.domino.ExceptionDetails;
 import org.openntf.domino.Item;
 import org.openntf.domino.Name;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.NameEnums.NamePartKey;
+import org.openntf.domino.commons.types.ExceptionDetails;
 import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.exceptions.InvalidNotesUrlException;
 import org.openntf.domino.exceptions.OpenNTFNotesException;

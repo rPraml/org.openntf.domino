@@ -1,11 +1,9 @@
 /**
  * 
  */
-package org.openntf.domino;
+package org.openntf.domino.commons.types;
 
 import java.util.List;
-
-import org.openntf.domino.types.Null;
 
 /**
  * The interface ExceptionDetails; useful to add further information to an OpenNTFNotesException. Of course, Document, Item, Database,
@@ -36,7 +34,7 @@ public interface ExceptionDetails {
 		final String msg;
 
 		public Entry(final Object source, final String msg) {
-			sourceCls = source == null ? Null.class : source.getClass();
+			sourceCls = source == null ? Void.class : source.getClass();
 			this.msg = msg;
 		}
 

@@ -6,6 +6,10 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 import org.openntf.domino.Session;
+import org.openntf.domino.commons.logging.LogConfig;
+import org.openntf.domino.commons.logging.LogHandlerConfigIF;
+import org.openntf.domino.commons.logging.LogHandlerUpdateIF;
+import org.openntf.domino.commons.logging.LogRecordAdditionalInfo;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 

@@ -1,4 +1,4 @@
-package org.openntf.domino.logging;
+package org.openntf.domino.commons.logging;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-
-import org.openntf.domino.exceptions.OpenNTFNotesException;
 
 public class LogFormatterFileDefault extends Formatter {
 
@@ -21,15 +19,15 @@ public class LogFormatterFileDefault extends Formatter {
 	 * @see java.util.logging.Formatter#format(java.util.logging.LogRecord)
 	 */
 	@Override
-	public String format(final LogRecord logRecord) {
+	public String format(final LogRecord logRec) {
 		StringBuffer sb = new StringBuffer();
-		sb.append(Logging.dateToString(new Date(logRecord.getMillis())));
+		sb.append(LoggingAbstract.dateToString(new Date(logRec.getMillis())));
 		sb.append(" [");
-		sb.append(logRecord.getLevel().getName());
+		sb.append(logRec.getLevel().getName());
 		sb.append("]: ");
-		sb.append("Log from " + logRecord.getLoggerName());
+		sb.append("Log from " + logRec.getLoggerName());
 		sb.append('\n');
-		Throwable t = logRecord.getThrown();
+		Throwable t = logRec.getThrown();
 		StackTraceElement ste = null;
 		if (t != null) {
 			StackTraceElement[] stes = t.getStackTrace();
@@ -37,8 +35,8 @@ public class LogFormatterFileDefault extends Formatter {
 				ste = stes[0];
 		}
 		sb.append("      ");
-		sb.append(logRecord.getMessage());
-		boolean levelSevere = (logRecord.getLevel().intValue() >= Level.SEVERE.intValue());
+		sb.append(logRec.getMessage());
+		boolean levelSevere = (logRec.getLevel().intValue() >= Level.SEVERE.intValue());
 		if (ste != null || levelSevere)
 			sb.append(" - ");
 		if (ste != null)
@@ -46,8 +44,8 @@ public class LogFormatterFileDefault extends Formatter {
 		else if (levelSevere)
 			sb.append("***NO STACK TRACE***");
 		sb.append('\n');
-		if (logRecord.getThrown() instanceof OpenNTFNotesException) {
-			LogRecordAdditionalInfo lrai = new LogRecordAdditionalInfo(logRecord);
+		if (LoggingAbstract.getInstance().mayContainAdditionalInfo(logRec)) {
+			LogRecordAdditionalInfo lrai = new LogRecordAdditionalInfo(logRec);
 			lrai.writeToLog(sb);
 		}
 		if (t != null && ste != null) { // Of course superfluous: t!=null, but otherwise we get a warning

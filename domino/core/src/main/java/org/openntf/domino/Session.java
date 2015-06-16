@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import org.openntf.domino.annotations.Legacy;
+import org.openntf.domino.commons.types.ExceptionDetails;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.Resurrectable;
 
