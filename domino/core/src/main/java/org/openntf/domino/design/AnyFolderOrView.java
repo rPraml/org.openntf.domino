@@ -16,7 +16,6 @@
 
 package org.openntf.domino.design;
 
-import org.openntf.domino.design.impl.DesignColumn;
 
 /**
  * @author jgallagher
