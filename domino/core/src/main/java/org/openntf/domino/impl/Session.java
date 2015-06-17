@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -69,6 +70,7 @@ import org.openntf.domino.utils.DominoFormatter;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.formula.Formulas;
 
 import com.ibm.icu.util.Calendar;
 
@@ -82,7 +84,7 @@ import com.ibm.icu.util.Calendar;
  */
 
 public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.domino.Session, WrapperFactory> implements
-org.openntf.domino.Session {
+		org.openntf.domino.Session {
 	/** The Constant log_. */
 	private static final Logger log_ = Logger.getLogger(Session.class.getName());
 
@@ -418,22 +420,6 @@ org.openntf.domino.Session {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.openntf.domino.Session#createName(java.lang.String)
-	 */
-	@Override
-	public org.openntf.domino.Name createNameNonODA(final String name) {
-		try {
-			return fromLotus(getDelegate().createName(name), Name.SCHEMA, this);
-		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
-			return null;
-
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see org.openntf.domino.Session#createNewsletter(lotus.domino.DocumentCollection)
 	 */
 	@Override
@@ -521,12 +507,13 @@ org.openntf.domino.Session {
 	@Legacy({ Legacy.INTERFACES_WARNING, Legacy.GENERICS_WARNING })
 	public Vector<Object> evaluate(final String formula, final lotus.domino.Document doc) {
 		try {
-			//			// TODO RPr: Make an option to enable/disable formula engine
-			//			if (doc instanceof Map || doc == null) {
-			//				List<Object> ret = Formulas.evaluate(formula, (Map<String, Object>) doc);
-			//				return new Vector(ret);
-			//			}
-
+			// TODO RPr: Make an option to enable/disable formula engine
+			if (isFixEnabled(Fixes.FORMULA_ENGINE)) {
+				if (doc instanceof Map || doc == null) {
+					List<Object> ret = Formulas.evaluate(formula, (Map<String, Object>) doc);
+					return new Vector(ret);
+				}
+			}
 			if (doc instanceof Document) {
 				String lf = formula.toLowerCase();
 				if (lf.contains("field ") || lf.contains("@setfield")) {

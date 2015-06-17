@@ -6,6 +6,8 @@ package org.openntf.domino.ext;
 import java.io.Externalizable;
 import java.util.Vector;
 
+import org.openntf.formula.FormulaParseException;
+
 /**
  * @author nfreeman
  * 
@@ -13,7 +15,7 @@ import java.util.Vector;
 public interface Formula extends Externalizable {
 	public void setSession(final org.openntf.domino.Session session);
 
-	public void setExpression(final String expression);
+	public void setExpression(final String expression) throws FormulaParseException;
 
 	public String getExpression();
 

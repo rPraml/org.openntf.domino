@@ -17,7 +17,7 @@ import org.openntf.domino.utils.xml.XMLNode;
  * @author Roland Praml, FOCONIS AG
  */
 public final class ScriptLibraryJava extends AbstractDesignDxlFileResource implements org.openntf.domino.design.ScriptLibraryJava,
-		HasMetadata {
+HasMetadata {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -48,7 +48,8 @@ public final class ScriptLibraryJava extends AbstractDesignDxlFileResource imple
 						while (jis.available() > 0) {
 							bos.write(jis.read());
 						}
-						classData.put(DominoUtils.filePathToJavaBinaryName(name, "/"), bos.toByteArray());
+						String className = name.substring(0, name.length() - 6).replace('/', '.');
+						classData.put(className, bos.toByteArray());
 					}
 
 					entry = jis.getNextJarEntry();

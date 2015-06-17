@@ -20,7 +20,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -66,14 +65,11 @@ public class DatabaseClassLoader extends org.openntf.domino.design.DatabaseClass
 			return defineClass(name, classData, 0, classData.length);
 		}
 
-		String binaryName = DominoUtils.escapeForFormulaString(DominoUtils.javaBinaryNameToFilePath(name, "/"));
-
-		Iterator<XspResource> classes = design_.getDesignElements(XspResource.class,
-				String.format("$ClassIndexItem='WEB-INF/classes/%s' ", binaryName)).iterator();
-		if (classes.hasNext()) {
-			XspResource res = classes.next();
+		String binaryName = "WEB-INF/classes/" + name.replace('.', '/') + ".class";
+		XspResource xspRes = design_.getDesignElement(XspResource.class, binaryName);
+		if (xspRes != null) {
 			// Load up our class queue with the data
-			unloadedClasses_.putAll(res.getClassData());
+			unloadedClasses_.putAll(xspRes.getClassData());
 			// Now attempt to load the named class
 			byte[] classData = unloadedClasses_.remove(name);
 			if (classData != null) {
@@ -84,14 +80,12 @@ public class DatabaseClassLoader extends org.openntf.domino.design.DatabaseClass
 		}
 
 		// It's also possible that it's stored only as a .class file (e.g. secondary, non-inner classes in a .java)
+		FileResourceWebContent fileRes = design_.getDesignElement(FileResourceWebContent.class, binaryName);
 
-		Iterator<FileResourceWebContent> webContentFiles = design_.getDesignElements(FileResourceWebContent.class,
-				String.format("$FileNames='WEB-INF/classes/%s' ", binaryName)).iterator();
-		if (webContentFiles.hasNext()) {
-			FileResourceWebContent res = webContentFiles.next();
+		if (fileRes != null) {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			try {
-				res.getFileData(bos);
+				fileRes.getFileData(bos);
 				byte[] classData = bos.toByteArray();
 				return defineClass(name, classData, 0, classData.length);
 			} catch (IOException e) {

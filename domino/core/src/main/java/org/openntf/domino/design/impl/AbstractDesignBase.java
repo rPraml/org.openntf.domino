@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
 import org.openntf.domino.Session;
-import org.openntf.domino.commons.utils.StringsUtils;
+import org.openntf.domino.commons.Strings;
 import org.openntf.domino.design.DesignBase;
 
 /**
@@ -360,7 +360,7 @@ public abstract class AbstractDesignBase implements DesignBase {
 		if (database_ == null) {
 			return null;
 		}
-		if (!StringsUtils.isEmptyString(universalId_)) {
+		if (!Strings.isEmptyString(universalId_)) {
 			document_ = database_.getDocumentByUNID(universalId_);
 			return document_;
 		}

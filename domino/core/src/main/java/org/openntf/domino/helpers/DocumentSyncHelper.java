@@ -29,6 +29,7 @@ import org.openntf.domino.Item;
 import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.transactions.DatabaseTransaction;
+import org.openntf.formula.FormulaParseException;
 
 /**
  * DocumentSyncHelper class
@@ -75,7 +76,10 @@ import org.openntf.domino.transactions.DatabaseTransaction;
  * 
  * Map has key Controls.TARGET_SERVER=ServerName will look for an Item called ServerName on the control document to retrieve the server name
  * to use in the DocumentSyncHelper
+ * 
+ * @deprecated should be removed from "core"
  */
+@Deprecated
 public class DocumentSyncHelper {
 
 	/** The Constant log_. */
@@ -173,9 +177,10 @@ public class DocumentSyncHelper {
 	 *            Document with Items for relevant settings for the DocumentSyncHelper
 	 * @param controlMap
 	 *            Map<Controls, String> of Item names to use to retrieve DocumentSyncHelper settings from the control doc
+	 * @throws FormulaParseException
 	 * @since org.openntf.domino 1.0.0
 	 */
-	public DocumentSyncHelper(final Document controlDoc, Map<Controls, String> controlMap) {
+	public DocumentSyncHelper(final Document controlDoc, Map<Controls, String> controlMap) throws FormulaParseException {
 		if (controlMap == null)
 			controlMap = new HashMap<Controls, String>();
 		if (controlMap.containsKey(Controls.TARGET_SERVER)) {
@@ -256,9 +261,11 @@ public class DocumentSyncHelper {
 	 *            <li>formula to apply to each source document to get key for target documents. E.g. "ContactID" = use ContactID field of
 	 *            source document as key value to apply to target lookup view to get the collection to update
 	 *            </ol>
+	 * @throws FormulaParseException
 	 * @since org.openntf.domino 1.0.0
 	 */
-	public DocumentSyncHelper(final Strategy strategy, final Map<Object, String> syncMap, final String... args) {
+	public DocumentSyncHelper(final Strategy strategy, final Map<Object, String> syncMap, final String... args)
+			throws FormulaParseException {
 		setStrategy(strategy);
 		setSyncMap(syncMap);
 		if (args.length >= 1) {
@@ -496,9 +503,10 @@ public class DocumentSyncHelper {
 	 * 
 	 * @param sourceKeyFormula
 	 *            String the new source key formula
+	 * @throws FormulaParseException
 	 * @since org.openntf.domino 1.0.0
 	 */
-	public void setSourceKeyFormula(final String sourceKeyFormula) {
+	public void setSourceKeyFormula(final String sourceKeyFormula) throws FormulaParseException {
 		if (sourceKeyFormula_ == null) {
 			sourceKeyFormula_ = new Formula();
 		}
@@ -567,9 +575,10 @@ public class DocumentSyncHelper {
 	 * 
 	 * @param syncMap
 	 *            Map<Formula, String> the sync map
+	 * @throws FormulaParseException
 	 * @since org.openntf.domino 1.0.0
 	 */
-	public void setSyncMap(final Map<java.lang.Object, String> syncMap) {
+	public void setSyncMap(final Map<java.lang.Object, String> syncMap) throws FormulaParseException {
 		Map<Formula, String> formulaMap = new HashMap<Formula, String>();
 		for (Map.Entry<Object, String> entry : syncMap.entrySet()) {
 			if (entry.getKey() instanceof Formula) {

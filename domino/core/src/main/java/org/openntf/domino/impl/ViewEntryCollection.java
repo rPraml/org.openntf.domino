@@ -25,7 +25,6 @@ import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.ViewEntry;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.iterators.ViewEntryIterator;
 import org.openntf.domino.utils.DominoUtils;
 
 // TODO: Auto-generated Javadoc
@@ -33,7 +32,7 @@ import org.openntf.domino.utils.DominoUtils;
  * The Class ViewEntryCollection.
  */
 public class ViewEntryCollection extends BaseNonThreadSafe<org.openntf.domino.ViewEntryCollection, lotus.domino.ViewEntryCollection, View>
-		implements org.openntf.domino.ViewEntryCollection {
+implements org.openntf.domino.ViewEntryCollection {
 
 	/**
 	 * Instantiates a new outline.
@@ -103,7 +102,47 @@ public class ViewEntryCollection extends BaseNonThreadSafe<org.openntf.domino.Vi
 	 */
 	@Override
 	public Iterator<org.openntf.domino.ViewEntry> iterator() {
-		return new ViewEntryIterator(this);
+		return new Iterator<org.openntf.domino.ViewEntry>() {
+
+			private org.openntf.domino.ViewEntry currEntry = null;
+			private org.openntf.domino.ViewEntry nextEntry = ViewEntryCollection.this.getFirstEntry();
+
+			@Override
+			public boolean hasNext() {
+				return nextEntry != null; // something in Queue?
+			}
+
+			/* (non-Javadoc)
+			 * @see java.util.Iterator#next()
+			 */
+			@SuppressWarnings("deprecation")
+			@Override
+			public org.openntf.domino.ViewEntry next() {
+
+				if (nextEntry == null || nextEntry.isDead()) {
+					if (nextEntry == null) {
+						System.out.println("ALERT: Wrapped version of next entry is NULL");
+					} else if (nextEntry.isDead()) {
+						System.out.println("ALERT: Wrapped version of next entry is dead");
+					} else {
+						System.out.println("ALERT: It should have been impossible to arrive here");
+						throw new RuntimeException();
+					}
+				}
+				currEntry = nextEntry;
+				if (nextEntry != null) {
+					nextEntry = ViewEntryCollection.this.getNextEntry(nextEntry);
+				}
+				return currEntry;
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
+
+		};
+
 	}
 
 	/*

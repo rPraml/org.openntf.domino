@@ -2,7 +2,7 @@ package org.openntf.domino.junit;
 
 import lotus.domino.Session;
 
-import org.openntf.domino.commons.utils.StringsUtils;
+import org.openntf.domino.commons.Strings;
 
 public enum TestEnv {
 	;
@@ -26,7 +26,7 @@ public enum TestEnv {
 		RUNS_ON_SERVER = sess.isOnServer();
 		REMOTE_TRUSTED_SERVER = sess.getEnvironmentString("junit_remote_trusted_server", true);
 		REMOTE_UNTRUSTED_SERVER = sess.getEnvironmentString("junit_remote_untrusted_server", true);
-		if (StringsUtils.isEmptyString(REMOTE_TRUSTED_SERVER) || StringsUtils.isEmptyString(REMOTE_UNTRUSTED_SERVER)) {
+		if (Strings.isEmptyString(REMOTE_TRUSTED_SERVER) || Strings.isEmptyString(REMOTE_UNTRUSTED_SERVER)) {
 			//			Assert.fail("Please set up the Notes.ini variables junit_remote_untrusted_server and junit_remote_trusted_server");
 		}
 	}

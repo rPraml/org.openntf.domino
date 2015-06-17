@@ -4,7 +4,14 @@ import org.openntf.domino.commons.NameEnums.NameError;
 import org.openntf.domino.commons.NameEnums.NameFormat;
 import org.openntf.domino.commons.NameEnums.NamePartKey;
 
-public interface INameParser {
+/**
+ * The IName Interface. A common subset of getters that describes an abstract Name - required in every environment (Notes & non-Notes) (The
+ * ODA-Name will extend this)
+ * 
+ * @author Manfred Steinsiek, Roland Praml, FOCONIS AG
+ *
+ */
+public interface IName {
 
 	/**
 	 * Gets the RFC821 or RFC822 internet address
@@ -77,4 +84,15 @@ public interface INameParser {
 
 	public String getSurname();
 
+	//	/**
+	//	 * Checks if the given name is member of the given collection.
+	//	 * 
+	//	 * @param namesOrGroups
+	//	 *            a collection with Names or Groups (or roles)
+	//	 * @param resolver
+	//	 *            if the name is not directly listed, the request is passed to the resolver, the resolver can determine if an user is member
+	//	 *            or not
+	//	 * @return true if the user is member of the given group
+	//	 */
+	//	public boolean isMemberOf(Collection<String> namesOrGroups, IGroupResolver resolver);
 }

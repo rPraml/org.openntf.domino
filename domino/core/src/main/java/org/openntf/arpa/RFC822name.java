@@ -26,16 +26,17 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openntf.domino.commons.utils.StringsUtils;
+import org.openntf.domino.commons.Strings;
 
 /**
  * Carrier and parsing object for various RFC822 name parts.
  * 
  * @author Devin S. Olsonm (dolson@czarnowski.com)
- * 
+ * @deprecated Use {@link org.openntf.domino.commons.INameParser} in future.
  * @see "RFC822: Standard for ARPA Internet Text Messages" http://www.w3.org/Protocols/rfc822/
  * 
  */
+@Deprecated
 @SuppressWarnings("javadoc")
 public class RFC822name extends HashMap<RFC822name.Key, String> implements Serializable {
 
@@ -374,7 +375,7 @@ public class RFC822name extends HashMap<RFC822name.Key, String> implements Seria
 
 			} else {
 				for (final String s : this.values()) {
-					if (StringsUtils.startsWithIgnoreCase(s, prefix)) {
+					if (Strings.startsWithIgnoreCase(s, prefix)) {
 						return true;
 					}
 				}

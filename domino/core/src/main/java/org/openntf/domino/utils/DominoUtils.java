@@ -47,15 +47,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 
-import org.openntf.arpa.NamePartsMap;
 import org.openntf.domino.DateTime;
 import org.openntf.domino.ExceptionDetails;
 import org.openntf.domino.Item;
 import org.openntf.domino.Name;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.Hash;
 import org.openntf.domino.commons.NameEnums.NamePartKey;
-import org.openntf.domino.commons.utils.StringsUtils;
+import org.openntf.domino.commons.Strings;
 import org.openntf.domino.exceptions.InvalidNotesUrlException;
 import org.openntf.domino.exceptions.OpenNTFNotesException;
 import org.openntf.domino.logging.LogUtils;
@@ -70,11 +70,17 @@ import com.ibm.icu.util.ULocale;
 public enum DominoUtils {
 	;
 
+	@Deprecated
 	public static final String VIEWNAME_VIM_PEOPLE_AND_GROUPS = "($VIMPeopleAndGroups)";
+	@Deprecated
 	public static final String VIEWNAME_VIM_GROUPS = "($VIMGroups)";
 
+	@Deprecated
+	// use commons.Constants 
 	public static final int LESS_THAN = -1;
+	@Deprecated
 	public static final int EQUAL = 0;
+	@Deprecated
 	public static final int GREATER_THAN = 1;
 
 	/** The Constant log_. */
@@ -83,6 +89,13 @@ public enum DominoUtils {
 	/** The Constant logBackup_. */
 	private final static Logger logBackup_ = Logger.getLogger("com.ibm.xsp.domino");
 
+	/**
+	 * Gets a class from the current contextClassLoader
+	 * 
+	 * @param className
+	 *            the className
+	 * @return the class
+	 */
 	public static Class<?> getClass(final CharSequence className) {
 		Class<?> result = null;
 		try {
@@ -125,6 +138,11 @@ public enum DominoUtils {
 		}
 	};
 
+	/**
+	 * Returns the current bubbleException setting
+	 * 
+	 * @return true or false
+	 */
 	public static Boolean getBubbleExceptions() {
 		Boolean ret = bubbleExceptions_.get();
 		if (ret == null) {
@@ -135,6 +153,12 @@ public enum DominoUtils {
 		return ret;
 	}
 
+	/**
+	 * Sets the current exception handling
+	 * 
+	 * @param value
+	 *            True,False or null. Null sets the bubbleExceptionHandling to the application default
+	 */
 	public static void setBubbleExceptions(final Boolean value) {
 		bubbleExceptions_.set(value);
 	}
@@ -176,7 +200,9 @@ public enum DominoUtils {
 	 * @param alg
 	 *            the alg
 	 * @return the string
+	 * @deprecated use Hash.checksum instead
 	 */
+	@Deprecated
 	public static String checksum(final byte[] bytes, final String alg) {
 		String hashed = "";
 		byte[] defaultBytes = bytes;
@@ -211,7 +237,9 @@ public enum DominoUtils {
 	 * @param alg
 	 *            the alg
 	 * @return the string
+	 * @deprecated use Hash.checksum instead
 	 */
+	@Deprecated
 	public static String checksum(final File file, final String alg) {
 		String hashed = "";
 		byte[] dataBytes = new byte[4096];
@@ -245,42 +273,11 @@ public enum DominoUtils {
 	 * @param value
 	 *            the value
 	 * @return true, if is number
+	 * @deprecated Use {@link Strings#isNumber(CharSequence)}
 	 */
+	@Deprecated
 	public static boolean isNumber(final CharSequence value) {
-		boolean seenDot = false;
-		boolean seenExp = false;
-		boolean justSeenExp = false;
-		boolean seenDigit = false;
-		for (int i = 0; i < value.length(); i++) {
-			char c = value.charAt(i);
-			if (c >= '0' && c <= '9') {
-				seenDigit = true;
-				continue;
-			}
-			if ((c == '-' || c == '+') && (i == 0 || justSeenExp)) {
-				continue;
-			}
-			if (c == '.' && !seenDot) {
-				seenDot = true;
-				continue;
-			}
-			justSeenExp = false;
-			if ((c == 'e' || c == 'E') && !seenExp) {
-				seenExp = true;
-				justSeenExp = true;
-				continue;
-			}
-			return false;
-		}
-		if (!seenDigit) {
-			return false;
-		}
-		try {
-			Double.parseDouble(value.toString());
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
+		return Strings.isNumber(value);
 	}
 
 	/**
@@ -291,7 +288,9 @@ public enum DominoUtils {
 	 * @param algorithm
 	 *            the algorithm
 	 * @return the string
+	 * @deprecated use Hash.checksum instead
 	 */
+	@Deprecated
 	public static String checksum(final Serializable object, final String algorithm) {
 		String result = null;
 		try {
@@ -446,11 +445,19 @@ public enum DominoUtils {
 		}
 	}
 
+	/**
+	 * @deprecated Roland Praml: Use the {@link org.openntf.domino.commons.Names} instead
+	 */
+	@Deprecated
 	public static boolean isHierarchicalName(final CharSequence name) {
-		return (StringsUtils.isBlankString(name.toString())) ? false : Names.IS_HIERARCHICAL_MATCH.matcher(name).find();
+		return (Strings.isBlankString(name.toString())) ? false : Names.IS_HIERARCHICAL_MATCH.matcher(name).find();
 	}
 
-	public static void parseNamesPartMap(final CharSequence name, final NamePartsMap map) {
+	/**
+	 * @deprecated Roland Praml: Use the {@link org.openntf.domino.commons.Names} instead
+	 */
+	@Deprecated
+	public static void parseNamesPartMap(final CharSequence name, final org.openntf.arpa.NamePartsMap map) {
 		if (isHierarchicalName(name)) {
 			Matcher m = Names.CN_MATCH.matcher(name);
 			if (m.find()) {
@@ -549,6 +556,10 @@ public enum DominoUtils {
 		}
 	}
 
+	/**
+	 * @deprecated Roland Praml: Use the {@link org.openntf.domino.commons.INameParser} instead
+	 */
+	@Deprecated
 	public static String toCommonName(final CharSequence name) {
 		if (isHierarchicalName(name)) {
 			Matcher m = Names.CN_MATCH.matcher(name);
@@ -568,6 +579,10 @@ public enum DominoUtils {
 		}
 	}
 
+	/**
+	 * @deprecated Roland Praml: Use the {@link org.openntf.domino.commons.INameParser} instead
+	 */
+	@Deprecated
 	public static String toOrgName(final CharSequence name) {
 		if (isHierarchicalName(name)) {
 			Matcher m = Names.O_MATCH.matcher(name);
@@ -587,6 +602,10 @@ public enum DominoUtils {
 		}
 	}
 
+	/**
+	 * @deprecated Roland Praml: Use the {@link org.openntf.domino.commons.INameParser} instead
+	 */
+	@Deprecated
 	public static String toOUString(final CharSequence name) {
 		if (isHierarchicalName(name)) {
 			Matcher m = Names.OU_MATCH.matcher(name);
@@ -613,6 +632,10 @@ public enum DominoUtils {
 		}
 	}
 
+	/**
+	 * @deprecated Roland Praml: Use the {@link org.openntf.domino.commons.INameParser} instead
+	 */
+	@Deprecated
 	public static String[] toOU(final CharSequence name) {
 		if (isHierarchicalName(name)) {
 			Matcher m = Names.OU_MATCH.matcher(name);
@@ -637,6 +660,10 @@ public enum DominoUtils {
 		}
 	}
 
+	/**
+	 * @deprecated Roland Praml: Use the {@link org.openntf.domino.commons.INameParser} instead
+	 */
+	@Deprecated
 	public static String toCountry(final CharSequence name) {
 		if (isHierarchicalName(name)) {
 			Matcher m = Names.C_MATCH.matcher(name);
@@ -713,22 +740,11 @@ public enum DominoUtils {
 	 * @param value
 	 *            the value
 	 * @return true, if is hex
+	 * @deprecated use Strings.isHex
 	 */
+	@Deprecated
 	public static boolean isHex(final CharSequence value) {
-		if (value == null)
-			return false;
-		String chk = value.toString().trim().toLowerCase();
-		for (int i = 0; i < chk.length(); i++) {
-			char c = chk.charAt(i);
-			boolean isHexDigit = Character.isDigit(c) || Character.isWhitespace(c) || c == 'a' || c == 'b' || c == 'c' || c == 'd'
-					|| c == 'e' || c == 'f';
-
-			if (!isHexDigit) {
-				return false;
-			}
-
-		}
-		return true;
+		return Strings.isHex(value);
 	}
 
 	/**
@@ -741,7 +757,7 @@ public enum DominoUtils {
 	public static boolean isUnid(final CharSequence value) {
 		if (value.length() != 32)
 			return false;
-		return DominoUtils.isHex(value);
+		return Strings.isHex(value);
 	}
 
 	/**
@@ -754,7 +770,7 @@ public enum DominoUtils {
 	public static boolean isReplicaId(final CharSequence value) {
 		if (value.length() != 16)
 			return false;
-		return DominoUtils.isHex(value);
+		return Strings.isHex(value);
 	}
 
 	/**
@@ -763,7 +779,9 @@ public enum DominoUtils {
 	 * @param object
 	 *            the Serializable object
 	 * @return the string representing the MD5 hash value of the serialized version of the object
+	 * @deprecated use {@link Hash#md5} instead
 	 */
+	@Deprecated
 	public static String md5(final Serializable object) {
 		return DominoUtils.checksum(object, "MD5");
 	}
@@ -1006,11 +1024,16 @@ public enum DominoUtils {
 		}
 	}
 
+	@Deprecated
 	public static String escapeForFormulaString(final String value) {
 		// I wonder if this is sufficient escaping
+		// RPr: It may be sufficient, but it will break formulas like this: @ReplaceSubstring(field; "{0}"; "blabla"); 
+		// => so it is deprecated until it is fixed
 		return value.replace("{", "\\{").replace("}", "\\}");
 	}
 
+	@Deprecated
+	// RPr: I'm not sure for what this method is. DateTime is serializable now!?
 	public static boolean isSerializable(final Collection<?> values) {
 		if (values == null)
 			return false;
@@ -1082,12 +1105,33 @@ public enum DominoUtils {
 		return result;
 	}
 
+	/**
+	 * Converts the binary name by replacing the "." with the separator and appending ".class"
+	 * 
+	 * @param binaryName
+	 *            the binaryName (getClass().getName())
+	 * @param separator
+	 *            the separator (normally /)
+	 * @return the filepath
+	 * @deprecated Roland Praml: As far as I see this method is used in classloader only. (Better keep it there)
+	 */
+	@Deprecated
 	public static String javaBinaryNameToFilePath(final CharSequence binaryName, final String separator) {
 		return binaryName.toString().replace(".", separator) + ".class";
 	}
 
+	/**
+	 * Converts a filepath back to class name
+	 * 
+	 * @param filePath
+	 *            the filePath
+	 * @param separator
+	 *            the separator
+	 * @return the className
+	 * @deprecated Roland Praml: As far as I see this method is used in design.impl only. (Better keep it there)
+	 */
+	@Deprecated
 	public static String filePathToJavaBinaryName(final CharSequence filePath, final String separator) {
 		return filePath.subSequence(0, filePath.length() - 6).toString().replace(separator, ".");
 	}
-
 }

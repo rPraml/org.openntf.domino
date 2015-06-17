@@ -20,7 +20,7 @@ import org.openntf.domino.MIMEHeader;
 import org.openntf.domino.Session;
 import org.openntf.domino.Stream;
 import org.openntf.domino.annotations.Incomplete;
-import org.openntf.domino.commons.utils.StringsUtils;
+import org.openntf.domino.commons.Strings;
 import org.openntf.domino.email.IEmailAttachment.Type;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
@@ -229,7 +229,7 @@ public class DominoEmail implements IEmail {
 		contentsHTML_.add(content.toString());
 
 		// Add plain text part of email
-		if (StringsUtils.isEmptyString(content.toString())) {
+		if (Strings.isEmptyString(content.toString())) {
 			contentsText_.add("");
 		} else {
 			contentsText_.add(content.toString().replaceAll("<[a-zA-Z\\/][^>]*>", ""));
@@ -675,7 +675,7 @@ public class DominoEmail implements IEmail {
 			}
 
 			//create embedded JSON part
-			if (StringsUtils.isEmptyString(getJSON())) {
+			if (Strings.isEmptyString(getJSON())) {
 				mimeEntity = mimeRootChild.createChildEntity();
 				stream = currSess.createStream();
 				String json = "{\"url\" : \"" + getJSON() + "\"}" + System.getProperty("line.separator");
@@ -712,7 +712,7 @@ public class DominoEmail implements IEmail {
 	 */
 	private void setSender(final MIMEEntity mimeRoot) {
 
-		if (StringsUtils.isEmptyString(getSenderEmail())) {
+		if (Strings.isEmptyString(getSenderEmail())) {
 			return;
 		}
 
@@ -724,7 +724,7 @@ public class DominoEmail implements IEmail {
 		mimeHeader = mimeRoot.createHeader("Return-Path");
 		mimeHeader.setHeaderVal(getSenderEmail());
 
-		if (StringsUtils.isEmptyString(getSenderName())) {
+		if (Strings.isEmptyString(getSenderName())) {
 
 			mimeHeader = mimeRoot.createHeader("From");
 			mimeHeader.setHeaderVal(getSenderEmail());
@@ -756,7 +756,7 @@ public class DominoEmail implements IEmail {
 	 */
 	public static String join(final Collection<String> vals, String separator) {
 		String retVal_ = "";
-		if (StringsUtils.isEmptyString(separator)) {
+		if (Strings.isEmptyString(separator)) {
 			separator = ",";
 		}
 		for (String s : vals) {

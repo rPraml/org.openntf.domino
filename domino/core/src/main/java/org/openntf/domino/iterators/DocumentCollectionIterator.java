@@ -4,6 +4,12 @@ import java.util.Iterator;
 
 import org.openntf.domino.DocumentCollection;
 
+/**
+ * 
+ * @author Roland Praml, FOCONIS AG
+ * @deprecated This class is deprecated. Use {@link DocumentCollection#iterator()}
+ */
+@Deprecated
 public class DocumentCollectionIterator implements Iterator<org.openntf.domino.Document> {
 	private final org.openntf.domino.DocumentCollection documentCollection_;
 

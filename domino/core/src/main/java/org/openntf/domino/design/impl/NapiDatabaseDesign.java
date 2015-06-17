@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.NoteCollection;
-import org.openntf.domino.commons.utils.StringsUtils;
+import org.openntf.domino.commons.Strings;
 import org.openntf.domino.design.DesignBase;
 import org.openntf.domino.ext.NoteClass;
 
@@ -159,7 +159,7 @@ public class NapiDatabaseDesign {
 			coll.add(database_.getDocumentByID(Integer.toHexString(0xFFFF0000 | mapping.getNoteClass().nativeValue)));
 			break;
 		default:
-			if (!StringsUtils.isEmptyString(name)) {
+			if (!Strings.isEmptyString(name)) {
 				name = "|" + name + "|";
 			}
 

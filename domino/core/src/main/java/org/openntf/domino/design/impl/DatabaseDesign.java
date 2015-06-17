@@ -29,7 +29,7 @@ import org.openntf.domino.Document;
 import org.openntf.domino.NoteCollection;
 import org.openntf.domino.NoteCollection.SelectOption;
 import org.openntf.domino.Session;
-import org.openntf.domino.commons.utils.StringsUtils;
+import org.openntf.domino.commons.Strings;
 import org.openntf.domino.design.AboutDocument;
 import org.openntf.domino.design.DesignBase;
 import org.openntf.domino.design.DesignForm;
@@ -379,6 +379,7 @@ public class DatabaseDesign implements org.openntf.domino.design.DatabaseDesign 
 	public DatabaseClassLoader getDatabaseClassLoader(final ClassLoader parent, final boolean includeJars, final boolean includeLibraries) {
 		return new DatabaseClassLoader(this, parent, includeJars, includeLibraries);
 	}
+
 	//
 	//	//	protected NoteCollection getNoteCollection(final String selectionFormula, final Set<SelectOption> options) {
 	//	//		NoteCollection notes = database_.createNoteCollection(false);
@@ -424,9 +425,9 @@ public class DatabaseDesign implements org.openntf.domino.design.DatabaseDesign 
 			}
 		}
 		String setting = props.getProperty(propertyName);
-		if (StringsUtils.isEmptyString(setting))
+		if (Strings.isEmptyString(setting))
 			return new String[0];
-		return StringsUtils.splitSimple(setting, ',', false);
+		return Strings.splitSimple(setting, ',', false);
 	}
 
 	@Override
@@ -466,7 +467,7 @@ public class DatabaseDesign implements org.openntf.domino.design.DatabaseDesign 
 
 		// Set up selection formula
 		StringBuilder sb = new StringBuilder();
-		if (!StringsUtils.isEmptyString(search)) {
+		if (!Strings.isEmptyString(search)) {
 			sb.append('(');
 			sb.append(search);
 			sb.append(')');
@@ -474,11 +475,11 @@ public class DatabaseDesign implements org.openntf.domino.design.DatabaseDesign 
 			sb.append("@True");
 		}
 
-		if (!StringsUtils.isEmptyString(mapping.getFlags())) {
+		if (!Strings.isEmptyString(mapping.getFlags())) {
 			sb.append('&');
 			sb.append(DesignFlags.buildFlagFormula("$FLAGS", mapping.getFlags()));
 		}
-		if (!StringsUtils.isEmptyString(mapping.getFlagsExt())) {
+		if (!Strings.isEmptyString(mapping.getFlagsExt())) {
 			sb.append('&');
 			sb.append(DesignFlags.buildFlagFormula("$FLAGSEXT", mapping.getFlagsExt()));
 		}
@@ -599,7 +600,9 @@ public class DatabaseDesign implements org.openntf.domino.design.DatabaseDesign 
 			return searchDesignElements(type, null);
 
 		} else {
-			return searchDesignElements(type, String.format("@Explode($TITLE; '|')=\"%s\" ", DominoUtils.escapeForFormulaString(name)));
+			String safeName = name.replace("\\", "\\\\").replace("\"", "\\\"");
+
+			return searchDesignElements(type, String.format("@Explode($TITLE; '|')=\"%s\" ", safeName));
 		}
 	}
 

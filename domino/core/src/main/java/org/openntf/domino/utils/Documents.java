@@ -44,7 +44,7 @@ import org.openntf.domino.NoteCollection;
 import org.openntf.domino.RichTextItem;
 import org.openntf.domino.Session;
 import org.openntf.domino.Stream;
-import org.openntf.domino.commons.utils.StringsUtils;
+import org.openntf.domino.commons.Strings;
 import org.openntf.domino.exceptions.DataNotCompatibleException;
 import org.openntf.domino.exceptions.MIMEConversionException;
 import org.openntf.domino.utils.DominoUtils.LoaderObjectInputStream;
@@ -390,7 +390,7 @@ public enum Documents {
 			if (null == document) {
 				throw new IllegalArgumentException("Document is null");
 			}
-			if (StringsUtils.isBlankString(itemname)) {
+			if (Strings.isBlankString(itemname)) {
 				throw new IllegalArgumentException("Itemname is blank or null");
 			}
 
@@ -439,7 +439,7 @@ public enum Documents {
 			if (null == document) {
 				throw new IllegalArgumentException("Document is null");
 			}
-			if (StringsUtils.isBlankString(itemname)) {
+			if (Strings.isBlankString(itemname)) {
 				throw new IllegalArgumentException("Itemname is blank or null");
 			}
 
@@ -487,7 +487,7 @@ public enum Documents {
 				throw new IllegalArgumentException("Document is null");
 			}
 
-			return (document.hasItem(ITEMNAME_RECORDID) && (!StringsUtils.isBlankString(document.getItemValueString(ITEMNAME_RECORDID))));
+			return (document.hasItem(ITEMNAME_RECORDID) && (!Strings.isBlankString(document.getItemValueString(ITEMNAME_RECORDID))));
 
 		} catch (Exception e) {
 			DominoUtils.handleException(e);
@@ -516,7 +516,7 @@ public enum Documents {
 		if (value.size() > 1)
 			return true;
 		// size = 1
-		return !StringsUtils.isBlankString(value.get(0).toString());
+		return !Strings.isBlankString(value.get(0).toString());
 	}
 
 	/**

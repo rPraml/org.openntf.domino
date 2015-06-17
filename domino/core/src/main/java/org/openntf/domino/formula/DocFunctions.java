@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.openntf.domino.Document;
-import org.openntf.domino.commons.utils.StringsUtils;
+import org.openntf.domino.commons.Strings;
 import org.openntf.formula.Function;
 import org.openntf.formula.FunctionFactory;
 import org.openntf.formula.FunctionSet;
@@ -171,10 +171,10 @@ public enum DocFunctions {
 	public static boolean atAddToFolder(final FormulaContextNotes ctx, final String to, final String from) {
 		Document doc = ctx.getDocument();
 		if (doc != null) {
-			if (!StringsUtils.isBlankString(to)) {
+			if (!Strings.isBlankString(to)) {
 				doc.putInFolder(to);
 			}
-			if (!StringsUtils.isBlankString(from)) {
+			if (!Strings.isBlankString(from)) {
 				doc.removeFromFolder(from);
 			}
 			return true;

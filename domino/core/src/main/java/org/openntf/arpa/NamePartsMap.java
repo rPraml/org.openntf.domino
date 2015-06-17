@@ -33,12 +33,14 @@ import org.openntf.domino.utils.DominoUtils;
  * NamePartsMap carries the various component string values that make up a name.
  * 
  * @author Devin S. Olson (dolson@czarnowski.com)
+ * @deprecated Roland Praml: Use {@link org.openntf.domino.commons.INameParser} in future.
  * 
  */
+@Deprecated
 public class NamePartsMap extends EnumMap<NamePartKey, String> implements Serializable {
 
 	// Enum Key moved to Interface ext-Name (org.openntf.domino.ext.Name.NamePartKey)
-
+	@Deprecated
 	public static enum CanonicalKey {
 		CN("Common Name"), OU("Organizational Unit"), O("Organization"), C("Country Code");
 		private String _label;
@@ -513,14 +515,14 @@ public class NamePartsMap extends EnumMap<NamePartKey, String> implements Serial
 		return false;
 
 	} /*
-	 * ******************************************************************
-	 * ******************************************************************
-	 * 
-	 * private methods
-	 * 
-	 * ******************************************************************
-	 * ******************************************************************
-	 */
+		* ******************************************************************
+		* ******************************************************************
+		* 
+		* private methods
+		* 
+		* ******************************************************************
+		* ******************************************************************
+		*/
 
 	/**
 	 * Retrieves and sets the various name values by parsing an input source string.

@@ -27,12 +27,12 @@ import lotus.notes.addins.DominoServer;
 
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.commons.INameParser;
+import org.openntf.domino.commons.IName;
 import org.openntf.domino.commons.NameEnums.NameError;
 import org.openntf.domino.commons.NameEnums.NameFormat;
 import org.openntf.domino.commons.NameEnums.NamePartKey;
-import org.openntf.domino.commons.impl.NameParser;
-import org.openntf.domino.commons.utils.StringsUtils;
+import org.openntf.domino.commons.Names;
+import org.openntf.domino.commons.Strings;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
@@ -44,7 +44,7 @@ import org.openntf.domino.utils.Factory.SessionType;
  */
 
 public class NameODA extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.domino.Name, Session> implements org.openntf.domino.Name,
-		Comparable<org.openntf.domino.Name>, Cloneable {
+Comparable<org.openntf.domino.Name>, Cloneable {
 	@SuppressWarnings("unused")
 	private static final Logger log_ = Logger.getLogger(NameODA.class.getName());
 
@@ -53,7 +53,7 @@ public class NameODA extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.do
 	 * Constructors
 	 */
 	private String _language;
-	private INameParser _parserDelegate;
+	private IName _parserDelegate;
 
 	@Deprecated
 	// Needed for Externalization
@@ -64,8 +64,8 @@ public class NameODA extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.do
 	// Called from WrapperFactory.create
 	protected NameODA(final Session sess, final String name, final String lang) {
 		super(null, sess, NOTES_NAME);
-		_language = StringsUtils.null2Empty(lang);
-		_parserDelegate = new NameParser(name);
+		_language = Strings.null2Empty(lang);
+		_parserDelegate = Names.parse(name);
 	}
 
 	// Called from WrapperFactory.wrapLotusObject
@@ -73,7 +73,7 @@ public class NameODA extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.do
 		super(delegate, parent, NOTES_NAME);
 		try {
 			_language = delegate.getLanguage();
-			_parserDelegate = new NameParser(delegate.getCanonical());
+			_parserDelegate = Names.parse(delegate.getCanonical());
 		} catch (NotesException ne) {
 			DominoUtils.handleException(ne);
 		} finally {
@@ -191,7 +191,7 @@ public class NameODA extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.do
 			throw new InvalidClassException("Cannot read data version " + version);
 		String canonical = in.readUTF();
 		_language = in.readUTF();
-		_parserDelegate = new NameParser(canonical);
+		_parserDelegate = Names.parse(canonical);
 	}
 
 	@Override

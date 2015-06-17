@@ -9,8 +9,8 @@ import javolution.util.FastSet;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
+import org.openntf.domino.commons.Hash;
 import org.openntf.domino.thread.DominoExecutor;
-import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.xots.Tasklet;
@@ -157,7 +157,7 @@ public enum Configuration {
 		// TODO: Move md5 cache to DominoUtils!
 		String ret = md5Cache_.get(input);
 		if (ret == null) {
-			ret = DominoUtils.md5(input);
+			ret = Hash.md5(input);
 			md5Cache_.put(input, ret);
 		}
 		return ret;

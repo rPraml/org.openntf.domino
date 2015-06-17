@@ -24,7 +24,10 @@ import org.openntf.domino.utils.DominoUtils;
 // TODO: Auto-generated Javadoc
 /**
  * The Class ViewEntryIterator.
+ * 
+ * @deprecated Roland Praml: This class is deprecated. use {@link ViewEntryCollection#iterator()
  */
+@Deprecated
 public class ViewEntryIterator implements Iterator<ViewEntry> {
 
 	/** The current entry_. */

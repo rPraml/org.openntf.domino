@@ -32,30 +32,31 @@ import lotus.domino.NotesException;
 
 import org.openntf.domino.DateTime;
 import org.openntf.domino.Item;
-import org.openntf.domino.commons.utils.StringsUtils;
+import org.openntf.domino.commons.Strings;
 
 /**
  * Date and Time handling utilities
  * 
  * @author Devin S. Olson (dolson@czarnowski.com)
- * 
+ * @deprecated Roland Praml: Should be reviewed and maybe moved to "commons"
  */
+@Deprecated
 public enum Dates {
-	DATEONLY(Strings.TIMESTAMP_DATEONLY, Strings.REGEX_DATEONLY, false),
+	DATEONLY(org.openntf.domino.utils.Strings.TIMESTAMP_DATEONLY, org.openntf.domino.utils.Strings.REGEX_DATEONLY, false),
 
-	TIMEONLY(Strings.TIMESTAMP_TIMEONLY, Strings.REGEX_TIMEONLY, true),
+	TIMEONLY(org.openntf.domino.utils.Strings.TIMESTAMP_TIMEONLY, org.openntf.domino.utils.Strings.REGEX_TIMEONLY, true),
 
-	DAYMONTH_NAMES(Strings.TIMESTAMP_DAYMONTH_NAMES, Strings.REGEX_DAYMONTH_NAMES, true),
+	DAYMONTH_NAMES(org.openntf.domino.utils.Strings.TIMESTAMP_DAYMONTH_NAMES, org.openntf.domino.utils.Strings.REGEX_DAYMONTH_NAMES, true),
 
-	DEFAULT(Strings.TIMESTAMP_DEFAULT, Strings.REGEX_DEFAULT, true),
+	DEFAULT(org.openntf.domino.utils.Strings.TIMESTAMP_DEFAULT, org.openntf.domino.utils.Strings.REGEX_DEFAULT, true),
 
-	MEDDATE(Strings.TIMESTAMP_MEDDATE, Strings.REGEX_MEDDATE, false),
+	MEDDATE(org.openntf.domino.utils.Strings.TIMESTAMP_MEDDATE, org.openntf.domino.utils.Strings.REGEX_MEDDATE, false),
 
-	MILITARY(Strings.TIMESTAMP_MILITARY, Strings.REGEX_MILITARY, true),
+	MILITARY(org.openntf.domino.utils.Strings.TIMESTAMP_MILITARY, org.openntf.domino.utils.Strings.REGEX_MILITARY, true),
 
-	SHORTDATE(Strings.TIMESTAMP_SHORTDATE, Strings.REGEX_SHORTDATE, false),
+	SHORTDATE(org.openntf.domino.utils.Strings.TIMESTAMP_SHORTDATE, org.openntf.domino.utils.Strings.REGEX_SHORTDATE, false),
 
-	SIMPLETIME(Strings.TIMESTAMP_SIMPLETIME, Strings.REGEX_SIMPLETIME, true);
+	SIMPLETIME(org.openntf.domino.utils.Strings.TIMESTAMP_SIMPLETIME, org.openntf.domino.utils.Strings.REGEX_SIMPLETIME, true);
 
 	private final String _timestampFormat;
 	private final String _regex;
@@ -73,8 +74,9 @@ public enum Dates {
 	 */
 	private Dates(final String timestampFormat, final String regex, final boolean hastimecomponent) {
 		this._timestampFormat = timestampFormat;
-		this._regex = Strings.REGEX_BEGIN_NOCASE + regex + Strings.REGEX_END;
-		this._pattern = Pattern.compile(Strings.REGEX_BEGIN_NOCASE + regex + Strings.REGEX_END);
+		this._regex = org.openntf.domino.utils.Strings.REGEX_BEGIN_NOCASE + regex + org.openntf.domino.utils.Strings.REGEX_END;
+		this._pattern = Pattern.compile(org.openntf.domino.utils.Strings.REGEX_BEGIN_NOCASE + regex
+				+ org.openntf.domino.utils.Strings.REGEX_END);
 		this._hasTimeComponent = hastimecomponent;
 	}
 
@@ -192,7 +194,7 @@ public enum Dates {
 	public Date parseInstance(final String string) {
 
 		try {
-			if (StringsUtils.isBlankString(string)) {
+			if (Strings.isBlankString(string)) {
 				throw new IllegalArgumentException("String to parse is null or blank");
 			}
 
@@ -298,7 +300,7 @@ public enum Dates {
 	 */
 	public static String getTimestamp(final Object object, final String format) {
 		try {
-			if (StringsUtils.isBlankString(format)) {
+			if (Strings.isBlankString(format)) {
 				return Dates.DEFAULT.getInstanceTimestamp(object);
 			}
 
@@ -942,7 +944,7 @@ public enum Dates {
 	 * @return First found TimeFormatter. Null if no name or format equality or match found.
 	 */
 	public static Dates get(final String key) {
-		if (!StringsUtils.isBlankString(key)) {
+		if (!Strings.isBlankString(key)) {
 			for (final Dates result : Dates.values()) {
 				if (result.name().equalsIgnoreCase(key) || result.getInstanceTimestampFormat().equalsIgnoreCase(key)) {
 					return result;
@@ -1185,7 +1187,7 @@ public enum Dates {
 	 * @return SimpleDateFormat object for the specified format
 	 */
 	public static SimpleDateFormat getSimpleDateFormat(final String format) {
-		final SimpleDateFormat result = (StringsUtils.isBlankString(format)) ? new SimpleDateFormat() : new SimpleDateFormat(format);
+		final SimpleDateFormat result = (Strings.isBlankString(format)) ? new SimpleDateFormat() : new SimpleDateFormat(format);
 		result.setLenient(true);
 		return result;
 	}
@@ -1201,7 +1203,7 @@ public enum Dates {
 	public static Date parse(final String string) {
 
 		try {
-			if (StringsUtils.isBlankString(string)) {
+			if (Strings.isBlankString(string)) {
 				throw new IllegalArgumentException("String to parse is null or blank");
 			}
 
@@ -1244,7 +1246,7 @@ public enum Dates {
 	 */
 	public static Date parse(final String dateText, final String format) {
 		if (null != dateText) {
-			if (StringsUtils.isBlankString(format)) {
+			if (Strings.isBlankString(format)) {
 				return Dates.parse(dateText);
 			}
 

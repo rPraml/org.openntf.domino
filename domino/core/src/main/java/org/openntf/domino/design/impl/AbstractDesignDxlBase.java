@@ -623,8 +623,8 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 			dxlFormat_ = DxlFormat.RAWNOTE;
 		} else {
 			if (enforceRawFormat()) {
-				throw new UnsupportedOperationException(
-						getClass().getSimpleName() + ": Raw format was enforced, but we got a " + docRoot.getNodeName());
+				throw new UnsupportedOperationException(getClass().getSimpleName() + ": Raw format was enforced, but we got a "
+						+ docRoot.getNodeName());
 			}
 			dxlFormat_ = DxlFormat.DXL;
 		}
@@ -660,7 +660,8 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 		try {
 			if (document_ != null) {
 				//document has to be recycled manually here, in order to set a new Document afterwards.
-				document_.recycle();
+				((lotus.domino.Document) document_).recycle(); // cast necessary, because recycle is deprecated in ODA
+
 			}
 		} catch (NotesException e) {
 			DominoUtils.handleException(e);

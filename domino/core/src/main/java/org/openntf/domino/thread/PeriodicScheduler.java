@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-import org.openntf.domino.commons.utils.StringsUtils;
+import org.openntf.domino.commons.Strings;
 
 public class PeriodicScheduler implements Scheduler {
 	private static final Logger log_ = Logger.getLogger(DominoExecutor.class.getName());
@@ -67,7 +67,7 @@ public class PeriodicScheduler implements Scheduler {
 		addJitter(1.0);
 
 		if (strTok.hasMoreTokens()) { // time window
-			String[] parts = StringsUtils.splitSimple(strTok.nextToken(), '-', false);
+			String[] parts = Strings.splitSimple(strTok.nextToken(), '-', false);
 			if (parts.length != 2)
 				throw new NumberFormatException("Invalid Time Definition String: " + defString);
 			this.startSecond = parseToSeconds(parts[0]);
@@ -117,7 +117,7 @@ public class PeriodicScheduler implements Scheduler {
 
 		int parts[] = new int[3];
 		if (str.indexOf(':') != -1) {
-			String[] strParts = StringsUtils.splitSimple(str, ':', false);
+			String[] strParts = Strings.splitSimple(str, ':', false);
 			if (strParts.length == 3) { // 00:00:00
 				parts[0] = Integer.valueOf(strParts[0]); // hour
 				parts[1] = Integer.valueOf(strParts[1]); // minute

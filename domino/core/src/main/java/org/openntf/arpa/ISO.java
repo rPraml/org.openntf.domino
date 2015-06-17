@@ -24,7 +24,11 @@ import java.util.regex.Pattern;
 /**
  * @author dolson
  * 
+ * @deprecated RPr: This class is deprecated, because most of the stuff can be done by by {@link java.util.Locale} and the NameParse-Stuff
+ *             is completely rewritten that formerly need this class
  */
+
+@Deprecated
 @SuppressWarnings("unused")
 public enum ISO {
 	;

@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openntf.domino.design.XspResource;
-import org.openntf.domino.utils.DominoUtils;
 
 /**
  * @author jgallagher
@@ -47,8 +46,9 @@ public abstract class AbstractXspResource extends AbstractDesignNapiFileResource
 		String[] classIndex = getDocument().getItemValue(CLASS_ITEM, String[].class);
 		List<String> names = new ArrayList<String>();
 		for (String path : classIndex) {
-			if (path.startsWith("WEB-INF/classes/")) {
-				names.add(DominoUtils.filePathToJavaBinaryName(path.substring(16), "/"));
+			if (path.startsWith("WEB-INF/classes/") && path.endsWith(".class")) {
+				String className = path.substring(16, path.length() - 6).replace('/', '.');
+				names.add(className);
 			} else {
 				names.add("");// add blank entries, otherwise the wrong $ClassData item will be located
 			}

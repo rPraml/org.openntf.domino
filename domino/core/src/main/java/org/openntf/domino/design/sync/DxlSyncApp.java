@@ -8,7 +8,7 @@ import java.util.logging.Level;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
-import org.openntf.domino.commons.utils.StringsUtils;
+import org.openntf.domino.commons.Strings;
 import org.openntf.domino.progress.CLIProgressObserver;
 import org.openntf.domino.progress.ProgressObserver;
 import org.openntf.domino.session.NativeSessionFactory;
@@ -115,7 +115,7 @@ public class DxlSyncApp implements Runnable {
 				}
 			}
 
-			if (!StringsUtils.isEmptyString(viewName)) {
+			if (!Strings.isEmptyString(viewName)) {
 				work++;
 				File docDir = new File(odpDir, SyncTask.DOC_DIR);
 				if (!docDir.exists())

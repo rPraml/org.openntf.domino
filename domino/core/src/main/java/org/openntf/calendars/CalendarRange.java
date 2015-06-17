@@ -7,7 +7,10 @@ import org.openntf.domino.utils.Dates;
 
 /**
  * Carrier for a pair of two Calendar objects specifying a range of time.
+ * 
+ * @deprecated Roland Praml: Should be moved to own project
  */
+@Deprecated
 public class CalendarRange implements CalendarRangeInterface {
 
 	private static final long serialVersionUID = 1L;

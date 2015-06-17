@@ -1,5 +1,7 @@
-package org.openntf.domino.commons.utils;
+package org.openntf.domino.commons;
 
+import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -7,8 +9,11 @@ import java.util.Collection;
  * 
  * @author Steinsiek
  */
-public enum StringsUtils {
+public enum Strings {
 	;
+	public static final Charset UTF_8_CHARSET = Charset.forName("UTF-8");
+
+	public static final String EMPTY_STRING = "";
 
 	/**
 	 * Case-insensitive variant of {@link String#startsWith(String)}
@@ -44,10 +49,11 @@ public enum StringsUtils {
 		return true;
 	}
 
-	public static final String _emptyString = "";
-
+	/**
+	 * Converts a "null" string to empty string
+	 */
 	public static String null2Empty(final String s) {
-		return (s == null) ? _emptyString : s;
+		return (s == null) ? EMPTY_STRING : s;
 	}
 
 	/**
@@ -55,7 +61,7 @@ public enum StringsUtils {
 	 */
 	public static String join(final Collection<?> source, final String delimiter) {
 		if (source == null || source.isEmpty())
-			return _emptyString;
+			return EMPTY_STRING;
 		StringBuilder sb = new StringBuilder();
 		for (Object o : source) {
 			if (sb.length() != 0)
@@ -70,7 +76,7 @@ public enum StringsUtils {
 	 */
 	public static String concatStrings(final String[] what, final char delimiter, final boolean trim) {
 		if (what == null || what.length == 0)
-			return _emptyString;
+			return EMPTY_STRING;
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < what.length; i++) {
 			if (i != 0)
@@ -95,7 +101,7 @@ public enum StringsUtils {
 		return splitSimple(new SplitSimple(whatToSplit, splitter), trimSplits);
 	}
 
-	/** Cf. {@link StringsUtils#splitSimple(String, char, boolean)} */
+	/** Cf. {@link Strings#splitSimple(String, char, boolean)} */
 	public static String[] splitSimple(final String whatToSplit, final String splitter, final boolean trimSplits) {
 		return splitSimple(new SplitSimple(whatToSplit, splitter), trimSplits);
 	}
@@ -114,7 +120,7 @@ public enum StringsUtils {
 	}
 
 	/**
-	 * Cf. {@link StringsUtils#splitSimple(String, char, boolean)}
+	 * Cf. {@link Strings#splitSimple(String, char, boolean)}
 	 * 
 	 * @param whatToSplit
 	 *            Clear
@@ -151,7 +157,7 @@ public enum StringsUtils {
 		}
 
 		private void setWhatToSplit(final String whatToSplit) {
-			if (!StringsUtils.isEmptyString(whatToSplit))
+			if (!Strings.isEmptyString(whatToSplit))
 				_whatToSplit = whatToSplit.toCharArray();
 		}
 
@@ -179,35 +185,35 @@ public enum StringsUtils {
 			if (_whatToSplit == null)
 				return 0;
 			int i = _whatToSplit.length >>> 2;
-			if (i < 4)
-				i = 4;
-			else if (i > 1024)
-				i = 1024;
-			_splitBegs = new int[i];
-			_splitEnds = new int[i];
-			_splitBegs[0] = 0;
-			_numSplits = 0;
-			for (i = _splitBegs[_numSplits]; i < _whatToSplit.length; i++) {
-				if (_specialSplitter == SpecialSplit.None) {
-					if (_whatToSplit[i] != _splitterC)
-						continue;
-					if (_splitterLh > 1 && !testVsSplitterS(i))
-						continue;
-				} else if (_specialSplitter == SpecialSplit.BlankOrTab) {
-					if (_whatToSplit[i] != ' ' && _whatToSplit[i] != '\t')
-						continue;
-				} else { // if (_specialSplitter == SpecialSplit.AnyWhiteSpace
-					if (!Character.isWhitespace(_whatToSplit[i]))
-						continue;
-				}
-				if (_numSplits + 1 >= _splitBegs.length)
-					reallocBegEnd();
-				_splitEnds[_numSplits++] = i;
-				_splitBegs[_numSplits] = i + _splitterLh;
-				i = _splitBegs[_numSplits] - 1;
+		if (i < 4)
+			i = 4;
+		else if (i > 1024)
+			i = 1024;
+		_splitBegs = new int[i];
+		_splitEnds = new int[i];
+		_splitBegs[0] = 0;
+		_numSplits = 0;
+		for (i = _splitBegs[_numSplits]; i < _whatToSplit.length; i++) {
+			if (_specialSplitter == SpecialSplit.None) {
+				if (_whatToSplit[i] != _splitterC)
+					continue;
+				if (_splitterLh > 1 && !testVsSplitterS(i))
+					continue;
+			} else if (_specialSplitter == SpecialSplit.BlankOrTab) {
+				if (_whatToSplit[i] != ' ' && _whatToSplit[i] != '\t')
+					continue;
+			} else { // if (_specialSplitter == SpecialSplit.AnyWhiteSpace
+				if (!Character.isWhitespace(_whatToSplit[i]))
+					continue;
 			}
+			if (_numSplits + 1 >= _splitBegs.length)
+				reallocBegEnd();
 			_splitEnds[_numSplits++] = i;
-			return _numSplits;
+			_splitBegs[_numSplits] = i + _splitterLh;
+			i = _splitBegs[_numSplits] - 1;
+		}
+		_splitEnds[_numSplits++] = i;
+		return _numSplits;
 		}
 
 		private boolean testVsSplitterS(final int i) {
@@ -249,4 +255,96 @@ public enum StringsUtils {
 		}
 
 	}
+
+	/**
+	 * Generates a String filled with a specific character.
+	 * 
+	 * @param length
+	 *            The length of the String to return. Negative values will be treated as positive.
+	 * 
+	 * @param c
+	 *            Character with which to populate the result.
+	 * 
+	 * @return String consisting c characters repeated length times.
+	 */
+	public static String getFilledString(final int length, final char c) {
+		if (0 == length) {
+			return EMPTY_STRING;
+		}
+
+		final int n = Math.abs(length);
+		char[] chars = new char[n];
+		Arrays.fill(chars, c);
+		return new String(chars);
+
+	}
+
+	/**
+	 * Checks if is hex.
+	 * 
+	 * @param value
+	 *            the value
+	 * @return true, if is hex
+	 */
+	public static boolean isHex(final CharSequence value) {
+		if (value == null)
+			return false;
+		String chk = value.toString().trim().toLowerCase();
+		for (int i = 0; i < chk.length(); i++) {
+			char c = chk.charAt(i);
+			boolean isHexDigit = Character.isDigit(c) || Character.isWhitespace(c) || c == 'a' || c == 'b' || c == 'c' || c == 'd'
+					|| c == 'e' || c == 'f';
+
+			if (!isHexDigit) {
+				return false;
+			}
+
+		}
+		return true;
+	}
+
+	/**
+	 * Checks if is number. (in US/English format!)
+	 * 
+	 * @param value
+	 *            the value
+	 * @return true, if is number
+	 */
+	public static boolean isNumber(final CharSequence value) {
+		boolean seenDot = false;
+		boolean seenExp = false;
+		boolean justSeenExp = false;
+		boolean seenDigit = false;
+		for (int i = 0; i < value.length(); i++) {
+			char c = value.charAt(i);
+			if (c >= '0' && c <= '9') {
+				seenDigit = true;
+				continue;
+			}
+			if ((c == '-' || c == '+') && (i == 0 || justSeenExp)) {
+				continue;
+			}
+			if (c == '.' && !seenDot) {
+				seenDot = true;
+				continue;
+			}
+			justSeenExp = false;
+			if ((c == 'e' || c == 'E') && !seenExp) {
+				seenExp = true;
+				justSeenExp = true;
+				continue;
+			}
+			return false;
+		}
+		if (!seenDigit) {
+			return false;
+		}
+		try {
+			Double.parseDouble(value.toString());
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+
 }

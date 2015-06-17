@@ -47,9 +47,9 @@ import org.openntf.domino.DocumentCollection;
 import org.openntf.domino.Session;
 import org.openntf.domino.Session.RunContext;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.commons.impl.NameParser;
+import org.openntf.domino.commons.Names;
+import org.openntf.domino.commons.Strings;
 import org.openntf.domino.commons.utils.GitProperties;
-import org.openntf.domino.commons.utils.StringsUtils;
 import org.openntf.domino.exceptions.DataNotCompatibleException;
 import org.openntf.domino.exceptions.UndefinedDelegateTypeException;
 import org.openntf.domino.ext.Session.Fixes;
@@ -63,6 +63,7 @@ import org.openntf.domino.session.SessionFullAccessFactory;
 import org.openntf.domino.session.TrustedSessionFactory;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.SessionDescendant;
+import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.service.IServiceLocator;
 import org.openntf.service.ServiceLocatorFinder;
 
@@ -1246,7 +1247,7 @@ public enum Factory {
 		File iniFile;
 		try {
 			localServerName = session.getUserName();
-			NameParser.setLocalServerName(localServerName);
+			Names.setLocalServerName(localServerName);
 			iniFile = new File(session.evaluate("@ConfigFile").get(0).toString());
 		} catch (NotesException e) {
 			Factory.println("WARNING: @ConfigFile returned " + e.getMessage() + " Using fallback to locate notes.ini");
@@ -1829,7 +1830,7 @@ public enum Factory {
 		BufferedReader reader = new BufferedReader(new StringReader(lines));
 		String line;
 		try {
-			if (StringsUtils.isBlankString(prefix)) {
+			if (Strings.isBlankString(prefix)) {
 				prefix = "[ODA] ";
 			} else {
 				prefix = "[ODA::" + prefix + "] ";

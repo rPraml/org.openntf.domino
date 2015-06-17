@@ -41,6 +41,7 @@ import java.util.logging.Level;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
+import org.openntf.domino.commons.Hash;
 import org.openntf.domino.design.impl.HasMetadata;
 import org.openntf.domino.design.impl.HasXspConfig;
 import org.openntf.domino.progress.ProgressObservable;
@@ -313,13 +314,13 @@ public abstract class SyncTask<DB, DISK extends OnDiskAbstract<DB>> extends Prog
 		case FORCE_EXPROT:
 			log(Level.FINE, "FORCE_EXPORT\t" + dbElem + "\t" + diskElem);
 			doExport(dbElem, diskElem);
-			diskElem.setMD5(DominoUtils.checksum(diskElem.getFile(), "MD5"));
+			diskElem.setMD5(Hash.md5(diskElem.getFile()));
 			stat.exported++;
 			break;
 		case FORCE_IMPORT:
 			log(Level.FINE, "FORCE_IMPORT\t" + dbElem + "\t" + diskElem);
 			doImport(dbElem, diskElem);
-			diskElem.setMD5(DominoUtils.checksum(diskElem.getFile(), "MD5"));
+			diskElem.setMD5(Hash.md5(diskElem.getFile()));
 			stat.imported++;
 			break;
 
@@ -337,11 +338,11 @@ public abstract class SyncTask<DB, DISK extends OnDiskAbstract<DB>> extends Prog
 				// doc modified
 				log(Level.FINE, "EXPORT\t" + dbElem + "\t" + diskElem);
 				doExport(dbElem, diskElem);
-				diskElem.setMD5(DominoUtils.checksum(diskElem.getFile(), "MD5"));
+				diskElem.setMD5(Hash.md5(diskElem.getFile()));
 				stat.exported++;
 			} else if (Math.abs(lastModifiedFile - diskElem.getDiskTimeStamp()) > FFS_OFFSET) {
 				// file modified
-				String md5 = DominoUtils.checksum(diskElem.getFile(), "MD5");
+				String md5 = Hash.md5(diskElem.getFile());
 				if (md5.equals(diskElem.getMD5())) {
 					log(Level.FINER, "CLEAN\t" + dbElem + "\t" + diskElem);
 					stat.inSync++;

@@ -26,6 +26,7 @@ import lotus.domino.Name;
 import org.openntf.domino.Document;
 import org.openntf.domino.Item;
 import org.openntf.domino.Session;
+import org.openntf.domino.commons.Names;
 import org.openntf.domino.exceptions.DataNotCompatibleException;
 import org.openntf.domino.exceptions.ItemNotFoundException;
 import org.openntf.domino.exceptions.UnimplementedException;
@@ -107,8 +108,8 @@ public enum TypeUtils {
 					return null;
 				}
 			} else if (type.isPrimitive()) {
-				throw new ItemNotFoundException(
-						"Item " + itemName + " was not found on document " + noteid + " so we cannot return a " + type.getName());
+				throw new ItemNotFoundException("Item " + itemName + " was not found on document " + noteid + " so we cannot return a "
+						+ type.getName());
 			} else {
 				return null;
 			}
@@ -152,8 +153,8 @@ public enum TypeUtils {
 			throw new DataNotCompatibleException(e.getMessage() + " for field " + item.getName() + " in document " + noteid, e);
 		} catch (UnimplementedException e) {
 			String noteid = item.getAncestorDocument().getNoteID();
-			throw new UnimplementedException(e.getMessage() + ", so cannot auto-box for field " + item.getName() + " in document " + noteid,
-					e);
+			throw new UnimplementedException(
+					e.getMessage() + ", so cannot auto-box for field " + item.getName() + " in document " + noteid, e);
 		}
 
 		return result;
@@ -214,7 +215,7 @@ public enum TypeUtils {
 			}
 		} else {
 			if (rawObject instanceof String) {
-				result = DominoUtils.isHierarchicalName((String) rawObject);
+				result = Names.parse((String) rawObject).isHierarchical();
 			} else {
 				result = false;
 			}
@@ -227,6 +228,8 @@ public enum TypeUtils {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Deprecated
+	// uses Formula => should be reviewed
 	public static <T> T convertToTarget(final Object o, final Class<T> type, final Session session) {
 		if (o == null) {
 			return null;
@@ -337,15 +340,15 @@ public enum TypeUtils {
 				if (session != null) {
 					result = session.createDateTime(toDate(o));
 				} else {
-					throw new IllegalArgumentException(
-							"Cannont convert a " + o.getClass().getName() + " to DateTime without a valid Session object");
+					throw new IllegalArgumentException("Cannont convert a " + o.getClass().getName()
+							+ " to DateTime without a valid Session object");
 				}
 			} else if (org.openntf.domino.Name.class.isAssignableFrom(type)) {
 				if (session != null) {
 					result = session.createName(String.valueOf(o));
 				} else {
-					throw new IllegalArgumentException(
-							"Cannont convert a " + o.getClass().getName() + " to Name without a valid Session object");
+					throw new IllegalArgumentException("Cannont convert a " + o.getClass().getName()
+							+ " to Name without a valid Session object");
 				}
 			} else if (Boolean.class.equals(type)) {
 				result = toBoolean(o);

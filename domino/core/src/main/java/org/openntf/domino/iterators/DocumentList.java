@@ -854,7 +854,7 @@ public class DocumentList extends BaseImpl<lotus.domino.DocumentCollection> impl
 			for (int nid : getNids()) {
 				mergeColl.merge(nid);
 			}
-			return new DocumentCollectionIterator(mergeColl);
+			return mergeColl.iterator();
 		}
 	}
 

@@ -60,7 +60,8 @@ public final class JarResource extends AbstractDesignNapiFileResource implements
 					while (jis.available() > 0) {
 						bos.write(jis.read());
 					}
-					classData.put(DominoUtils.filePathToJavaBinaryName(name, "/"), bos.toByteArray());
+					String className = name.substring(0, name.length() - 6).replace('/', '.');
+					classData.put(className, bos.toByteArray());
 				}
 				entry = jis.getNextJarEntry();
 			}

@@ -6,7 +6,10 @@ import java.util.Set;
 
 /**
  * Interface for a pair of two Calendar objects specifying a range of time.
+ * 
+ * @deprecated Roland Praml: Should be moved to own project
  */
+@Deprecated
 public interface CalendarRangeInterface extends Serializable {
 	/**
 	 * Gets the first entry in the range

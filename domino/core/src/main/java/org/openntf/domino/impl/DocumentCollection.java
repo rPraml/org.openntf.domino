@@ -30,7 +30,6 @@ import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.ext.NoteClass;
-import org.openntf.domino.iterators.DocumentCollectionIterator;
 import org.openntf.domino.utils.DominoUtils;
 
 // TODO: Auto-generated Javadoc
@@ -755,7 +754,59 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 	@Override
 	public Iterator<org.openntf.domino.Document> iterator() {
 		//return new DocumentIterator(this);
-		return new DocumentCollectionIterator(this);
+		return new Iterator<org.openntf.domino.Document>() {
+
+			private org.openntf.domino.Document currWrapper = null;
+			private org.openntf.domino.Document nextWrapper = DocumentCollection.this.getFirstDocument();
+
+			@Override
+			public boolean hasNext() {
+				return nextWrapper != null; // something in Queue?
+			}
+
+			/* (non-Javadoc)
+			 * @see java.util.Iterator#next()
+			 */
+			@SuppressWarnings("deprecation")
+			@Override
+			public org.openntf.domino.Document next() {
+				//		try {
+				//currLotusDoc = nextLotusDoc;
+				//			if (currWrapper != null) {
+				//				System.out.println("CollIsDead:" + documentCollection_.isDead());
+				//				System.out.println("CurrIsDead:" + currWrapper.isDead());
+				//				System.out.println("NextIsDead:" + nextWrapper.isDead());
+				//				System.out.println("CurrUNID:  " + currWrapper.getUniversalID());
+				//				System.out.println("NextUNID:  " + nextWrapper.getUniversalID());
+				//			}
+
+				if (nextWrapper == null || nextWrapper.isDead()) {
+					if (nextWrapper == null) {
+						System.out.println("ALERT: Wrapped version of next document is NULL");
+					} else if (nextWrapper.isDead()) {
+						System.out.println("ALERT: Wrapped version of next document is dead");
+					} else {
+						System.out.println("ALERT: It should have been impossible to arrive here");
+						throw new RuntimeException();
+					}
+				}
+				currWrapper = nextWrapper;
+				if (nextWrapper != null) {
+					nextWrapper = DocumentCollection.this.getNextDocument(nextWrapper);
+				}
+				return currWrapper;
+			}
+
+			/* (non-Javadoc)
+			 * @see java.util.Iterator#remove()
+			 */
+			@Override
+			public void remove() {
+				DocumentCollection.this.deleteDocument(currWrapper);
+			}
+
+		};
+
 	}
 
 	public final Database getParentDatabase() {

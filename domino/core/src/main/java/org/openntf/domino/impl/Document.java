@@ -58,7 +58,7 @@ import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Legacy;
-import org.openntf.domino.commons.utils.StringsUtils;
+import org.openntf.domino.commons.Strings;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
 import org.openntf.domino.exceptions.BlockedCrashException;
@@ -84,6 +84,7 @@ import org.openntf.domino.utils.LMBCSUtils;
 import org.openntf.domino.utils.NapiUtil;
 import org.openntf.domino.utils.TypeUtils;
 import org.openntf.domino.utils.xml.XMLDocument;
+import org.openntf.formula.FormulaParseException;
 
 import com.ibm.commons.util.io.json.JsonException;
 import com.ibm.commons.util.io.json.util.JsonWriter;
@@ -171,7 +172,7 @@ org.openntf.domino.Document {
 				System.out.println("Document Items were accessed in a document while MIMEEntities are still open.");
 				System.out.println("This can cause errors leading to JRE crashes.");
 				System.out.println("Document: " + this.noteid_ + " in " + getAncestorDatabase().getApiPath());
-				System.out.println("MIMEEntities: " + StringsUtils.join(openMIMEEntities_.keySet(), ", "));
+				System.out.println("MIMEEntities: " + Strings.join(openMIMEEntities_.keySet(), ", "));
 				Throwable t = new Throwable();
 				StackTraceElement[] elements = t.getStackTrace();
 				for (int i = 0; i < 10; i++) {
@@ -3849,7 +3850,12 @@ org.openntf.domino.Document {
 				// TODO RPr: This should be replaced
 				//TODO NTF: Agreed when we can have an extensible switch for which formula engine to use
 				Formula formula = new Formula();
-				formula.setExpression(key.toString());
+				try {
+					formula.setExpression(key.toString());
+				} catch (FormulaParseException e) {
+					DominoUtils.handleException(e);
+					return null;
+				}
 				List<?> value = formula.getValue(this);
 				if (value.size() == 1) {
 					return value.get(0);
@@ -4311,12 +4317,12 @@ org.openntf.domino.Document {
 	@Override
 	public Name getItemValueName(final String itemName) {
 		try {
-			if (StringsUtils.isBlankString(itemName)) {
+			if (Strings.isBlankString(itemName)) {
 				throw new IllegalArgumentException("Item Name is blank or null");
 			}
 
 			final String string = getItemValueString(itemName);
-			return (StringsUtils.isBlankString(string)) ? null : getAncestorSession().createName(string);
+			return (Strings.isBlankString(string)) ? null : getAncestorSession().createName(string);
 		} catch (final Exception e) {
 			DominoUtils.handleException(e);
 			return null;

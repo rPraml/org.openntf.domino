@@ -11,19 +11,19 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Stack;
 import java.util.Vector;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openntf.domino.Document;
 import org.openntf.domino.Session;
-import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.utils.TypeUtils;
+import org.openntf.formula.FormulaParseException;
+import org.openntf.formula.FormulaParser;
+import org.openntf.formula.Formulas;
 
 /**
- * @author nfreeman
- * 
+ * @author nfreeman A representation of a Formula. Has also the ability to decompile formulas
  */
 public class Formula implements org.openntf.domino.ext.Formula, Serializable {
 	private static final Logger log_ = Logger.getLogger(Formula.class.getName());
@@ -63,83 +63,80 @@ public class Formula implements org.openntf.domino.ext.Formula, Serializable {
 		}
 	}
 
-	public static class FormulaSyntaxException extends RuntimeException {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-		private Vector<?> syntaxDetails_;
-		// "errorMessage" : "errorLine" : "errorColumn" : "errorOffset" : "errorLength" : "errorText"
-		private String expression_;
-
-		FormulaSyntaxException(final String expression, final Vector<Object> syntaxDetails) {
-			super();
-			expression_ = expression;
-			syntaxDetails_ = syntaxDetails;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Throwable#getMessage()
-		 */
-		@Override
-		public String getMessage() {
-			if (syntaxDetails_ != null) {
-				return String.valueOf(syntaxDetails_.get(0));
-			} else {
-				return "Details unavailable";
-			}
-		}
-
-		/**
-		 * @return the expression
-		 */
-		public String getExpression() {
-			return expression_;
-		}
-
-		public String getErrorLine() {
-			if (syntaxDetails_ != null) {
-				return String.valueOf(syntaxDetails_.get(1));
-			} else {
-				return "Details unavailable";
-			}
-		}
-
-		public String getErrorColumn() {
-			if (syntaxDetails_ != null) {
-				return String.valueOf(syntaxDetails_.get(2));
-			} else {
-				return "Details unavailable";
-			}
-		}
-
-		public String getErrorOffset() {
-			if (syntaxDetails_ != null) {
-				return String.valueOf(syntaxDetails_.get(3));
-			} else {
-				return "Details unavailable";
-			}
-		}
-
-		public String getErrorLength() {
-			if (syntaxDetails_ != null) {
-				return String.valueOf(syntaxDetails_.get(4));
-			} else {
-				return "Details unavailable";
-			}
-		}
-
-		public String getErrorText() {
-			if (syntaxDetails_ != null) {
-				return String.valueOf(syntaxDetails_.get(5));
-			} else {
-				return "Details unavailable";
-			}
-		}
-
-	}
+	//	public static class FormulaSyntaxException extends RuntimeException {
+	//		/**
+	//		 * 
+	//		 */
+	//		private static final long serialVersionUID = 1L;
+	//		private String expression_;
+	//
+	//		FormulaSyntaxException(final String expression, final FormulaParseException cause) {
+	//			super(cause);
+	//			expression_ = expression;
+	//		}
+	//
+	//		/*
+	//		 * (non-Javadoc)
+	//		 * 
+	//		 * @see java.lang.Throwable#getMessage()
+	//		 */
+	//		@Override
+	//		public String getMessage() {
+	//			if (syntaxDetails_ != null) {
+	//				return String.valueOf(syntaxDetails_.get(0));
+	//			} else {
+	//				return "Details unavailable";
+	//			}
+	//		}
+	//
+	//		/**
+	//		 * @return the expression
+	//		 */
+	//		public String getExpression() {
+	//			return expression_;
+	//		}
+	//
+	//		public String getErrorLine() {
+	//			if (syntaxDetails_ != null) {
+	//				return String.valueOf(syntaxDetails_.get(1));
+	//			} else {
+	//				return "Details unavailable";
+	//			}
+	//		}
+	//
+	//		public String getErrorColumn() {
+	//			if (syntaxDetails_ != null) {
+	//				return String.valueOf(syntaxDetails_.get(2));
+	//			} else {
+	//				return "Details unavailable";
+	//			}
+	//		}
+	//
+	//		public String getErrorOffset() {
+	//			if (syntaxDetails_ != null) {
+	//				return String.valueOf(syntaxDetails_.get(3));
+	//			} else {
+	//				return "Details unavailable";
+	//			}
+	//		}
+	//
+	//		public String getErrorLength() {
+	//			if (syntaxDetails_ != null) {
+	//				return String.valueOf(syntaxDetails_.get(4));
+	//			} else {
+	//				return "Details unavailable";
+	//			}
+	//		}
+	//
+	//		public String getErrorText() {
+	//			if (syntaxDetails_ != null) {
+	//				return String.valueOf(syntaxDetails_.get(5));
+	//			} else {
+	//				return "Details unavailable";
+	//			}
+	//		}
+	//
+	//	}
 
 	private transient Session parent_;
 	private String expression_;
@@ -155,15 +152,9 @@ public class Formula implements org.openntf.domino.ext.Formula, Serializable {
 		parent_ = parent;
 	}
 
-	public Formula(final String expression) throws FormulaSyntaxException {
+	public Formula(final String expression) {
 		this();
-		try {
-			setExpression(expression, true);
-		} catch (FormulaSyntaxException fe) {
-			isValid_ = false;
-			log_.log(Level.WARNING, "Error confirming formula syntax: " + fe.getExpression() + " (" + fe.getErrorText() + ")");
-			throw fe;
-		}
+		setExpression(expression, true);
 	}
 
 	@Override
@@ -193,37 +184,41 @@ public class Formula implements org.openntf.domino.ext.Formula, Serializable {
 	 * @see org.openntf.domino.ext.Formula#setExpression(java.lang.String)
 	 */
 	@Override
-	public void setExpression(String expression) {
+	public void setExpression(String expression) throws FormulaParseException {
 		if (expression.length() > 2000) {
 			isValid_ = true;
 			expression_ = expression;
 			return;
 		}
-		Vector<Object> vec = getSession().evaluate("@CheckFormulaSyntax({" + DominoUtils.escapeForFormulaString(expression) + "})");
-		if (vec == null) {
-			isValid_ = false;
-		} else if (vec.size() > 2) {
-			isValid_ = false;
-		} else {
+
+		FormulaParser parser = Formulas.getParser();
+		FormulaParseException ex = null;
+		try {
+			parser.parse(expression);
 			isValid_ = true;
+		} catch (FormulaParseException e) {
+			isValid_ = false;
+			ex = e;
 		}
+
 		if (!isValid_) {
 			if (decompiler_ != null && !expression.contains("@") && !expression.contains(";")) {//NTF - good chance its compiled
 				expression = decompiler_.decompileB64(expression);
 				if (expression != null) {
-					vec = getSession().evaluate("@CheckFormulaSyntax({" + DominoUtils.escapeForFormulaString(expression) + "})");
-					if (vec == null || vec.size() > 2) {
-						isValid_ = false;
-						throw new FormulaSyntaxException(expression, vec);
-					} else {
+					try {
+						parser.parse(expression);
 						System.out.println("Successfully decompiled a formula!");
 						isValid_ = true;
+					} catch (FormulaParseException e) {
+						isValid_ = false;
+						throw e;
 					}
+
 				} else {
 					throw new FormulaUnableToDecompile(expression);
 				}
 			} else {
-				throw new FormulaSyntaxException(expression, vec);
+				throw ex;
 			}
 		}
 		if (isValid_) {

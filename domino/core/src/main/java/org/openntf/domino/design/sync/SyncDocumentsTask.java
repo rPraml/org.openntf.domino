@@ -147,7 +147,8 @@ public class SyncDocumentsTask extends SyncTask<DocumentWrapper, OnDiskDocument>
 				}
 			}
 			dxlImporter.importDxl(transformXslt(importTransformer, dxl), getDb());
-			doc.recycle();
+			// after import we must recycle current document (cast necessary, because recycle is deprecated)
+			((lotus.domino.Document) doc).recycle();
 			docWrapper.setDocument(getDb().getDocumentByUNID(unid));
 		} catch (SAXException e) {
 			DominoUtils.handleException(e);
