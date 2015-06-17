@@ -1,4 +1,4 @@
-package org.openntf.domino.logging;
+package org.openntf.domino.commons.logging;
 
 import java.lang.reflect.Method;
 import java.text.ParsePosition;
@@ -12,11 +12,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.openntf.formula.ASTNode;
-import org.openntf.formula.FormulaParseException;
-import org.openntf.formula.FormulaParser;
-import org.openntf.formula.Formulas;
 
 public class LogConfig {
 
@@ -77,16 +72,9 @@ public class LogConfig {
 	}
 
 	/*--------------------------------------------------------------*/
-	static class L_LogFilterHandler {
+	class L_LogFilterHandler {
 
-		static class L_LogFilterConfigEntry {
-
-			static ThreadLocal<FormulaParser> _myFormulaParser = new ThreadLocal<FormulaParser>() {
-				@Override
-				protected FormulaParser initialValue() {
-					return Formulas.getMinimalParser();
-				}
-			};
+		class L_LogFilterConfigEntry {
 
 			String _logPrefix;
 			String _levelName;
@@ -94,7 +82,7 @@ public class LogConfig {
 			String[] _logHandlerNames;
 			L_LogHandler[] _logHandlerObjs;
 			String _formulaCondition;
-			ASTNode _parsedCond;
+			LogFormulaCondHandlerIF _condHandler;
 			boolean _condContUserName;
 			boolean _condContDBPath;
 			String _validUntilStr;
@@ -123,12 +111,9 @@ public class LogConfig {
 					return false;
 				if (_formulaCondition != null) {
 					try {
-						_parsedCond = _myFormulaParser.get().parse(_formulaCondition);
-					} catch (FormulaParseException e) {
-						System.err.println("LogConfig: Invalid formula condition: " + _formulaCondition);
-						e.printStackTrace();
-						return false;
+						_condHandler = LoggingAbstract.getInstance().getFormulaCondHandler(_formulaCondition);
 					} catch (Exception e) {
+						System.err.println("LogConfig: Error while generating Formula Parser for: " + _formulaCondition);
 						e.printStackTrace();
 						return false;
 					}
@@ -238,6 +223,9 @@ public class LogConfig {
 	/*--------------------------------------------------------------*/
 	Map<String, L_LogHandler> _logHandlers = new HashMap<String, L_LogHandler>();
 	Map<String, L_LogFilterHandler> _logFilterHandlers = new HashMap<String, L_LogFilterHandler>();
+
+	//	Class<? extends LogFormulaCondHandlerIF> _formulaCondHandlerClass;
+	//	LogUserDBProviderIF _userDBProvider;
 
 	public static LogConfig fromProperties(final Properties props) {
 		LogConfig ret = new LogConfig();

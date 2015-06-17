@@ -19,8 +19,9 @@ import lotus.domino.NotesException;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
-import org.openntf.domino.ExceptionDetails;
 import org.openntf.domino.Session;
+import org.openntf.domino.commons.logging.LogRecordAdditionalInfo;
+import org.openntf.domino.commons.types.ExceptionDetails;
 import org.openntf.domino.exceptions.OpenNTFNotesException;
 import org.openntf.domino.utils.Factory;
 

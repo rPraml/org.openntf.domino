@@ -1,27 +1,18 @@
-package org.openntf.domino.logging;
+package org.openntf.domino.commons.logging;
 
 import java.util.List;
 import java.util.logging.LogRecord;
 
-import org.openntf.domino.ExceptionDetails;
-import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.exceptions.OpenNTFNotesException;
-import org.openntf.domino.utils.Factory;
+import org.openntf.domino.commons.types.ExceptionDetails;
 
 public class LogRecordAdditionalInfo {
 
 	private List<ExceptionDetails.Entry> exceptionDetails;
 	private String[] lastWrappedDocs;
 
-	public LogRecordAdditionalInfo(final LogRecord logRecord) {
-		Throwable t = logRecord.getThrown();
-		if (t != null && t instanceof OpenNTFNotesException)
-			exceptionDetails = ((OpenNTFNotesException) t).getExceptionDetails();
-
-		WrapperFactory wf = Factory.getWrapperFactory_unchecked();
-		if (wf != null)
-			lastWrappedDocs = wf.getLastWrappedDocsInThread();
-
+	public LogRecordAdditionalInfo(final LogRecord logRec) {
+		exceptionDetails = LoggingAbstract.getInstance().getExceptionDetails(logRec.getThrown());
+		lastWrappedDocs = LoggingAbstract.getInstance().getLastWrappedDocs();
 	}
 
 	public List<ExceptionDetails.Entry> getExceptionDetails() {

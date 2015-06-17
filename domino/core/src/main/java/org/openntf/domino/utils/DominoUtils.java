@@ -48,7 +48,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 
 import org.openntf.domino.DateTime;
-import org.openntf.domino.ExceptionDetails;
 import org.openntf.domino.Item;
 import org.openntf.domino.Name;
 import org.openntf.domino.Session;
@@ -56,6 +55,7 @@ import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.Hash;
 import org.openntf.domino.commons.NameEnums.NamePartKey;
 import org.openntf.domino.commons.Strings;
+import org.openntf.domino.commons.types.ExceptionDetails;
 import org.openntf.domino.exceptions.InvalidNotesUrlException;
 import org.openntf.domino.exceptions.OpenNTFNotesException;
 import org.openntf.domino.logging.LogUtils;
@@ -962,7 +962,7 @@ public enum DominoUtils {
 				is = new FileInputStream(dirPath + "/" + fileLoc);
 				returnStream = new BufferedInputStream(is);
 				break;
-			// TODO Need to work out how to get from properties file in NSF
+				// TODO Need to work out how to get from properties file in NSF
 			}
 			return returnStream;
 		} catch (Throwable e) {

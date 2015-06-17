@@ -1,4 +1,4 @@
-package org.openntf.domino.logging;
+package org.openntf.domino.commons.logging;
 
 import java.io.IOException;
 import java.security.AccessController;
@@ -6,8 +6,6 @@ import java.security.PrivilegedAction;
 import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
-
-import org.openntf.domino.utils.Factory;
 
 public class LogHandlerFile extends FileHandler implements LogHandlerUpdateIF {
 
@@ -67,7 +65,7 @@ public class LogHandlerFile extends FileHandler implements LogHandlerUpdateIF {
 					break;
 				}
 				if (propKey.equals("Pattern")) {
-					ret.pattern = propValue.replace("<notesdata>", Factory.getDataPath());
+					ret.pattern = LoggingAbstract.getInstance().replacePatternPlaceHolders(propValue);
 					if (ret.pattern.length() < 3)
 						ind = -1;
 					break;

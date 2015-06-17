@@ -39,6 +39,7 @@
 					<instructions>
 						<Export-Package>
 							!*.test,
+							!org.openntf.domino.commons.*,
 							org.openntf.*
 						</Export-Package>
 

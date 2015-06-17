@@ -3,8 +3,8 @@ package org.openntf.domino.xsp.helpers;
 import lotus.domino.NotesException;
 
 import org.eclipse.core.runtime.Status;
-import org.openntf.domino.ExceptionDetails;
 import org.openntf.domino.Session;
+import org.openntf.domino.commons.types.ExceptionDetails;
 import org.openntf.domino.utils.DominoUtils;
 
 import com.ibm.domino.xsp.module.nsf.ThreadSessionExecutor;

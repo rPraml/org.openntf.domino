@@ -21,6 +21,7 @@ import java.util.Vector;
 
 import org.openntf.domino.annotations.Incomplete;
 import org.openntf.domino.annotations.Legacy;
+import org.openntf.domino.commons.types.ExceptionDetails;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.Resurrectable;
 import org.openntf.domino.types.SessionDescendant;

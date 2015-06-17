@@ -22,6 +22,7 @@ import java.util.Vector;
 
 import lotus.domino.XSLTResultTarget;
 
+import org.openntf.domino.commons.types.ExceptionDetails;
 import org.openntf.domino.types.DocumentDescendant;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.Resurrectable;
