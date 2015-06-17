@@ -22,6 +22,7 @@ import java.net.URI;
 import org.openntf.domino.Document;
 import org.openntf.domino.design.DesignBase;
 import org.openntf.domino.design.DesignBaseNamed;
+import org.openntf.domino.design.DesignMapping;
 import org.openntf.domino.design.impl.DesignFactory;
 
 /**
@@ -82,7 +83,7 @@ public class OnDiskDesign extends OnDiskAbstract<DesignBase> {
 	}
 
 	public static String getOnDiskName(final DesignBase design) {
-		DesignFactory mapping = design.getMapping();
+		DesignMapping mapping = design.getMapping();
 		String odpExt = mapping.getOnDiskFileExtension();
 
 		String ret = design instanceof DesignBaseNamed ? ((DesignBaseNamed) design).getName() : design.getUniversalID();

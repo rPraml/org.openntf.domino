@@ -58,11 +58,12 @@ import java.net.URI;
 
 import org.openntf.domino.Document;
 import org.openntf.domino.design.DesignBase;
+import org.openntf.domino.design.DesignMapping;
 import org.openntf.domino.design.VFSNode;
 import org.openntf.domino.ext.NoteClass;
 
 //@formatter:off
-public enum DesignFactory {
+public enum DesignFactory implements DesignMapping {
 
 
 	// This is a table that specifies all properties of the different designelements.

@@ -57,6 +57,7 @@ import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Incomplete;
 import org.openntf.domino.commons.types.ExceptionDetails;
 import org.openntf.domino.design.DatabaseDesign;
+import org.openntf.domino.design.DatabaseDesignService;
 import org.openntf.domino.design.IconNote;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
@@ -1046,11 +1047,8 @@ public class Database extends BaseThreadSafe<org.openntf.domino.Database, lotus.
 	@Override
 	public DatabaseDesign getDesign() {
 		if (design_ == null) {
-			if (isDesignProtected()) {
-				design_ = new org.openntf.domino.design.impl.ProtectedDatabaseDesign(this);
-			} else {
-				design_ = new org.openntf.domino.design.impl.DatabaseDesign(this);
-			}
+			DatabaseDesignService designService = Factory.findApplicationServices(DatabaseDesignService.class).get(0);
+			design_ = designService.getDatabaseDesign(this);
 		}
 		return design_;
 	}

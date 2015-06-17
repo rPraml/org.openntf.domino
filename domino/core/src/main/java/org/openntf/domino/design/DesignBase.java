@@ -25,7 +25,6 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import org.openntf.domino.Database;
-import org.openntf.domino.design.impl.DesignFactory;
 
 /**
  * @author jgallagher
@@ -190,7 +189,7 @@ public interface DesignBase extends org.openntf.domino.types.Design, org.openntf
 	 * 
 	 * @return the mapping
 	 */
-	public DesignFactory getMapping();
+	public DesignMapping getMapping();
 
 	/**
 	 * Frees up memory

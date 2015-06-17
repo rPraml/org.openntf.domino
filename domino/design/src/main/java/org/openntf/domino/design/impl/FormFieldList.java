@@ -18,6 +18,8 @@ package org.openntf.domino.design.impl;
 
 import java.util.logging.Logger;
 
+import org.openntf.domino.design.FormField;
+
 /**
  * @author jgallagher
  * 
@@ -37,7 +39,7 @@ public class FormFieldList extends AbstractDesignComponentList<FormField> implem
 	 */
 	@Override
 	public FormField get(final int index) {
-		return new FormField(getNodes().get(index));
+		return new org.openntf.domino.design.impl.FormField(getNodes().get(index));
 	}
 
 	/*

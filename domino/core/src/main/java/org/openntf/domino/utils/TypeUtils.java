@@ -228,8 +228,6 @@ public enum TypeUtils {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Deprecated
-	// uses Formula => should be reviewed
 	public static <T> T convertToTarget(final Object o, final Class<T> type, final Session session) {
 		if (o == null) {
 			return null;

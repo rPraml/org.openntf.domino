@@ -19,6 +19,8 @@ package org.openntf.formula;
 import java.util.Date;
 import java.util.Locale;
 
+import org.openntf.domino.commons.IDateTime;
+
 import com.ibm.icu.util.Calendar;
 
 // TODO RPr Needs a lot of comments
@@ -27,20 +29,20 @@ public interface Formatter {
 	Locale getLocale();
 
 	/*----------------------------------------------------------------------------*/
-	DateTime getNewSDTInstance();
+	IDateTime getNewSDTInstance();
 
-	DateTime getNewInitializedSDTInstance(Date date, boolean noDate, boolean noTime);
+	IDateTime getNewInitializedSDTInstance(Date date, boolean noDate, boolean noTime);
 
-	DateTime getCopyOfSDTInstance(DateTime sdt);
+	IDateTime getCopyOfSDTInstance(IDateTime sdt);
 
 	/*----------------------------------------------------------------------------*/
-	DateTime parseDate(String image);
+	IDateTime parseDate(String image);
 
-	DateTime parseDate(String image, boolean parseLenient);
+	IDateTime parseDate(String image, boolean parseLenient);
 
 	Calendar parseDateToCal(String image, boolean[] noDT, boolean parseLenient);
 
-	DateTime parseDateWithFormat(String image, String format, boolean parseLenient);
+	IDateTime parseDateWithFormat(String image, String format, boolean parseLenient);
 
 	Calendar parseDateToCalWithFormat(String image, String format, boolean[] noDT, boolean parseLenient);
 
@@ -95,9 +97,9 @@ public interface Formatter {
 	public static final int TIMEFORMAT_SHORT = 2;
 	public static final int TIMEFORMAT_LONG = 3;
 
-	String formatDateTime(DateTime sdt);
+	String formatDateTime(IDateTime sdt);
 
-	String formatDateTime(DateTime sdt, LotusDateTimeOptions ldto);
+	String formatDateTime(IDateTime sdt, LotusDateTimeOptions ldto);
 
 	String formatCalDateTime(Calendar cal);
 
@@ -109,7 +111,7 @@ public interface Formatter {
 
 	String formatCalTimeOnly(Calendar cal, int timeFormat);
 
-	String formatDateTimeWithFormat(DateTime sdt, String format);
+	String formatIDateTimeWithFormat(IDateTime sdt, String format);
 
 	String formatCalWithFormat(Calendar cal, String format);
 

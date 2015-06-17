@@ -20,7 +20,7 @@ package org.openntf.formula.ast;
 
 import java.util.Set;
 
-import org.openntf.formula.DateTime;
+import org.openntf.domino.commons.IDateTime;
 import org.openntf.formula.EvaluateException;
 import org.openntf.formula.FormulaContext;
 import org.openntf.formula.FormulaReturnException;
@@ -49,7 +49,7 @@ public class ASTAtSort extends SimpleNode {
 	 */
 	@Override
 	@DiffersFromLotus({ "Options [ACCENT(IN)SENSITIVE] and [PITCH(IN)SENSITIVE] aren't yet supported",
-			"Standard string compare is done via String.compareTo" })
+	"Standard string compare is done via String.compareTo" })
 	public ValueHolder evaluate(final FormulaContext ctx) throws FormulaReturnException {
 		try {
 			boolean sortAscending = true;
@@ -163,7 +163,7 @@ public class ASTAtSort extends SimpleNode {
 	/**
 	 * Compares two given DateTimes
 	 */
-	private int doSortDateTime(final FormulaContext ctx, final DateTime d1, final DateTime d2, final Node customSort)
+	private int doSortDateTime(final FormulaContext ctx, final IDateTime d1, final IDateTime d2, final Node customSort)
 			throws FormulaReturnException {
 		if (customSort == null)
 			return d1.compare(d1, d2);

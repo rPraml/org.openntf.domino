@@ -29,7 +29,7 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openntf.formula.DateTime;
+import org.openntf.domino.commons.IDateTime;
 import org.openntf.formula.Formatter;
 import org.openntf.formula.Formatter.LotusDateTimeOptions;
 import org.openntf.formula.FormulaContext;
@@ -687,7 +687,7 @@ public enum TextFunctions {
 
 	/*----------------------------------------------------------------------------*/
 	private static ValueHolder strToDateTime(final FormulaContext ctx, final ValueHolder vh) {
-		ValueHolder ret = ValueHolder.createValueHolder(DateTime.class, vh.size);
+		ValueHolder ret = ValueHolder.createValueHolder(IDateTime.class, vh.size);
 		Formatter formatter = ctx.getFormatter();
 		String val = null;
 		for (int i = 0; i < vh.size; i++) {
@@ -1316,7 +1316,7 @@ public enum TextFunctions {
 		}
 		String format = params[1].getString(0);
 		ValueHolder vh = params[0];
-		ValueHolder ret = ValueHolder.createValueHolder(DateTime.class, vh.size);
+		ValueHolder ret = ValueHolder.createValueHolder(IDateTime.class, vh.size);
 		for (int i = 0; i < vh.size; i++)
 			ret.add(ctx.getFormatter().parseDateWithFormat(vh.getString(i), format, parseLenient));
 		return ret;
@@ -1325,7 +1325,7 @@ public enum TextFunctions {
 	/*----------------------------------------------------------------------------*/
 	@OpenNTF
 	@ParamCount(2)
-	public static String atTextFromDateTimeF(final FormulaContext ctx, final DateTime sdt, final String format) {
+	public static String atTextFromDateTimeF(final FormulaContext ctx, final IDateTime sdt, final String format) {
 		return ctx.getFormatter().formatDateTimeWithFormat(sdt, format);
 	}
 

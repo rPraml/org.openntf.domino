@@ -35,19 +35,20 @@ import org.openntf.domino.Database;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Legacy;
+import org.openntf.domino.design.DatabaseDesignService;
 import org.openntf.domino.design.VFSRootNode;
-import org.openntf.domino.design.impl.VFSRootDirectoryNode;
 import org.openntf.domino.ext.Session.Fixes;
 import org.openntf.domino.helpers.DatabaseMetaData;
 import org.openntf.domino.types.Encapsulated;
 import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.Factory;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class DbDirectory.
  */
 public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirectory, lotus.domino.DbDirectory, Session> implements
-		org.openntf.domino.DbDirectory, Encapsulated {
+org.openntf.domino.DbDirectory, Encapsulated {
 	private static final Logger log_ = Logger.getLogger(DbDirectory.class.getName());
 
 	/* the MetaData contains s small subset of information of a (closed) Database */
@@ -713,7 +714,8 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 
 	@Override
 	public VFSRootNode getVFS() {
-		return new VFSRootDirectoryNode(this);
+		DatabaseDesignService designService = Factory.findApplicationServices(DatabaseDesignService.class).get(0);
+		return designService.getVFS(this);
 	}
 
 	@Override

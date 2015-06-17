@@ -703,4 +703,11 @@ public interface Database extends Base {
 	 */
 	public NotesDatabase getNapiDatabase();
 
+	/**
+	 * Returns TRUE if the database is design-protected
+	 * 
+	 * @return
+	 */
+	public boolean isDesignProtected();
+
 }

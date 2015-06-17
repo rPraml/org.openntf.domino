@@ -26,6 +26,7 @@ import org.openntf.domino.Document;
 import org.openntf.domino.Session;
 import org.openntf.domino.commons.Strings;
 import org.openntf.domino.design.DesignBase;
+import org.openntf.domino.design.DesignMapping;
 
 /**
  * This is the Root class of all DesignNotes
@@ -71,7 +72,7 @@ public abstract class AbstractDesignBase implements DesignBase {
 	// caches
 	private transient Database database_;
 	protected transient Document document_;
-	private transient DesignFactory odpMapping_;
+	private transient DesignMapping odpMapping_;
 
 	/**
 	 * Create a new DesignBase based on the given database. You may add content to this DesignBase and save it afterwards.
@@ -297,7 +298,7 @@ public abstract class AbstractDesignBase implements DesignBase {
 	 * @return the mapping
 	 */
 	@Override
-	public final DesignFactory getMapping() {
+	public final DesignMapping getMapping() {
 		if (odpMapping_ == null) {
 			odpMapping_ = DesignFactory.valueOf(getClass());
 		}

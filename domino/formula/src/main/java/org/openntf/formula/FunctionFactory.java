@@ -28,11 +28,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.formula.impl.AtFunction;
 import org.openntf.formula.impl.AtFunctionGeneric;
 import org.openntf.formula.impl.AtFunctionSimple;
-import org.openntf.service.IServiceLocator;
-import org.openntf.service.ServiceLocatorFinder;
 
 /**
  * 
@@ -40,7 +39,6 @@ import org.openntf.service.ServiceLocatorFinder;
  * 
  */
 public class FunctionFactory {
-	private static ThreadLocal<IServiceLocator> currentServiceLocator_ = new ThreadLocal<IServiceLocator>();
 
 	private final Map<String, Function> functions = new HashMap<String, Function>();
 	@SuppressWarnings("unused")
@@ -58,7 +56,7 @@ public class FunctionFactory {
 		FunctionFactory instance = new FunctionFactory();
 		//		ServiceLoader<FunctionSet> loader = ServiceLoader.load(FunctionSet.class);
 
-		List<FunctionSet> loaderList = findApplicationServices(FunctionSet.class);
+		List<FunctionSet> loaderList = ServiceLocator.getInstance().findApplicationServices(FunctionSet.class);
 
 		//		if (loader.iterator().hasNext()) {
 		//			System.out.println("FunctionSet Service found.");
@@ -80,6 +78,7 @@ public class FunctionFactory {
 		//		}
 		//
 		Collections.sort(loaderList, new Comparator<FunctionSet>() {
+			@Override
 			public int compare(final FunctionSet paramT1, final FunctionSet paramT2) {
 				return paramT2.getPriority() - paramT1.getPriority();
 			}
@@ -92,16 +91,6 @@ public class FunctionFactory {
 		instance.setImmutable();
 
 		return instance;
-	}
-
-	public static <T> List<T> findApplicationServices(final Class<T> serviceClazz) {
-
-		IServiceLocator serviceLocator = currentServiceLocator_.get();
-		if (serviceLocator == null) {
-			serviceLocator = ServiceLocatorFinder.findServiceLocator();
-			currentServiceLocator_.set(serviceLocator);
-		}
-		return serviceLocator.findApplicationServices(serviceClazz);
 	}
 
 	/**
