@@ -6,8 +6,8 @@
 		<version>1.5.1-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>junit</artifactId>
-	<name>OpenNTF Domino JUnit Extension</name>
+	<artifactId>design-impl</artifactId>
+	<name>OpenNTF Domino Design API</name>
 	<description>Package provides a Test runner to run JUNIT tests on a CI server</description>
 
 	<packaging>bundle</packaging>
@@ -24,10 +24,7 @@
 						<!-- TODO 2: move domino.impl to own package and remove exportPackage -->
 						<Export-Package>
 							!*.test,
-							!org.openntf.domino.commons.*,
-							org.openntf.domino.*,
-							org.openntf.arpa,
-							org.openntf.calendars
+							org.openntf.domino.design.*
 						</Export-Package>
 					</instructions>
 				</configuration>
@@ -39,32 +36,29 @@
 
 	<dependencies>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-		</dependency>
 		
 		<!-- The notes-api is bundled by the ibm-build-management -->
 		<dependency>
-			<groupId>com.ibm.notes</groupId>
-			<artifactId>java.api</artifactId>
-			<version>9.0.1</version>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>core</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
-		
+		<!-- 
 		<dependency>
 			<groupId>com.ibm.domino</groupId>
 			<artifactId>napi</artifactId>
 			<version>9.0.1</version>
 		</dependency>
+		 -->
 		
 		
-		<!-- add to plugin -->
+		<!-- add to plugin 
 		<dependency>
 			<groupId>com.ibm.commons</groupId>
 			<artifactId>com.ibm.commons</artifactId>
 			<version>9.0.1</version>
 		</dependency>
+		-->
 		
 		<!-- Javolution: needed by the CD-stuff -->		
 		<dependency>
@@ -72,7 +66,7 @@
 			<artifactId>javolution-core-java</artifactId>
 			<version>6.1.0-ODA-151-SNAPSHOT</version>
 		</dependency> 
-		
+		<!-- 
 		<dependency>
 			<groupId>org.openntf</groupId>
 			<artifactId>formula</artifactId>
@@ -85,6 +79,7 @@
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
 		
+		 -->
 		<!-- TODO: Remove these Deps if separated in a own project 
 		<dependency>
 			<groupId>com.tinkerpop.blueprints</groupId>
