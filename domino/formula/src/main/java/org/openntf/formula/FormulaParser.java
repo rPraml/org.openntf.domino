@@ -64,6 +64,7 @@ public abstract class FormulaParser {
 		}
 
 		class FCMapEntryComparator implements Comparator<Object> {
+			@Override
 			public int compare(final Object ent1, final Object ent2) {
 				if (!(ent1 instanceof Map.Entry) || !(ent2 instanceof Map.Entry))
 					throw new IllegalArgumentException("FCMapEntryComparator");
@@ -127,6 +128,15 @@ public abstract class FormulaParser {
 		customFunc = new HashMap<String, Function>();
 		ntfFormulaCache.reset();
 		focFormulaCache.reset();
+	}
+
+	/**
+	 * Returns the FunctionFactory
+	 * 
+	 * @return
+	 */
+	public FunctionFactory getFunctionFactory() {
+		return functionFactory;
 	}
 
 	/**

@@ -137,7 +137,7 @@ public enum FocFunctions {
 		how = how.replace('n', 'm');
 		ValueHolder ret = ValueHolder.createValueHolder(String.class, whatVH.size);
 		for (int i = 0; i < whatVH.size; i++)
-			ret.add(ctx.getFormatter().formatIDateTimeWithFormat(whatVH.getDateTime(i), how));
+			ret.add(ctx.getFormatter().formatDateTimeWithFormat(whatVH.getDateTime(i), how));
 		return ret;
 	}
 

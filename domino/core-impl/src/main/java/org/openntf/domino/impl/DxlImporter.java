@@ -15,9 +15,6 @@
  */
 package org.openntf.domino.impl;
 
-import static org.openntf.formula.function.TextFunctions.atLeft;
-import static org.openntf.formula.function.TextFunctions.atRight;
-
 import java.util.Scanner;
 
 import lotus.domino.NotesException;
@@ -31,7 +28,7 @@ import org.openntf.domino.utils.DominoUtils;
  * The Class DxlImporter.
  */
 public class DxlImporter extends BaseNonThreadSafe<org.openntf.domino.DxlImporter, lotus.domino.DxlImporter, Session> implements
-org.openntf.domino.DxlImporter {
+		org.openntf.domino.DxlImporter {
 
 	/**
 	 * Instantiates a new DxlImporter.
@@ -319,12 +316,28 @@ org.openntf.domino.DxlImporter {
 			int line = 0;
 			int col = 0;
 			try {
-				String s = atLeft(atRight(log, "line='"), "'");
-				line = Integer.valueOf(s);
-				s = atLeft(atRight(log, "column='"), "'");
-				col = Integer.valueOf(s);
-				Scanner scanner = new Scanner(dxl);
+				int pos1 = log.indexOf("line='");
+				int pos2 = 0;
+				if (pos1 >= 0) {
+					pos1 += 6;
+					pos2 = log.indexOf('\'', pos1);
+					if (pos2 >= 0) {
+						line = Integer.valueOf(log.substring(pos1, pos2));
+					}
+				}
 
+				pos1 = log.indexOf("column='");
+				pos2 = 0;
+				if (pos1 >= 0) {
+					pos1 += 8;
+					pos2 = log.indexOf('\'', pos1);
+					if (pos2 >= 0) {
+						col = Integer.valueOf(log.substring(pos1, pos2));
+					}
+				}
+
+				Scanner scanner = new Scanner(dxl);
+				String s = "";
 				while (scanner.hasNextLine()) {
 					s = scanner.nextLine();
 					if (--line == 0)

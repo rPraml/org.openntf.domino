@@ -13,7 +13,7 @@
  * implied. See the License for the specific language governing 
  * permissions and limitations under the License.
  */
-package org.openntf.formula;
+package org.openntf.domino.commons.exception;
 
 /**
  * This exception is wrapped into a ValueHolder and passed to the caller. The caller must extract the Exception from the ValueHolder. This

@@ -35,13 +35,13 @@ import org.openntf.domino.Database;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Legacy;
+import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.design.DatabaseDesignService;
 import org.openntf.domino.design.VFSRootNode;
 import org.openntf.domino.ext.Session.Fixes;
 import org.openntf.domino.helpers.DatabaseMetaData;
 import org.openntf.domino.types.Encapsulated;
 import org.openntf.domino.utils.DominoUtils;
-import org.openntf.domino.utils.Factory;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -714,7 +714,11 @@ org.openntf.domino.DbDirectory, Encapsulated {
 
 	@Override
 	public VFSRootNode getVFS() {
-		DatabaseDesignService designService = Factory.findApplicationServices(DatabaseDesignService.class).get(0);
+		DatabaseDesignService designService = ServiceLocator.getInstance().findApplicationService(DatabaseDesignService.class);
+		if (designService == null) {
+			log_.warning("Database.getDesign(): No DesignService present - returning 'null'");
+			return null;
+		}
 		return designService.getVFS(this);
 	}
 

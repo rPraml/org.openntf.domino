@@ -27,6 +27,7 @@ import lotus.domino.NotesException;
 
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.IDateTime;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
@@ -39,7 +40,7 @@ import com.ibm.icu.util.GregorianCalendar;
  * The Class DateTime.
  */
 public class DateTime extends BaseNonThreadSafe<org.openntf.domino.DateTime, lotus.domino.DateTime, Session> implements
-		org.openntf.domino.DateTime {
+org.openntf.domino.DateTime {
 	private static final Logger log_ = Logger.getLogger(DateTime.class.getName());
 	private static final long serialVersionUID = 1L;
 
@@ -918,14 +919,14 @@ public class DateTime extends BaseNonThreadSafe<org.openntf.domino.DateTime, lot
 	 * A few tiny methods needed for the org.openntf.domino.formula.DateTime interface
 	 */
 	@Override
-	public int timeDifference(final org.openntf.formula.DateTime dt) {
+	public int timeDifference(final IDateTime dt) {
 		if (dt instanceof lotus.domino.DateTime)
 			return timeDifference((lotus.domino.DateTime) dt);
 		return (int) timeDifferenceDouble(dt);
 	}
 
 	@Override
-	public double timeDifferenceDouble(final org.openntf.formula.DateTime dt) {
+	public double timeDifferenceDouble(final IDateTime dt) {
 		if (dt instanceof lotus.domino.DateTime)
 			return timeDifferenceDouble((lotus.domino.DateTime) dt);
 		Calendar thisCal = this.toJavaCal();
@@ -934,7 +935,7 @@ public class DateTime extends BaseNonThreadSafe<org.openntf.domino.DateTime, lot
 	}
 
 	@Override
-	public int compare(final org.openntf.formula.DateTime sdt1, final org.openntf.formula.DateTime sdt2) {
+	public int compare(final IDateTime sdt1, final IDateTime sdt2) {
 		if (sdt1 instanceof DateTime && sdt2 instanceof DateTime)
 			return ((DateTime) sdt1).compareTo((DateTime) sdt2);
 		if (sdt1 instanceof DateTime)

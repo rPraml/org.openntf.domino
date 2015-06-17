@@ -1,14 +1,12 @@
 package org.openntf.formula;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ServiceLoader;
 
-import org.openntf.formula.impl.FormatterImpl;
+import org.openntf.domino.commons.EvaluateService;
 import org.openntf.formula.parse.AtFormulaParserImpl;
 
 /**
@@ -17,35 +15,18 @@ import org.openntf.formula.parse.AtFormulaParserImpl;
  * @author Roland Praml, FOCONIS AG
  * 
  */
-public enum Formulas {
-	;
+public class FormulaService implements EvaluateService {
 
-	private static final ThreadLocal<FormulaParser> parserCache = new ThreadLocal<FormulaParser>();
-	private static final ThreadLocal<Class<FormulaContext>> contextClassCache = new ThreadLocal<Class<FormulaContext>>();
-	private static final ThreadLocal<FunctionFactory> functionFactoryCache = new ThreadLocal<FunctionFactory>();
+	private final ThreadLocal<FormulaParser> parserCache = new ThreadLocal<FormulaParser>();
+	private final ThreadLocal<Class<FormulaContext>> contextClassCache = new ThreadLocal<Class<FormulaContext>>();
+	private final ThreadLocal<FunctionFactory> functionFactoryCache = new ThreadLocal<FunctionFactory>();
 
-	/*----------------------------------------------------------------------------*/
-	private static Map<Locale, Formatter> instances = new HashMap<Locale, Formatter>();
-
-	public static synchronized Formatter getFormatter(Locale loc) {
-		if (loc == null)
-			loc = Locale.getDefault();
-		Formatter ret = instances.get(loc);
-		if (ret == null)
-			instances.put(loc, ret = new FormatterImpl(loc));
-		return ret;
-	}
-
-	public static Formatter getFormatter() {
-		return getFormatter(null);
-	} /*----------------------------------------------------------------------------*/
-
-	public static void initialize() {
+	public void initialize() {
 		parserCache.set(null);
 		functionFactoryCache.set(null);
 	}
 
-	public static void terminate() {
+	public void terminate() {
 		parserCache.set(null);
 		functionFactoryCache.set(null);
 	}
@@ -53,7 +34,7 @@ public enum Formulas {
 	/**
 	 * This function returns a preconfigured default instance
 	 */
-	public static FormulaParser getParser(final Formatter formatter, final FunctionFactory factory) {
+	public FormulaParser getParser(final Formatter formatter, final FunctionFactory factory) {
 		AtFormulaParserImpl parser = new AtFormulaParserImpl(new java.io.StringReader(""));
 		parser.reset();
 		parser.formatter = formatter;
@@ -62,16 +43,16 @@ public enum Formulas {
 		return parser;
 	}
 
-	public static FormulaParser getParser() {
+	public FormulaParser getParser() {
 		FormulaParser parser = parserCache.get();
 		if (parser == null) {
-			parser = getParser(getFormatter(), getFunctionFactory());
+			parser = getParser(Formatter.getFormatter(), getFunctionFactory());
 			parserCache.set(parser);
 		}
 		return parser;
 	}
 
-	public static FunctionFactory getFunctionFactory() {
+	public FunctionFactory getFunctionFactory() {
 		FunctionFactory functionFactory = functionFactoryCache.get();
 		if (functionFactory == null) {
 			functionFactory = FunctionFactory.createInstance();
@@ -80,16 +61,16 @@ public enum Formulas {
 		return functionFactory;
 	}
 
-	public static FormulaParser getMinimalParser() {
-		return getParser(getFormatter(), FunctionFactory.getMinimalFF());
-	}
+	//	public static FormulaParser getMinimalParser() {
+	//		return getParser(getFormatter(), FunctionFactory.getMinimalFF());
+	//	}
 
-	public static FormulaContext createContext(final Map<String, Object> document, final FormulaParser parser) {
+	public FormulaContext createContext(final Map<String, Object> document, final FormulaParser parser) {
 		return createContext(document, parser == null ? null : parser.getFormatter(), parser);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static FormulaContext createContext(final Map<String, Object> document, final Formatter formatter, final FormulaParser parser) {
+	public FormulaContext createContext(final Map<String, Object> document, final Formatter formatter, final FormulaParser parser) {
 		Class<FormulaContext> ctxClass = contextClassCache.get();
 		FormulaContext instance = null;
 
@@ -119,11 +100,10 @@ public enum Formulas {
 		return instance;
 	}
 
-	public static List<Object> evaluate(final String formula, final Map<String, Object> map) throws FormulaParseException,
-			EvaluateException {
-		FormulaParser parser = Formulas.getParser();
+	public List<Object> evaluate(final String formula, final Map<String, Object> map) throws FormulaParseException, EvaluateException {
+		FormulaParser parser = getParser();
 		ASTNode node = parser.parse(formula);
-		FormulaContext ctx = Formulas.createContext(map, parser);
+		FormulaContext ctx = createContext(map, parser);
 		return node.solve(ctx);
 	}
 }

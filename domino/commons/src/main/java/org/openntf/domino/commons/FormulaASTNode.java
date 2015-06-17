@@ -14,10 +14,13 @@
  * permissions and limitations under the License.
  */
 
-package org.openntf.formula;
+package org.openntf.domino.commons;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import org.openntf.domino.commons.exception.EvaluateException;
 
 /**
  * represents an AST node and is returned by a parser.parse (as root of the AST-Node)
@@ -25,7 +28,7 @@ import java.util.Set;
  * @author Roland Praml, Foconis AG
  * 
  */
-public interface ASTNode {
+public interface FormulaASTNode {
 
 	/**
 	 * Create a dump of the AST-Tree to System.out. Useful for debugging
@@ -38,7 +41,7 @@ public interface ASTNode {
 	/**
 	 * Use this method to solve a formula
 	 */
-	public List<Object> solve(FormulaContext ctx) throws EvaluateException;
+	public List<Object> solve(Map<String, Object> map) throws EvaluateException;
 
 	/**
 	 * return a set of used functions (all function names are lowercase)
@@ -79,5 +82,6 @@ public interface ASTNode {
 	 * 
 	 */
 	public String getFormula();
+
 }
 /* JavaCC - OriginalChecksum=54dec3b6b2c592c5fbe2fc5be72328d2 (do not edit this line) */

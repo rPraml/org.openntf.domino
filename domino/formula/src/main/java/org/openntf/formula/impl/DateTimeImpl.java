@@ -15,17 +15,18 @@ import java.io.ObjectOutput;
 import java.util.Date;
 import java.util.Locale;
 
-import org.openntf.formula.DateTime;
-import org.openntf.formula.Formulas;
+import org.openntf.domino.commons.IDateTime;
+import org.openntf.formula.Formatter;
 
 import com.ibm.icu.util.Calendar;
 
-public class DateTimeImpl implements DateTime, Externalizable {
+public class DateTimeImpl implements IDateTime, Externalizable {
 	private Locale _locale;
 	private Calendar _cal;
 	private boolean _noDate = false;
 	private boolean _noTime = false;
 
+	@Override
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeInt(20150211);
 		out.writeObject(_locale);
@@ -34,6 +35,7 @@ public class DateTimeImpl implements DateTime, Externalizable {
 		out.writeBoolean(_noTime);
 	}
 
+	@Override
 	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
 		in.readInt();
 		_locale = (Locale) in.readObject();
@@ -55,95 +57,113 @@ public class DateTimeImpl implements DateTime, Externalizable {
 		_cal = Calendar.getInstance(loc);
 	}
 
+	@Override
 	public void adjustDay(final int n) {
 		if (!_noDate)
 			_cal.add(DAY_OF_MONTH, n);
 	}
 
+	@Override
 	public void adjustHour(final int n) {
 		if (!_noTime)
 			_cal.add(HOUR_OF_DAY, n);
 	}
 
+	@Override
 	public void adjustMinute(final int n) {
 		if (!_noTime)
 			_cal.add(MINUTE, n);
 	}
 
+	@Override
 	public void adjustMonth(final int n) {
 		if (!_noDate)
 			_cal.add(MONTH, n);
 	}
 
+	@Override
 	public void adjustSecond(final int n) {
 		if (!_noTime)
 			_cal.add(SECOND, n);
 	}
 
+	@Override
 	public void adjustYear(final int n) {
 		if (!_noDate)
 			_cal.add(YEAR, n);
 	}
 
+	@Override
 	public void convertToZone(final int zone, final boolean isDST) {
 		//		int unused;
 		// TODO MSt: Timezone support (Really needed?)
 	}
 
+	@Override
 	public String getDateOnly() {
 		if (_noDate)
 			return "";
-		return Formulas.getFormatter(_locale).formatCalDateOnly(_cal);
+		return Formatter.getFormatter(_locale).formatCalDateOnly(_cal);
 	}
 
+	@Override
 	public String getLocalTime() {
 		if (_noDate)
 			return getTimeOnly();
 		if (_noTime)
 			return getDateOnly();
-		return Formulas.getFormatter(_locale).formatCalDateTime(_cal);
+		return Formatter.getFormatter(_locale).formatCalDateTime(_cal);
 	}
 
+	@Override
 	public String getTimeOnly() {
 		if (_noTime)
 			return "";
-		return Formulas.getFormatter(_locale).formatCalTimeOnly(_cal);
+		return Formatter.getFormatter(_locale).formatCalTimeOnly(_cal);
 	}
 
+	@Override
 	public int getTimeZone() {
 		//		int unused;
 		// TODO MSt: Timezone support
 		return 0;
 	}
 
+	@Override
 	public String getZoneTime() {
 		//		int unused;
 		// TODO MSt: Timezone support
 		return null;
 	}
 
+	@Override
 	public boolean isAnyDate() {
 		return _noDate;
 	}
 
+	@Override
 	public boolean isAnyTime() {
 		return _noTime;
 	}
 
+	@Override
 	public boolean isDST() {
 		//		int unused;
 		// TODO MSt: Timezone support
 		return false;
 	}
 
+	@Override
 	public void setAnyDate() {
 		_noDate = true;
 	}
 
+	@Override
 	public void setAnyTime() {
 		_noTime = true;
 	}
 
+	@Override
 	public void setLocalDate(final int year, final int month, final int day) {
 		_cal.set(YEAR, year);
 		_cal.set(MONTH, month - 1);
@@ -151,16 +171,19 @@ public class DateTimeImpl implements DateTime, Externalizable {
 		_noDate = false;
 	}
 
+	@Override
 	public void setLocalTime(final java.util.Calendar otherCal) {
 		setLocalTime(otherCal.getTime());
 	}
 
+	@Override
 	public void setLocalTime(final Date date) {
 		_cal.setTime(date);
 		_noDate = false;
 		_noTime = false;
 	}
 
+	@Override
 	public void setLocalTime(final int hour, final int minute, final int second, final int hundredth) {
 		_cal.set(HOUR_OF_DAY, hour);
 		_cal.set(MINUTE, minute);
@@ -169,34 +192,41 @@ public class DateTimeImpl implements DateTime, Externalizable {
 		_noTime = false;
 	}
 
+	@Override
 	public void setLocalTime(final String time) {
 		setLocalTime(time, true);
 	}
 
+	@Override
 	public void setLocalTime(final String time, final boolean parseLenient) {
 		boolean[] noDT = new boolean[2];
-		_cal = Formulas.getFormatter(_locale).parseDateToCal(time, noDT, parseLenient);
+		_cal = Formatter.getFormatter(_locale).parseDateToCal(time, noDT, parseLenient);
 		_noDate = noDT[0];
 		_noTime = noDT[1];
 	}
 
+	@Override
 	public void setNow() {
 		setLocalTime(new Date());
 	}
 
-	public int timeDifference(final DateTime dt) {
+	@Override
+	public int timeDifference(final IDateTime dt) {
 		return (int) timeDifferenceDouble(dt);
 	}
 
-	public double timeDifferenceDouble(final DateTime dt) {
+	@Override
+	public double timeDifferenceDouble(final IDateTime dt) {
 		// What if isAnyDate or isAnyTime for one of these?
 		return (_cal.getTimeInMillis() - dt.toJavaCal().getTimeInMillis()) / 1000;
 	}
 
+	@Override
 	public Date toJavaDate() {
 		return _cal.getTime();
 	}
 
+	@Override
 	public Calendar toJavaCal() {
 		return _cal;
 	}
@@ -206,7 +236,8 @@ public class DateTimeImpl implements DateTime, Externalizable {
 		return getLocalTime();
 	}
 
-	public int compare(final DateTime sdt1, final DateTime sdt2) {
+	@Override
+	public int compare(final IDateTime sdt1, final IDateTime sdt2) {
 		boolean noDate1 = sdt1.isAnyDate();
 		boolean noDate2 = sdt2.isAnyDate();
 		if (noDate1 != noDate2)
@@ -257,8 +288,8 @@ public class DateTimeImpl implements DateTime, Externalizable {
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o instanceof DateTime)
-			return (compare(this, (DateTime) o) == 0);
+		if (o instanceof IDateTime)
+			return (compare(this, (IDateTime) o) == 0);
 		return super.equals(o);
 	}
 }

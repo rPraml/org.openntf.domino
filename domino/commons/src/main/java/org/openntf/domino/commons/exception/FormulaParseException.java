@@ -13,7 +13,7 @@
  * implied. See the License for the specific language governing 
  * permissions and limitations under the License.
  */
-package org.openntf.formula;
+package org.openntf.domino.commons.exception;
 
 /**
  * This is an abstract class, to separate parser/ast/impl package. This Exception (or a subclass) is thrown, if you parse a wrong formula

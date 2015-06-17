@@ -35,7 +35,6 @@ import org.openntf.formula.Formatter.LotusDateTimeOptions;
 import org.openntf.formula.FormulaContext;
 import org.openntf.formula.FormulaParseException;
 import org.openntf.formula.FormulaParser;
-import org.openntf.formula.Formulas;
 import org.openntf.formula.Function;
 import org.openntf.formula.FunctionFactory;
 import org.openntf.formula.FunctionSet;
@@ -658,7 +657,7 @@ public enum TextFunctions {
 			val = vh.getString(i);
 			if (val.isEmpty() && emptySpecial)
 				val = "0";
-			ret.add(ctx.getFormatter().parseNumber(val, true));	// lenient=true
+			ret.addObject(ctx.getFormatter().parseNumber(val, true));	// lenient=true
 		}
 		return ret;
 	}
@@ -955,7 +954,7 @@ public enum TextFunctions {
 			break;
 		default:
 			for (int i = first; i < last; i++)
-				ret.add(vh.getObject(i));
+				ret.addObject(vh.getObject(i));
 		}
 		return ret;
 	}
@@ -1332,7 +1331,8 @@ public enum TextFunctions {
 	/*----------------------------------------------------------------------------*/
 
 	public static ValueHolder atListSupportedFunctions(final FormulaContext ctx) {
-		FunctionFactory ff = Formulas.getFunctionFactory();
+
+		FunctionFactory ff = ctx.getParser().getFunctionFactory();
 
 		List<String> functions = new ArrayList<String>(ff.getFunctions().keySet());
 		Collections.sort(functions);

@@ -73,7 +73,7 @@ public class AtFunctionSimple extends AtFunctionGeneric {
 						if (ret == null) {
 							ret = ValueHolder.createValueHolder(result.getClass(), values.size());
 						}
-						ret.add(result);
+						ret.addObject(result);
 					}
 				}
 			} else {
@@ -98,7 +98,7 @@ public class AtFunctionSimple extends AtFunctionGeneric {
 						if (ret == null) {
 							ret = ValueHolder.createValueHolder(result.getClass(), values.size());
 						}
-						ret.add(result);
+						ret.addObject(result);
 					}
 				}
 			}

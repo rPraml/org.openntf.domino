@@ -352,7 +352,7 @@ public enum DateTimeFunctions {
 	 */
 	/*----------------------------------------------------------------------------*/
 	private static IDateTime getSDTLocalSetLocale() {
-		return org.openntf.formula.Formulas.getFormatter(iLocale).getNewSDTInstance();
+		return Formatter.getFormatter(iLocale).getNewSDTInstance();
 	}
 
 	/*----------------------------------------------------------------------------*/
@@ -401,7 +401,7 @@ public enum DateTimeFunctions {
 	/*----------------------------------------------------------------------------*/
 	@ParamCount(1)
 	public static String atNTest(final String s) {
-		Formatter formatter = org.openntf.formula.Formulas.getFormatter(iLocale);
+		Formatter formatter = Formatter.getFormatter(iLocale);
 		Number n = formatter.parseNumber(s, true);
 		return formatter.formatNumber(n);
 	}

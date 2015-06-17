@@ -55,6 +55,7 @@ import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Incomplete;
+import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.types.ExceptionDetails;
 import org.openntf.domino.design.DatabaseDesign;
 import org.openntf.domino.design.DatabaseDesignService;
@@ -1024,6 +1025,7 @@ public class Database extends BaseThreadSafe<org.openntf.domino.Database, lotus.
 
 	private Boolean designProtected_;
 
+	@Override
 	public boolean isDesignProtected() {
 		if (designProtected_ == null) {
 			Document iconNote = getDocumentByID(NoteClass.ICON.defaultID());
@@ -1047,7 +1049,11 @@ public class Database extends BaseThreadSafe<org.openntf.domino.Database, lotus.
 	@Override
 	public DatabaseDesign getDesign() {
 		if (design_ == null) {
-			DatabaseDesignService designService = Factory.findApplicationServices(DatabaseDesignService.class).get(0);
+			DatabaseDesignService designService = ServiceLocator.getInstance().findApplicationService(DatabaseDesignService.class);
+			if (designService == null) {
+				log_.warning("Database.getDesign(): No DesignService present - returning 'null'");
+				return null;
+			}
 			design_ = designService.getDatabaseDesign(this);
 		}
 		return design_;

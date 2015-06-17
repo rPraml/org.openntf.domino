@@ -144,9 +144,8 @@ public class ValueHolderObject<T> extends ValueHolder implements Serializable {
 	/* (non-Javadoc)
 	 * @see org.openntf.formula.ValueHolder#add(java.lang.Object)
 	 */
-	@Deprecated
 	@Override
-	public boolean add(final Object obj) {
+	public boolean addObject(final Object obj) {
 		if (obj instanceof String)
 			return add((String) obj);
 		if (obj instanceof IDateTime)
@@ -159,7 +158,7 @@ public class ValueHolderObject<T> extends ValueHolder implements Serializable {
 			values[size++] = obj;
 			return true;
 		default:
-			return super.add(obj);
+			return super.addObject(obj);
 		}
 	}
 

@@ -48,7 +48,7 @@ public class ASTAtTransform extends SimpleNode {
 					iter.add(list.getBoolean(i));
 					break;
 				default:
-					iter.add(list.getObject(i));
+					iter.addObject(list.getObject(i));
 				}
 
 				ValueHolder old = ctx.setVarLC(varName, iter);

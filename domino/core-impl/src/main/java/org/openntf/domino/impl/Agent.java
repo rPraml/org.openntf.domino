@@ -840,7 +840,7 @@ public class Agent extends BaseThreadSafe<org.openntf.domino.Agent, lotus.domino
 
 	private lotus.domino.Agent resurrectAgent() throws NotesException {
 		lotus.domino.Database d = toLotus(getAncestorDatabase());
-		String[] agNames = Strings.splitSimple(names_, '|', false);
+		String[] agNames = Strings.split(names_, '|', false);
 
 		lotus.domino.Agent ret = d.getAgent(agNames[0]);
 		if (ret == null) {

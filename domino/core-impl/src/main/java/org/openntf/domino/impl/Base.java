@@ -40,6 +40,7 @@ import lotus.domino.NotesException;
 
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.IDateTime;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
 import org.openntf.domino.events.IDominoListener;
@@ -633,7 +634,7 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 				} catch (NotesException e) {
 					DominoUtils.handleException(e);
 				}
-			} else if (value instanceof org.openntf.formula.DateTime) {
+			} else if (value instanceof IDateTime) {
 				return javaToDominoFriendly(value, session, recycleThis);
 			} else if (value instanceof org.openntf.domino.DateTime || value instanceof org.openntf.domino.DateRange) {
 				// according to documentation, these datatypes should be compatible to write to a field ... but DateRanges make problems
@@ -731,7 +732,7 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 			// CHECKME: Is "doubleValue" really needed. (according to help.nsf only Integer and Double is supported, so keep it)
 			return ((Number) value).doubleValue();
 
-		} else if (value instanceof java.util.Date || value instanceof java.util.Calendar || value instanceof org.openntf.formula.DateTime) {
+		} else if (value instanceof java.util.Date || value instanceof java.util.Calendar || value instanceof IDateTime) {
 
 			lotus.domino.Session lsess = toLotus(session);
 			try {
@@ -739,8 +740,8 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 				lotus.domino.DateTime dt = null;
 				if (value instanceof java.util.Date) {
 					dt = lsess.createDateTime((java.util.Date) value);
-				} else if (value instanceof org.openntf.formula.DateTime) {
-					org.openntf.formula.DateTime fdt = (org.openntf.formula.DateTime) value;
+				} else if (value instanceof IDateTime) {
+					IDateTime fdt = (IDateTime) value;
 					dt = lsess.createDateTime(fdt.toJavaDate());
 					if (fdt.isAnyDate())
 						dt.setAnyDate();

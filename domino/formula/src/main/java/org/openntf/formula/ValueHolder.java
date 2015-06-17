@@ -221,7 +221,7 @@ public abstract class ValueHolder implements Serializable {
 					if (vh == null) {
 						vh = createValueHolder(o.getClass(), lh);
 					}
-					vh.add(o);
+					vh.addObject(o);
 				}
 			}
 
@@ -238,13 +238,13 @@ public abstract class ValueHolder implements Serializable {
 					if (vh == null) {
 						vh = createValueHolder(o.getClass(), lh);
 					}
-					vh.add(o);
+					vh.addObject(o);
 				}
 			}
 
 		} else {
 			vh = createValueHolder(init.getClass(), 1);
-			vh.add(init);
+			vh.addObject(init);
 		}
 		if (vh == null)
 			return valueDefault();
@@ -390,9 +390,8 @@ public abstract class ValueHolder implements Serializable {
 	 *            the position
 	 * @return the entry as Object
 	 * 
-	 * @Deprecated if you know the datatype, use the apropriate get-Method!
+	 *         if you know the datatype, use the apropriate get-Method!
 	 */
-	@Deprecated
 	public Object get(final int i) {
 		switch (dataType) {
 		case ERROR:
@@ -533,8 +532,7 @@ public abstract class ValueHolder implements Serializable {
 	/**
 	 * Add anything as value. Better use the apropriate "add" method. it is faster
 	 */
-	@Deprecated
-	public boolean add(final Object obj) {
+	public boolean addObject(final Object obj) {
 		checkImmutable();
 
 		if (dataType == DataType.ERROR) {
