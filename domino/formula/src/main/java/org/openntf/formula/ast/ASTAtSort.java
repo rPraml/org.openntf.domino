@@ -21,7 +21,7 @@ package org.openntf.formula.ast;
 import java.util.Set;
 
 import org.openntf.domino.commons.IDateTime;
-import org.openntf.formula.EvaluateException;
+import org.openntf.domino.commons.exception.EvaluateException;
 import org.openntf.formula.FormulaContext;
 import org.openntf.formula.FormulaReturnException;
 import org.openntf.formula.ValueHolder;
@@ -49,7 +49,7 @@ public class ASTAtSort extends SimpleNode {
 	 */
 	@Override
 	@DiffersFromLotus({ "Options [ACCENT(IN)SENSITIVE] and [PITCH(IN)SENSITIVE] aren't yet supported",
-	"Standard string compare is done via String.compareTo" })
+			"Standard string compare is done via String.compareTo" })
 	public ValueHolder evaluate(final FormulaContext ctx) throws FormulaReturnException {
 		try {
 			boolean sortAscending = true;

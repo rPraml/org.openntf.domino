@@ -56,7 +56,7 @@ public class FunctionFactory {
 		FunctionFactory instance = new FunctionFactory();
 		//		ServiceLoader<FunctionSet> loader = ServiceLoader.load(FunctionSet.class);
 
-		List<FunctionSet> loaderList = ServiceLocator.getInstance().findApplicationServices(FunctionSet.class);
+		List<FunctionSet> loaderList = ServiceLocator.findApplicationServices(FunctionSet.class);
 
 		//		if (loader.iterator().hasNext()) {
 		//			System.out.println("FunctionSet Service found.");

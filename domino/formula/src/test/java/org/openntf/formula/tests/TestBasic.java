@@ -7,14 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
-import org.openntf.domino.commons.FormulaService;
+import org.openntf.domino.commons.IFormulaService;
 import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.exception.EvaluateException;
 import org.openntf.domino.commons.exception.FormulaParseException;
 
 public class TestBasic {
 
-	FormulaService service = ServiceLocator.findApplicationService(FormulaService.class);
+	IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
 
 	@Test
 	public void testNow() throws FormulaParseException, EvaluateException {

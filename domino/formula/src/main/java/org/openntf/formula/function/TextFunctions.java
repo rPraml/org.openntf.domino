@@ -30,10 +30,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.openntf.domino.commons.IDateTime;
+import org.openntf.domino.commons.exception.FormulaParseException;
 import org.openntf.formula.Formatter;
 import org.openntf.formula.Formatter.LotusDateTimeOptions;
 import org.openntf.formula.FormulaContext;
-import org.openntf.formula.FormulaParseException;
 import org.openntf.formula.FormulaParser;
 import org.openntf.formula.Function;
 import org.openntf.formula.FunctionFactory;
@@ -1073,7 +1073,7 @@ public enum TextFunctions {
 	 */
 	/*----------------------------------------------------------------------------*/
 	@DiffersFromLotus({ "Options [ACCENT(IN)SENSITIVE] and [PITCH(IN)SENSITIVE] aren't yet supported",
-			"String compare is done via String.compareTo" })
+	"String compare is done via String.compareTo" })
 	@ParamCount({ 2, 3 })
 	public static ValueHolder atCompare(final ValueHolder[] params) {
 		boolean caseSensitive = true;
@@ -1106,11 +1106,11 @@ public enum TextFunctions {
 				cmp = (s2 == null) ? 0 : -1;
 			else
 				cmp = caseSensitive ? s1.compareTo(s2) : s1.compareToIgnoreCase(s2);
-			if (cmp < 0)
-				cmp = -1;
-			else if (cmp > 0)
-				cmp = 1;
-			ret.add(cmp);
+				if (cmp < 0)
+					cmp = -1;
+				else if (cmp > 0)
+					cmp = 1;
+				ret.add(cmp);
 		}
 		return (ret);
 	}

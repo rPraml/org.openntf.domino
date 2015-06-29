@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.openntf.domino.commons.IDateTime;
+import org.openntf.domino.commons.exception.EvaluateException;
 
 /**
  * This Valueholder is to hold single or multiple values.
