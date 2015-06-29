@@ -28,7 +28,7 @@ import org.openntf.domino.commons.exception.EvaluateException;
  * @author Roland Praml, Foconis AG
  * 
  */
-public interface FormulaASTNode {
+public interface IFormulaASTNode {
 
 	/**
 	 * Create a dump of the AST-Tree to System.out. Useful for debugging
@@ -42,6 +42,11 @@ public interface FormulaASTNode {
 	 * Use this method to solve a formula
 	 */
 	public List<Object> solve(Map<String, Object> map) throws EvaluateException;
+
+	/**
+	 * Use this method to solve a formula
+	 */
+	public List<Object> solve(IFormulaContext ctx) throws EvaluateException;
 
 	/**
 	 * return a set of used functions (all function names are lowercase)

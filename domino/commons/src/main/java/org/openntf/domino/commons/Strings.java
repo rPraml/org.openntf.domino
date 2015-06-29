@@ -86,6 +86,32 @@ public enum Strings {
 		return sb.toString();
 	}
 
+	/** trim is false: Cf. {@link Strings#split(String, char, boolean)} */
+	public static String[] split(final String whatToSplit, final char splitter) {
+		/** smallest memory footprint implementation */
+		int parts = 1;
+		for (int i = 0; i < whatToSplit.length(); i++) {
+			if (whatToSplit.charAt(i) == splitter)
+				parts++;
+		}
+		String[] ret = new String[parts];
+		parts = 0;
+		int prev = 0;
+		for (int i = 0; i < whatToSplit.length(); i++) {
+			if (whatToSplit.charAt(i) == splitter) {
+				ret[parts++] = whatToSplit.substring(prev, i);
+				prev = i + 1;
+			}
+		}
+		ret[parts++] = whatToSplit.substring(prev);
+		return ret;
+	}
+
+	/** trim is false: Cf. {@link Strings#split(String, char, boolean)} */
+	public static String[] split(final String whatToSplit, final String splitter) {
+		return splitSimple(new SplitSimple(whatToSplit, splitter), false);
+	}
+
 	/**
 	 * In most cases, the "normal" split method (cf. {@link String#split(String)}) is too powerful: You need to split strings along
 	 * characters, substrings, blank/tab or white spaces, but very rarely you'll need "real" regular expressions to split along.
@@ -97,12 +123,12 @@ public enum Strings {
 	 * Therefore, we give three variants of a "simple split", which cover 99% of the practice. - Since frequently the split parts are needed
 	 * "trimmed", this may be controlled by the parameter <code>trimSplits</code>.
 	 */
-	public static String[] splitSimple(final String whatToSplit, final char splitter, final boolean trimSplits) {
+	public static String[] split(final String whatToSplit, final char splitter, final boolean trimSplits) {
 		return splitSimple(new SplitSimple(whatToSplit, splitter), trimSplits);
 	}
 
-	/** Cf. {@link Strings#splitSimple(String, char, boolean)} */
-	public static String[] splitSimple(final String whatToSplit, final String splitter, final boolean trimSplits) {
+	/** Cf. {@link Strings#split(String, char, boolean)} */
+	public static String[] split(final String whatToSplit, final String splitter, final boolean trimSplits) {
 		return splitSimple(new SplitSimple(whatToSplit, splitter), trimSplits);
 	}
 
@@ -120,14 +146,14 @@ public enum Strings {
 	}
 
 	/**
-	 * Cf. {@link Strings#splitSimple(String, char, boolean)}
+	 * Cf. {@link Strings#split(String, char, boolean)}
 	 * 
 	 * @param whatToSplit
 	 *            Clear
 	 * @param specialSplit
 	 *            Allowed: {@link SpecialSplit#BlankOrTab} or {@link SpecialSplit#AnyWhiteSpace}
 	 */
-	public static String[] splitSimple(final String whatToSplit, final SpecialSplit specialSplit, final boolean trimSplits) {
+	public static String[] split(final String whatToSplit, final SpecialSplit specialSplit, final boolean trimSplits) {
 		return splitSimple(new SplitSimple(whatToSplit, specialSplit), trimSplits);
 	}
 

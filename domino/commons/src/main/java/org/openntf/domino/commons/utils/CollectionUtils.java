@@ -29,7 +29,6 @@ import java.util.NoSuchElementException;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import org.openntf.domino.commons.Constants;
 import org.openntf.domino.commons.Strings;
 
 /**
@@ -39,6 +38,9 @@ import org.openntf.domino.commons.Strings;
  */
 public enum CollectionUtils {
 	;
+	public static final int LESS_THAN = -1;
+	public static final int EQUAL = 0;
+	public static final int GREATER_THAN = 1;
 
 	public static class ChainedIterable<T> implements Iterable<T> {
 
@@ -346,26 +348,26 @@ public enum CollectionUtils {
 	 */
 	public static int compareStringArrays(final String[] stringarray0, final String[] stringarray1, final boolean descending) {
 		if (null == stringarray0) {
-			return (null == stringarray1) ? Constants.EQUAL : (descending) ? Constants.GREATER_THAN : Constants.LESS_THAN;
+			return (null == stringarray1) ? EQUAL : (descending) ? GREATER_THAN : LESS_THAN;
 		} else if (null == stringarray1) {
-			return (descending) ? Constants.LESS_THAN : Constants.GREATER_THAN;
+			return (descending) ? LESS_THAN : GREATER_THAN;
 		}
 
 		if (stringarray0.length < stringarray1.length) {
-			return (descending) ? Constants.GREATER_THAN : Constants.LESS_THAN;
+			return (descending) ? GREATER_THAN : LESS_THAN;
 		}
 		if (stringarray1.length < stringarray0.length) {
-			return (descending) ? Constants.LESS_THAN : Constants.GREATER_THAN;
+			return (descending) ? LESS_THAN : GREATER_THAN;
 		}
 
 		for (int i = 0; i < stringarray0.length; i++) {
 			final int result = stringarray0[i].compareTo(stringarray1[i]);
-			if (Constants.EQUAL != result) {
+			if (EQUAL != result) {
 				return (descending) ? -result : result;
 			}
 		}
 
-		return Constants.EQUAL;
+		return EQUAL;
 	}
 
 	/**
@@ -392,16 +394,16 @@ public enum CollectionUtils {
 	 */
 	public static int compareTreeSetStrings(final TreeSet<String> treeset0, final TreeSet<String> treeset1, final boolean descending) {
 		if (null == treeset0) {
-			return (null == treeset1) ? Constants.EQUAL : (descending) ? Constants.GREATER_THAN : Constants.LESS_THAN;
+			return (null == treeset1) ? EQUAL : (descending) ? GREATER_THAN : LESS_THAN;
 		} else if (null == treeset1) {
-			return (descending) ? Constants.LESS_THAN : Constants.GREATER_THAN;
+			return (descending) ? LESS_THAN : GREATER_THAN;
 		}
 
 		if (treeset0.size() < treeset1.size()) {
-			return (descending) ? Constants.GREATER_THAN : Constants.LESS_THAN;
+			return (descending) ? GREATER_THAN : LESS_THAN;
 		}
 		if (treeset1.size() < treeset0.size()) {
-			return (descending) ? Constants.LESS_THAN : Constants.GREATER_THAN;
+			return (descending) ? LESS_THAN : GREATER_THAN;
 		}
 
 		// Compare as string arrays

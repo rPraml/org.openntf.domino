@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openntf.domino.commons.types;
+package org.openntf.domino.commons.exception;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * Session, ... implement this interface
  * 
  */
-public interface ExceptionDetails {
+public interface IExceptionDetails {
 
 	/**
 	 * This method will provide additional exception details

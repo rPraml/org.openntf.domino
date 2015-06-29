@@ -2,6 +2,10 @@
 *.iml
 *.releaseBackup
 *.git.properties
+target/
+target-ide/
+
+
 # do not recursive exclude folders (otherwise a package named "bin" may not get recognized)
 /target
 /bin
@@ -28,4 +32,7 @@
 /domino/externals/rxjava
 /domino/externals/tinkerpop
 /domino/junit4xpages
+
+
+
 

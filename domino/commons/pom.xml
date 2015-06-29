@@ -29,12 +29,18 @@
 	</build>
 
 	<dependencies>
-
+		<!-- com.ibm.icu is opensource - so it should be no problem to use it -->
+		<dependency>
+			<groupId>com.ibm.icu</groupId>
+			<artifactId>base</artifactId>
+			<version>3.8.1</version>
+		</dependency>
+	
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
-			<scope>provided</scope>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
