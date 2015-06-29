@@ -14,6 +14,7 @@ import java.util.Set;
 import org.openntf.domino.DateTime;
 import org.openntf.domino.Document;
 import org.openntf.domino.Item;
+import org.openntf.domino.schema.IDocumentDefinition;
 import org.openntf.domino.schema.IDominoType;
 import org.openntf.domino.schema.IItemDefinition;
 import org.openntf.domino.schema.IItemListener;
@@ -151,7 +152,7 @@ public class ItemDefinition implements IItemDefinition, Externalizable {
 	}
 
 	@Override
-	public Item createDefaultItem(final Document doc, final DocumentDefinition def) {
+	public Item createDefaultItem(final Document doc, final IDocumentDefinition def) {
 		String name = getName();
 		Object defaultValue = getDefaultValue();
 		if (defaultValue == null) {

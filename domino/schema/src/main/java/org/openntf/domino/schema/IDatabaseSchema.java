@@ -7,8 +7,6 @@ import java.util.Map;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
-import org.openntf.domino.schema.impl.DocumentDefinition;
-import org.openntf.domino.schema.impl.ItemDefinition;
 
 /**
  * @author Nathan T. Freeman
@@ -16,9 +14,9 @@ import org.openntf.domino.schema.impl.ItemDefinition;
  */
 public interface IDatabaseSchema {
 
-	public Map<String, DocumentDefinition> getDocumentDefinitions();
+	public Map<String, IDocumentDefinition> getDocumentDefinitions();
 
-	public Map<String, ItemDefinition> getItemDefinitions();
+	public Map<String, IItemDefinition> getItemDefinitions();
 
 	public IItemDefinition createItemDefinition(String itemKey, Class<?> type);
 

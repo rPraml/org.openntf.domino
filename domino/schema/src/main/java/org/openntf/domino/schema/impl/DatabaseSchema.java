@@ -17,6 +17,7 @@ import org.openntf.domino.Document;
 import org.openntf.domino.Item;
 import org.openntf.domino.annotations.Incomplete;
 import org.openntf.domino.schema.IDatabaseSchema;
+import org.openntf.domino.schema.IDocumentDefinition;
 import org.openntf.domino.schema.IDominoType;
 import org.openntf.domino.schema.IItemDefinition;
 import org.openntf.domino.utils.DominoUtils;
@@ -35,8 +36,8 @@ public class DatabaseSchema implements IDatabaseSchema, Externalizable {
 		SUMMARY, READERS, AUTHORS, PROTECTED, SIGNED, ENCRYPTED
 	}
 
-	private final Map<String, DocumentDefinition> documentDefinitions_ = new ConcurrentHashMap<String, DocumentDefinition>();
-	private final Map<String, ItemDefinition> itemDefinitions_ = new ConcurrentHashMap<String, ItemDefinition>();
+	private final Map<String, IDocumentDefinition> documentDefinitions_ = new ConcurrentHashMap<String, IDocumentDefinition>();
+	private final Map<String, IItemDefinition> itemDefinitions_ = new ConcurrentHashMap<String, IItemDefinition>();
 	private transient Map<Class<? extends IDominoType>, IDominoType> typeDefinitions_;
 
 	/**
@@ -46,7 +47,7 @@ public class DatabaseSchema implements IDatabaseSchema, Externalizable {
 	}
 
 	@Override
-	public Map<String, DocumentDefinition> getDocumentDefinitions() {
+	public Map<String, IDocumentDefinition> getDocumentDefinitions() {
 		return documentDefinitions_;
 	}
 
@@ -55,7 +56,7 @@ public class DatabaseSchema implements IDatabaseSchema, Externalizable {
 	// }
 
 	@Override
-	public Map<String, ItemDefinition> getItemDefinitions() {
+	public Map<String, IItemDefinition> getItemDefinitions() {
 		return itemDefinitions_;
 	}
 
@@ -99,7 +100,7 @@ public class DatabaseSchema implements IDatabaseSchema, Externalizable {
 	@SuppressWarnings("unused")
 	@Override
 	public Document createDocument(final Database db, final String doctype) {
-		DocumentDefinition def = getDocumentDefinitions().get(doctype);
+		IDocumentDefinition def = getDocumentDefinitions().get(doctype);
 		if (def == null)
 			return null;
 		Document result = db.createDocument();
@@ -117,7 +118,7 @@ public class DatabaseSchema implements IDatabaseSchema, Externalizable {
 	@Override
 	public boolean validateDocument(final Document doc) {
 		String doctype = doc.getItemValueString("$$SchemaType");
-		DocumentDefinition def = getDocumentDefinitions().get(doctype);
+		IDocumentDefinition def = getDocumentDefinitions().get(doctype);
 		if (def == null)
 			return true;
 
@@ -163,12 +164,12 @@ public class DatabaseSchema implements IDatabaseSchema, Externalizable {
 	@Override
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		out.writeInt(documentDefinitions_.size());
-		for (Map.Entry<String, DocumentDefinition> entry : documentDefinitions_.entrySet()) {
+		for (Map.Entry<String, IDocumentDefinition> entry : documentDefinitions_.entrySet()) {
 			out.writeUTF(entry.getKey());
 			out.writeObject(entry.getValue());
 		}
 		out.writeInt(itemDefinitions_.size());
-		for (Map.Entry<String, ItemDefinition> entry : itemDefinitions_.entrySet()) {
+		for (Map.Entry<String, IItemDefinition> entry : itemDefinitions_.entrySet()) {
 			out.writeUTF(entry.getKey());
 			out.writeObject(entry.getValue());
 		}

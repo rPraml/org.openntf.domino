@@ -10,7 +10,6 @@ import org.openntf.domino.Document;
 import org.openntf.domino.Item;
 import org.openntf.domino.schema.impl.DatabaseSchema;
 import org.openntf.domino.schema.impl.DatabaseSchema.Flags;
-import org.openntf.domino.schema.impl.DocumentDefinition;
 
 /**
  * @author Nathan T. Freeman
@@ -55,5 +54,5 @@ public interface IItemDefinition extends Externalizable {
 
 	public void addItemListener(IItemListener listener);
 
-	public Item createDefaultItem(Document result, DocumentDefinition def);
+	public Item createDefaultItem(Document result, IDocumentDefinition def);
 }

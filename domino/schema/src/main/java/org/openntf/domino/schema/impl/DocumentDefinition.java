@@ -65,7 +65,7 @@ public class DocumentDefinition implements IDocumentDefinition, Externalizable {
 	public Map<String, IItemDefinition> getItemDefinitions() {
 		if (itemDefs_.isEmpty()) {
 			for (String key : getItemDefinitionKeys()) {
-				ItemDefinition id = parentSchema_.getItemDefinitions().get(key);
+				IItemDefinition id = parentSchema_.getItemDefinitions().get(key);
 				if (id != null) {
 					itemDefs_.put(key, id);
 				}
