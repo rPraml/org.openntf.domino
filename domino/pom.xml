@@ -24,6 +24,8 @@
 		<javassist-version>3.18.2-GA</javassist-version>
 		<tinkerpop-blueprints-version>2.6.0</tinkerpop-blueprints-version>
 		<skip.tests>false</skip.tests>
+		<!-- 3.8 is ICU from central maven repository -->
+		<icu-version>3.8</icu-version>
 		<domino.installdir>${user.home}/.m2/openntf-domino-ci/bin</domino.installdir>
 	</properties>
 
@@ -45,19 +47,6 @@
 		<url>file:///${basedir}/ibm-build-management/repository</url> <layout>default</layout>
 		</repository> </repositories> -->
 
-	<dependencies>
-		<dependency>
-			<groupId>org.openntf</groupId>
-			<artifactId>thirdparty</artifactId>
-			<version>1.5.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 
 	<profiles>
 		<profile>
@@ -70,6 +59,10 @@
 				<module>commons</module>
 				<module>formula</module>
 				<module>core</module>
+				<module>design-impl</module>				
+				<module>core-formula</module>
+				<module>core-impl</module>
+				<module>schema</module>
 				<module>xsp</module>
 				<module>externals</module>
 				<module>graph</module>
@@ -90,6 +83,8 @@
 				<module>commons</module>
 				<module>formula</module>
 				<module>core</module>
+				<module>design-impl</module>				
+				<module>core-impl</module>			
 				<module>xsp</module>
 				<module>externals</module>
 				<module>graph</module>

@@ -11,6 +11,12 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Class to compute several hashes. (mainly MD5, maybe extended to SHA-1 and others)
+ * 
+ * @author Roland Praml, FOCONIS AG
+ *
+ */
 public enum Hash {
 	;
 
