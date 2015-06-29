@@ -2,7 +2,7 @@ package org.openntf.domino.formula;
 
 import java.util.Map;
 
-import org.openntf.formula.EvaluateException;
+import org.openntf.domino.commons.exception.EvaluateException;
 import org.openntf.formula.Function;
 import org.openntf.formula.FunctionFactory;
 import org.openntf.formula.FunctionSet;
@@ -44,7 +44,7 @@ public enum NativeEvaluateFunctions {
 	@ParamCount({ 1, 2 })
 	public static ValueHolder atAscii(final FormulaContextNotes ctx, final ValueHolder params[]) throws EvaluateException {
 		return (params.length == 2) ? ctx.evaluateNative("@Ascii(p1;" + params[1].quoteValue() + ")", params[0]) : // Force NL
-				ctx.evaluateNative("@Ascii(p1)", params[0]);
+			ctx.evaluateNative("@Ascii(p1)", params[0]);
 	}
 
 	// TODO RPR: move to openntf	@NeedsNativeEvaluate("@Explode(DateRange)")

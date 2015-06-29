@@ -1,5 +1,6 @@
 package org.openntf.domino.formula;
 
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -9,25 +10,31 @@ import org.openntf.domino.Database;
 import org.openntf.domino.Document;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.exception.EvaluateException;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
-import org.openntf.formula.EvaluateException;
+import org.openntf.formula.Formatter;
 import org.openntf.formula.FormulaContext;
-import org.openntf.formula.Formulas;
+import org.openntf.formula.FormulaParser;
 import org.openntf.formula.ValueHolder;
 
 public class FormulaContextNotes extends FormulaContext {
+
+	public FormulaContextNotes(final Map<String, Object> dataMap, final Formatter formatter, final FormulaParser parser) {
+		super(dataMap, formatter, parser);
+	}
+
 	private static final Logger log_ = Logger.getLogger(FormulaContextNotes.class.getName());
 
-	static {
-		// this is not yet nice, but we assume that this context is always used in Domino/XPage environment
-		Factory.addTerminateHook(new Runnable() {
-			@Override
-			public void run() {
-				Formulas.terminate();
-			}
-		}, true);
-	}
+	//	static {
+	//		// this is not yet nice, but we assume that this context is always used in Domino/XPage environment
+	//		Factory.addTerminateHook(new Runnable() {
+	//			@Override
+	//			public void run() {
+	//				Formulas.terminate();
+	//			}
+	//		}, true);
+	//	}
 
 	/**
 	 * does a native evaluate. This is needed for all functions that are too complex to implement in java or the algorithm is unknown
