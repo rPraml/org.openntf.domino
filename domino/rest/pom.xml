@@ -25,7 +25,7 @@
 			<artifactId>xsp</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.ibm.domino.commons</groupId>
 			<artifactId>com.ibm.domino.commons</artifactId>

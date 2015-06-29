@@ -56,30 +56,23 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
-				<module>commons</module> <!-- Resources & Tests checked -->
+				<module>ci-env</module>
+				
+				<module>commons</module>
 				<module>formula</module> 
-				<!-- <module>externals</module>  -->
+				<module>externals</module>
 				<module>core</module>
 				<module>core-impl</module>
 				<module>core-formula</module>
-
-				<!--
-				<module>ci-env</module>
-				<module>commons</module>
-				
 				<module>design-impl</module>				
-				
+
+				<!-- modules / not needed by FOCONIS -->				
 				<module>schema</module>
-				<module>xsp</module>
 				<module>graph</module>
+				<module>xsp</module>
 				<module>rest</module>
-				<module>updatesite</module>
-				-->
-				<!-- <module>oda-dist</module> -->
 				
-				<!-- <module>graph</module> <module>externals</module> <module>formula</module> 
-					<module>junit4xpages</module> <module>tests</module> <module>org.openntf.domino.feature.group</module> 
-					<module>org.openntf.domino.updatesite</module> <module>oda-dist</module> -->
+				<module>updatesite</module>
 			</modules>
 		</profile>
 
@@ -87,16 +80,23 @@
 			<id>oda-dist</id>
 			<modules>
 				<module>ci-env</module>
+				
 				<module>commons</module>
-				<module>formula</module>
-				<module>core</module>
-				<module>design-impl</module>				
-				<module>core-impl</module>			
-				<module>xsp</module>
+				<module>formula</module> 
 				<module>externals</module>
+				<module>core</module>
+				<module>core-impl</module>
+				<module>core-formula</module>
+				<module>design-impl</module>				
+
+				<!-- modules / not needed by FOCONIS -->				
+				<module>schema</module>
 				<module>graph</module>
+				<module>xsp</module>
 				<module>rest</module>
+				
 				<module>updatesite</module>
+				<!--  AND oda-dist  -->
 				<module>oda-dist</module>
 			</modules>
 			<build>
