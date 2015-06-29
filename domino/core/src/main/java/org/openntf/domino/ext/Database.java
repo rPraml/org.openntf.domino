@@ -27,12 +27,10 @@ import org.openntf.domino.Database.Type;
 import org.openntf.domino.Document;
 import org.openntf.domino.DocumentCollection;
 import org.openntf.domino.NoteCollection.SelectOption;
-import org.openntf.domino.annotations.Incomplete;
 import org.openntf.domino.design.DatabaseDesign;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
 import org.openntf.domino.events.IDominoEventFactory;
-import org.openntf.domino.schema.IDatabaseSchema;
 import org.openntf.domino.transactions.DatabaseTransaction;
 
 import com.ibm.designer.domino.napi.NotesDatabase;
@@ -612,23 +610,23 @@ public interface Database extends Base {
 	 */
 	public Map<Serializable, org.openntf.domino.Document> getDocumentMap();
 
-	/**
-	 * Gets the schema for the database. Not yet complete
-	 * 
-	 * @return instance of IDatabaseSchema interface
-	 * @since org.openntf.domino 2.5.0
-	 */
-	@Incomplete
-	public IDatabaseSchema getSchema();
-
-	/**
-	 * Sets the schema for the database. Not yet complete
-	 * 
-	 * @param schema
-	 *            instance of IDatabaseSchema interface
-	 * @since org.openntf.domino 2.5.0
-	 */
-	public void setSchema(IDatabaseSchema schema);
+	//	/**
+	//	 * Gets the schema for the database. Not yet complete
+	//	 * 
+	//	 * @return instance of IDatabaseSchema interface
+	//	 * @since org.openntf.domino 2.5.0
+	//	 */
+	//	@Incomplete
+	//	public IDatabaseSchema getSchema();
+	//
+	//	/**
+	//	 * Sets the schema for the database. Not yet complete
+	//	 * 
+	//	 * @param schema
+	//	 *            instance of IDatabaseSchema interface
+	//	 * @since org.openntf.domino 2.5.0
+	//	 */
+	//	public void setSchema(IDatabaseSchema schema);
 
 	/**
 	 * Checks whether replication is disabled for this database

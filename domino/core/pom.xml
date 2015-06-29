@@ -66,7 +66,6 @@
 			<version>4.11</version>
 			<scope>provided</scope>
 		</dependency>
-		
 		<!-- The notes-api is bundled by the ibm-build-management -->
 		<dependency>
 			<groupId>com.ibm.notes</groupId>
@@ -81,45 +80,26 @@
 		</dependency>
 		
 		
-		<!-- add to plugin -->
-		<dependency>
-			<groupId>com.ibm.commons</groupId>
-			<artifactId>com.ibm.commons</artifactId>
-			<version>9.0.1</version>
-		</dependency>
-		
-		<!-- Javolution: needed by the CD-stuff -->		
-		<dependency>
-			<groupId>org.javolution</groupId>
-			<artifactId>javolution-core-java</artifactId>
-			<version>6.1.0-ODA-151-SNAPSHOT</version>
-		</dependency> 
-		
+		<!--
 		<dependency>
 			<groupId>org.openntf</groupId>
 			<artifactId>formula</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
+		-->
 		
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
 			<artifactId>commons</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
-		
-		<!-- TODO: Remove these Deps if separated in a own project 
+
 		<dependency>
-			<groupId>com.tinkerpop.blueprints</groupId>
-			<artifactId>blueprints-core</artifactId>
-			<version>2.6.0</version>
-		</dependency>
+			<groupId>org.javolution</groupId>
+			<artifactId>javolution-core-java</artifactId>
+			<version>6.1.0-ODA-151-SNAPSHOT</version>
+		</dependency> 
 		
-		<dependency>
-			<groupId>com.tinkerpop</groupId>
-			<artifactId>frames</artifactId>
-			<version>2.6.0</version>
-		</dependency>
-		-->
 	</dependencies>
 
 	<organization>

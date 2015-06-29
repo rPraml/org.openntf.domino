@@ -48,7 +48,7 @@ import org.openntf.domino.utils.DominoUtils;
  * The Class DbDirectory.
  */
 public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirectory, lotus.domino.DbDirectory, Session> implements
-org.openntf.domino.DbDirectory, Encapsulated {
+		org.openntf.domino.DbDirectory, Encapsulated {
 	private static final Logger log_ = Logger.getLogger(DbDirectory.class.getName());
 
 	/* the MetaData contains s small subset of information of a (closed) Database */
@@ -414,6 +414,7 @@ org.openntf.domino.DbDirectory, Encapsulated {
 		return isHonorOpenDialog_;
 	}
 
+	@Override
 	public SortedSet<DatabaseMetaData> getMetaDataSet() {
 		//		if (!isInitialized_) {
 		//			initialize(getDelegate());
@@ -714,7 +715,7 @@ org.openntf.domino.DbDirectory, Encapsulated {
 
 	@Override
 	public VFSRootNode getVFS() {
-		DatabaseDesignService designService = ServiceLocator.getInstance().findApplicationService(DatabaseDesignService.class);
+		DatabaseDesignService designService = ServiceLocator.findApplicationService(DatabaseDesignService.class);
 		if (designService == null) {
 			log_.warning("Database.getDesign(): No DesignService present - returning 'null'");
 			return null;

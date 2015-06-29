@@ -52,14 +52,18 @@ public class FormulaService implements org.openntf.domino.commons.IFormulaServic
 
 	@Override
 	public IFormulaContext createContext(final Map<String, Object> document, final Locale locale) {
-		return createContext(document, Formatter.getFormatter(locale), getParser());
+		return newFormulaContext(document, Formatter.getFormatter(locale), getParser());
 	}
 
 	public IFormulaContext createContext(final Map<String, Object> document, final FormulaParser parser) {
-		return createContext(document, parser == null ? null : parser.getFormatter(), parser);
+		return newFormulaContext(document, parser == null ? null : parser.getFormatter(), parser);
 	}
 
 	public IFormulaContext createContext(final Map<String, Object> document, final Formatter formatter, final FormulaParser parser) {
+		return newFormulaContext(document, formatter, parser);
+	}
+
+	protected IFormulaContext newFormulaContext(final Map<String, Object> document, final Formatter formatter, final FormulaParser parser) {
 		return new FormulaContext(document, formatter, parser);
 	}
 

@@ -35,7 +35,7 @@ import org.openntf.domino.MIMEEntity;
 import org.openntf.domino.MIMEHeader;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.commons.types.ExceptionDetails;
+import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.exceptions.DataNotCompatibleException;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.TypeUtils;
@@ -1062,13 +1062,13 @@ public class Item extends BaseNonThreadSafe<org.openntf.domino.Item, lotus.domin
 						StackTraceElement[] elements = t.getStackTrace();
 						log_.log(Level.FINER,
 								elements[0].getClassName() + "." + elements[0].getMethodName() + " ( line " + elements[0].getLineNumber()
-										+ ")");
+								+ ")");
 						log_.log(Level.FINER,
 								elements[1].getClassName() + "." + elements[1].getMethodName() + " ( line " + elements[1].getLineNumber()
-										+ ")");
+								+ ")");
 						log_.log(Level.FINER,
 								elements[2].getClassName() + "." + elements[2].getMethodName() + " ( line " + elements[2].getLineNumber()
-										+ ")");
+								+ ")");
 					}
 				}
 			} catch (NotesException e) {
@@ -1111,7 +1111,7 @@ public class Item extends BaseNonThreadSafe<org.openntf.domino.Item, lotus.domin
 	}
 
 	@Override
-	public void fillExceptionDetails(final List<ExceptionDetails.Entry> result) {
+	public void fillExceptionDetails(final List<IExceptionDetails.Entry> result) {
 		parent.fillExceptionDetails(result);
 		String myDetail = name_;
 		try {
@@ -1125,7 +1125,7 @@ public class Item extends BaseNonThreadSafe<org.openntf.domino.Item, lotus.domin
 		} catch (NotesException e) {
 			myDetail += ", [ValueString -> NotesException: " + e.text + "]";
 		}
-		result.add(new ExceptionDetails.Entry(this, myDetail));
+		result.add(new IExceptionDetails.Entry(this, myDetail));
 	}
 
 	@Override

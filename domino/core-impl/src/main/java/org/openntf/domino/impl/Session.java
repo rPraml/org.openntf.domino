@@ -58,7 +58,9 @@ import org.openntf.domino.RichTextStyle;
 import org.openntf.domino.Stream;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Legacy;
-import org.openntf.domino.commons.types.ExceptionDetails;
+import org.openntf.domino.commons.IFormulaService;
+import org.openntf.domino.commons.ServiceLocator;
+import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.GenericDominoEventFactory;
 import org.openntf.domino.events.IDominoEvent;
@@ -70,7 +72,6 @@ import org.openntf.domino.utils.DominoFormatter;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
-import org.openntf.formula.Formulas;
 
 import com.ibm.icu.util.Calendar;
 
@@ -508,12 +509,12 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 	public Vector<Object> evaluate(final String formula, final lotus.domino.Document doc) {
 		try {
 			// TODO RPr: Make an option to enable/disable formula engine
-			if (isFixEnabled(Fixes.FORMULA_ENGINE)) {
-				if (doc instanceof Map || doc == null) {
-					List<Object> ret = Formulas.evaluate(formula, (Map<String, Object>) doc);
-					return new Vector(ret);
-				}
+			IFormulaService formulaService = ServiceLocator.findApplicationService(IFormulaService.class);
+			if (formulaService != null) {
+				List<Object> ret = formulaService.evaluate(formula, (Map<String, Object>) doc);
+				return new Vector(ret);
 			}
+
 			if (doc instanceof Document) {
 				String lf = formula.toLowerCase();
 				if (lf.contains("field ") || lf.contains("@setfield")) {
@@ -1935,14 +1936,14 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 	}
 
 	@Override
-	public void fillExceptionDetails(final List<ExceptionDetails.Entry> result) {
+	public void fillExceptionDetails(final List<IExceptionDetails.Entry> result) {
 		String userName;
 		try {
 			userName = getDelegate().getEffectiveUserName();
 		} catch (NotesException e) {
 			userName = "[getEffectiveUserName -> NotesException: " + e.text + "]";
 		}
-		result.add(new ExceptionDetails.Entry(this, userName));
+		result.add(new IExceptionDetails.Entry(this, userName));
 	}
 
 	@Override

@@ -58,7 +58,7 @@ import org.openntf.domino.View;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Legacy;
 import org.openntf.domino.commons.Strings;
-import org.openntf.domino.commons.types.ExceptionDetails;
+import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
 import org.openntf.domino.exceptions.BlockedCrashException;
@@ -96,7 +96,7 @@ import com.ibm.domino.napi.c.BackendBridge;
  * The Class Document.
  */
 public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lotus.domino.Document, Database> implements
-org.openntf.domino.Document {
+		org.openntf.domino.Document {
 	private static final Logger log_ = Logger.getLogger(Document.class.getName());
 
 	/**
@@ -3370,8 +3370,8 @@ org.openntf.domino.Document {
 				if (del != null) { // this is surprising. Why didn't we already get it?
 					log_.log(Level.WARNING,
 							"Document " + unid + " already existed in the database with noteid " + del.getNoteID()
-							+ " and we're trying to set a doc with noteid " + getNoteID() + " to that. The existing document is a "
-							+ del.getItemValueString("form") + " and the new document is a " + getItemValueString("form"));
+									+ " and we're trying to set a doc with noteid " + getNoteID() + " to that. The existing document is a "
+									+ del.getItemValueString("form") + " and the new document is a " + getItemValueString("form"));
 					if (isDirty()) { // we've already made other changes that we should tuck away...
 						log_.log(Level.WARNING,
 								"Attempting to stash changes to this document to apply to other document of the same UNID. This is pretty dangerous...");
@@ -3667,13 +3667,13 @@ org.openntf.domino.Document {
 						StackTraceElement[] elements = t.getStackTrace();
 						log_.log(Level.FINER,
 								elements[0].getClassName() + "." + elements[0].getMethodName() + " ( line " + elements[0].getLineNumber()
-								+ ")");
+										+ ")");
 						log_.log(Level.FINER,
 								elements[1].getClassName() + "." + elements[1].getMethodName() + " ( line " + elements[1].getLineNumber()
-								+ ")");
+										+ ")");
 						log_.log(Level.FINER,
 								elements[2].getClassName() + "." + elements[2].getMethodName() + " ( line " + elements[2].getLineNumber()
-								+ ")");
+										+ ")");
 					}
 					log_.log(Level.FINE,
 							"If you recently rollbacked a transaction and this document was included in the rollback, this outcome is normal.");
@@ -4118,7 +4118,7 @@ org.openntf.domino.Document {
 	}
 
 	@Override
-	public void fillExceptionDetails(final List<ExceptionDetails.Entry> result) {
+	public void fillExceptionDetails(final List<IExceptionDetails.Entry> result) {
 		Database myDB = getAncestorDatabase();
 		String repId = "";
 
@@ -4134,7 +4134,7 @@ org.openntf.domino.Document {
 				myDetail += ", Form:" + myForm;
 		} catch (NotesException e) {
 		}
-		result.add(new ExceptionDetails.Entry(this, myDetail));
+		result.add(new IExceptionDetails.Entry(this, myDetail));
 	}
 
 	public final static String CHUNK_TYPE_NAME = "ODAChunk";

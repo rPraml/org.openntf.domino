@@ -56,7 +56,7 @@ import org.openntf.domino.View;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Incomplete;
 import org.openntf.domino.commons.ServiceLocator;
-import org.openntf.domino.commons.types.ExceptionDetails;
+import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.design.DatabaseDesign;
 import org.openntf.domino.design.DatabaseDesignService;
 import org.openntf.domino.design.IconNote;
@@ -69,7 +69,6 @@ import org.openntf.domino.exceptions.UserAccessException;
 import org.openntf.domino.ext.NoteClass;
 import org.openntf.domino.ext.Session.Fixes;
 import org.openntf.domino.helpers.DatabaseMetaData;
-import org.openntf.domino.schema.IDatabaseSchema;
 import org.openntf.domino.transactions.DatabaseTransaction;
 import org.openntf.domino.types.Encapsulated;
 import org.openntf.domino.utils.CollectionUtils;
@@ -87,7 +86,7 @@ import com.ibm.icu.util.GregorianCalendar;
  * The Class Database.
  */
 public class Database extends BaseThreadSafe<org.openntf.domino.Database, lotus.domino.Database, Session> implements
-		org.openntf.domino.Database {
+org.openntf.domino.Database {
 	private static final Logger log_ = Logger.getLogger(Database.class.getName());
 
 	/** The server_. */
@@ -1049,7 +1048,7 @@ public class Database extends BaseThreadSafe<org.openntf.domino.Database, lotus.
 	@Override
 	public DatabaseDesign getDesign() {
 		if (design_ == null) {
-			DatabaseDesignService designService = ServiceLocator.getInstance().findApplicationService(DatabaseDesignService.class);
+			DatabaseDesignService designService = ServiceLocator.findApplicationService(DatabaseDesignService.class);
 			if (designService == null) {
 				log_.warning("Database.getDesign(): No DesignService present - returning 'null'");
 				return null;
@@ -3532,29 +3531,29 @@ public class Database extends BaseThreadSafe<org.openntf.domino.Database, lotus.
 		return apiPath_;
 	}
 
-	private IDatabaseSchema schema_;
-	private volatile Boolean isSchemaChecked_ = Boolean.FALSE;
+	//	private IDatabaseSchema schema_;
+	//	private volatile Boolean isSchemaChecked_ = Boolean.FALSE;
 
-	/* (non-Javadoc)
-	 * @see org.openntf.domino.ext.Database#getSchema()
-	 */
-	@Override
-	public IDatabaseSchema getSchema() {
-		if (!isSchemaChecked_ && schema_ == null) {
-			//TODO some way to load the schema from the design...
-			isSchemaChecked_ = Boolean.TRUE;
-		}
-		return schema_;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.openntf.domino.ext.Database#setSchema(org.openntf.domino.schema.IDatabaseSchema)
-	 */
-	@Override
-	public void setSchema(final IDatabaseSchema schema) {
-		schema_ = schema;
-		//TODO serialization of the schema into a design file
-	}
+	//	/* (non-Javadoc)
+	//	 * @see org.openntf.domino.ext.Database#getSchema()
+	//	 */
+	//	@Override
+	//	public IDatabaseSchema getSchema() {
+	//		if (!isSchemaChecked_ && schema_ == null) {
+	//			//TODO some way to load the schema from the design...
+	//			isSchemaChecked_ = Boolean.TRUE;
+	//		}
+	//		return schema_;
+	//	}
+	//
+	//	/* (non-Javadoc)
+	//	 * @see org.openntf.domino.ext.Database#setSchema(org.openntf.domino.schema.IDatabaseSchema)
+	//	 */
+	//	@Override
+	//	public void setSchema(final IDatabaseSchema schema) {
+	//		schema_ = schema;
+	//		//TODO serialization of the schema into a design file
+	//	}
 
 	@Override
 	public boolean isReplicationDisabled() {
@@ -3661,9 +3660,9 @@ public class Database extends BaseThreadSafe<org.openntf.domino.Database, lotus.
 	}
 
 	@Override
-	public void fillExceptionDetails(final List<ExceptionDetails.Entry> result) {
+	public void fillExceptionDetails(final List<IExceptionDetails.Entry> result) {
 		parent.fillExceptionDetails(result);
-		result.add(new ExceptionDetails.Entry(this, getApiPath()));
+		result.add(new IExceptionDetails.Entry(this, getApiPath()));
 	}
 
 	//-------------- Externalize/Deexternalize stuff ------------------

@@ -21,7 +21,7 @@ import java.util.Vector;
 
 import org.openntf.domino.annotations.Incomplete;
 import org.openntf.domino.annotations.Legacy;
-import org.openntf.domino.commons.types.ExceptionDetails;
+import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.Resurrectable;
 import org.openntf.domino.types.SessionDescendant;
@@ -30,7 +30,7 @@ import org.openntf.domino.types.SessionDescendant;
  * The Interface Database.
  */
 public interface Database extends lotus.domino.Database, org.openntf.domino.Base<lotus.domino.Database>, org.openntf.domino.ext.Database,
-		Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
+Resurrectable, SessionDescendant, IExceptionDetails, Externalizable {
 
 	/**
 	 * Enum to allow easy access to Schema

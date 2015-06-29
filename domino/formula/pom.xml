@@ -17,16 +17,16 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.ibm.icu</groupId>
-			<artifactId>base</artifactId>
-			<version>3.8.1</version>
+			<artifactId>icu4j</artifactId>
+			<version>${icu-version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
 			<artifactId>commons</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

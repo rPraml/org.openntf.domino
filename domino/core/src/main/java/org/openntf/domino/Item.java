@@ -22,7 +22,7 @@ import java.util.Vector;
 
 import lotus.domino.XSLTResultTarget;
 
-import org.openntf.domino.commons.types.ExceptionDetails;
+import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.types.DocumentDescendant;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.Resurrectable;
@@ -32,7 +32,7 @@ import org.xml.sax.InputSource;
  * The Interface Item.
  */
 public interface Item extends Base<lotus.domino.Item>, lotus.domino.Item, org.openntf.domino.ext.Item, Resurrectable, DocumentDescendant,
-		ExceptionDetails {
+		IExceptionDetails {
 	public static enum Flags {
 		PROTECTED(16), SUMMARY(1), AUTHORS(4), READERS(8), NAMES(2), SIGNED(32), ENCRYPTED(64);
 
