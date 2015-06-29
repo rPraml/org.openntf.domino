@@ -58,8 +58,18 @@ public interface IName {
 
 	public String getAddr822Phrase();
 
+	/**
+	 * Returns the CN= part of a name
+	 * 
+	 * @return
+	 */
 	public String getCommon();
 
+	/**
+	 * Returns the C= part of a name
+	 * 
+	 * @return
+	 */
 	public String getCountry();
 
 	public String getGeneration();
