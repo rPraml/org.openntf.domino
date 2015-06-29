@@ -48,6 +48,7 @@ import org.openntf.domino.Session;
 import org.openntf.domino.Session.RunContext;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.Names;
+import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.Strings;
 import org.openntf.domino.commons.utils.GitProperties;
 import org.openntf.domino.exceptions.DataNotCompatibleException;
@@ -63,15 +64,16 @@ import org.openntf.domino.session.SessionFullAccessFactory;
 import org.openntf.domino.session.TrustedSessionFactory;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.SessionDescendant;
-import org.openntf.domino.utils.Factory.SessionType;
-import org.openntf.service.IServiceLocator;
-import org.openntf.service.ServiceLocatorFinder;
 
 /**
  * The Enum Factory. Does the Mapping lotusObject <=> OpenNTF-Object
  */
 public enum Factory {
 	;
+
+	private static final String _bundleName = "org.openntf.domino.core";
+
+	private static final GitProperties gitProperties = GitProperties.getInstance(Factory.class.getClassLoader(), _bundleName);
 
 	/**
 	 * Printer class (will be modified by XSP-environment), so that the Factory prints directly to Console (so no "HTTP JVM" Prefix is
@@ -258,8 +260,6 @@ public enum Factory {
 
 		private ClassLoader classLoader;
 
-		private IServiceLocator serviceLocator;
-
 		/**
 		 * Support for different Locale
 		 */
@@ -289,7 +289,6 @@ public enum Factory {
 		private void clear() {
 			wrapperFactory = null;
 			classLoader = null;
-			serviceLocator = null;
 			for (int i = 0; i < SessionType.SIZE; i++) {
 				sessionHolders[i] = null;
 				sessionFactories[i] = null;
@@ -353,12 +352,6 @@ public enum Factory {
 		return tv.threadConfig;
 	}
 
-	public static final String _bundleName = "org.openntf.domino.core";
-
-	public static final GitProperties getGitProperties() {
-		return GitProperties.getInstance(Factory.class.getClassLoader(), _bundleName);
-	}
-
 	private static Map<String, String> ENVIRONMENT;
 
 	/**
@@ -380,10 +373,11 @@ public enum Factory {
 				}
 			}
 		}
-		GitProperties gp = getGitProperties();
-		ENVIRONMENT.put("version", gp.getCommitIdDescribe());
+
+		ENVIRONMENT.put("version", gitProperties.getBuildVersion()); // This is "1.5.1-SNAPSHOT"
+		ENVIRONMENT.put("commit-id", gitProperties.getCommitIdDescribe()); // This is "v1.5.0-52-g280dd1a-dirty"
 		ENVIRONMENT.put("title", _bundleName);
-		ENVIRONMENT.put("url", "org.openntf");
+		ENVIRONMENT.put("url", "https://www.openntf.org");
 	}
 
 	public static String getEnvironment(final String key) {
@@ -577,8 +571,6 @@ public enum Factory {
 		return result;
 	}
 
-	private static WrapperFactory DEFAULT_WRAPPER_FACTORY = new org.openntf.domino.impl.WrapperFactory();
-
 	/**
 	 * returns the wrapper factory for this thread
 	 * 
@@ -586,21 +578,13 @@ public enum Factory {
 	 */
 	public static WrapperFactory getWrapperFactory() {
 		ThreadVariables tv = getThreadVariables();
-		WrapperFactory wf = tv.wrapperFactory;
-		if (wf == null) {
-			try {
-				List<WrapperFactory> wfList = findApplicationServices(WrapperFactory.class);
-				if (wfList.size() > 0)
-					wf = wfList.get(0);
-				else
-					wf = DEFAULT_WRAPPER_FACTORY;
-			} catch (Throwable t) {
-				log_.log(Level.WARNING, "Getting default WrapperFactory", t);
-				wf = DEFAULT_WRAPPER_FACTORY;
+		if (tv.wrapperFactory == null) {
+			tv.wrapperFactory = ServiceLocator.findApplicationService(WrapperFactory.class);
+			if (tv.wrapperFactory == null) {
+				throw new IllegalStateException("Could not find WrapperFactory in services");
 			}
-			tv.wrapperFactory = wf;
 		}
-		return wf;
+		return tv.wrapperFactory;
 	}
 
 	/**
@@ -1051,21 +1035,6 @@ public enum Factory {
 		return tv.classLoader;
 	}
 
-	public static <T> List<T> findApplicationServices(final Class<T> serviceClazz) {
-
-		ThreadVariables tv = getThreadVariables();
-
-		if (tv.serviceLocator == null) {
-			tv.serviceLocator = ServiceLocatorFinder.findServiceLocator();
-		}
-		if (tv.serviceLocator == null) {
-			throw new IllegalStateException("No service locator available so we cannot find the application services for "
-					+ serviceClazz.getName());
-		}
-
-		return tv.serviceLocator.findApplicationServices(serviceClazz);
-	}
-
 	public static void setClassLoader(final ClassLoader loader) {
 		getThreadVariables().classLoader = loader;
 	}
@@ -1236,12 +1205,19 @@ public enum Factory {
 		if (session instanceof org.openntf.domino.Session) {
 			throw new UnsupportedOperationException("Initialization must be done on the raw session! How did you get that session?");
 		}
+		Factory.println("Starting the OpenNTF Domino API... ");
+		Factory.println("    Version:            " + gitProperties.getBuildVersion());
+		// output some GIT statistics
+		Factory.println("    Commit-ID:          " + gitProperties.getCommitId());
+		Factory.println("    Commit-ID-Describe: " + gitProperties.getCommitIdDescribe());
+		Factory.println("    Commit-Timestamp:   " + gitProperties.getCommitTime());
+
 		try {
 			NapiUtil.init();
 			napiPresent_ = true;
-			Factory.println("Info", "NAPI is present");
+			Factory.println("    NAPI:               present");
 		} catch (Throwable t) {
-			Factory.println("Info", "NAPI not present (Reason: " + t.toString() + ")");
+			Factory.println("    NAPI:               not present (Reason: " + t.toString() + ")");
 			napiPresent_ = false;
 		}
 		File iniFile;
@@ -1250,11 +1226,11 @@ public enum Factory {
 			Names.setLocalServerName(localServerName);
 			iniFile = new File(session.evaluate("@ConfigFile").get(0).toString());
 		} catch (NotesException e) {
-			Factory.println("WARNING: @ConfigFile returned " + e.getMessage() + " Using fallback to locate notes.ini");
+			Factory.println("WARNING", "@ConfigFile returned " + e.getMessage() + " Using fallback to locate notes.ini");
 			iniFile = getConfigFileFallback();
 		}
 
-		Factory.println("Starting the OpenNTF Domino API... Using notes.ini: " + iniFile);
+		Factory.println("    Using notes.ini:    " + iniFile);
 
 		try {
 			Scanner scanner = new Scanner(iniFile);
@@ -1262,7 +1238,7 @@ public enum Factory {
 			loadEnvironment(scanner);
 			scanner.close();
 		} catch (FileNotFoundException e) {
-			Factory.println("Cannot read notes.ini. Giving up");
+			Factory.println("WARNING", "Cannot read notes.ini. Giving up");
 			e.printStackTrace();
 		}
 
@@ -1302,14 +1278,6 @@ public enum Factory {
 		setDefaultSessionFactory(new SessionFullAccessFactory(defaultApiPath), SessionType.FULL_ACCESS);
 
 		startups = 1;
-		//		Factory.println("OpenNTF API Version " + ENVIRONMENT.get("version") + " started");
-		GitProperties gp = getGitProperties();
-		Factory.println("########################################################################");
-		Factory.println("# OpenNTF API started");
-		Factory.println("# Commit-ID:          " + gp.getCommitId());
-		Factory.println("# Commit-ID-Describe: " + gp.getCommitIdDescribe());
-		Factory.println("# Commit-Timestamp:   " + gp.getCommitTime());
-		Factory.println("########################################################################");
 
 		// Start up logging
 		try {
@@ -1325,6 +1293,8 @@ public enum Factory {
 		} catch (PrivilegedActionException e) {
 			e.printStackTrace();
 		}
+		Factory.println("... The OpenNTF Domino API is started");
+
 	}
 
 	public static void setDefaultSessionFactory(final ISessionFactory sessionFactory, final SessionType mode) {

@@ -23,11 +23,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openntf.domino.AsDocMap;
-import org.openntf.formula.ASTNode;
-import org.openntf.formula.Formatter;
-import org.openntf.formula.FormulaContext;
-import org.openntf.formula.FormulaParser;
-import org.openntf.formula.Formulas;
+import org.openntf.domino.commons.IFormulaASTNode;
+import org.openntf.domino.commons.IFormulaService;
+import org.openntf.domino.commons.IFormulaContext;
+import org.openntf.domino.commons.ServiceLocator;
 
 /**
  * Extends the MessageProviderImpl to handle formulas in text. You can use &lt;! {@literal @}Formula... !&gt; to inline formulas in your
@@ -76,10 +75,11 @@ public class FormulaMessageProvider extends MessageProvider {
 				numParams--;
 		}
 		try {
-			FormulaParser parser = Formulas.getParser();
-			ASTNode ast = parser.parse(msgString, true);
-			Formatter formatter = Formulas.getFormatter(loc);
-			FormulaContext ctx = Formulas.createContext(map, formatter, parser);
+			IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
+
+			IFormulaASTNode ast = service.parse(msgString, true);
+			IFormulaContext ctx = service.createContext(map, loc);
+
 			// ctx.useBooleans(false);
 			for (int i = 0; i < numParams; i++)
 				ctx.setParam(Integer.toString(i + 1), args[i]);

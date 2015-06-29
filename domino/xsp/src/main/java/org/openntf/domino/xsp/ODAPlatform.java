@@ -5,6 +5,7 @@ import java.util.concurrent.Callable;
 
 import org.openntf.domino.AutoMime;
 import org.openntf.domino.View;
+import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.config.Configuration;
 import org.openntf.domino.config.ServerConfiguration;
 import org.openntf.domino.exceptions.BackendBridgeSanityCheckException;
@@ -14,10 +15,8 @@ import org.openntf.domino.thread.DominoExecutor;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.ThreadConfig;
 import org.openntf.domino.xots.Xots;
-import org.openntf.domino.xsp.helpers.OsgiServiceLocatorFactory;
 import org.openntf.domino.xsp.session.XPageNamedSessionFactory;
 import org.openntf.domino.xsp.xots.XotsDominoExecutor;
-import org.openntf.service.ServiceLocatorFinder;
 
 import com.ibm.commons.Platform;
 import com.ibm.commons.extension.ExtensionManager;
@@ -54,7 +53,7 @@ public enum ODAPlatform {
 	 */
 	public static void start() {
 		// Here is all the init/term stuff done
-		ServiceLocatorFinder.setServiceLocatorFactory(new OsgiServiceLocatorFactory());
+		ServiceLocator.setInstance(new OsgiServiceLocator());
 		Factory.startup();
 		// Setup the named factories 4 XPages
 		Factory.setNamedFactories4XPages(new XPageNamedSessionFactory(false), new XPageNamedSessionFactory(true));

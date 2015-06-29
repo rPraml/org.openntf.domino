@@ -427,7 +427,7 @@ public class DatabaseDesign implements org.openntf.domino.design.DatabaseDesign 
 		String setting = props.getProperty(propertyName);
 		if (Strings.isEmptyString(setting))
 			return new String[0];
-		return Strings.splitSimple(setting, ',', false);
+		return Strings.split(setting, ',', false);
 	}
 
 	@Override

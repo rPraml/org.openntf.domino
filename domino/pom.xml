@@ -25,6 +25,7 @@
 		<tinkerpop-blueprints-version>2.6.0</tinkerpop-blueprints-version>
 		<skip.tests>false</skip.tests>
 		<!-- 3.8 is ICU from central maven repository -->
+		
 		<icu-version>3.8</icu-version>
 		<domino.installdir>${user.home}/.m2/openntf-domino-ci/bin</domino.installdir>
 	</properties>
@@ -55,19 +56,25 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
+				<module>commons</module> <!-- Resources & Tests checked -->
+				<module>formula</module> 
+				<!-- <module>externals</module>  -->
+				<module>core</module>
+				<module>core-impl</module>
+				<module>core-formula</module>
+
+				<!--
 				<module>ci-env</module>
 				<module>commons</module>
-				<module>formula</module>
-				<module>core</module>
+				
 				<module>design-impl</module>				
-				<module>core-formula</module>
-				<module>core-impl</module>
+				
 				<module>schema</module>
 				<module>xsp</module>
-				<module>externals</module>
 				<module>graph</module>
 				<module>rest</module>
 				<module>updatesite</module>
+				-->
 				<!-- <module>oda-dist</module> -->
 				
 				<!-- <module>graph</module> <module>externals</module> <module>formula</module> 

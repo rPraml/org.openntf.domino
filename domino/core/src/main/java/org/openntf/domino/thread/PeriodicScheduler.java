@@ -67,7 +67,7 @@ public class PeriodicScheduler implements Scheduler {
 		addJitter(1.0);
 
 		if (strTok.hasMoreTokens()) { // time window
-			String[] parts = Strings.splitSimple(strTok.nextToken(), '-', false);
+			String[] parts = Strings.split(strTok.nextToken(), '-', false);
 			if (parts.length != 2)
 				throw new NumberFormatException("Invalid Time Definition String: " + defString);
 			this.startSecond = parseToSeconds(parts[0]);
@@ -117,7 +117,7 @@ public class PeriodicScheduler implements Scheduler {
 
 		int parts[] = new int[3];
 		if (str.indexOf(':') != -1) {
-			String[] strParts = Strings.splitSimple(str, ':', false);
+			String[] strParts = Strings.split(str, ':', false);
 			if (strParts.length == 3) { // 00:00:00
 				parts[0] = Integer.valueOf(strParts[0]); // hour
 				parts[1] = Integer.valueOf(strParts[1]); // minute

@@ -40,13 +40,13 @@ public class VFSRootDirectoryNode extends VFSDirectoryNode implements VFSRootNod
 	 */
 	public VFSRootDirectoryNode(final DbDirectory directory) {
 		super(null, "");
-		this.metaDataSet = ((org.openntf.domino.impl.DbDirectory) directory).getMetaDataSet();
+		this.metaDataSet = directory.getMetaDataSet();
 	}
 
 	@Override
 	public void refresh(final DbDirectory directory) {
 		directory.clear();
-		metaDataSet = ((org.openntf.domino.impl.DbDirectory) directory).getMetaDataSet();
+		metaDataSet = directory.getMetaDataSet();
 	}
 
 	@Override

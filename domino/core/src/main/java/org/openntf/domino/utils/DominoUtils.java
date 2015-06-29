@@ -55,7 +55,7 @@ import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.Hash;
 import org.openntf.domino.commons.NameEnums.NamePartKey;
 import org.openntf.domino.commons.Strings;
-import org.openntf.domino.commons.types.ExceptionDetails;
+import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.exceptions.InvalidNotesUrlException;
 import org.openntf.domino.exceptions.OpenNTFNotesException;
 import org.openntf.domino.logging.LogUtils;
@@ -316,7 +316,7 @@ public enum DominoUtils {
 		return (handleException(t, null, null));
 	}
 
-	public static Throwable handleException(final Throwable t, final ExceptionDetails hed) {
+	public static Throwable handleException(final Throwable t, final IExceptionDetails hed) {
 		return handleException(t, hed, null);
 	}
 
@@ -324,7 +324,7 @@ public enum DominoUtils {
 		return handleException(t, null, details);
 	}
 
-	public static Throwable handleException(final Throwable t, final ExceptionDetails hed, final String details) {
+	public static Throwable handleException(final Throwable t, final IExceptionDetails hed, final String details) {
 		if (t instanceof OpenNTFNotesException) {
 			OpenNTFNotesException ne = (OpenNTFNotesException) t;
 			ne.addExceptionDetails(hed);
@@ -962,7 +962,7 @@ public enum DominoUtils {
 				is = new FileInputStream(dirPath + "/" + fileLoc);
 				returnStream = new BufferedInputStream(is);
 				break;
-				// TODO Need to work out how to get from properties file in NSF
+			// TODO Need to work out how to get from properties file in NSF
 			}
 			return returnStream;
 		} catch (Throwable e) {

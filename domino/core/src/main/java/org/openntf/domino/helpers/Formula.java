@@ -15,12 +15,13 @@ import java.util.logging.Logger;
 
 import org.openntf.domino.Document;
 import org.openntf.domino.Session;
+import org.openntf.domino.commons.IFormulaService;
+import org.openntf.domino.commons.ServiceLocator;
+import org.openntf.domino.commons.exception.FormulaParseException;
+import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.utils.TypeUtils;
-import org.openntf.formula.FormulaParseException;
-import org.openntf.formula.FormulaParser;
-import org.openntf.formula.Formulas;
 
 /**
  * @author nfreeman A representation of a Formula. Has also the ability to decompile formulas
@@ -184,17 +185,17 @@ public class Formula implements org.openntf.domino.ext.Formula, Serializable {
 	 * @see org.openntf.domino.ext.Formula#setExpression(java.lang.String)
 	 */
 	@Override
-	public void setExpression(String expression) throws FormulaParseException {
+	public void setExpression(String expression) {
 		if (expression.length() > 2000) {
 			isValid_ = true;
 			expression_ = expression;
 			return;
 		}
 
-		FormulaParser parser = Formulas.getParser();
+		IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
 		FormulaParseException ex = null;
 		try {
-			parser.parse(expression);
+			service.parse(expression);
 			isValid_ = true;
 		} catch (FormulaParseException e) {
 			isValid_ = false;
@@ -206,19 +207,19 @@ public class Formula implements org.openntf.domino.ext.Formula, Serializable {
 				expression = decompiler_.decompileB64(expression);
 				if (expression != null) {
 					try {
-						parser.parse(expression);
+						service.parse(expression);
 						System.out.println("Successfully decompiled a formula!");
 						isValid_ = true;
 					} catch (FormulaParseException e) {
 						isValid_ = false;
-						throw e;
+						DominoUtils.handleException(e);
 					}
 
 				} else {
 					throw new FormulaUnableToDecompile(expression);
 				}
 			} else {
-				throw ex;
+				DominoUtils.handleException(ex);
 			}
 		}
 		if (isValid_) {

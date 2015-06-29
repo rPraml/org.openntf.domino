@@ -23,12 +23,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodNotFoundException;
 
+import org.openntf.domino.commons.IFormulaASTNode;
+import org.openntf.domino.commons.IFormulaService;
+import org.openntf.domino.commons.ServiceLocator;
+import org.openntf.domino.commons.exception.EvaluateException;
+import org.openntf.domino.commons.exception.FormulaParseException;
 import org.openntf.domino.xsp.model.DominoDocumentMapAdapter;
-import org.openntf.formula.ASTNode;
-import org.openntf.formula.EvaluateException;
-import org.openntf.formula.FormulaParseException;
-import org.openntf.formula.Formulas;
 
+import com.ibm.jscript.ASTTree.ASTNode;
 import com.ibm.xsp.binding.MethodBindingEx;
 import com.ibm.xsp.extlib.util.ExtLibUtil;
 import com.ibm.xsp.model.domino.wrapped.DominoDocument;
@@ -43,7 +45,7 @@ import com.ibm.xsp.util.ValueBindingUtil;
  */
 public class FormulaMethodBinding extends MethodBindingEx {
 	private String formulaStr;
-	private transient SoftReference<ASTNode> astNodeCache;
+	private transient SoftReference<IFormulaASTNode> astNodeCache;
 
 	/**
 	 * Constructor
@@ -94,7 +96,8 @@ public class FormulaMethodBinding extends MethodBindingEx {
 			dataMap = new DominoDocumentMapAdapter(dominoDoc);
 		}
 		try {
-			FormulaContextXsp fctx = (FormulaContextXsp) Formulas.createContext(dataMap, Formulas.getParser());
+			IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
+			FormulaContextXsp fctx = (FormulaContextXsp) service.createContext(dataMap);
 			fctx.init(this.getComponent(), ctx);
 			return getASTNode().solve(fctx);
 		} catch (EvaluateException e) {
@@ -116,15 +119,15 @@ public class FormulaMethodBinding extends MethodBindingEx {
 	 * @throws FormulaParseException
 	 *             if the formula was invalid
 	 */
-	protected ASTNode getASTNode() throws FormulaParseException {
+	protected IFormulaASTNode getASTNode() throws FormulaParseException {
 		if (astNodeCache != null) {
-			ASTNode node = astNodeCache.get();
+			IFormulaASTNode node = astNodeCache.get();
 			if (node != null)
 				return node;
 		}
-
-		ASTNode node = Formulas.getParser().parse(formulaStr);
-		astNodeCache = new SoftReference<ASTNode>(node);
+		IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
+		IFormulaASTNode node = service.parse(formulaStr);
+		astNodeCache = new SoftReference<IFormulaASTNode>(node);
 		return node;
 
 	}

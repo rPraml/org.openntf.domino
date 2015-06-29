@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 
 import org.openntf.domino.commons.Strings;
 import org.openntf.domino.design.DesignBaseNamed;
-import org.openntf.formula.function.TextFunctions;
 
 /**
  * A named DesignNote
@@ -56,7 +55,8 @@ public abstract class AbstractDesignDxlBaseNamed extends AbstractDesignDxlBase i
 		default:
 			// Aliases are all the $TITLE values after the first
 			aliases = getItemValueStrings(TITLE_ITEM, "|");
-			aliases = TextFunctions.atRight(aliases, "|");
+			int pos = aliases.indexOf('|');
+			aliases = pos > 0 ? aliases.substring(pos + 1) : "";
 			break;
 
 		}

@@ -98,7 +98,26 @@
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
 
-
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>core-formula</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- TODO: Remove this -->
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>core-impl</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>schema</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+		</dependency>
+		
+		
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
 			<artifactId>java.sharedapi</artifactId>

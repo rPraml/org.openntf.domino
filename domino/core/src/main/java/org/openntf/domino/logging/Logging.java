@@ -14,10 +14,9 @@ import java.util.zip.CRC32;
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.commons.logging.LogFormulaCondHandlerIF;
 import org.openntf.domino.commons.logging.LoggingAbstract;
-import org.openntf.domino.commons.types.ExceptionDetails;
-import org.openntf.domino.commons.types.ExceptionDetails.Entry;
 import org.openntf.domino.exceptions.OpenNTFNotesException;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
@@ -155,7 +154,7 @@ public class Logging extends LoggingAbstract {
 	}
 
 	@Override
-	public List<Entry> getExceptionDetails(final Throwable t) {
+	public List<IExceptionDetails.Entry> getExceptionDetails(final Throwable t) {
 		return (t instanceof OpenNTFNotesException) ? ((OpenNTFNotesException) t).getExceptionDetails() : null;
 	}
 
@@ -195,10 +194,10 @@ public class Logging extends LoggingAbstract {
 	}
 
 	private void searchInExceptionDetails(final String[] userDB, final Throwable exception) {
-		List<ExceptionDetails.Entry> excds = getExceptionDetails(exception);
+		List<IExceptionDetails.Entry> excds = getExceptionDetails(exception);
 		if (excds == null)
 			return;
-		for (ExceptionDetails.Entry detail : excds)
+		for (IExceptionDetails.Entry detail : excds)
 			if (Session.class.isAssignableFrom(detail.getSource()))
 				userDB[0] = detail.getMessage();
 			else if (Database.class.isAssignableFrom(detail.getSource()))

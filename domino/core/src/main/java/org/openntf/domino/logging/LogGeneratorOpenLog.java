@@ -20,8 +20,8 @@ import lotus.domino.NotesException;
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
 import org.openntf.domino.Session;
+import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.commons.logging.LogRecordAdditionalInfo;
-import org.openntf.domino.commons.types.ExceptionDetails;
 import org.openntf.domino.exceptions.OpenNTFNotesException;
 import org.openntf.domino.utils.Factory;
 
@@ -36,7 +36,7 @@ public class LogGeneratorOpenLog {
 	/*-------------------------------------------------------------*/
 	class OL_LogRecord {
 		LogRecord _logRec;
-		List<ExceptionDetails.Entry> _exceptionDetails;
+		List<IExceptionDetails.Entry> _exceptionDetails;
 		String[] _lastWrappedDocs;
 		String _serverName;
 		String _agentName;
@@ -47,7 +47,7 @@ public class LogGeneratorOpenLog {
 		Vector<Object> _userRoles;
 		String[] _clientVersion;
 
-		OL_LogRecord(final LogRecord logRec, final List<ExceptionDetails.Entry> exceptionDetails, final String[] lastWrappedDocs) {
+		OL_LogRecord(final LogRecord logRec, final List<IExceptionDetails.Entry> exceptionDetails, final String[] lastWrappedDocs) {
 			_logRec = logRec;
 			_exceptionDetails = exceptionDetails;
 			_lastWrappedDocs = lastWrappedDocs;

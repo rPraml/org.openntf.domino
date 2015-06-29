@@ -19,6 +19,7 @@ package org.openntf.domino.i18n;
 import java.util.List;
 import java.util.Locale;
 
+import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.utils.Factory;
 
 public class MessageProvider {
@@ -43,7 +44,7 @@ public class MessageProvider {
 	}
 
 	protected String getRawTextEx(final boolean retDefIfNotAvail, final String bundleName, final String key, final Locale loc) {
-		List<RawMessageProvider> provs = Factory.findApplicationServices(RawMessageProvider.class);
+		List<RawMessageProvider> provs = ServiceLocator.findApplicationServices(RawMessageProvider.class);
 		for (RawMessageProvider prov : provs) {
 			String ret = prov.getRawText(bundleName, key, loc);
 			if (ret != null)
@@ -132,7 +133,7 @@ public class MessageProvider {
 	}
 
 	public static MessageProvider getCurrentInstance() {
-		List<MessageProvider> msgProv = Factory.findApplicationServices(MessageProvider.class);
+		List<MessageProvider> msgProv = ServiceLocator.findApplicationServices(MessageProvider.class);
 		if (msgProv.size() == 0)
 			throw new IllegalStateException("No MessageProvider service found");
 		return msgProv.get(0); // we take the first one.
@@ -142,7 +143,7 @@ public class MessageProvider {
 	 * Needed to reset a DB message cache
 	 */
 	public void resetCache() {
-		List<RawMessageProvider> provs = Factory.findApplicationServices(RawMessageProvider.class);
+		List<RawMessageProvider> provs = ServiceLocator.findApplicationServices(RawMessageProvider.class);
 		for (RawMessageProvider prov : provs)
 			prov.resetCache();
 	}
