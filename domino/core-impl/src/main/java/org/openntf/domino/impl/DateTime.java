@@ -44,15 +44,10 @@ org.openntf.domino.DateTime {
 	private static final Logger log_ = Logger.getLogger(DateTime.class.getName());
 	private static final long serialVersionUID = 1L;
 
-	static {
-		Factory.addTerminateHook(new Runnable() {
-			@Override
-			public void run() {
-				Base.s_recycle(lotusWorker.get());
-				lotusWorker.set(null);
-				calendar.set(null);
-			}
-		}, true);
+	public static void cleanupThread() {
+		Base.s_recycle(lotusWorker.get());
+		lotusWorker.set(null);
+		calendar.set(null);
 	}
 
 	/** The calendar */

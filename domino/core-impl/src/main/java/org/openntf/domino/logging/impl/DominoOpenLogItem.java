@@ -43,7 +43,8 @@
  * 
  */
 
-package org.openntf.domino.logging;
+package org.openntf.domino.logging.impl;
+
 
 /**
  * The Class DominoOpenLogItem.

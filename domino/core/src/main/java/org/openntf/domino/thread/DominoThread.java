@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 
 import lotus.domino.NotesThread;
 
+import org.openntf.domino.commons.ILifeCycle;
 import org.openntf.domino.commons.IO;
 import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.session.ISessionFactory;
@@ -29,32 +30,13 @@ import org.openntf.domino.utils.Factory.SessionType;
 /**
  * The Class DominoThread extends the NotesThread and clones the current SessionFactory.
  */
-public class DominoThread extends NotesThread {
+public class DominoThread extends NotesThread implements ILifeCycle {
 	private static final Logger log_ = Logger.getLogger(DominoThread.class.getName());
 	private transient Runnable runnable_;
 	protected int nativeId_;
 	private final ISessionFactory sessionFactory_;
 
 	private Factory.ThreadConfig sourceThreadConfig = Factory.getThreadConfig();
-
-	/**
-	 * The shutdown hook is executed if the thread is still running before the Factory is shut down.
-	 */
-	private Runnable shutdownHook = new Runnable() {
-
-		@Override
-		public void run() {
-			IO.println(DominoThread.this, "Shutdown " + DominoThread.this);
-			DominoThread.this.interrupt();
-			try {
-				DominoThread.this.join(30 * 1000); // give the thread 30 seconds to join after interrupt.
-			} catch (InterruptedException e) {
-			}
-			if (DominoThread.this.isAlive()) {
-				IO.println(DominoThread.this, "WARNING " + DominoThread.this + " is still alive after 30 secs. Continuing anyway.");
-			}
-		}
-	};
 
 	/**
 	 * Instantiates a new domino thread.
@@ -186,16 +168,16 @@ public class DominoThread extends NotesThread {
 		super.initThread();
 		nativeId_ = this.getNativeThreadID();
 		log_.fine("DEBUG: Initializing a " + toString());
-		Factory.initThread(sourceThreadConfig);
+		LifeCycleManager.beforeRequest(sourceThreadConfig);
 		Factory.setSessionFactory(sessionFactory_, SessionType.CURRENT);
-
-		LifeCycleManager.addShutdownHook(shutdownHook);
+		LifeCycleManager.addLifeCycle(this);
 	}
 
 	@Override
 	public void termThread() {
 		log_.fine("DEBUG: Terminating a " + toString());
-		LifeCycleManager.removeShutdownHook(shutdownHook);
+		LifeCycleManager.removeLifeCycle(this);
+		LifeCycleManager.afterRequest();
 		super.termThread();
 	}
 
@@ -226,15 +208,35 @@ public class DominoThread extends NotesThread {
 	public static void runApp(final Runnable app, final ISessionFactory sf) {
 		LifeCycleManager.startup();
 		lotus.domino.NotesThread.sinitThread(); // we must keep one thread open
-		Factory.initThread(Factory.STRICT_THREAD_CONFIG);
+		LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
 		Factory.setSessionFactory(sf, SessionType.CURRENT);
 
 		try {
 			app.run();
 		} finally {
-			Factory.termThread();
+			LifeCycleManager.afterRequest();
 			lotus.domino.NotesThread.stermThread();
 			LifeCycleManager.shutdown();
 		}
+	}
+
+	@Override
+	public void startup() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void shutdown() {
+		IO.println(DominoThread.this, "Shutdown " + DominoThread.this);
+		DominoThread.this.interrupt();
+		try {
+			DominoThread.this.join(30 * 1000); // give the thread 30 seconds to join after interrupt.
+		} catch (InterruptedException e) {
+		}
+		if (DominoThread.this.isAlive()) {
+			IO.println(DominoThread.this, "WARNING " + DominoThread.this + " is still alive after 30 secs. Continuing anyway.");
+		}
+
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openntf.domino.logging;
+package org.openntf.domino.logging.impl;
 
 import java.security.AccessControlException;
 import java.security.AccessController;

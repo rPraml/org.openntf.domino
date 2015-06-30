@@ -33,6 +33,7 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import org.openntf.domino.annotations.Incomplete;
+import org.openntf.domino.commons.ILifeCycle;
 import org.openntf.domino.commons.IO;
 import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.events.IDominoListener;
@@ -54,7 +55,7 @@ import org.openntf.domino.events.IDominoListener;
  * @author Roland Praml
  */
 @Incomplete
-public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor implements XotsExecutorService {
+public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor implements XotsExecutorService, ILifeCycle {
 	public enum TaskState {
 		/** The Task is Queued and will be executed next */
 
@@ -83,27 +84,6 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 	private static final AtomicLong sequencer = new AtomicLong(0L);
 
 	protected Calendar now_ = Calendar.getInstance();
-	// the shutdown-hook for proper termination
-	protected Runnable shutdownHook = new Runnable() {
-		@Override
-		public void run() {
-			shutdownNow();
-			LifeCycleManager.removeShutdownHook(shutdownHook);
-			try {
-				for (int i = 5; i > 0; i--) {
-					if (!awaitTermination(10, TimeUnit.SECONDS)) {
-						if (i > 0) {
-							IO.println("Could not terminate java threads... Still waiting " + (i * 10) + " seconds");
-						} else {
-							IO.println("Could not terminate java threads... giving up. Server may crash now.");
-						}
-					}
-				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	};
 
 	private String executorName_;
 
@@ -130,7 +110,7 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 	public AbstractDominoExecutor(final int corePoolSize, final String executorName) {
 		super(corePoolSize, createThreadFactory());
 		executorName_ = executorName;
-		LifeCycleManager.addShutdownHook(shutdownHook);
+		LifeCycleManager.addLifeCycle(this);
 	}
 
 	/**
@@ -516,4 +496,32 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 		return new DominoFutureTask<T>(wrap(runnable), type, new PeriodicScheduler(0, 0, TimeUnit.MILLISECONDS));
 	};
 
+	@Override
+	public void shutdown() {
+		shutdownNow();
+		LifeCycleManager.removeLifeCycle(this);
+		try {
+			for (int i = 5; i > 0; i--) {
+				if (!awaitTermination(10, TimeUnit.SECONDS)) {
+					if (i > 0) {
+						IO.println("Could not terminate java threads... Still waiting " + (i * 10) + " seconds");
+					} else {
+						IO.println("Could not terminate java threads... giving up. Server may crash now.");
+					}
+				}
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void startup() {
+
+	}
+
+	@Override
+	public int getPriority() {
+		return 0;
+	}
 }

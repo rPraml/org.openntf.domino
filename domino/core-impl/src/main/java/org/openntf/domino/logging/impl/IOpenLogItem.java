@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openntf.domino.logging;
+package org.openntf.domino.logging.impl;
 
 import java.util.ArrayList;
 import java.util.Date;

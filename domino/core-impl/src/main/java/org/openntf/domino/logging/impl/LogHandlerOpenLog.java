@@ -1,4 +1,4 @@
-package org.openntf.domino.logging;
+package org.openntf.domino.logging.impl;
 
 import java.io.IOException;
 import java.util.logging.Formatter;

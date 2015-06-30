@@ -21,10 +21,8 @@ import java.security.AccessControlException;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -47,6 +45,8 @@ import org.openntf.domino.Session.RunContext;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.ILifeCycle;
 import org.openntf.domino.commons.IO;
+import org.openntf.domino.commons.IRequest;
+import org.openntf.domino.commons.IRequestLifeCycle;
 import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.commons.Names;
 import org.openntf.domino.commons.ServiceLocator;
@@ -64,7 +64,6 @@ import org.openntf.domino.session.SessionFullAccessFactory;
 import org.openntf.domino.session.TrustedSessionFactory;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.SessionDescendant;
-import org.openntf.domino.utils.Factory.SessionType;
 
 /**
  * The Enum Factory. Does the Mapping lotusObject <=> OpenNTF-Object
@@ -166,7 +165,7 @@ public enum Factory {
 		}
 	}
 
-	public static class ThreadConfig {
+	public static class ThreadConfig implements IRequest {
 		public final Fixes[] fixes;
 		public final AutoMime autoMime;
 		public final boolean bubbleExceptions;
@@ -321,12 +320,10 @@ public enum Factory {
 		/** These sessions will be recycled at the end of that thread. Key = UserName of session */
 		public Map<String, Session> ownSessions = new HashMap<String, Session>();
 
-		private List<Runnable> terminateHooks;
-
 		private ThreadConfig threadConfig;
 
-		public ThreadVariables(final ThreadConfig tc) {
-			threadConfig = tc;
+		public ThreadVariables(final IRequest tc) {
+			threadConfig = (ThreadConfig) tc;
 		}
 
 		/** clear the object */
@@ -343,28 +340,6 @@ public enum Factory {
 
 		}
 
-		public void removeTerminateHook(final Runnable hook) {
-			if (terminateHooks == null)
-				return;
-			terminateHooks.remove(hook);
-
-		}
-
-		public void addTerminateHook(final Runnable hook) {
-			if (terminateHooks == null) {
-				terminateHooks = new ArrayList<Runnable>();
-			}
-			terminateHooks.add(hook);
-		}
-
-		public void terminate() {
-			if (terminateHooks != null) {
-				for (Runnable hook : terminateHooks) {
-					hook.run();
-				}
-				terminateHooks = null;
-			}
-		}
 	}
 
 	private static ISessionFactory[] defaultSessionFactories = new ISessionFactory[SessionType.SIZE];
@@ -376,7 +351,7 @@ public enum Factory {
 	 */
 	private static ThreadLocal<ThreadVariables> threadVariables_ = new ThreadLocal<ThreadVariables>();
 
-	private static List<Runnable> globalTerminateHooks = new ArrayList<Runnable>();
+	//private static List<Runnable> globalTerminateHooks = new ArrayList<Runnable>();
 
 	private static String localServerName;
 	private static boolean napiPresent_;
@@ -1113,66 +1088,18 @@ public enum Factory {
 	 * Begin with a clear environment. Initialize this thread
 	 * 
 	 */
+	@Deprecated
 	public static void initThread(final ThreadConfig tc) { // RPr: Method was deliberately renamed
-		if (startups == 0) {
-			throw new IllegalStateException("Factory is not yet started");
-		}
-		if (log_.isLoggable(Level.FINER)) {
-			log_.log(Level.FINER, "Factory.initThread()", new Throwable());
-		}
-		if (threadVariables_.get() != null) {
-			log_.log(Level.SEVERE, "WARNING - Thread " + Thread.currentThread().getName()
-					+ " was not correctly terminated or initialized twice", new Throwable());
-		}
-		//		System.out.println("TEMP DEBUG: Factory thread initializing.");
-		//		Throwable t = new Throwable();
-		//		t.printStackTrace();
-		threadVariables_.set(new ThreadVariables(tc));
+		LifeCycleManager.beforeRequest(tc);
 	}
 
 	/**
 	 * terminate the current thread.
 	 */
+	@Deprecated
 	public static void termThread() { // RPr: Method was deliberately renamed
-		if (log_.isLoggable(Level.FINER)) {
-			log_.log(Level.FINER, "Factory.termThread()", new Throwable());
-		}
-		ThreadVariables tv = threadVariables_.get();
-		if (tv == null) {
-			log_.log(Level.SEVERE, "WARNING - Thread " + Thread.currentThread().getName()
-					+ " was not correctly initalized or terminated twice", new Throwable());
-			return;
-		}
-		//		System.out.println("TEMP DEBUG: Factory thread terminating.");
-		//		Throwable trace = new Throwable();
-		//		trace.printStackTrace();
-		try {
+		LifeCycleManager.afterRequest();
 
-			for (Runnable term : globalTerminateHooks) {
-				term.run();
-			}
-			tv.terminate();
-			if (tv.wrapperFactory != null) {
-				tv.wrapperFactory.recycle();
-			}
-			//		System.out.println("DEBUG: cleared " + termCount + " references from the queue...");
-			DominoUtils.setBubbleExceptions(null);
-			// The last step is to recycle ALL own sessions
-			for (Session sess : tv.ownSessions.values()) {
-				if (sess != null) {
-					sess.recycle();
-				}
-			}
-		} catch (Throwable t) {
-			log_.log(Level.SEVERE, "An error occured while terminating the factory", t);
-		} finally {
-			tv.clear();
-			threadVariables_.set(null);
-			System.gc();
-		}
-		if (counters != null) {
-			System.out.println(dumpCounters(true));
-		}
 	}
 
 	private static File getConfigFileFallback() {
@@ -1256,6 +1183,7 @@ public enum Factory {
 				lotus.domino.Session sess = lotus.domino.NotesFactory.createSession();
 				try {
 					Factory.startup(sess);
+					startups = 1;
 				} finally {
 					sess.recycle();
 				}
@@ -1270,6 +1198,7 @@ public enum Factory {
 		@Override
 		public void shutdown() {
 			// TODO Auto-generated method stub
+			startups = 0;
 
 		}
 
@@ -1277,6 +1206,63 @@ public enum Factory {
 		public int getPriority() {
 			// load after commons
 			return 10;
+		}
+	}
+
+	public static class RequestLifeCycle implements IRequestLifeCycle {
+		@Override
+		public void beforeRequest(final IRequest request) {
+			if (log_.isLoggable(Level.FINER)) {
+				log_.log(Level.FINER, "Factory.initThread()", new Throwable());
+			}
+			if (threadVariables_.get() != null) {
+				log_.log(Level.SEVERE, "WARNING - Thread " + Thread.currentThread().getName()
+						+ " was not correctly terminated or initialized twice", new Throwable());
+			}
+			//		System.out.println("TEMP DEBUG: Factory thread initializing.");
+			//		Throwable t = new Throwable();
+			//		t.printStackTrace();
+			threadVariables_.set(new ThreadVariables(request));
+
+		}
+
+		@Override
+		public void afterRequest() {
+			if (log_.isLoggable(Level.FINER)) {
+				log_.log(Level.FINER, "Factory.termThread()", new Throwable());
+			}
+			ThreadVariables tv = threadVariables_.get();
+			if (tv == null) {
+				log_.log(Level.SEVERE, "WARNING - Thread " + Thread.currentThread().getName()
+						+ " was not correctly initalized or terminated twice", new Throwable());
+				return;
+			}
+			//		System.out.println("TEMP DEBUG: Factory thread terminating.");
+			//		Throwable trace = new Throwable();
+			//		trace.printStackTrace();
+			try {
+				if (tv.wrapperFactory != null) {
+					tv.wrapperFactory.recycle();
+				}
+				//		System.out.println("DEBUG: cleared " + termCount + " references from the queue...");
+				DominoUtils.setBubbleExceptions(null);
+				// The last step is to recycle ALL own sessions
+				for (Session sess : tv.ownSessions.values()) {
+					if (sess != null) {
+						sess.recycle();
+					}
+				}
+			} catch (Throwable t) {
+				log_.log(Level.SEVERE, "An error occured while terminating the factory", t);
+			} finally {
+				tv.clear();
+				threadVariables_.set(null);
+				System.gc();
+			}
+			if (counters != null) {
+				System.out.println(dumpCounters(true));
+			}
+
 		}
 
 	}
@@ -1351,8 +1337,6 @@ public enum Factory {
 		setDefaultSessionFactory(new TrustedSessionFactory(defaultApiPath), SessionType.TRUSTED);
 		setDefaultSessionFactory(new SessionFullAccessFactory(defaultApiPath), SessionType.FULL_ACCESS);
 
-		startups = 1;
-
 	}
 
 	public static void setDefaultSessionFactory(final ISessionFactory sessionFactory, final SessionType mode) {
@@ -1385,6 +1369,7 @@ public enum Factory {
 	//		startups--;
 	//	}
 
+	@Deprecated
 	public static boolean isStarted() {
 		return startups > 0;
 	}
@@ -1809,29 +1794,6 @@ public enum Factory {
 			throw new DataNotCompatibleException("Cannot convert a non-OpenNTF DocumentCollection to a NoteCollection");
 		}
 		return result;
-	}
-
-	/**
-	 * Add a hook that will run on the next "terminate" call
-	 * 
-	 * @param hook
-	 *            the hook that should run on next terminate
-	 * 
-	 */
-	public static void addTerminateHook(final Runnable hook, final boolean global) {
-		if (global) {
-			globalTerminateHooks.add(hook);
-		} else {
-			getThreadVariables().addTerminateHook(hook);
-		}
-	}
-
-	public static void removeTerminateHook(final Runnable hook, final boolean global) {
-		if (global) {
-			globalTerminateHooks.remove(hook);
-		} else {
-			getThreadVariables().removeTerminateHook(hook);
-		}
 	}
 
 	//	/**

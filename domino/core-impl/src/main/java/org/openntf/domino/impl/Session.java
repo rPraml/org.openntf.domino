@@ -62,13 +62,12 @@ import org.openntf.domino.commons.IFormulaService;
 import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.events.EnumEvent;
-import org.openntf.domino.events.GenericDominoEventFactory;
 import org.openntf.domino.events.IDominoEvent;
 import org.openntf.domino.events.IDominoEventFactory;
 import org.openntf.domino.exceptions.UnableToAcquireSessionException;
 import org.openntf.domino.exceptions.UserAccessException;
+import org.openntf.domino.impl.events.GenericDominoEventFactory;
 import org.openntf.domino.types.Encapsulated;
-import org.openntf.domino.utils.DominoFormatter;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
@@ -90,7 +89,8 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 	private static final Logger log_ = Logger.getLogger(Session.class.getName());
 
 	/** The formatter_. */
-	private DominoFormatter formatter_; // RPr: changed to non static as this can cause thread issues
+	@Deprecated
+	private org.openntf.domino.utils.DominoFormatter formatter_; // RPr: changed to non static as this can cause thread issues
 
 	/* A lock object for "getDatabase" to prevent server crashes.
 	 * it seems that the method is not thread safe. (at least if you run the code as java application)
@@ -189,10 +189,9 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 	 *            the session
 	 */
 	private void initialize(final lotus.domino.Session session) {
-		setFixEnable(Fixes.DOC_UNID_NULLS, true);
+		setFixEnable(Fixes.DOC_UNID_NULLS, true); // TODO Why is this set here?
 		try {
 			username_ = session.getEffectiveUserName();
-			formatter_ = new DominoFormatter(getInternational());
 		} catch (NotesException e) {
 			DominoUtils.handleException(e, this);
 		}
@@ -204,7 +203,11 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 	 * @return the formatter
 	 */
 	@Override
-	public DominoFormatter getFormatter() {
+	@Deprecated
+	public org.openntf.domino.utils.DominoFormatter getFormatter() {
+		if (formatter_ == null) {
+			formatter_ = new org.openntf.domino.utils.DominoFormatter(getInternational());
+		}
 		return formatter_;
 	}
 
@@ -1688,18 +1691,6 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 	public IDominoEvent generateEvent(final EnumEvent event, final org.openntf.domino.Base source, final org.openntf.domino.Base target,
 			final Object payload) {
 		return getEventFactory().generate(event, source, target, payload);
-	}
-
-	@Override
-	@Deprecated
-	//use DominoUtils.toCommonName(String) instead
-	public String toCommonName(final String name) {
-		org.openntf.domino.Name lname = createName(name);
-		if (lname.isHierarchical()) {
-			return lname.getCommon();
-		} else {
-			return name;
-		}
 	}
 
 	@Override

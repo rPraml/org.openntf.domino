@@ -344,13 +344,13 @@ public interface Document {
 
 	public <T> T getItemSeriesValues(CharSequence name, Class<T> type);
 
-	public Map<String, List<Object>> getItemTable(CharSequence... itemnames);
-
-	public List<Map<String, Object>> getItemTablePivot(final CharSequence... itemnames);
-
-	public void setItemTable(final Map<String, List<Object>> table);
-
-	public void setItemTablePivot(final List<Map<String, Object>> pivot);
+	//	public Map<String, List<Object>> getItemTable(CharSequence... itemnames);
+	//
+	//	public List<Map<String, Object>> getItemTablePivot(final CharSequence... itemnames);
+	//
+	//	public void setItemTable(final Map<String, List<Object>> table);
+	//
+	//	public void setItemTablePivot(final List<Map<String, Object>> pivot);
 
 	public Name getItemValueName(String itemName);
 

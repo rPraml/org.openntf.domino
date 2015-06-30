@@ -43,7 +43,7 @@
  * 
  */
 
-package org.openntf.domino.logging;
+package org.openntf.domino.logging.impl;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -60,6 +60,8 @@ import org.openntf.domino.Database;
 import org.openntf.domino.Document;
 import org.openntf.domino.RichTextItem;
 import org.openntf.domino.Session;
+import org.openntf.domino.logging.impl.IOpenLogItem.DebugLevel;
+import org.openntf.domino.logging.impl.IOpenLogItem.LogType;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;

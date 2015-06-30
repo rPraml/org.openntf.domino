@@ -3,7 +3,6 @@
  */
 package org.openntf.domino.ext;
 
-import java.sql.DatabaseMetaData;
 import java.util.Set;
 
 import org.openntf.domino.Database;
@@ -67,6 +66,6 @@ public interface DbDirectory {
 	 */
 	public void setDirectoryType(final Type type);
 
-	public Set<DatabaseMetaData> getMetaDataSet();
+	public Set<Database.MetaData> getMetaDataSet();
 
 }

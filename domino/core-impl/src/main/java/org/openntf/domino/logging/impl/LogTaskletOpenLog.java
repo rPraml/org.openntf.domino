@@ -1,4 +1,4 @@
-package org.openntf.domino.logging;
+package org.openntf.domino.logging.impl;
 
 import org.openntf.domino.thread.AbstractDominoRunnable;
 import org.openntf.domino.utils.Factory;

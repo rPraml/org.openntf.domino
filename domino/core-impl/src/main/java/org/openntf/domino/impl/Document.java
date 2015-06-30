@@ -21,11 +21,13 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,6 +61,7 @@ import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Legacy;
 import org.openntf.domino.commons.Strings;
 import org.openntf.domino.commons.exception.IExceptionDetails;
+import org.openntf.domino.commons.utils.TypeUtils;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
 import org.openntf.domino.exceptions.BlockedCrashException;
@@ -70,19 +73,16 @@ import org.openntf.domino.ext.Database.Events;
 import org.openntf.domino.ext.Name;
 import org.openntf.domino.ext.NoteClass;
 import org.openntf.domino.ext.Session.Fixes;
-import org.openntf.domino.helpers.DocumentEntrySet;
-import org.openntf.domino.helpers.Formula;
 import org.openntf.domino.iterators.ItemVector;
 import org.openntf.domino.transactions.DatabaseTransaction;
 import org.openntf.domino.types.BigString;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.Null;
-import org.openntf.domino.utils.Documents;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.LMBCSUtils;
+import org.openntf.domino.utils.MIMEBean;
 import org.openntf.domino.utils.NapiUtil;
-import org.openntf.domino.utils.TypeUtils;
 import org.openntf.domino.utils.xml.XMLDocument;
 
 import com.ibm.commons.util.io.json.JsonException;
@@ -106,6 +106,122 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 	 */
 	protected static enum RemoveType {
 		SOFT_FALSE, SOFT_TRUE, HARD_FALSE, HARD_TRUE;
+	}
+
+	/**
+	 * Helper Class for Document.entrySet
+	 * 
+	 * @author Roland Praml, FOCONIS AG
+	 *
+	 */
+	protected class DocumentEntrySetIterator implements Iterator<Map.Entry<String, Object>> {
+		private Iterator<String> keys;
+
+		public DocumentEntrySetIterator() {
+			keys = Document.this.keySet().iterator();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return keys.hasNext();
+		}
+
+		@Override
+		public Map.Entry<String, Object> next() {
+			final String key = keys.next();
+
+			return new Map.Entry<String, Object>() {
+				@Override
+				public String getKey() {
+					return key;
+				}
+
+				@Override
+				public Object getValue() {
+					return Document.this.get(key);
+				}
+
+				@Override
+				public Object setValue(final Object value) {
+					return Document.this.put(key, value);
+				}
+
+				@Override
+				public String toString() {
+					return key + "=" + getValue();
+				}
+			};
+		}
+
+		@Override
+		public void remove() {
+			keys.remove();
+		}
+
+	}
+
+	/**
+	 * Helper Class for Document.entrySet
+	 * 
+	 * @author Roland Praml, FOCONIS AG
+	 *
+	 */
+	protected class DocumentEntrySet extends AbstractSet<Map.Entry<String, Object>> {
+
+		@Override
+		public boolean add(final Map.Entry<String, Object> entry) {
+			return Document.this.put(entry.getKey(), entry.getValue()) != null;
+		}
+
+		@Override
+		public void clear() {
+			Document.this.clear();
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return Document.this.isEmpty();
+		}
+
+		@Override
+		public Iterator<Map.Entry<String, Object>> iterator() {
+			return new DocumentEntrySetIterator();
+		}
+
+		@Override
+		public boolean remove(final Object arg0) {
+			if (arg0 instanceof Map.Entry) {
+				@SuppressWarnings("unchecked")
+				final Map.Entry<String, Object> entry = (Map.Entry<String, Object>) arg0;
+				return Document.this.remove(entry.getKey()) != null;
+			}
+			return false;
+		}
+
+		@Override
+		public boolean contains(final Object obj) {
+			if ((obj instanceof Map.Entry)) {
+				@SuppressWarnings("rawtypes")
+				Map.Entry entry = (Map.Entry) obj;
+				Object value = Document.this.get(entry.getKey());
+				if (value == null && entry.getValue() == null) {
+					return true;
+				} else if (value == null || entry.getValue() == null) {
+					return false;
+				} else {
+					return value.equals(entry.getValue());
+				}
+			}
+			return false;
+		}
+
+		@Override
+		public int size() {
+			return Document.this.size();
+		}
+
+		//	hashCode & equals already implemented in Abstract method
+
 	}
 
 	private RemoveType removeType_;
@@ -1180,10 +1296,12 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 		// RPr: this should be equal to the code below.
 		MIMEEntity entity = getMIMEEntity(name);
 		if (entity == null) {
-			return TypeUtils.itemValueToClass(this, name, type);
+			Item item = getFirstItem(name);
+			Vector<?> v = item == null ? null : item.getValues();
+			return TypeUtils.collectionToClass(v, type);
 		} else {
 			try {
-				return (T) Documents.getItemValueMIME(this, name, entity);
+				return TypeUtils.objectToClass(MIMEBean.getItemValueMIME(this, name, entity), type);
 			} finally {
 				closeMIMEEntities(false, name);
 			}
@@ -1198,7 +1316,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 		}
 		List<T> tmp = new ArrayList<T>(vals.size());
 		for (int i = 0; i < vals.size(); i++) {
-			tmp.add(TypeUtils.objectToClass(vals.get(i), type, getAncestorSession()));
+			tmp.add(TypeUtils.objectToClass(vals.get(i), type));
 		}
 		return tmp;
 	}
@@ -1274,7 +1392,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 			MIMEEntity entity = this.getMIMEEntity(name);
 			if (entity != null) {
 				try {
-					Object mimeValue = Documents.getItemValueMIME(this, name, entity);
+					Object mimeValue = MIMEBean.getItemValueMIME(this, name, entity);
 					if (mimeValue != null) {
 						if (mimeValue instanceof Vector) {
 							return (Vector<Object>) mimeValue;
@@ -1347,7 +1465,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 			MIMEEntity entity = this.getMIMEEntity(itemName);
 			if (entity != null) {
 				try {
-					return Documents.getItemValueMIME(this, itemName, entity);
+					return MIMEBean.getItemValueMIME(this, itemName, entity);
 				} finally {
 					closeMIMEEntities(false, itemName);
 				}
@@ -1378,7 +1496,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 				return ret;
 			Object o = null;
 			try {
-				o = Documents.getItemValueMIME(this, itemName, entity);
+				o = MIMEBean.getItemValueMIME(this, itemName, entity);
 			} finally {
 				closeMIMEEntities(false, itemName);
 			}
@@ -1447,7 +1565,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 					break;
 				Object mim = null;
 				try {
-					mim = Documents.getItemValueMIME(this, name, entity);
+					mim = MIMEBean.getItemValueMIME(this, name, entity);
 				} finally {
 					closeMIMEEntities(false, name);
 				}
@@ -1912,12 +2030,6 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 			DominoUtils.handleException(e, this);
 		}
 		return false;
-	}
-
-	@Override
-	@Deprecated
-	public MIMEEntity testMIMEEntity(final String name) {
-		return getMIMEEntity(name);
 	}
 
 	/*
@@ -2538,7 +2650,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 				markDirty(itemName, true);
 			} else if (value instanceof Serializable) {
 
-				Documents.saveState((Serializable) value, this, itemName);
+				MIMEBean.saveState((Serializable) value, this, itemName);
 
 				// TODO RPr: Discuss if the other strategies make sense here.
 				// In my opinion NoteCollection does work UNTIL the next compact task runs.
@@ -2553,7 +2665,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 				}
 				Map<String, String> headers = new HashMap<String, String>(1);
 				headers.put("X-Original-Java-Class", "org.openntf.domino.DocumentCollection");
-				Documents.saveState(unids, this, itemName, true, headers);
+				MIMEBean.saveState(unids, this, itemName, true, headers);
 
 			} else if (value instanceof NoteCollection) {
 				// Maybe it'd be faster to use .getNoteIDs - I'm not sure how the performance compares
@@ -2568,7 +2680,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 				}
 				Map<String, String> headers = new HashMap<String, String>(1);
 				headers.put("X-Original-Java-Class", "org.openntf.domino.NoteCollection");
-				Documents.saveState(unids, this, itemName, true, headers);
+				MIMEBean.saveState(unids, this, itemName, true, headers);
 
 			} else {
 				// Check to see if it's a StateHolder
@@ -2583,7 +2695,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 						Map<String, String> headers = new HashMap<String, String>();
 						headers.put("X-Storage-Scheme", "StateHolder");
 						headers.put("X-Original-Java-Class", value.getClass().getName());
-						Documents.saveState(state, this, itemName, true, headers);
+						MIMEBean.saveState(state, this, itemName, true, headers);
 
 					} else {
 						throw new IllegalArgumentException(value.getClass()
@@ -3011,7 +3123,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 				boolean convertMime = this.getAncestorSession().isConvertMime();
 				this.getAncestorSession().setConvertMime(false);
 				try {
-					Documents.saveState((Serializable) getItemInfo(), this, "$$ItemInfo", false, null);
+					MIMEBean.saveState((Serializable) getItemInfo(), this, "$$ItemInfo", false, null);
 				} catch (Throwable e) {
 					DominoUtils.handleException(e, this);
 				}
@@ -3030,7 +3142,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 				if (this.getFirstItem("$$ItemInfo", true).getTypeEx() == Item.Type.MIME_PART) {
 					// Then use the existing value
 					try {
-						itemInfo_ = (Map<String, Map<String, Serializable>>) Documents.restoreState(this, "$$ItemInfo");
+						itemInfo_ = (Map<String, Map<String, Serializable>>) MIMEBean.restoreState(this, "$$ItemInfo");
 					} catch (Throwable t) {
 						DominoUtils.handleException(t, this);
 					}
@@ -3773,7 +3885,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 	@Override
 	public Set<java.util.Map.Entry<String, Object>> entrySet() {
 		// TODO Implement a "viewing" Set and Map.Entry for this or throw an UnsupportedOperationException
-		return new DocumentEntrySet(this);
+		return new DocumentEntrySet();
 	}
 
 	@Override
@@ -3846,12 +3958,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 					return parent.getUniversalID();
 				}
 
-				// TODO RPr: This should be replaced
-				//TODO NTF: Agreed when we can have an extensible switch for which formula engine to use
-				Formula formula = new Formula();
-				formula.setExpression(key.toString());
-
-				List<?> value = formula.getValue(this);
+				List<?> value = getAncestorSession().evaluate(key.toString(), this);
 				if (value.size() == 1) {
 					return value.get(0);
 				}
@@ -4285,29 +4392,29 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 	@Override
 	public <T> T getItemSeriesValues(final CharSequence name, final Class<T> type) {
 		T result = null;
-		result = TypeUtils.vectorToClass(getItemSeriesValues(name), type, getAncestorSession());
+		result = TypeUtils.collectionToClass(getItemSeriesValues(name), type);
 		return result;
 	}
 
-	@Override
-	public Map<String, List<Object>> getItemTable(final CharSequence... itemnames) {
-		return Documents.getItemTable(this, itemnames);
-	}
-
-	@Override
-	public List<Map<String, Object>> getItemTablePivot(final CharSequence... itemnames) {
-		return Documents.getItemTablePivot(this, itemnames);
-	}
-
-	@Override
-	public void setItemTable(final Map<String, List<Object>> table) {
-		Documents.setItemTable(this, table);
-	}
-
-	@Override
-	public void setItemTablePivot(final List<Map<String, Object>> pivot) {
-		Documents.setItemTablePivot(this, pivot);
-	}
+	//	@Override
+	//	public Map<String, List<Object>> getItemTable(final CharSequence... itemnames) {
+	//		return Documents.getItemTable(this, itemnames);
+	//	}
+	//
+	//	@Override
+	//	public List<Map<String, Object>> getItemTablePivot(final CharSequence... itemnames) {
+	//		return Documents.getItemTablePivot(this, itemnames);
+	//	}
+	//
+	//	@Override
+	//	public void setItemTable(final Map<String, List<Object>> table) {
+	//		Documents.setItemTable(this, table);
+	//	}
+	//
+	//	@Override
+	//	public void setItemTablePivot(final List<Map<String, Object>> pivot) {
+	//		Documents.setItemTablePivot(this, pivot);
+	//	}
 
 	@Override
 	public Name getItemValueName(final String itemName) {

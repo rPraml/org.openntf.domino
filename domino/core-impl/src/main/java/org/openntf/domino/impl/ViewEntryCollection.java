@@ -32,7 +32,7 @@ import org.openntf.domino.utils.DominoUtils;
  * The Class ViewEntryCollection.
  */
 public class ViewEntryCollection extends BaseNonThreadSafe<org.openntf.domino.ViewEntryCollection, lotus.domino.ViewEntryCollection, View>
-implements org.openntf.domino.ViewEntryCollection {
+		implements org.openntf.domino.ViewEntryCollection {
 
 	/**
 	 * Instantiates a new outline.
@@ -332,7 +332,13 @@ implements org.openntf.domino.ViewEntryCollection {
 	 * @see org.openntf.domino.ViewEntryCollection#getNthEntry(int)
 	 */
 	@Override
+	@Deprecated
 	public ViewEntry getNthEntry(final int n) {
+		return getEntryAt(n);
+	}
+
+	@Override
+	public ViewEntry getEntryAt(final int n) {
 		try {
 			return fromLotus(getDelegate().getNthEntry(n), ViewEntry.SCHEMA, parent);
 		} catch (NotesException e) {

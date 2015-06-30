@@ -33,11 +33,11 @@ public class AgentBase extends lotus.domino.AgentBase {
 	public void NotesMain() {
 
 		LifeCycleManager.startup();
-		Factory.initThread(Factory.STRICT_THREAD_CONFIG);
+		LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
 		try {
 			DominoMain();
 		} finally {
-			Factory.termThread();
+			LifeCycleManager.afterRequest();
 			LifeCycleManager.shutdown();
 		}
 

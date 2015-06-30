@@ -33,11 +33,11 @@ import org.openntf.domino.Document;
 import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.utils.TypeUtils;
 import org.openntf.domino.ext.Session.Fixes;
 import org.openntf.domino.impl.View.DominoColumnInfo;
 import org.openntf.domino.types.DatabaseDescendant;
 import org.openntf.domino.utils.DominoUtils;
-import org.openntf.domino.utils.TypeUtils;
 
 // TODO: Auto-generated Javadoc
 
@@ -45,7 +45,7 @@ import org.openntf.domino.utils.TypeUtils;
  * The Class ViewEntry.
  */
 public class ViewEntry extends BaseNonThreadSafe<org.openntf.domino.ViewEntry, lotus.domino.ViewEntry, View> implements
-org.openntf.domino.ViewEntry {
+		org.openntf.domino.ViewEntry {
 	@SuppressWarnings("unused")
 	private static final Logger log_ = Logger.getLogger(ViewEntry.class.getName());
 	private Map<String, Object> columnValuesMap_;
@@ -514,11 +514,11 @@ org.openntf.domino.ViewEntry {
 	public <T> T getColumnValue(final String columnName, final Class<T> type) {
 		Object rawResult = getColumnValue(columnName);
 		if (rawResult instanceof Vector) {
-			return TypeUtils.collectionToClass((Vector<?>) rawResult, type, this.getAncestorSession());
+			return TypeUtils.collectionToClass((Vector<?>) rawResult, type);
 		} else {
 			Vector<Object> v = new Vector<Object>();
 			v.add(rawResult);
-			return TypeUtils.collectionToClass(v, type, this.getAncestorSession());
+			return TypeUtils.collectionToClass(v, type);
 		}
 	}
 

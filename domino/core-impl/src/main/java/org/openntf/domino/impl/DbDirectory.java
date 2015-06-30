@@ -35,11 +35,7 @@ import org.openntf.domino.Database;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Legacy;
-import org.openntf.domino.commons.ServiceLocator;
-import org.openntf.domino.design.DatabaseDesignService;
-import org.openntf.domino.design.VFSRootNode;
 import org.openntf.domino.ext.Session.Fixes;
-import org.openntf.domino.helpers.DatabaseMetaData;
 import org.openntf.domino.types.Encapsulated;
 import org.openntf.domino.utils.DominoUtils;
 
@@ -52,15 +48,15 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 	private static final Logger log_ = Logger.getLogger(DbDirectory.class.getName());
 
 	/* the MetaData contains s small subset of information of a (closed) Database */
-	private transient SortedSet<DatabaseMetaData> dbMetaDataSet_;
-	private transient Iterator<DatabaseMetaData> dbIter; // required for getFirst/getNextDatabase
+	private transient SortedSet<Database.MetaData> dbMetaDataSet_;
+	private transient Iterator<Database.MetaData> dbIter; // required for getFirst/getNextDatabase
 
 	private org.openntf.domino.DbDirectory.Type type_;
 	private String name_;
 	private String clusterName_;
 	private boolean isHonorOpenDialog_ = false;
 
-	private Comparator<DatabaseMetaData> comparator_ = DatabaseMetaData.FILEPATH_COMPARATOR;
+	private Comparator<Database.MetaData> comparator_ = Database.MetaData.FILEPATH_COMPARATOR;
 
 	/**
 	 * Instantiates a new DbDirectory.
@@ -82,28 +78,28 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 		} catch (NotesException e) {
 			DominoUtils.handleException(e);
 		}
-		//dbHolderSet_ = new ConcurrentSkipListSet<DatabaseMetaData>(DatabaseMetaData.FILEPATH_COMPARATOR);
+		//dbHolderSet_ = new ConcurrentSkipListSet<Database.MetaData>(Database.MetaData.FILEPATH_COMPARATOR);
 		type_ = Type.TEMPLATE_CANDIDATE;
 	}
 
 	@Override
 	@Deprecated
 	public boolean isSortByLastModified() {
-		return comparator_ == DatabaseMetaData.LASTMOD_COMPARATOR;
+		return comparator_ == Database.MetaData.LASTMOD_COMPARATOR;
 	}
 
 	@Override
 	@Deprecated
 	public void setSortByLastModified(final boolean value) {
 		if (value) {
-			setComparator(DatabaseMetaData.LASTMOD_COMPARATOR);
+			setComparator(Database.MetaData.LASTMOD_COMPARATOR);
 		} else {
-			setComparator(DatabaseMetaData.FILEPATH_COMPARATOR);
+			setComparator(Database.MetaData.FILEPATH_COMPARATOR);
 		}
 
 	}
 
-	protected void setComparator(final Comparator<DatabaseMetaData> cmp) {
+	protected void setComparator(final Comparator<Database.MetaData> cmp) {
 		if (comparator_ != cmp) {
 			comparator_ = cmp;
 			reset();
@@ -142,7 +138,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 	}
 
 	private void initialize(final lotus.domino.DbDirectory delegate) {
-		dbMetaDataSet_ = new ConcurrentSkipListSet<DatabaseMetaData>(comparator_);
+		dbMetaDataSet_ = new ConcurrentSkipListSet<Database.MetaData>(comparator_);
 		// boolean isExtended = type_ == Type.REPLICA_CANDIDATE || isDateSorted_;
 		boolean isExtended = isSortByLastModified(); // ||  type_ == Type.REPLICA_CANDIDATE; CHECKME: Is there really an issue with REPLICA_CANDIDATE
 
@@ -169,7 +165,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 					}
 				}
 
-				dbMetaDataSet_.add(new DatabaseMetaData(rawdb));
+				dbMetaDataSet_.add(new Database.MetaData(rawdb));
 
 				if (wasOpen) {
 					getFactory().fromLotus(rawdb, Database.SCHEMA, getAncestorSession());
@@ -237,19 +233,19 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 		//
 		//				if (type_ == Type.REPLICA_CANDIDATE) {
 		//					if (org.openntf.domino.Database.Utils.isReplicaCandidate(db))
-		//						dbHolderSet_.add(new DatabaseMetaData(db));
+		//						dbHolderSet_.add(new Database.MetaData(db));
 		//				} else if (type_ == Type.TEMPLATE) {
 		//					if (org.openntf.domino.Database.Utils.isTemplate(db))
-		//						dbHolderSet_.add(new DatabaseMetaData(db));
+		//						dbHolderSet_.add(new Database.MetaData(db));
 		//				} else if (type_ == Type.DATABASE) {
 		//					if (org.openntf.domino.Database.Utils.isDatabase(db))
-		//						dbHolderSet_.add(new DatabaseMetaData(db));
+		//						dbHolderSet_.add(new Database.MetaData(db));
 		//				} else if (type_ == Type.XOTS_DATABASE) {
 		//					if (org.openntf.domino.Database.Utils.isXotsDatabase(db))
-		//						dbHolderSet_.add(new DatabaseMetaData(db));
+		//						dbHolderSet_.add(new Database.MetaData(db));
 		//				} else {
 		//					if (org.openntf.domino.Database.Utils.isTemplateCandidate(db))
-		//						dbHolderSet_.add(new DatabaseMetaData(db));
+		//						dbHolderSet_.add(new Database.MetaData(db));
 		//				}
 		//				// the "db" object will get out of scope here, so that it can get recycled through the GC
 		//				rawdb = nextdb;
@@ -415,7 +411,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 	}
 
 	@Override
-	public SortedSet<DatabaseMetaData> getMetaDataSet() {
+	public SortedSet<Database.MetaData> getMetaDataSet() {
 		//		if (!isInitialized_) {
 		//			initialize(getDelegate());
 		//		}
@@ -435,7 +431,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 	public Iterator<org.openntf.domino.Database> iterator() {
 		// Create a proxy iterator
 		return new Iterator<org.openntf.domino.Database>() {
-			final Iterator<DatabaseMetaData> metaIter_ = getMetaDataSet().iterator();
+			final Iterator<Database.MetaData> metaIter_ = getMetaDataSet().iterator();
 
 			@Override
 			public boolean hasNext() {
@@ -559,13 +555,13 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 	@Override
 	@SuppressWarnings("unchecked")
 	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
-		comparator_ = (Comparator<DatabaseMetaData>) in.readObject();
+		comparator_ = (Comparator<Database.MetaData>) in.readObject();
 		isHonorOpenDialog_ = in.readBoolean();
 		type_ = Type.valueOf(in.readInt());
 		name_ = in.readUTF();
 		clusterName_ = in.readUTF();
 		// CHECKME should we really 
-		dbMetaDataSet_ = (SortedSet<DatabaseMetaData>) in.readObject();
+		dbMetaDataSet_ = (SortedSet<Database.MetaData>) in.readObject();
 	}
 
 	/* (non-Javadoc)
@@ -584,7 +580,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 	@Override
 	public boolean add(final Database db) {
 		try {
-			return getMetaDataSet().add(new DatabaseMetaData(db));
+			return getMetaDataSet().add(new Database.MetaData(db));
 		} catch (NotesException ne) {
 			DominoUtils.handleException(ne);
 			return false;
@@ -605,7 +601,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 	@Override
 	public void clear() {
 		if (dbMetaDataSet_ == null) {
-			dbMetaDataSet_ = new ConcurrentSkipListSet<DatabaseMetaData>(comparator_);
+			dbMetaDataSet_ = new ConcurrentSkipListSet<Database.MetaData>(comparator_);
 		} else {
 			dbMetaDataSet_.clear();
 		}
@@ -615,7 +611,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 	public boolean contains(final Object obj) {
 		if (obj instanceof Database) {
 			try {
-				return getMetaDataSet().contains(new DatabaseMetaData((Database) obj));
+				return getMetaDataSet().contains(new Database.MetaData((Database) obj));
 			} catch (NotesException ne) {
 				DominoUtils.handleException(ne);
 				return false;
@@ -644,7 +640,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 	public boolean remove(final Object obj) {
 		if (obj instanceof Database) {
 			try {
-				return getMetaDataSet().remove(new DatabaseMetaData((Database) obj));
+				return getMetaDataSet().remove(new Database.MetaData((Database) obj));
 			} catch (NotesException ne) {
 				DominoUtils.handleException(ne);
 				return false;
@@ -667,12 +663,12 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 
 	@Override
 	public boolean retainAll(final Collection<?> objs) {
-		Collection<DatabaseMetaData> holders = new ArrayList<DatabaseMetaData>(objs.size());
+		Collection<Database.MetaData> holders = new ArrayList<Database.MetaData>(objs.size());
 
 		for (Object obj : objs) {
 			if (obj instanceof Database) {
 				try {
-					holders.add(new DatabaseMetaData((Database) obj));
+					holders.add(new Database.MetaData((Database) obj));
 				} catch (NotesException ne) {
 					DominoUtils.handleException(ne);
 					return false;
@@ -691,7 +687,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 	public Object[] toArray() {
 		Object[] ret = new Object[size()];
 		int i = 0;
-		for (DatabaseMetaData metaData : getMetaDataSet()) {
+		for (Database.MetaData metaData : getMetaDataSet()) {
 			Database db = getFactory().create(Database.SCHEMA, getAncestorSession(), metaData);
 			ret[i++] = db;
 		}
@@ -711,16 +707,6 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 			paramArrayOfT[size()] = null;
 		}
 		return paramArrayOfT;
-	}
-
-	@Override
-	public VFSRootNode getVFS() {
-		DatabaseDesignService designService = ServiceLocator.findApplicationService(DatabaseDesignService.class);
-		if (designService == null) {
-			log_.warning("Database.getDesign(): No DesignService present - returning 'null'");
-			return null;
-		}
-		return designService.getVFS(this);
 	}
 
 	@Override

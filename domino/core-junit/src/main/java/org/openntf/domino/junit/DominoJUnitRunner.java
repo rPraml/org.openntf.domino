@@ -11,13 +11,12 @@ import lotus.domino.NotesThread;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.session.NamedSessionFactory;
 import org.openntf.domino.session.NativeSessionFactory;
 import org.openntf.domino.session.SessionFullAccessFactory;
-import org.openntf.domino.thread.DominoExecutor;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
-import org.openntf.domino.xots.Xots;
 
 /**
  * A Testrunner to run JUnit tests with proper set up of ODA.
@@ -34,7 +33,6 @@ public class DominoJUnitRunner extends AbstractJUnitRunner {
 	}
 
 	private lotus.domino.Session mastersession;
-	private boolean factoryShutdown;
 
 	//private boolean ownSM;
 
@@ -54,13 +52,7 @@ public class DominoJUnitRunner extends AbstractJUnitRunner {
 		//			new lotus.notes.AgentSecurityManager();
 		//			ownSM = true;
 		//		}
-		if (!Factory.isStarted()) {
-
-			Factory.startup();
-			DominoExecutor executor = new DominoExecutor(50);
-			Xots.start(executor);
-			factoryShutdown = true;
-		}
+		LifeCycleManager.startup();
 	}
 
 	@Override
@@ -71,10 +63,9 @@ public class DominoJUnitRunner extends AbstractJUnitRunner {
 		} catch (NotesException e) {
 			e.printStackTrace();
 		}
-		if (factoryShutdown) {
-			Xots.stop(120); // 10 minutes should be enough for tests
-			Factory.shutdown();
-		}
+
+		LifeCycleManager.shutdown();
+
 		//		if (ownSM) {
 		//			AccessController.doPrivileged(new PrivilegedAction<Object>() {
 		//
@@ -93,7 +84,7 @@ public class DominoJUnitRunner extends AbstractJUnitRunner {
 		try {
 			String runAs = getRunAs(method);
 			String db = getDatabase(method);
-			Factory.initThread(Factory.STRICT_THREAD_CONFIG);
+			LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
 			if (runAs == null) {
 				Factory.setSessionFactory(new NativeSessionFactory(db), SessionType.CURRENT);
 				Factory.setSessionFactory(new SessionFullAccessFactory(db), SessionType.CURRENT_FULL_ACCESS);
@@ -128,7 +119,7 @@ public class DominoJUnitRunner extends AbstractJUnitRunner {
 		wf.recycle(TestEnv.session);
 		TestEnv.session = null;
 		TestEnv.database = null;
-		Factory.termThread();
+		LifeCycleManager.afterRequest();
 	}
 
 }

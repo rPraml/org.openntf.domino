@@ -20,8 +20,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openntf.domino.utils.Factory;
-
 /**
  * A common Base class for those org.openntf.domino objects, which shouldn't be shared across threads.
  * 
@@ -34,7 +32,7 @@ import org.openntf.domino.utils.Factory;
  * 
  */
 public abstract class BaseNonThreadSafe<T extends org.openntf.domino.Base<D>, D extends lotus.domino.Base, P extends org.openntf.domino.Base<?>>
-		extends Base<T, D, P> {
+extends Base<T, D, P> {
 
 	/** The Constant log_. */
 	private static final Logger log_ = Logger.getLogger(BaseNonThreadSafe.class.getName());
@@ -44,15 +42,6 @@ public abstract class BaseNonThreadSafe<T extends org.openntf.domino.Base<D>, D 
 
 	/** The Thread, in which wrapper was generated */
 	private transient Thread _myThread = Thread.currentThread();
-
-	static {
-		Factory.addTerminateHook(new Runnable() {
-			@Override
-			public void run() {
-				setAllowAccessAcrossThreads(false);
-			}
-		}, true);
-	}
 
 	/**
 	 * Instantiates a new base.

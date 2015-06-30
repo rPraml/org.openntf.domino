@@ -41,9 +41,9 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>core-junit</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- 

@@ -1,9 +1,12 @@
 /**
  * 
  */
-package org.openntf.domino.events;
+package org.openntf.domino.impl.events;
 
 import java.util.logging.Logger;
+
+import org.openntf.domino.events.EnumEvent;
+import org.openntf.domino.events.IDominoEvent;
 
 /**
  * @author nfreeman

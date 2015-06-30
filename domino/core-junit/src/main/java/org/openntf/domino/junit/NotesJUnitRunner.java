@@ -8,8 +8,8 @@ import lotus.domino.NotesThread;
 
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
-import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.Factory;
+//import org.openntf.domino.WrapperFactory;
+//import org.openntf.domino.utils.Factory;
 
 public class NotesJUnitRunner extends AbstractJUnitRunner {
 	private lotus.domino.Session mastersession;
@@ -74,9 +74,14 @@ public class NotesJUnitRunner extends AbstractJUnitRunner {
 	@Override
 	protected void afterTest(final FrameworkMethod method) {
 		// TODO Auto-generated method stub
-		WrapperFactory wf = Factory.getWrapperFactory();
-		wf.recycle(TestEnv.database);
-		wf.recycle(TestEnv.session);
+		try {
+			if (TestEnv.database != null)
+				TestEnv.database.recycle();
+			if (TestEnv.session != null)
+				TestEnv.session.recycle();
+		} catch (NotesException e) {
+			e.printStackTrace();
+		}
 		TestEnv.session = null;
 		TestEnv.database = null;
 	}

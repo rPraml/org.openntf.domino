@@ -55,11 +55,7 @@ import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Incomplete;
-import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.exception.IExceptionDetails;
-import org.openntf.domino.design.DatabaseDesign;
-import org.openntf.domino.design.DatabaseDesignService;
-import org.openntf.domino.design.IconNote;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
 import org.openntf.domino.events.IDominoEventFactory;
@@ -68,10 +64,8 @@ import org.openntf.domino.exceptions.TransactionAlreadySetException;
 import org.openntf.domino.exceptions.UserAccessException;
 import org.openntf.domino.ext.NoteClass;
 import org.openntf.domino.ext.Session.Fixes;
-import org.openntf.domino.helpers.DatabaseMetaData;
 import org.openntf.domino.transactions.DatabaseTransaction;
 import org.openntf.domino.types.Encapsulated;
-import org.openntf.domino.utils.CollectionUtils;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.NapiUtil;
@@ -86,7 +80,7 @@ import com.ibm.icu.util.GregorianCalendar;
  * The Class Database.
  */
 public class Database extends BaseThreadSafe<org.openntf.domino.Database, lotus.domino.Database, Session> implements
-org.openntf.domino.Database {
+		org.openntf.domino.Database {
 	private static final Logger log_ = Logger.getLogger(Database.class.getName());
 
 	/** The server_. */
@@ -113,7 +107,7 @@ org.openntf.domino.Database {
 	private transient Boolean isReplicationDisabled_;
 	private AutoMime autoMime_;
 
-	private DatabaseMetaData shadowedMetaData_;
+	private Database.MetaData shadowedMetaData_;
 
 	// private String ident_;
 
@@ -164,13 +158,13 @@ org.openntf.domino.Database {
 	 * @param extendedMetadata
 	 *            true if DB should load extended metadata
 	 */
-	protected Database(final Session parent, final DatabaseMetaData metaData) {
+	protected Database(final Session parent, final Database.MetaData metaData) {
 		super(null, parent, NOTES_DATABASE);
 		initialize(metaData);
 
 	}
 
-	protected void initialize(final DatabaseMetaData metaData) {
+	protected void initialize(final Database.MetaData metaData) {
 		shadowedMetaData_ = metaData;
 		server_ = metaData.getServer();
 		path_ = metaData.getFilePath();
@@ -487,9 +481,13 @@ org.openntf.domino.Database {
 			}
 			lotus.domino.DocumentCollection rawColl = getDelegate().search("@False", db.getLastModified(), 1);
 			if (rawColl.getCount() > 0) {
-				int[] nids = CollectionUtils.getNoteIDs(rawColl);
-				for (int nid : nids) {
-					rawColl.subtract(nid);
+				// WHAT: how should we get there?
+				lotus.domino.Document doc = rawColl.getFirstDocument();
+				while (doc != null) {
+					rawColl.subtract(doc.getNoteID());
+					lotus.domino.Document next = rawColl.getNextDocument(doc);
+					doc.recycle();
+					doc = next;
 				}
 			}
 			org.openntf.domino.DocumentCollection result = fromLotus(rawColl, DocumentCollection.SCHEMA, this);
@@ -1043,27 +1041,27 @@ org.openntf.domino.Database {
 		return designProtected_.booleanValue();
 	}
 
-	private transient DatabaseDesign design_;
-
-	@Override
-	public DatabaseDesign getDesign() {
-		if (design_ == null) {
-			DatabaseDesignService designService = ServiceLocator.findApplicationService(DatabaseDesignService.class);
-			if (designService == null) {
-				log_.warning("Database.getDesign(): No DesignService present - returning 'null'");
-				return null;
-			}
-			design_ = designService.getDatabaseDesign(this);
-		}
-		return design_;
-	}
+	// This makes HUGE dependencies to design
+	//	private transient DatabaseDesign design_;
+	//
+	//	@Override
+	//	public DatabaseDesign getDesign() {
+	//		if (design_ == null) {
+	//			DatabaseDesignService designService = ServiceLocator.findApplicationService(DatabaseDesignService.class);
+	//			if (designService == null) {
+	//				log_.warning("Database.getDesign(): No DesignService present - returning 'null'");
+	//				return null;
+	//			}
+	//			design_ = designService.getDatabaseDesign(this);
+	//		}
+	//		return design_;
+	//	}
 
 	@Override
 	public org.openntf.domino.Database getXPageSharedDesignTemplate() throws FileNotFoundException {
-		IconNote icon = getDesign().getIconNote();
-		if (icon == null)
+		Document iconDoc = getDocumentByID(NoteClass.ICON.defaultID());
+		if (iconDoc == null)
 			return null;
-		Document iconDoc = icon.getDocument();
 		if ("1".equals(iconDoc.getItemValueString("$XpageSharedDesign"))) {
 			String templatePath = iconDoc.getItemValueString("$XpageSharedDesignTemplate");
 			org.openntf.domino.Database template = getAncestorSession().getDatabase(templatePath);
@@ -3595,7 +3593,7 @@ org.openntf.domino.Database {
 			return dbLocale;
 		getLocaleCalled = true;
 
-		Document doc = getDesign().getIconNote().getDocument();
+		Document doc = getDocumentByID(NoteClass.ICON.defaultID());
 		if (doc == null)
 			return null;
 		String lStr = doc.getItemValueString("$DefaultLanguage");

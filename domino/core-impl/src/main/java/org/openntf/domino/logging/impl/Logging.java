@@ -1,4 +1,4 @@
-package org.openntf.domino.logging;
+package org.openntf.domino.logging.impl;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -2,7 +2,7 @@
  * Considerably simplified version of BaseOpenLogItem for use in the new logging mechanism.
  */
 
-package org.openntf.domino.logging;
+package org.openntf.domino.logging.impl;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

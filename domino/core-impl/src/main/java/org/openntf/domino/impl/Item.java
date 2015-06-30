@@ -38,7 +38,6 @@ import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.exceptions.DataNotCompatibleException;
 import org.openntf.domino.utils.DominoUtils;
-import org.openntf.domino.utils.TypeUtils;
 import org.xml.sax.InputSource;
 
 // TODO: Auto-generated Javadoc
@@ -592,7 +591,7 @@ public class Item extends BaseNonThreadSafe<org.openntf.domino.Item, lotus.domin
 
 	@Override
 	public <T> T getValues(final Class<T> type) {
-		return TypeUtils.itemValueToClass(this, type);
+		return parent.getItemValue(this.getName(), type);
 	}
 
 	/*
@@ -1062,13 +1061,13 @@ public class Item extends BaseNonThreadSafe<org.openntf.domino.Item, lotus.domin
 						StackTraceElement[] elements = t.getStackTrace();
 						log_.log(Level.FINER,
 								elements[0].getClassName() + "." + elements[0].getMethodName() + " ( line " + elements[0].getLineNumber()
-								+ ")");
+										+ ")");
 						log_.log(Level.FINER,
 								elements[1].getClassName() + "." + elements[1].getMethodName() + " ( line " + elements[1].getLineNumber()
-								+ ")");
+										+ ")");
 						log_.log(Level.FINER,
 								elements[2].getClassName() + "." + elements[2].getMethodName() + " ( line " + elements[2].getLineNumber()
-								+ ")");
+										+ ")");
 					}
 				}
 			} catch (NotesException e) {

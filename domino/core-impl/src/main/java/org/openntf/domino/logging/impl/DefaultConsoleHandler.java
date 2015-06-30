@@ -13,12 +13,12 @@
  * implied. See the License for the specific language governing 
  * permissions and limitations under the License.
  */
-package org.openntf.domino.logging;
+package org.openntf.domino.logging.impl;
 
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
-import org.openntf.domino.utils.Factory;
+import org.openntf.domino.commons.IO;
 
 /**
  * DefaultConsoleHandler class
@@ -94,7 +94,7 @@ public class DefaultConsoleHandler extends Handler {
 		if (debugLevel > 0) {
 			try {
 				String s = getFormatter().format(record);
-				Factory.println(record.getLevel().toString(), s);
+				IO.println(record.getLevel().toString(), s);
 			} catch (Throwable t) {
 				t.printStackTrace();
 			}

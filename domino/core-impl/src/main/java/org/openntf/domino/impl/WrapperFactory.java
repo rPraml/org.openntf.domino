@@ -44,7 +44,6 @@ import org.openntf.domino.RichTextParagraphStyle;
 import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.exceptions.UndefinedDelegateTypeException;
-import org.openntf.domino.helpers.DatabaseMetaData;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.utils.DominoUtils;
 
@@ -802,7 +801,7 @@ public class WrapperFactory extends BaseImpl<lotus.domino.Base> implements org.o
 		}
 
 		if (schema == Database.SCHEMA) {
-			return (T) new org.openntf.domino.impl.Database((Session) parent, (DatabaseMetaData) metaData); // DB-Metadata for closed DBs
+			return (T) new org.openntf.domino.impl.Database((Session) parent, (Database.MetaData) metaData); // DB-Metadata for closed DBs
 		}
 		throw new IllegalArgumentException("Cannot create object by " + schema.getClass());
 	}

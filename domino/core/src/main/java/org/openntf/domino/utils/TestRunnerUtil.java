@@ -1,12 +1,12 @@
-package org.openntf.domino.junit;
+package org.openntf.domino.utils;
 
 import java.util.Collection;
 
+import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.session.ISessionFactory;
 import org.openntf.domino.session.NativeSessionFactory;
 import org.openntf.domino.session.TrustedSessionFactory;
 import org.openntf.domino.thread.DominoThread;
-import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 
 public enum TestRunnerUtil {
@@ -16,9 +16,9 @@ public enum TestRunnerUtil {
 	public static ISessionFactory TRUSTED_SESSION = new TrustedSessionFactory(null);
 
 	public static void runAsDominoThread(final Runnable r, final ISessionFactory sf) {
-		Factory.startup();
+		LifeCycleManager.startup();
 		lotus.domino.NotesThread.sinitThread();
-		Factory.initThread(Factory.STRICT_THREAD_CONFIG);
+		LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
 		Factory.setSessionFactory(sf, SessionType.CURRENT);
 
 		Thread t = new DominoThread(r, "TestRunner");
@@ -29,15 +29,15 @@ public enum TestRunnerUtil {
 			e.printStackTrace();
 		}
 
-		Factory.termThread();
+		LifeCycleManager.afterRequest();
 		lotus.domino.NotesThread.stermThread();
-		Factory.shutdown();
+		LifeCycleManager.shutdown();
 	}
 
 	public static void runAsDominoThread(final Runnable r, final ISessionFactory sf, final int instances) {
-		Factory.startup();
+		LifeCycleManager.startup();
 		lotus.domino.NotesThread.sinitThread();
-		Factory.initThread(Factory.STRICT_THREAD_CONFIG);
+		LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
 		Factory.setSessionFactory(sf, SessionType.CURRENT);
 
 		Thread[] t = new Thread[instances];
@@ -56,15 +56,15 @@ public enum TestRunnerUtil {
 			e.printStackTrace();
 		}
 
-		Factory.termThread();
+		LifeCycleManager.afterRequest();
 		lotus.domino.NotesThread.stermThread();
-		Factory.shutdown();
+		LifeCycleManager.shutdown();
 	}
 
 	public static void runAsDominoThread(final Class<? extends Runnable>[] runClasses, final ISessionFactory sf, final int instances) {
-		Factory.startup();
+		LifeCycleManager.startup();
 		lotus.domino.NotesThread.sinitThread();
-		Factory.initThread(Factory.STRICT_THREAD_CONFIG);
+		LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
 		Factory.setSessionFactory(sf, SessionType.CURRENT);
 		Thread[] t = new Thread[instances * runClasses.length];
 
@@ -91,16 +91,16 @@ public enum TestRunnerUtil {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		Factory.termThread();
+		LifeCycleManager.afterRequest();
 		lotus.domino.NotesThread.stermThread();
-		Factory.shutdown();
+		LifeCycleManager.shutdown();
 	}
 
 	public static void runAsDominoThread(final Collection<Class<? extends Runnable>> runClasses, final ISessionFactory sf,
 			final int instances) {
-		Factory.startup();
+		LifeCycleManager.startup();
 		lotus.domino.NotesThread.sinitThread();
-		Factory.initThread(Factory.STRICT_THREAD_CONFIG);
+		LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
 		Factory.setSessionFactory(sf, SessionType.CURRENT);
 		Thread[] t = new Thread[instances * runClasses.size()];
 
@@ -125,15 +125,15 @@ public enum TestRunnerUtil {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		Factory.termThread();
+		LifeCycleManager.afterRequest();
 		lotus.domino.NotesThread.stermThread();
-		Factory.shutdown();
+		LifeCycleManager.shutdown();
 	}
 
 	public static void runAsDominoThread(final Class<? extends Runnable> r, final ISessionFactory sf, final int instances) {
-		Factory.startup();
+		LifeCycleManager.startup();
 		lotus.domino.NotesThread.sinitThread();
-		Factory.initThread(Factory.STRICT_THREAD_CONFIG);
+		LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
 		Factory.setSessionFactory(sf, SessionType.CURRENT);
 
 		Thread[] t = new Thread[instances];
@@ -157,9 +157,9 @@ public enum TestRunnerUtil {
 			e.printStackTrace();
 		}
 
-		Factory.termThread();
+		LifeCycleManager.afterRequest();
 		lotus.domino.NotesThread.stermThread();
-		Factory.shutdown();
+		LifeCycleManager.shutdown();
 
 	}
 
