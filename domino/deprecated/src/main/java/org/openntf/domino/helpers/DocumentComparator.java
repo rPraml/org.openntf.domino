@@ -9,13 +9,16 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openntf.domino.Document;
+import org.openntf.domino.commons.utils.DocMapComparator;
 
 /**
  * @author nfreeman
  * 
  *         Copyright Michael Zischeck and licensed under Apache License 2.0 from http://in-mood.blogspot.com/
  * 
+ * @deprecated: use {@link DocMapComparator} instead
  */
+@Deprecated
 public class DocumentComparator implements Comparator<Document>, Serializable {
 	@SuppressWarnings("unused")
 	private static final Logger log_ = Logger.getLogger(DocumentComparator.class.getName());
