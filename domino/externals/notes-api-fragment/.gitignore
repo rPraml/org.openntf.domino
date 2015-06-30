@@ -1,7 +1,0 @@
-*.log
-*.lst
-/target/
-/target-ide/
-/META-INF/
-/bin/
-/target-ide/

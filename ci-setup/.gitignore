@@ -1,6 +1,4 @@
+# do not add download and temp to repo
 /download
-/target
-/target-ide
-/.classpath
 /temp
-/bin
+

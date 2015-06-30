@@ -2,18 +2,30 @@
 *.iml
 *.releaseBackup
 *.git.properties
+
+
+# maven-build directory. hopefully no one uses "target" in a package name
 target/
 target-ide/
 
+# eclipse related files
+.classpath
 
-# do not recursive exclude folders (otherwise a package named "bin" may not get recognized)
-/target
-/bin
+# maven-build directory. hopefully no one uses "bin" in a package name
+bin/
 
-/*.dylib
+# The IBM Technical support log directory
+IBM_TECHNICAL_SUPPORT
+
+
+
+
 
 # list all deleted folders here
+# this should be pruned in future
 
+
+OSGI-OPT/
 /org.openntf.domino.plugin
 /de.foconis.test
 /org.openntf.formula/lib
