@@ -200,4 +200,9 @@ public enum Names {
 		return getNamePart(source, NamePartKey.Common);
 	}
 
+	public static IName parse(final CharSequence name) {
+		String s = name == null ? null : name.toString();
+		return parse(s);
+	}
+
 }

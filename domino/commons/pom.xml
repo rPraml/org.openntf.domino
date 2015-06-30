@@ -7,7 +7,7 @@
 	</parent>
 
 	<artifactId>commons</artifactId>
-	<name>OpenNTF Domino API Commons</name>
+	<name>OpenNTF Domino API Common classes</name>
 	<description>ODA-Commons - All classes in this bundle are independent of lotus.*</description>
 
 	<packaging>bundle</packaging>
@@ -29,13 +29,6 @@
 	</build>
 
 	<dependencies>
-		<!-- com.ibm.icu is opensource - so it should be no problem to use it 
-		<dependency>
-			<groupId>com.ibm.icu</groupId>
-			<artifactId>base</artifactId>
-			<version>3.8.1</version>
-		</dependency>
-		-->
 		
 		<dependency>
 			<groupId>com.ibm.icu</groupId>

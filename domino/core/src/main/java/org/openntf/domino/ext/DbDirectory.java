@@ -3,13 +3,13 @@
  */
 package org.openntf.domino.ext;
 
+import java.sql.DatabaseMetaData;
 import java.util.Set;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.DbDirectory.Type;
 import org.openntf.domino.annotations.Legacy;
 import org.openntf.domino.design.VFSRootNode;
-import org.openntf.domino.helpers.DatabaseMetaData;
 
 /**
  * @author withersp

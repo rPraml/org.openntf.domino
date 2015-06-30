@@ -66,7 +66,19 @@ public enum Strings {
 		for (Object o : source) {
 			if (sb.length() != 0)
 				sb.append(delimiter);
-			sb.append(o.toString());
+			sb.append(toString(o));
+		}
+		return sb.toString();
+	}
+
+	public static String join(final Object[] source, final String delimiter) {
+		if (source == null || source.length == 0)
+			return EMPTY_STRING;
+		StringBuilder sb = new StringBuilder();
+		for (Object o : source) {
+			if (sb.length() != 0)
+				sb.append(delimiter);
+			sb.append(toString(o));
 		}
 		return sb.toString();
 	}
@@ -370,6 +382,34 @@ public enum Strings {
 			return true;
 		} catch (NumberFormatException e) {
 			return false;
+		}
+	}
+
+	/**
+	 * Returns the String-representation of the given object. In
+	 * 
+	 * @param object
+	 * @return
+	 */
+	public static String toString(final java.lang.Object object) {
+		if (object == null)
+			return null;
+		if (object instanceof String) {
+			return (String) object;
+		} else if (object instanceof Collection) {
+			return join((Collection<?>) object, ", ");
+		} else if (object.getClass().isArray()) {
+			return join((Object[]) object, ", ");
+		} else if (object instanceof org.openntf.domino.commons.IDateTime) {
+			throw new UnsupportedOperationException("Explain me your use-case");
+			// 2015-06-30/RPr: How should we convert DateTime-Values?
+			// - getGMTTime is available only in lotus - and heavily depends on your locale settings
+			// - getGMTTime is not "user readable", because it is computed with the wrong timezone
+			// - toString() is "readable", but not intended to write in a field
+			// - if you want to write a "stable" date, we should use an ISO-format (e.g. ISO-8601)
+			//return ((org.openntf.domino.commons.IDateTime) object).getGMTTime();
+		} else {
+			return String.valueOf(object);
 		}
 	}
 

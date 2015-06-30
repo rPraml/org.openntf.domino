@@ -255,7 +255,8 @@ public class DocumentList extends BaseImpl<lotus.domino.DocumentCollection> impl
 		nids_ = nids;
 	}
 
-	public int[] getNids() {
+	@Override
+	public int[] getNoteIDs() {
 		if (usingList_) {
 			return TypeUtils.toIntArray(getNidList());
 		} else {
@@ -851,7 +852,7 @@ public class DocumentList extends BaseImpl<lotus.domino.DocumentCollection> impl
 		} else {
 			org.openntf.domino.Database db = getParentDatabase();
 			org.openntf.domino.DocumentCollection mergeColl = db.createMergableDocumentCollection();
-			for (int nid : getNids()) {
+			for (int nid : getNoteIDs()) {
 				mergeColl.merge(nid);
 			}
 			return mergeColl.iterator();
@@ -919,7 +920,7 @@ public class DocumentList extends BaseImpl<lotus.domino.DocumentCollection> impl
 
 	@Override
 	public void writeExternal(final ObjectOutput arg0) throws IOException {
-		int[] nids = getNids();
+		int[] nids = getNoteIDs();
 		arg0.writeBoolean(sorted_);
 		arg0.writeInt(walkPos);
 		arg0.writeInt(walkNid);

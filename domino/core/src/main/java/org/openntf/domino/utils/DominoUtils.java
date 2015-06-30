@@ -16,20 +16,15 @@
 package org.openntf.domino.utils;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.security.AccessControlException;
 import java.security.AccessController;
-import java.security.MessageDigest;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
@@ -37,15 +32,11 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 
 import org.openntf.domino.DateTime;
 import org.openntf.domino.Item;
@@ -53,7 +44,7 @@ import org.openntf.domino.Name;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.Hash;
-import org.openntf.domino.commons.NameEnums.NamePartKey;
+import org.openntf.domino.commons.Names;
 import org.openntf.domino.commons.Strings;
 import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.exceptions.InvalidNotesUrlException;
@@ -69,19 +60,6 @@ import com.ibm.icu.util.ULocale;
  */
 public enum DominoUtils {
 	;
-
-	@Deprecated
-	public static final String VIEWNAME_VIM_PEOPLE_AND_GROUPS = "($VIMPeopleAndGroups)";
-	@Deprecated
-	public static final String VIEWNAME_VIM_GROUPS = "($VIMGroups)";
-
-	@Deprecated
-	// use commons.Constants 
-	public static final int LESS_THAN = -1;
-	@Deprecated
-	public static final int EQUAL = 0;
-	@Deprecated
-	public static final int GREATER_THAN = 1;
 
 	/** The Constant log_. */
 	private final static Logger log_ = Logger.getLogger("org.openntf.domino");
@@ -193,81 +171,6 @@ public enum DominoUtils {
 	}
 
 	/**
-	 * Checksum.
-	 * 
-	 * @param bytes
-	 *            the bytes
-	 * @param alg
-	 *            the alg
-	 * @return the string
-	 * @deprecated use Hash.checksum instead
-	 */
-	@Deprecated
-	public static String checksum(final byte[] bytes, final String alg) {
-		String hashed = "";
-		byte[] defaultBytes = bytes;
-		try {
-			MessageDigest algorithm = MessageDigest.getInstance(alg);
-			algorithm.reset();
-			algorithm.update(defaultBytes);
-			byte[] messageDigest = algorithm.digest();
-			BigInteger bi = new BigInteger(1, messageDigest);
-
-			// StringBuffer hexString = new StringBuffer();
-			// for (byte element : messageDigest) {
-			// String hex = Integer.toHexString(0xFF & element);
-			// if (hex.length() == 1) {
-			// hexString.append('0');
-			// }
-			// hexString.append(hex);
-			// }
-
-			hashed = bi.toString(16);
-		} catch (Throwable t) {
-			DominoUtils.handleException(t);
-		}
-		return hashed;
-	}
-
-	/**
-	 * Checksum.
-	 * 
-	 * @param bytes
-	 *            the bytes
-	 * @param alg
-	 *            the alg
-	 * @return the string
-	 * @deprecated use Hash.checksum instead
-	 */
-	@Deprecated
-	public static String checksum(final File file, final String alg) {
-		String hashed = "";
-		byte[] dataBytes = new byte[4096];
-		try {
-			FileInputStream fis = new FileInputStream(file);
-
-			try {
-				MessageDigest algorithm = MessageDigest.getInstance(alg);
-				algorithm.reset();
-				int nread = 0;
-				while ((nread = fis.read(dataBytes)) != -1) {
-					algorithm.update(dataBytes, 0, nread);
-				}
-				byte[] messageDigest = algorithm.digest();
-				BigInteger bi = new BigInteger(1, messageDigest);
-
-				hashed = bi.toString(16);
-			} finally {
-				fis.close();
-			}
-		} catch (Throwable e) {
-			DominoUtils.handleException(e);
-			return hashed;
-		}
-		return hashed;
-	}
-
-	/**
 	 * Checks if is number.
 	 * 
 	 * @param value
@@ -278,31 +181,6 @@ public enum DominoUtils {
 	@Deprecated
 	public static boolean isNumber(final CharSequence value) {
 		return Strings.isNumber(value);
-	}
-
-	/**
-	 * Checksum.
-	 * 
-	 * @param object
-	 *            the object
-	 * @param algorithm
-	 *            the algorithm
-	 * @return the string
-	 * @deprecated use Hash.checksum instead
-	 */
-	@Deprecated
-	public static String checksum(final Serializable object, final String algorithm) {
-		String result = null;
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ObjectOutputStream out = new ObjectOutputStream(baos);
-			out.writeObject(object);
-			result = DominoUtils.checksum(baos.toByteArray(), algorithm);
-			out.close();
-		} catch (Throwable t) {
-			DominoUtils.handleException(t);
-		}
-		return result;
 	}
 
 	/**
@@ -450,301 +328,7 @@ public enum DominoUtils {
 	 */
 	@Deprecated
 	public static boolean isHierarchicalName(final CharSequence name) {
-		return (Strings.isBlankString(name.toString())) ? false : Names.IS_HIERARCHICAL_MATCH.matcher(name).find();
-	}
-
-	/**
-	 * @deprecated Roland Praml: Use the {@link org.openntf.domino.commons.Names} instead
-	 */
-	@Deprecated
-	public static void parseNamesPartMap(final CharSequence name, final org.openntf.arpa.NamePartsMap map) {
-		if (isHierarchicalName(name)) {
-			Matcher m = Names.CN_MATCH.matcher(name);
-			if (m.find()) {
-				int start = m.start() + 3;
-				int end = m.end();
-				if (start < end) {
-					map.put(NamePartKey.Common, name.subSequence(start, end).toString());
-				} else {
-					map.put(NamePartKey.Common, name.toString());
-				}
-			}
-			m = Names.O_MATCH.matcher(name);
-			if (m.find()) {
-				int start = m.start() + 2;
-				int end = m.end();
-				if (start < end) {
-					map.put(NamePartKey.Organization, name.subSequence(start, end).toString());
-				} else {
-					map.put(NamePartKey.Organization, name.toString());
-				}
-			}
-			m = Names.C_MATCH.matcher(name);
-			if (m.find()) {
-				int start = m.start() + 2;
-				int end = m.end();
-				if (start < end) {
-					map.put(NamePartKey.Country, name.subSequence(start, end).toString());
-				} else {
-					map.put(NamePartKey.Country, name.toString());
-				}
-			}
-			m = Names.OU_MATCH.matcher(name);
-			int i = 0;
-			while (m.find()) {
-				int start = m.start() + 3;
-				int end = m.end();
-				if (start < end) {
-					if (i == 0)
-						map.put(NamePartKey.OrgUnit1, name.subSequence(start, end).toString());
-					if (i == 1)
-						map.put(NamePartKey.OrgUnit2, name.subSequence(start, end).toString());
-					if (i == 2)
-						map.put(NamePartKey.OrgUnit3, name.subSequence(start, end).toString());
-					if (i == 3)
-						map.put(NamePartKey.OrgUnit4, name.subSequence(start, end).toString());
-				}
-			}
-		}
-	}
-
-	public static String toAbbreviatedName(final CharSequence name) {
-		if (isHierarchicalName(name)) {
-			StringBuilder builder = new StringBuilder();
-			boolean isFirst = true;
-			String cn = toCommonName(name);
-			if (cn.length() > 0) {
-				isFirst = false;
-				builder.append(cn);
-			}
-			String ouString = toOUString(name);
-			if (ouString.length() > 0) {
-				if (!isFirst) {
-					builder.append('/');
-				}
-				isFirst = false;
-				builder.append(toOUString(name));
-			}
-			//			String[] ous = toOU(name);
-			//			if (ous.length > 0) {
-			//				for (String ou : ous) {
-			//					if (ou.length() > 0) {
-			//						if (!isFirst)
-			//							builder.append('/');
-			//						isFirst = false;
-			//						builder.append(ou);
-			//					}
-			//				}
-			//			}
-			String o = toOrgName(name);
-			if (o.length() > 0) {
-				if (!isFirst)
-					builder.append('/');
-				isFirst = false;
-				builder.append(o);
-			}
-			String c = toCountry(name);
-			if (c.length() > 0) {
-				if (!isFirst)
-					builder.append('/');
-				isFirst = false;
-				builder.append(c);
-			}
-			return builder.toString();
-		} else {
-			return name.toString();
-		}
-	}
-
-	/**
-	 * @deprecated Roland Praml: Use the {@link org.openntf.domino.commons.INameParser} instead
-	 */
-	@Deprecated
-	public static String toCommonName(final CharSequence name) {
-		if (isHierarchicalName(name)) {
-			Matcher m = Names.CN_MATCH.matcher(name);
-			if (m.find()) {
-				int start = m.start() + 3;
-				int end = m.end();
-				if (start < end) {
-					return name.subSequence(start, end).toString();
-				} else {
-					return name.toString();
-				}
-			} else {
-				return "";
-			}
-		} else {
-			return name.toString();
-		}
-	}
-
-	/**
-	 * @deprecated Roland Praml: Use the {@link org.openntf.domino.commons.INameParser} instead
-	 */
-	@Deprecated
-	public static String toOrgName(final CharSequence name) {
-		if (isHierarchicalName(name)) {
-			Matcher m = Names.O_MATCH.matcher(name);
-			if (m.find()) {
-				int start = m.start() + 2;
-				int end = m.end();
-				if (start < end) {
-					return name.subSequence(start, end).toString();
-				} else {
-					return name.toString();
-				}
-			} else {
-				return "";
-			}
-		} else {
-			return name.toString();
-		}
-	}
-
-	/**
-	 * @deprecated Roland Praml: Use the {@link org.openntf.domino.commons.INameParser} instead
-	 */
-	@Deprecated
-	public static String toOUString(final CharSequence name) {
-		if (isHierarchicalName(name)) {
-			Matcher m = Names.OU_MATCH.matcher(name);
-			StringBuilder builder = new StringBuilder();
-			int i = 0;
-			while (m.find()) {
-				int start = m.start() + 3;
-				int end = m.end();
-				if (start < end) {
-					if (i > 0) {
-						builder.append('/');
-					}
-					builder.append(name.subSequence(start, end));
-					i++;
-				}
-			}
-			if (i == 0) {
-				return "";
-			} else {
-				return builder.toString();
-			}
-		} else {
-			return "";
-		}
-	}
-
-	/**
-	 * @deprecated Roland Praml: Use the {@link org.openntf.domino.commons.INameParser} instead
-	 */
-	@Deprecated
-	public static String[] toOU(final CharSequence name) {
-		if (isHierarchicalName(name)) {
-			Matcher m = Names.OU_MATCH.matcher(name);
-			String[] ous = new String[4];	//maximum number of OUs according to spec
-			int i = 0;
-			while (m.find()) {
-				int start = m.start() + 3;
-				int end = m.end();
-				if (start < end) {
-					ous[i++] = name.subSequence(start, end).toString();
-				}
-			}
-			if (i == 0) {
-				return new String[0];
-			} else {
-				String[] result = new String[i];
-				System.arraycopy(ous, 0, result, 0, i);
-				return result;
-			}
-		} else {
-			return new String[0];
-		}
-	}
-
-	/**
-	 * @deprecated Roland Praml: Use the {@link org.openntf.domino.commons.INameParser} instead
-	 */
-	@Deprecated
-	public static String toCountry(final CharSequence name) {
-		if (isHierarchicalName(name)) {
-			Matcher m = Names.C_MATCH.matcher(name);
-			if (m.find()) {
-				int start = m.start() + 2;
-				int end = m.end();
-				if (start < end) {
-					return name.subSequence(start, end).toString();
-				} else {
-					return name.toString();
-				}
-			} else {
-				return "";
-			}
-		} else {
-			return name.toString();
-		}
-	}
-
-	public static String toNameType(final CharSequence name, final Name.NameType type) {
-		switch (type) {
-		case COMMON:
-			return toCommonName(name);
-		case ABBREVIATED:
-			return toAbbreviatedName(name);
-		case CANONICAL:
-			return name.toString();
-		case ORG:
-			return toOrgName(name);
-		case ORGUNIT:
-			return toOUString(name);
-		case COUNTRY:
-			return toCountry(name);
-		}
-		return name.toString();
-	}
-
-	public static Map<String, String> mapNames(final Collection<String> names, final Name.NameType keyType, final Name.NameType valueType) {
-		if (names != null) {
-			Map<String, String> result = new LinkedHashMap<String, String>();
-			for (String name : names) {
-				String key = toNameType(name, keyType);
-				String value = toNameType(name, valueType);
-				result.put(key, value);
-			}
-			return result;
-		} else {
-			return null;
-		}
-	}
-
-	public static List<String> toSelectionList(final Collection<String> names, final Name.NameType firstType, final Name.NameType secondType) {
-		return toSelectionList(names, firstType, secondType, "|");
-	}
-
-	public static List<String> toSelectionList(final Collection<String> names, final Name.NameType firstType,
-			final Name.NameType secondType, final CharSequence separator) {
-		if (names != null) {
-			List<String> result = new LinkedList<String>();
-			for (String name : names) {
-				String key = toNameType(name, firstType);
-				String value = toNameType(name, secondType);
-				result.add(key + separator + value);
-			}
-			return result;
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * Checks if is hex.
-	 * 
-	 * @param value
-	 *            the value
-	 * @return true, if is hex
-	 * @deprecated use Strings.isHex
-	 */
-	@Deprecated
-	public static boolean isHex(final CharSequence value) {
-		return Strings.isHex(value);
+		return Names.parse(name).isHierarchical();
 	}
 
 	/**
@@ -774,19 +358,6 @@ public enum DominoUtils {
 	}
 
 	/**
-	 * Md5.
-	 * 
-	 * @param object
-	 *            the Serializable object
-	 * @return the string representing the MD5 hash value of the serialized version of the object
-	 * @deprecated use {@link Hash#md5} instead
-	 */
-	@Deprecated
-	public static String md5(final Serializable object) {
-		return DominoUtils.checksum(object, "MD5");
-	}
-
-	/**
 	 * To unid.
 	 * 
 	 * @param value
@@ -796,7 +367,8 @@ public enum DominoUtils {
 	public static String toUnid(final Serializable value) {
 		if (value instanceof CharSequence && DominoUtils.isUnid((CharSequence) value))
 			return value.toString();
-		String hash = DominoUtils.md5(value);
+		String hash = Hash.md5(value);
+
 		while (hash.length() < 32) {
 			hash = "0" + hash;
 		}
@@ -962,7 +534,7 @@ public enum DominoUtils {
 				is = new FileInputStream(dirPath + "/" + fileLoc);
 				returnStream = new BufferedInputStream(is);
 				break;
-			// TODO Need to work out how to get from properties file in NSF
+				// TODO Need to work out how to get from properties file in NSF
 			}
 			return returnStream;
 		} catch (Throwable e) {
@@ -1022,14 +594,6 @@ public enum DominoUtils {
 		} else {
 			return null;
 		}
-	}
-
-	@Deprecated
-	public static String escapeForFormulaString(final String value) {
-		// I wonder if this is sufficient escaping
-		// RPr: It may be sufficient, but it will break formulas like this: @ReplaceSubstring(field; "{0}"; "blabla"); 
-		// => so it is deprecated until it is fixed
-		return value.replace("{", "\\{").replace("}", "\\}");
 	}
 
 	@Deprecated
@@ -1105,33 +669,4 @@ public enum DominoUtils {
 		return result;
 	}
 
-	/**
-	 * Converts the binary name by replacing the "." with the separator and appending ".class"
-	 * 
-	 * @param binaryName
-	 *            the binaryName (getClass().getName())
-	 * @param separator
-	 *            the separator (normally /)
-	 * @return the filepath
-	 * @deprecated Roland Praml: As far as I see this method is used in classloader only. (Better keep it there)
-	 */
-	@Deprecated
-	public static String javaBinaryNameToFilePath(final CharSequence binaryName, final String separator) {
-		return binaryName.toString().replace(".", separator) + ".class";
-	}
-
-	/**
-	 * Converts a filepath back to class name
-	 * 
-	 * @param filePath
-	 *            the filePath
-	 * @param separator
-	 *            the separator
-	 * @return the className
-	 * @deprecated Roland Praml: As far as I see this method is used in design.impl only. (Better keep it there)
-	 */
-	@Deprecated
-	public static String filePathToJavaBinaryName(final CharSequence filePath, final String separator) {
-		return filePath.subSequence(0, filePath.length() - 6).toString().replace(separator, ".");
-	}
 }

@@ -15,7 +15,6 @@ import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
 import org.openntf.domino.events.IDominoEventFactory;
-import org.openntf.domino.utils.DominoFormatter;
 import org.openntf.domino.utils.Factory.SessionType;
 
 import com.ibm.icu.util.Calendar;
@@ -413,8 +412,10 @@ public interface Session {
 	 * Returns a Domino Formatter
 	 * 
 	 * @return the formatter
+	 * @deprecated 2015-06-30/RPr: explain me the use case
 	 */
-	DominoFormatter getFormatter();
+	@Deprecated
+	org.openntf.domino.utils.DominoFormatter getFormatter();
 
 	/**
 	 * Sets the session type on construction, so that it can be recreated if used across threads

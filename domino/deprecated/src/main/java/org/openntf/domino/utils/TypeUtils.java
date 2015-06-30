@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -41,7 +42,7 @@ import com.ibm.icu.text.SimpleDateFormat;
  * @author nfreeman
  * 
  */
-public enum TypeUtils {
+public enum TypeUtilsOld {
 	;
 
 	public static final String[] DEFAULT_STR_ARRAY = { "" };
@@ -570,7 +571,7 @@ public enum TypeUtils {
 		return (T) result;
 	}
 
-	private static final Logger log_ = Logger.getLogger(TypeUtils.class.getName());
+	private static final Logger log_ = Logger.getLogger(TypeUtilsOld.class.getName());
 
 	@SuppressWarnings("unchecked")
 	public static <T> T toNumberArray(final Object value, final Class<T> type) {
@@ -1426,57 +1427,146 @@ public enum TypeUtils {
 		return strings;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static int[] toIntArray(final Object value) {
-		if (value == null)
-			return null;
-		if (value instanceof Collection) {
-			return collectionToIntArray((Collection<Integer>) value);
-		} else if (value.getClass().isArray()) {
-			if (value instanceof int[]) {
-				return (int[]) value;
-			}
-			throw new DataNotCompatibleException("Can't convert an array of " + value.getClass().getName() + " to an int[] yet");
-		} else {
-			int[] ret = new int[1];
-			ret[0] = toInt(value);
-			return ret;
+	//--------- byte
+	/**
+	 * Converts a Collection<? extends Number> to byte[]
+	 */
+	public static <T extends Number> byte[] toByteArray(final Collection<T> coll) {
+		byte[] ret = new byte[coll.size()];
+		Iterator<T> iterator = coll.iterator();
+		for (int i = 0; i < ret.length; i++) {
+			ret[i] = iterator.next().byteValue();
 		}
+		return ret;
 	}
 
-	public static int[] collectionToIntArray(final Collection<Integer> coll) {
+	/**
+	 * Converts a List<? extends Number> to byte[]
+	 */
+	public static <T extends Number> byte[] toByteArray(final List<T> list) {
+		byte[] ret = new byte[list.size()];
+		for (int i = 0; i < ret.length; i++) {
+			ret[i] = list.get(i).byteValue();
+		}
+		return ret;
+	}
+
+	//--------- short
+	/**
+	 * Converts a Collection<? extends Number> to short[]
+	 */
+	public static <T extends Number> short[] toShortArray(final Collection<T> coll) {
+		short[] ret = new short[coll.size()];
+		Iterator<T> iterator = coll.iterator();
+		for (int i = 0; i < ret.length; i++) {
+			ret[i] = iterator.next().shortValue();
+		}
+		return ret;
+	}
+
+	/**
+	 * Converts a List<? extends Number> to short[]
+	 */
+	public static <T extends Number> short[] toShortArray(final List<T> list) {
+		short[] ret = new short[list.size()];
+		for (int i = 0; i < ret.length; i++) {
+			ret[i] = list.get(i).shortValue();
+		}
+		return ret;
+	}
+
+	//--------- int
+	/**
+	 * Converts a Collection<? extends Number> to int[]
+	 */
+	public static <T extends Number> int[] toIntArray(final Collection<T> coll) {
 		int[] ret = new int[coll.size()];
-		Iterator<Integer> iterator = coll.iterator();
+		Iterator<T> iterator = coll.iterator();
 		for (int i = 0; i < ret.length; i++) {
 			ret[i] = iterator.next().intValue();
 		}
 		return ret;
 	}
 
-	public static short[] collectionToShortArray(final Collection<Short> coll) {
-		short[] ret = new short[coll.size()];
-		Iterator<Short> iterator = coll.iterator();
+	/**
+	 * Converts a List<? extends Number> to int[]
+	 */
+	public static <T extends Number> int[] toIntArray(final List<T> list) {
+		int[] ret = new int[list.size()];
 		for (int i = 0; i < ret.length; i++) {
-			Short s = iterator.next();
-			ret[i] = s.shortValue();
+			ret[i] = list.get(i).intValue();
 		}
 		return ret;
 	}
 
-	public static long[] collectionToLongArray(final Collection<Long> coll) {
+	//--------- long
+	/**
+	 * Converts a Collection<? extends Number> to long[]
+	 */
+	public static <T extends Number> long[] toLongArray(final Collection<T> coll) {
 		long[] ret = new long[coll.size()];
-		Iterator<Long> iterator = coll.iterator();
+		Iterator<T> iterator = coll.iterator();
 		for (int i = 0; i < ret.length; i++) {
 			ret[i] = iterator.next().longValue();
 		}
 		return ret;
 	}
 
-	public static byte[] collectionToByteArray(final Collection<Byte> coll) {
-		byte[] ret = new byte[coll.size()];
-		Iterator<Byte> iterator = coll.iterator();
+	/**
+	 * Converts a List<? extends Number> to long[]
+	 */
+	public static <T extends Number> long[] toLongArray(final List<T> list) {
+		long[] ret = new long[list.size()];
 		for (int i = 0; i < ret.length; i++) {
-			ret[i] = iterator.next().byteValue();
+			ret[i] = list.get(i).longValue();
+		}
+		return ret;
+	}
+
+	//--------- float
+	/**
+	 * Converts a Collection<? extends Number> to float[]
+	 */
+	public static <T extends Number> float[] toFloatArray(final Collection<T> coll) {
+		float[] ret = new float[coll.size()];
+		Iterator<T> iterator = coll.iterator();
+		for (int i = 0; i < ret.length; i++) {
+			ret[i] = iterator.next().floatValue();
+		}
+		return ret;
+	}
+
+	/**
+	 * Converts a List<? extends Number> to float[]
+	 */
+	public static <T extends Number> float[] toFloatArray(final List<T> list) {
+		float[] ret = new float[list.size()];
+		for (int i = 0; i < ret.length; i++) {
+			ret[i] = list.get(i).floatValue();
+		}
+		return ret;
+	}
+
+	//--------- double
+	/**
+	 * Converts a Collection<? extends Number> to double[]
+	 */
+	public static <T extends Number> double[] toDoubleArray(final Collection<T> coll) {
+		double[] ret = new double[coll.size()];
+		Iterator<T> iterator = coll.iterator();
+		for (int i = 0; i < ret.length; i++) {
+			ret[i] = iterator.next().doubleValue();
+		}
+		return ret;
+	}
+
+	/**
+	 * Converts a List<? extends Number> to double[]
+	 */
+	public static <T extends Number> double[] toDoubleArray(final List<T> list) {
+		double[] ret = new double[list.size()];
+		for (int i = 0; i < ret.length; i++) {
+			ret[i] = list.get(i).doubleValue();
 		}
 		return ret;
 	}

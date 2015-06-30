@@ -18,9 +18,12 @@ package org.openntf.domino.utils;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Logger;
 
 import lotus.domino.NotesException;
+
+import org.openntf.domino.commons.IDateTime;
 
 import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.SimpleDateFormat;
@@ -29,7 +32,10 @@ import com.ibm.icu.util.ULocale;
 // TODO: Auto-generated Javadoc
 /**
  * The Class DominoFormatter.
+ * 
+ * @deprecated 2015-06-30/RPr: better use the methods provided by {@link IDateTime} and {@link Locale} that is returned by the browser
  */
+@Deprecated
 public class DominoFormatter extends ThreadLocal<Object> implements Serializable {
 	private static final long serialVersionUID = 1L;
 

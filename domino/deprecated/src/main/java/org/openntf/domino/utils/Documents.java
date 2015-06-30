@@ -132,7 +132,7 @@ public enum Documents {
 
 		//		byte[] stateBytes = streamOut.toByteArray();
 		//		ByteArrayInputStream byteStream = new ByteArrayInputStream(stateBytes);
-		InputStream is = new Streams.MIMEBufferedInputStream(mimeStream);
+		InputStream is = new MIMEBufferedInputStream(mimeStream);
 		ObjectInputStream objectStream;
 
 		if (allHeaders == null) {
@@ -547,6 +547,17 @@ public enum Documents {
 		}
 	}
 
+	/**
+	 * Returns a Map with the Itemnames and values that are specified as <code>itemnames</code> parameter
+	 * 
+	 * @param doc
+	 *            the doc from which you want to read the items
+	 * @param itemnames
+	 *            the item-names you want
+	 * @return a map with Item-Values (Item-Name = key)
+	 * @deprecated // 2015-06-30/RPr: This method should be changed to accept a Map<String, Object> instead of document
+	 */
+	@Deprecated
 	public static Map<String, List<Object>> getItemTable(final Document doc, final CharSequence... itemnames) {
 		if (doc == null || itemnames == null)
 			return null;
@@ -560,6 +571,12 @@ public enum Documents {
 		return result;
 	}
 
+	/**
+	 * Writes the given map back to the document
+	 * 
+	 * @deprecated // 2015-06-30/RPr: This method should be changed to accept a Map<String, Object> instead of document
+	 */
+	@Deprecated
 	public static void setItemTable(final Document doc, final Map<String, List<Object>> table) {
 		if (doc == null || table == null)
 			return;
@@ -568,6 +585,7 @@ public enum Documents {
 		}
 	}
 
+	@Deprecated
 	public static void setItemTablePivot(final Document doc, final List<Map<String, Object>> pivot) {
 		//TODO NTF
 		Map<String, List<Object>> unpivot = new LinkedHashMap<String, List<Object>>();

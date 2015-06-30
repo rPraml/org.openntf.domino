@@ -107,14 +107,18 @@ public enum Hash {
 	 * @throws IOException
 	 * @throws NoSuchAlgorithmException
 	 */
-	public static String checksum(final Serializable object, final String algorithm) throws IOException, NoSuchAlgorithmException {
+	public static String checksum(final Serializable object, final String algorithm) throws NoSuchAlgorithmException {
 		String result = null;
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream out = new ObjectOutputStream(baos);
-		out.writeObject(object);
-		result = checksum(baos.toByteArray(), algorithm);
-		out.close();
+		try {
+			ObjectOutputStream out = new ObjectOutputStream(baos);
+			out.writeObject(object);
+			result = checksum(baos.toByteArray(), algorithm);
+			out.close();
+		} catch (IOException ioex) {
+			throw new RuntimeException("Unexpected IOException", ioex);
+		}
 		return result;
 	}
 
@@ -156,7 +160,7 @@ public enum Hash {
 	 * @return the string representing the MD5 hash value of the serialized version of the object
 	 * @throws IOException
 	 */
-	public static String md5(final Serializable object) throws IOException {
+	public static String md5(final Serializable object) {
 		try {
 			return checksum(object, "MD5");
 		} catch (NoSuchAlgorithmException e) {

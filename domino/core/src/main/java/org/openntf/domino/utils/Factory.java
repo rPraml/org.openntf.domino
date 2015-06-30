@@ -34,6 +34,7 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,6 +51,7 @@ import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.Names;
 import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.Strings;
+import org.openntf.domino.commons.utils.CollectionUtils;
 import org.openntf.domino.commons.utils.GitProperties;
 import org.openntf.domino.exceptions.DataNotCompatibleException;
 import org.openntf.domino.exceptions.UndefinedDelegateTypeException;
@@ -206,6 +208,64 @@ public enum Factory {
 	 * 
 	 */
 	private static class Counters {
+		static class Counter {
+			private final AtomicInteger globalCounter;
+			private final ThreadLocal<AtomicInteger> threadCounter;
+
+			public Counter(final boolean countPerThread) {
+				if (countPerThread) {
+					globalCounter = null;
+					threadCounter = new ThreadLocal<AtomicInteger>() {
+						@Override
+						protected AtomicInteger initialValue() {
+							return new AtomicInteger(0);
+						}
+					};
+				} else {
+					globalCounter = new AtomicInteger(0);
+					threadCounter = null;
+				}
+			}
+
+			/**
+			 * Increment.
+			 * 
+			 * @return the int
+			 */
+			public int increment() {
+				if (globalCounter == null) {
+					return threadCounter.get().incrementAndGet();
+				} else {
+					return globalCounter.incrementAndGet();
+				}
+			}
+
+			/**
+			 * Decrement.
+			 * 
+			 * @return the int
+			 */
+			public int decrement() {
+				if (globalCounter == null) {
+					return threadCounter.get().decrementAndGet();
+				} else {
+					return globalCounter.decrementAndGet();
+				}
+			}
+
+			/**
+			 * read the value
+			 * 
+			 * @return the int value
+			 */
+			public int intValue() {
+				if (globalCounter == null) {
+					return threadCounter.get().intValue();
+				} else {
+					return globalCounter.intValue();
+				}
+			}
+		}
 
 		/** The lotus counter. */
 		private final Counter lotus;
@@ -1404,7 +1464,7 @@ public enum Factory {
 
 		if (!counters.classes.isEmpty() && details) {
 			sb.append("\n=== The following objects were left in memory ===");
-			for (Entry<Class<?>, Counter> e : counters.classes.entrySet()) {
+			for (Entry<Class<?>, Counters.Counter> e : counters.classes.entrySet()) {
 				int i = e.getValue().intValue();
 				if (i != 0) {
 					sb.append("\n" + i + "\t" + e.getKey().getName());

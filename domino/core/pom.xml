@@ -60,12 +60,7 @@
 
 	<dependencies>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>provided</scope>
-		</dependency>
+
 		<!-- The notes-api is bundled by the ibm-build-management -->
 		<dependency>
 			<groupId>com.ibm.notes</groupId>
@@ -79,15 +74,6 @@
 			<version>9.0.1</version>
 		</dependency>
 		
-		
-		<!--
-		<dependency>
-			<groupId>org.openntf</groupId>
-			<artifactId>formula</artifactId>
-			<version>1.5.1-SNAPSHOT</version>
-		</dependency>
-		-->
-		
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
 			<artifactId>commons</artifactId>
@@ -99,7 +85,23 @@
 			<artifactId>javolution-core-java</artifactId>
 			<version>6.1.0-ODA-151-SNAPSHOT</version>
 		</dependency> 
-		
+		<!--
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>core-junit</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+		-->
+ 
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+
+				
 	</dependencies>
 
 	<organization>
