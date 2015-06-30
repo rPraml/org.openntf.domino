@@ -5,10 +5,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.openntf.domino.commons.IO;
 import org.openntf.domino.thread.AbstractDominoExecutor;
 import org.openntf.domino.thread.AbstractDominoExecutor.DominoFutureTask;
 import org.openntf.domino.thread.XotsExecutorService;
-import org.openntf.domino.utils.Factory;
 
 /*
  * This class and package is intended to become the space for the XPages implementation
@@ -67,7 +67,7 @@ public class Xots {
 	public static synchronized void start(final AbstractDominoExecutor executor) throws IllegalStateException {
 		if (isStarted())
 			throw new IllegalStateException("XotsDaemon is already started");
-		Factory.println(Xots.class, "Starting XPages OSGi Tasklet Service with " + executor.getCorePoolSize() + " core threads.");
+		IO.println(Xots.class, "Starting XPages OSGi Tasklet Service with " + executor.getCorePoolSize() + " core threads.");
 
 		executor_ = executor;
 
@@ -83,22 +83,22 @@ public class Xots {
 
 	public static synchronized void stop(int wait) {
 		if (isStarted()) {
-			Factory.println(Xots.class, "Stopping XPages OSGi Tasklet Service...");
+			IO.println(Xots.class, "Stopping XPages OSGi Tasklet Service...");
 
 			executor_.shutdown();
 			long running;
 			try {
 				while ((running = executor_.getActiveCount()) > 0 && wait-- > 0) {
-					Factory.println(Xots.class, "There are " + running + " tasks running... waiting " + wait + " seconds.");
+					IO.println(Xots.class, "There are " + running + " tasks running... waiting " + wait + " seconds.");
 					Thread.sleep(1000);
 				}
 			} catch (InterruptedException e) {
 			}
 
 			if (executor_.getActiveCount() > 0) {
-				Factory.println(Xots.class, "he following Threads did not terminate gracefully:");
+				IO.println(Xots.class, "he following Threads did not terminate gracefully:");
 				for (DominoFutureTask<?> task : executor_.getTasks(null)) {
-					Factory.println(Xots.class, "* " + task);
+					IO.println(Xots.class, "* " + task);
 				}
 
 			}
@@ -106,20 +106,20 @@ public class Xots {
 			try {
 				for (int i = 60; i > 0; i -= 10) {
 					if (executor_.getActiveCount() > 0) {
-						Factory.println(Xots.class, "Trying to interrupt them and waiting again " + i + " seconds.");
+						IO.println(Xots.class, "Trying to interrupt them and waiting again " + i + " seconds.");
 						executor_.shutdownNow();
 					}
 					if (executor_.awaitTermination(10, TimeUnit.SECONDS)) {
 						executor_ = null;
-						Factory.println(Xots.class, " XPages OSGi Tasklet Service stopped.");
+						IO.println(Xots.class, " XPages OSGi Tasklet Service stopped.");
 						return;
 					}
 				}
 			} catch (InterruptedException e) {
 			}
-			Factory.println(Xots.class, "WARNING: Could not stop  XPages OSGi Tasklet Service!");
+			IO.println(Xots.class, "WARNING: Could not stop  XPages OSGi Tasklet Service!");
 		} else {
-			Factory.println(Xots.class, " XPages OSGi Tasklet Service not running");
+			IO.println(Xots.class, " XPages OSGi Tasklet Service not running");
 		}
 	}
 

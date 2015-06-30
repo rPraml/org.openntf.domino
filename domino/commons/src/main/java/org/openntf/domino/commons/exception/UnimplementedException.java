@@ -13,7 +13,7 @@
  * implied. See the License for the specific language governing 
  * permissions and limitations under the License.
  */
-package org.openntf.domino.exceptions;
+package org.openntf.domino.commons.exception;
 
 public class UnimplementedException extends RuntimeException {
 	private static final long serialVersionUID = 1L;

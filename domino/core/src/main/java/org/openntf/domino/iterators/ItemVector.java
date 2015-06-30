@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 import org.openntf.domino.Document;
 import org.openntf.domino.Item;
-import org.openntf.domino.exceptions.UnimplementedException;
+import org.openntf.domino.commons.exception.UnimplementedException;
 import org.openntf.domino.utils.DominoUtils;
 
 /**
@@ -125,7 +125,6 @@ public class ItemVector extends Vector<Item> {
 	/**
 	 * @deprecated use {@link #add(Item)}
 	 */
-
 	@Override
 	@Deprecated
 	public void addElement(final Item arg0) {

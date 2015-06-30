@@ -3,7 +3,6 @@ package org.openntf.domino.commons.impl;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +24,7 @@ public class NonOsgiServiceLocator extends ServiceLocator {
 			final List<T> fret = ret;
 
 			AccessController.doPrivileged(new PrivilegedAction<Object>() {
+				@SuppressWarnings("unchecked")
 				@Override
 				public Object run() {
 					ClassLoader cl = Thread.currentThread().getContextClassLoader();
@@ -35,9 +35,7 @@ public class NonOsgiServiceLocator extends ServiceLocator {
 							fret.add(it.next());
 						}
 					}
-					if (Comparable.class.isAssignableFrom(serviceClazz)) {
-						Collections.sort((List<? extends Comparable>) fret);
-					}
+
 					return null;
 				}
 			});

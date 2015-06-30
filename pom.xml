@@ -83,41 +83,37 @@
 				-->
 				<directory>target-ide</directory>
 				<plugins>
+				<!-- 
 		            <plugin>
 		    			<artifactId>maven-clean-plugin</artifactId>
 		    			<version>2.6.1</version>
 					    <configuration>
 		      				<filesets>
 		        				<fileset>
-		        					<!-- delete target/target-ide -->
 		      						<directory>target</directory>
 		      						<includes>
 		      							<include>**</include>
 		      						</includes>
 		      					</fileset>
 		        				<fileset>
-		        					<!-- delete target/target-ide -->
 		      						<directory>target-ide</directory>
 		      						<includes>
 		      							<include>**</include>
 		      						</includes>
 		      					</fileset>		      					
 		      					<fileset>
-		      						<!-- Delete (old) eclipse bin directory -->
 		      						<directory>bin</directory>
 		      						<includes>
 		      							<include>**</include>
 		      						</includes>
 		      					</fileset>
 		      					<fileset>
-		      						<!-- Delete meta-inf directory -->
 		      						<directory>META-INF</directory>
 		      						<includes>
 		      							<include>**</include>
 		      						</includes>
 		                		</fileset>
 								<fileset>
-		      						<!-- Delete extra files -->
 		      						<directory>${basedir}</directory>
 		      						<includes>
 		      							<include>plugin.xml</include>
@@ -128,7 +124,8 @@
 		      				</filesets>
 		    			</configuration>
 		  			</plugin>
-		  			
+				 -->
+		  			<!-- 
 		  			<plugin>
 						<artifactId>maven-resources-plugin</artifactId>
 						<version>2.7</version>
@@ -157,6 +154,7 @@
 							</execution>
 						</executions>
 					</plugin>
+					 -->
   				</plugins>
 			</build>
 		</profile>
@@ -301,7 +299,7 @@
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
 
                     <!-- The path for the to be generated properties file, it's relative to ${project.basedir} -->
-                    <generateGitPropertiesFilename>src/main/resources/${project.groupId}.${project.artifactId}.git.properties</generateGitPropertiesFilename>
+                    <generateGitPropertiesFilename>src/main/resources/META-INF/git.properties</generateGitPropertiesFilename>
 
                     <!-- @since 2.1.0 -->
                     <!--

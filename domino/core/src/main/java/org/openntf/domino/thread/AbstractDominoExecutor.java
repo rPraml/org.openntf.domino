@@ -33,8 +33,9 @@ import java.util.logging.Logger;
 import javolution.util.FastMap;
 
 import org.openntf.domino.annotations.Incomplete;
+import org.openntf.domino.commons.IO;
+import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.events.IDominoListener;
-import org.openntf.domino.utils.Factory;
 
 /**
  * A ThreadPoolExecutor for Domino runnables. It sets up a shutdown hook for proper termination.
@@ -87,14 +88,14 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 		@Override
 		public void run() {
 			shutdownNow();
-			Factory.removeShutdownHook(shutdownHook);
+			LifeCycleManager.removeShutdownHook(shutdownHook);
 			try {
 				for (int i = 5; i > 0; i--) {
 					if (!awaitTermination(10, TimeUnit.SECONDS)) {
 						if (i > 0) {
-							Factory.println("Could not terminate java threads... Still waiting " + (i * 10) + " seconds");
+							IO.println("Could not terminate java threads... Still waiting " + (i * 10) + " seconds");
 						} else {
-							Factory.println("Could not terminate java threads... giving up. Server may crash now.");
+							IO.println("Could not terminate java threads... giving up. Server may crash now.");
 						}
 					}
 				}
@@ -129,7 +130,7 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 	public AbstractDominoExecutor(final int corePoolSize, final String executorName) {
 		super(corePoolSize, createThreadFactory());
 		executorName_ = executorName;
-		Factory.addShutdownHook(shutdownHook);
+		LifeCycleManager.addShutdownHook(shutdownHook);
 	}
 
 	/**

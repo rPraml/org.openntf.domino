@@ -3,6 +3,7 @@
 *.releaseBackup
 *.git.properties
 
+git.properties
 
 # maven-build directory. hopefully no one uses "target" in a package name
 target/

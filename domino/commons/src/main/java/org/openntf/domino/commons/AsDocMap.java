@@ -13,10 +13,16 @@
  * implied. See the License for the specific language governing 
  * permissions and limitations under the License.
  */
-package org.openntf.domino;
+package org.openntf.domino.commons;
 
 import java.util.Map;
 
+/**
+ * Marks a (document) class that it can be converted in a "map"
+ * 
+ * @author Roland Praml, FOCONIS AG
+ *
+ */
 public interface AsDocMap {
 
 	public Map<String, Object> asDocMap();

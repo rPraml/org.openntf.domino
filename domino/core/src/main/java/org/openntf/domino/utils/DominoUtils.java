@@ -49,7 +49,6 @@ import org.openntf.domino.commons.Strings;
 import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.exceptions.InvalidNotesUrlException;
 import org.openntf.domino.exceptions.OpenNTFNotesException;
-import org.openntf.domino.logging.LogUtils;
 import org.openntf.domino.utils.Factory.SessionType;
 
 import com.ibm.icu.util.Calendar;
@@ -212,29 +211,30 @@ public enum DominoUtils {
 			throw new OpenNTFNotesException(details, t, hed);
 		}
 		try {
-			AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
-				@Override
-				public Object run() throws Exception {
-					if (log_.getLevel() == null) {
-						LogUtils.loadLoggerConfig(false, "");
-					}
-					if (log_.getLevel() == null) {
-						log_.setLevel(Level.WARNING);
-					}
-					return null;
-				}
-			});
-			AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
-				@Override
-				public Object run() throws Exception {
-					if (LogUtils.hasAccessException(log_)) {
-						logBackup_.log(Level.SEVERE, t.getLocalizedMessage(), t);
-					} else {
-						log_.log(Level.WARNING, t.getLocalizedMessage(), t);
-					}
-					return null;
-				}
-			});
+			// TODO TODO fix this!
+			//			AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
+			//				@Override
+			//				public Object run() throws Exception {
+			//					if (log_.getLevel() == null) {
+			//						LogUtils.loadLoggerConfig(false, "");
+			//					}
+			//					if (log_.getLevel() == null) {
+			//						log_.setLevel(Level.WARNING);
+			//					}
+			//					return null;
+			//				}
+			//			});
+			//			AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
+			//				@Override
+			//				public Object run() throws Exception {
+			//					if (LogUtils.hasAccessException(log_)) {
+			//						logBackup_.log(Level.SEVERE, t.getLocalizedMessage(), t);
+			//					} else {
+			//						log_.log(Level.WARNING, t.getLocalizedMessage(), t);
+			//					}
+			//					return null;
+			//				}
+			//			});
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -534,7 +534,7 @@ public enum DominoUtils {
 				is = new FileInputStream(dirPath + "/" + fileLoc);
 				returnStream = new BufferedInputStream(is);
 				break;
-				// TODO Need to work out how to get from properties file in NSF
+			// TODO Need to work out how to get from properties file in NSF
 			}
 			return returnStream;
 		} catch (Throwable e) {

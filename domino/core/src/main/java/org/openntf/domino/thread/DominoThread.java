@@ -19,6 +19,8 @@ import java.util.logging.Logger;
 
 import lotus.domino.NotesThread;
 
+import org.openntf.domino.commons.IO;
+import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.session.ISessionFactory;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
@@ -42,14 +44,14 @@ public class DominoThread extends NotesThread {
 
 		@Override
 		public void run() {
-			Factory.println(DominoThread.this, "Shutdown " + DominoThread.this);
+			IO.println(DominoThread.this, "Shutdown " + DominoThread.this);
 			DominoThread.this.interrupt();
 			try {
 				DominoThread.this.join(30 * 1000); // give the thread 30 seconds to join after interrupt.
 			} catch (InterruptedException e) {
 			}
 			if (DominoThread.this.isAlive()) {
-				Factory.println(DominoThread.this, "WARNING " + DominoThread.this + " is still alive after 30 secs. Continuing anyway.");
+				IO.println(DominoThread.this, "WARNING " + DominoThread.this + " is still alive after 30 secs. Continuing anyway.");
 			}
 		}
 	};
@@ -187,13 +189,13 @@ public class DominoThread extends NotesThread {
 		Factory.initThread(sourceThreadConfig);
 		Factory.setSessionFactory(sessionFactory_, SessionType.CURRENT);
 
-		Factory.addShutdownHook(shutdownHook);
+		LifeCycleManager.addShutdownHook(shutdownHook);
 	}
 
 	@Override
 	public void termThread() {
 		log_.fine("DEBUG: Terminating a " + toString());
-		Factory.removeShutdownHook(shutdownHook);
+		LifeCycleManager.removeShutdownHook(shutdownHook);
 		super.termThread();
 	}
 
@@ -222,8 +224,8 @@ public class DominoThread extends NotesThread {
 	 *            the sessionFactory
 	 */
 	public static void runApp(final Runnable app, final ISessionFactory sf) {
-		Factory.startup();
-		lotus.domino.NotesThread.sinitThread();
+		LifeCycleManager.startup();
+		lotus.domino.NotesThread.sinitThread(); // we must keep one thread open
 		Factory.initThread(Factory.STRICT_THREAD_CONFIG);
 		Factory.setSessionFactory(sf, SessionType.CURRENT);
 
@@ -232,7 +234,7 @@ public class DominoThread extends NotesThread {
 		} finally {
 			Factory.termThread();
 			lotus.domino.NotesThread.stermThread();
-			Factory.shutdown();
+			LifeCycleManager.shutdown();
 		}
 	}
 }

@@ -1,4 +1,4 @@
-package org.openntf.domino.exceptions;
+package org.openntf.domino.commons.exception;
 
 public class PermissionDeniedException extends SecurityException {
 	private static final long serialVersionUID = 1L;
