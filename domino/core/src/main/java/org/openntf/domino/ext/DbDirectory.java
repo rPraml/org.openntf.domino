@@ -9,7 +9,6 @@ import java.util.Set;
 import org.openntf.domino.Database;
 import org.openntf.domino.DbDirectory.Type;
 import org.openntf.domino.annotations.Legacy;
-import org.openntf.domino.design.VFSRootNode;
 
 /**
  * @author withersp
@@ -26,6 +25,7 @@ public interface DbDirectory {
 	 *            Type database type, e.g. Database, Template, Template_Candidate etc
 	 * @return Database of type passed in
 	 * @since org.openntf.domino 1.0.0
+	 * @deprecated use iterators and {@link #setDirectoryType(Type)}
 	 */
 	@Deprecated
 	@Legacy(Legacy.ITERATION_WARNING)
@@ -66,13 +66,6 @@ public interface DbDirectory {
 	 * @since org.openntf.domino 4.5.0
 	 */
 	public void setDirectoryType(final Type type);
-
-	/**
-	 * Returns a virtual Filesystem Node. If you want only files for a certain type, use {@link #setDirectoryType(Type)} before.
-	 * 
-	 * @return a DbDirectoryTree
-	 */
-	public VFSRootNode getVFS();
 
 	public Set<DatabaseMetaData> getMetaDataSet();
 

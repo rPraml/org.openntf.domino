@@ -26,7 +26,7 @@ import org.openntf.domino.types.FactorySchema;
  * The Interface DocumentCollection represents a collection of documents from a database, selected according to specific criteria.
  */
 public interface DocumentCollection extends lotus.domino.DocumentCollection, org.openntf.domino.ext.DocumentCollection,
-		org.openntf.domino.Base<lotus.domino.DocumentCollection>, Collection<org.openntf.domino.Document>, DatabaseDescendant {
+org.openntf.domino.Base<lotus.domino.DocumentCollection>, Collection<org.openntf.domino.Document>, DatabaseDescendant {
 
 	public static class Schema extends FactorySchema<DocumentCollection, lotus.domino.DocumentCollection, Database> {
 		@Override
@@ -240,6 +240,7 @@ public interface DocumentCollection extends lotus.domino.DocumentCollection, org
 	 * 
 	 * @return Returns the next {@link org.openntf.domino.Document} in the collection. If there is no next document, returns
 	 *         <code>null</code>.
+	 * @deprecated use Iterator
 	 */
 	@Override
 	@Deprecated
@@ -257,6 +258,7 @@ public interface DocumentCollection extends lotus.domino.DocumentCollection, org
 	 * 
 	 * @return Returns the next {@link org.openntf.domino.Document} in the collection. If there is no next document, returns
 	 *         <code>null</code>.
+	 * @deprecated use Iterator
 	 */
 	@Override
 	@Deprecated
@@ -276,6 +278,7 @@ public interface DocumentCollection extends lotus.domino.DocumentCollection, org
 	 * 
 	 * @return Returns the next {@link org.openntf.domino.Document} in the collection. If there is no nTH document, returns
 	 *         <code>null</code>.
+	 * @deprecated use Iterator
 	 */
 	@Override
 	@Deprecated

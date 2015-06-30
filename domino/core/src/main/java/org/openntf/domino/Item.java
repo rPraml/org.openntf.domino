@@ -93,14 +93,6 @@ public interface Item extends Base<lotus.domino.Item>, lotus.domino.Item, org.op
 		MIME_BEAN(10001);
 
 		/**
-		 * @Deprecated better use valueOf
-		 */
-		@Deprecated
-		public static Type getType(final int value) {
-			return valueOf(value);
-		}
-
-		/**
 		 * Return the {@link Item.Type} of a numeric value
 		 * 
 		 * @param value
@@ -275,11 +267,9 @@ public interface Item extends Base<lotus.domino.Item>, lotus.domino.Item, org.op
 	@Override
 	public String getText(final int maxLen);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Item#getType()
-	 * @Deprecated, better use getTypeEx
+	 * @deprecated use {@link #getTypeEx()}
 	 */
 	@Override
 	@Deprecated

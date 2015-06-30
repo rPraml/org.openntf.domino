@@ -27,7 +27,6 @@ import org.openntf.domino.Database.Type;
 import org.openntf.domino.Document;
 import org.openntf.domino.DocumentCollection;
 import org.openntf.domino.NoteCollection.SelectOption;
-import org.openntf.domino.design.DatabaseDesign;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
 import org.openntf.domino.events.IDominoEventFactory;
@@ -292,15 +291,6 @@ public interface Database extends Base {
 			final Set<FTSearchOption> otherOpt, final int start);
 
 	/**
-	 * Gets a {@link org.openntf.domino design.DatabaseDesign} object providing access to various design elements of this database. The
-	 * class also has helper methods to create some design resources, e.g. {@link org.openntf.domino.design.DatabaseDesign#createView()}
-	 * 
-	 * @return DatabaseDesign object
-	 * @since org.openntf.domino 1.0.0
-	 */
-	public DatabaseDesign getDesign();
-
-	/**
 	 * Returns the shared XPage Design Template (if this is a Single Copy XPage Database)
 	 * 
 	 * @return the shared XPage Design Template (or null, if this is no SCXD-DB)
@@ -324,9 +314,15 @@ public interface Database extends Base {
 	 */
 	public Document getDocumentWithKey(final Serializable key);
 
+	/**
+	 * @deprecated TODO why? Use {@link #getDocumentWithKey(Serializable)} instead?
+	 */
 	@Deprecated
 	public Document getDocumentByKey(Serializable key);
 
+	/**
+	 * @deprecated TODO why? Use {@link #getDocumentWithKey(Serializable, boolean)} instead?
+	 */
 	@Deprecated
 	public Document getDocumentByKey(Serializable key, boolean createOnFail);
 

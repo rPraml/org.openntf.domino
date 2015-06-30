@@ -24,7 +24,7 @@ import org.openntf.domino.types.SessionDescendant;
  * The Interface DxlExporter.
  */
 public interface DxlExporter extends Base<lotus.domino.DxlExporter>, lotus.domino.DxlExporter, org.openntf.domino.ext.DxlExporter,
-		SessionDescendant {
+SessionDescendant {
 
 	public static class Schema extends FactorySchema<DxlExporter, lotus.domino.DxlExporter, Session> {
 		@Override
@@ -357,11 +357,13 @@ public interface DxlExporter extends Base<lotus.domino.DxlExporter>, lotus.domin
 	@Override
 	public void setLogComment(final String comment);
 
-	/*
+	/**
 	 * (non-Javadoc)
 	 * 
 	 * @see lotus.domino.DxlExporter#setMIMEOption(int)
+	 * @deprecated use {@link org.openntf.domino.ext.DxlExporter#setMIMEOption(MIMEOption)}
 	 */
+
 	@Override
 	@Deprecated
 	public void setMIMEOption(final int option);
@@ -440,10 +442,9 @@ public interface DxlExporter extends Base<lotus.domino.DxlExporter>, lotus.domin
 	@Override
 	public void setRestrictToItemNames(final Vector names);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.DxlExporter#setRichTextOption(int)
+	 * @deprecated use {@link org.openntf.domino.ext.DxlExporter#setRichTextOption(RichTextOption)}
 	 */
 	@Override
 	@Deprecated

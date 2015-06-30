@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 
 import lotus.domino.NotesException;
 
-import org.openntf.domino.annotations.Incomplete;
 import org.openntf.domino.annotations.Legacy;
 import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.types.FactorySchema;
@@ -36,7 +35,7 @@ import org.openntf.domino.utils.DominoUtils;
  * The Interface Database.
  */
 public interface Database extends lotus.domino.Database, org.openntf.domino.Base<lotus.domino.Database>, org.openntf.domino.ext.Database,
-		Resurrectable, SessionDescendant, IExceptionDetails, Externalizable {
+Resurrectable, SessionDescendant, IExceptionDetails, Externalizable {
 
 	/**
 	 * Enum to allow easy access to Schema
@@ -63,72 +62,9 @@ public interface Database extends lotus.domino.Database, org.openntf.domino.Base
 	public static final Schema SCHEMA = new Schema();
 
 	/**
-	 * Generic database utilities
-	 * 
-	 * @deprecated RPr: As far as I know, this was only used in the DbDirectory
-	 */
-	@Deprecated
-	public enum Utils {
-		;
-		/**
-		 * Checks whether the database is a template with .ntf (Notes Template Facility) file type
-		 * 
-		 * @param db
-		 *            Database to check
-		 * @return boolean whether the database has a .ntf suffix or not
-		 * @since org.openntf.domino 4.5.0
-		 */
-		public static boolean isTemplate(final Database db) {
-			return db.getFilePath().toLowerCase().endsWith(".ntf");
-		}
-
-		/**
-		 * Checks whether the database is a database with .nsf-style (Notes Storage Facility) file type
-		 * 
-		 * @param db
-		 *            Database to check
-		 * @return boolean whether the database has a .nsf, .nsh or .nsg suffix or not
-		 * @since org.openntf.domino 4.5.0
-		 */
-		public static boolean isDatabase(final Database db) {
-			String path = db.getFilePath().toLowerCase();
-			return (path.endsWith(".nsf") || path.endsWith(".nsh") || path.endsWith(".nsg"));
-		}
-
-		/**
-		 * Checks whether replication is disabled for the specified Database
-		 * 
-		 * @param db
-		 *            Database to check
-		 * @return boolean whether {@link org.openntf.domino.Database#isReplicationDisabled()} is true
-		 * @since org.openntf.domino 4.5.0
-		 */
-		public static boolean isReplicaCandidate(final Database db) {
-			boolean result = true;
-			result = db.isReplicationDisabled();
-			return result;
-		}
-
-		/**
-		 * Not currently implemented, just returns true
-		 * 
-		 * @param db
-		 *            Database to check
-		 * @return boolean, currently always returns true
-		 * @since org.openntf.domino 4.5.0
-		 */
-		@Incomplete
-		public static boolean isTemplateCandidate(final Database db) {
-			boolean result = true;
-			//TODO do we actually want to add any future checks for this?
-			return result;
-		}
-	}
-
-	/**
 	 * Comparator to allow easy checking whether two databases have the same filepath (e.g. on different servers)
 	 * 
-	 * @Deprecated better use the DatabaseHolder for sorting
+	 * @deprecated better use the DatabaseHolder for sorting
 	 * @since org.openntf.domino 4.5.0
 	 */
 	@Deprecated
@@ -142,7 +78,7 @@ public interface Database extends lotus.domino.Database, org.openntf.domino.Base
 	/**
 	 * Comparator to alow easy checking whether database A was modified before/after database B
 	 * 
-	 * @Deprecated better use the DatabaseHolder for sorting
+	 * @deprecated better use the DatabaseHolder for sorting
 	 * @since org.openntf.domino 4.5.0
 	 */
 	@Deprecated
@@ -156,7 +92,7 @@ public interface Database extends lotus.domino.Database, org.openntf.domino.Base
 	/**
 	 * Comparator to allow easy checking whether two databases have the same title
 	 * 
-	 * @Deprecated better use the DatabaseHolder for sorting
+	 * @deprecated better use the DatabaseHolder for sorting
 	 * @since org.openntf.domino 4.5.0
 	 */
 	@Deprecated
@@ -170,7 +106,7 @@ public interface Database extends lotus.domino.Database, org.openntf.domino.Base
 	/**
 	 * Comparator to allow easy checking whether two databases have the same API path (server!!filepath)
 	 * 
-	 * @Deprecated better use the DatabaseHolder for sorting
+	 * @deprecated better use the DatabaseHolder for sorting
 	 * @since org.openntf.domino 4.5.0
 	 */
 	@Deprecated
@@ -693,7 +629,7 @@ public interface Database extends lotus.domino.Database, org.openntf.domino.Base
 		/**
 		 * Comparator to allow easy checking whether two databases have the same title
 		 * 
-		 * @Deprecated as this takes a lot of performance and requires to open the database, it should not be used
+		 * @deprecated as this takes a lot of performance and requires to open the database, it should not be used
 		 * @since org.openntf.domino 5.0.0
 		 */
 		@Deprecated
@@ -821,10 +757,11 @@ public interface Database extends lotus.domino.Database, org.openntf.domino.Base
 
 	}
 
-	/*
+	/**
 	 * (non-Javadoc)
 	 * 
 	 * @see lotus.domino.Database#getACLActivityLog()
+	 * @deprecated TODO specify reason
 	 */
 	@Override
 	@Deprecated
@@ -839,19 +776,18 @@ public interface Database extends lotus.domino.Database, org.openntf.domino.Base
 	@Override
 	public int compact();
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#compactWithOptions(int)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#compactWithOptions(java.util.Set)}
 	 */
 	@Override
 	@Deprecated
 	public int compactWithOptions(final int options);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#compactWithOptions(int, java.lang.String)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#compactWithOptions(java.util.Set, String)}
+	 * 
 	 */
 	@Override
 	@Deprecated
@@ -872,10 +808,9 @@ public interface Database extends lotus.domino.Database, org.openntf.domino.Base
 	@Override
 	public Database createCopy(final String server, final String dbFile);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#createCopy(java.lang.String, java.lang.String, int)
+	 * @deprecated TODO specify reason
 	 */
 	@Override
 	@Deprecated
@@ -923,10 +858,9 @@ public interface Database extends lotus.domino.Database, org.openntf.domino.Base
 	@Override
 	public Database createFromTemplate(final String server, final String dbFile, final boolean inherit, final int maxSize);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#createFTIndex(int, boolean)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#createFTIndex(java.util.Set, boolean)}
 	 */
 	@Override
 	@Deprecated
@@ -1046,19 +980,19 @@ public interface Database extends lotus.domino.Database, org.openntf.domino.Base
 	@Override
 	public void fixup();
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#fixup(int)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#fixup(java.util.Set)}
 	 */
 	@Override
 	@Deprecated
 	public void fixup(final int options);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#FTDomainSearch(java.lang.String, int, int, int, int, int, java.lang.String)
+	 * 
+	 * @deprecated use
+	 *             {@link org.openntf.domino.ext.Database#FTDomainSearch(String, int, FTDomainSortOption, java.util.Set, int, int, String)}
 	 */
 	@Override
 	@Deprecated
@@ -1127,10 +1061,9 @@ public interface Database extends lotus.domino.Database, org.openntf.domino.Base
 	 */
 	public DocumentCollection FTSearch(final String query, final int maxDocs, final FTSortOption sortOpt, final int otherOpt);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#FTSearchRange(java.lang.String, int, int, int, int)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#FTSearchRange(String, int, FTSortOption, java.util.Set, int)}
 	 */
 	@Override
 	@Deprecated
@@ -1441,10 +1374,9 @@ public interface Database extends lotus.domino.Database, org.openntf.domino.Base
 	@Override
 	public DocumentCollection getModifiedDocuments(final lotus.domino.DateTime since);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#getModifiedDocuments(lotus.domino.DateTime, int)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#getModifiedDocuments(lotus.domino.DateTime, ModifiedDocClass)}
 	 */
 	@Override
 	@Deprecated
@@ -1458,10 +1390,9 @@ public interface Database extends lotus.domino.Database, org.openntf.domino.Base
 	@Override
 	public String getNotesURL();
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#getOption(int)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#getOption(DBOption)}
 	 */
 	@Override
 	@Deprecated
@@ -1571,11 +1502,9 @@ public interface Database extends lotus.domino.Database, org.openntf.domino.Base
 	@Override
 	public String getTitle();
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#getType()
-	 * @Deprecated, better use getTypeEx
+	 * @deprecated better use {@link #getTypeEx()}
 	 */
 	@Override
 	@Deprecated
@@ -1624,10 +1553,9 @@ public interface Database extends lotus.domino.Database, org.openntf.domino.Base
 	@Legacy(Legacy.INTERFACES_WARNING)
 	public Vector<View> getViews();
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#grantAccess(java.lang.String, int)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#grantAccess(String, org.openntf.domino.ACL.Level)}
 	 */
 	@Override
 	@Deprecated

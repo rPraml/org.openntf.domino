@@ -65,14 +65,6 @@ Collection<org.openntf.domino.Database>, SessionDescendant, Resurrectable {
 		TEMPLATE_CANDIDATE(DbDirectory.TEMPLATE_CANDIDATE);
 
 		/**
-		 * @Deprecated better use valueOf
-		 */
-		@Deprecated
-		public static Type getType(final int value) {
-			return valueOf(value);
-		}
-
-		/**
 		 * Return the {@link DbDirectory.Type} of a numeric value
 		 * 
 		 * @param value
@@ -143,10 +135,9 @@ Collection<org.openntf.domino.Database>, SessionDescendant, Resurrectable {
 	@Override
 	public String getClusterName(final String server);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.DbDirectory#getFirstDatabase(int)
+	 * @deprecated use Iterator
 	 */
 	@Override
 	@Deprecated
@@ -159,6 +150,7 @@ Collection<org.openntf.domino.Database>, SessionDescendant, Resurrectable {
 	 * @param type
 	 *            the type
 	 * @return the first database
+	 * @deprecated use Iterator
 	 */
 	@Override
 	@Deprecated
@@ -173,10 +165,9 @@ Collection<org.openntf.domino.Database>, SessionDescendant, Resurrectable {
 	@Override
 	public String getName();
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.DbDirectory#getNextDatabase()
+	 * @deprecated use Iterator
 	 */
 	@Override
 	@Deprecated

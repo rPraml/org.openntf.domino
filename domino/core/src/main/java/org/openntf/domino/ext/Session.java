@@ -245,18 +245,6 @@ public interface Session {
 	public void setFixEnable(Fixes fix, boolean value);
 
 	/**
-	 * Converts a String name to common name format. Deprecated in favour of
-	 * {@link org.openntf.domino.utils.DominoUtils#toCommonName(String)}. That method is more performant and avoids creating a Name object.
-	 * 
-	 * @param name
-	 *            String hierarchical name to convert
-	 * @return String name converted to common name format
-	 * @since org.openntf.domino 4.5.0
-	 */
-	@Deprecated
-	public String toCommonName(String name);
-
-	/**
 	 * Easter egg method to print a boogie image onto the server console :-)
 	 * 
 	 * @since org.openntf.domino 4.5.0

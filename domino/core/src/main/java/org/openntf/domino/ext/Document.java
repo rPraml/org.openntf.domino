@@ -131,17 +131,6 @@ public interface Document {
 	public boolean isDirty();
 
 	/**
-	 * Tests whether a MIMEEntity exists on the Document and, if so, returns it. This exists because you have to switch off auto-conversion
-	 * of MIME in order for hasMIMEEntity() to return true.
-	 * 
-	 * @return MIMEEntity or null, if no MIMEEntity exists
-	 * @since org.openntf.domino 5.0.0
-	 * @deprecated pending update from NTF
-	 */
-	@Deprecated
-	public MIMEEntity testMIMEEntity(final String name);
-
-	/**
 	 * Gets an Item value, casting it to a specific class, e.g. java.util.ArrayList.class
 	 * 
 	 * @param name

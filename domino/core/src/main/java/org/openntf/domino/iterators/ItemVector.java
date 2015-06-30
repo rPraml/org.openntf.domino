@@ -122,6 +122,10 @@ public class ItemVector extends Vector<Item> {
 		return itemNames_.addAll(arg0, names);
 	}
 
+	/**
+	 * @deprecated use {@link #add(Item)}
+	 */
+
 	@Override
 	@Deprecated
 	public void addElement(final Item arg0) {
