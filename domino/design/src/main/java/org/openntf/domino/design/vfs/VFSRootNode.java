@@ -1,4 +1,4 @@
-package org.openntf.domino.design;
+package org.openntf.domino.design.vfs;
 
 import java.util.Set;
 

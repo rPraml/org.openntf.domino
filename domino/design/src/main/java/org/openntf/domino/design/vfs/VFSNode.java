@@ -14,12 +14,14 @@
  * permissions and limitations under the License.
  * 
  */
-package org.openntf.domino.design;
+package org.openntf.domino.design.vfs;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
+
+import org.openntf.domino.design.DxlConverter;
 
 /**
  * A VirtualFileSystem Node. This Datastructure is used by the FOCONIS WebDAV Servlet, which exposes the whole Server Database Design.

@@ -18,18 +18,14 @@ package org.openntf.domino.design;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 import java.util.AbstractList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.xml.XMLDocument;
 import org.openntf.domino.utils.xml.XMLNode;
-import org.xml.sax.SAXException;
 
 /**
  * 
@@ -74,23 +70,8 @@ public class XspXmlContent {
 			List<XMLNode> nodes = xml_.selectNodes(parentNodePath_ + "/" + nodeName_);
 			try {
 				return clazz_.getConstructor(context_.getClass(), XMLNode.class).newInstance(context_, nodes.get(index));
-			} catch (IllegalArgumentException e) {
-				DominoUtils.handleException(e);
-				return null;
-			} catch (SecurityException e) {
-				DominoUtils.handleException(e);
-				return null;
-			} catch (InstantiationException e) {
-				DominoUtils.handleException(e);
-				return null;
-			} catch (IllegalAccessException e) {
-				DominoUtils.handleException(e);
-				return null;
-			} catch (InvocationTargetException e) {
-				DominoUtils.handleException(e);
-				return null;
-			} catch (NoSuchMethodException e) {
-				DominoUtils.handleException(e);
+			} catch (Exception e) {
+				ODAUtils.handleException(e);
 				return null;
 			}
 		}
@@ -124,12 +105,8 @@ public class XspXmlContent {
 				if (fileData.startsWith("<?xml")) {
 					try {
 						xml_.loadString(fileData);
-					} catch (SAXException e) {
-						DominoUtils.handleException(e);
-					} catch (IOException e) {
-						DominoUtils.handleException(e);
-					} catch (ParserConfigurationException e) {
-						DominoUtils.handleException(e);
+					} catch (Exception e) {
+						ODAUtils.handleException(e);
 					}
 				}
 			} catch (IOException e1) {

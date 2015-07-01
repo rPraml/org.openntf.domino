@@ -6,9 +6,8 @@
 		<version>1.5.1-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>design-impl</artifactId>
-	<name>OpenNTF Domino Design API</name>
-	<description>Package provides a Test runner to run JUNIT tests on a CI server</description>
+	<artifactId>design</artifactId>
+	<name>OpenNTF Domino Design virtual file system</name>
 
 	<packaging>bundle</packaging>
 	<build>
@@ -20,11 +19,8 @@
 				<configuration>
 					<instructions>
 
-						<!-- TODO 1: We must specify exportPackage, otherwise .impl. is not exported -->
-						<!-- TODO 2: move domino.impl to own package and remove exportPackage -->
 						<Export-Package>
-							!*.test,
-							org.openntf.domino.design.*
+							org.openntf.domino.impl.*
 						</Export-Package>
 					</instructions>
 				</configuration>
@@ -45,9 +41,10 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>org.openntf.domino</groupId>
-			<artifactId>design</artifactId>
-			<version>1.5.1-SNAPSHOT</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
 		</dependency>
 		<!-- 
 		<dependency>
@@ -72,20 +69,6 @@
 			<artifactId>javolution-core-java</artifactId>
 			<version>6.1.0-ODA-151-SNAPSHOT</version>
 		</dependency> 
-		
-	
-		<dependency>
-			<groupId>org.openntf.domino</groupId>
-			<artifactId>core-impl</artifactId>
-			<version>1.5.1-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
-	
-		<dependency>
-			<groupId>org.openntf.domino</groupId>
-			<artifactId>core-junit</artifactId>
-			<version>1.5.1-SNAPSHOT</version>
-		</dependency>
 		<!-- 
 		<dependency>
 			<groupId>org.openntf</groupId>

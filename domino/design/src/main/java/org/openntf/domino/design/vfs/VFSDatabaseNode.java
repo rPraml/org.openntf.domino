@@ -1,4 +1,4 @@
-package org.openntf.domino.design;
+package org.openntf.domino.design.vfs;
 
 
 public interface VFSDatabaseNode extends VFSNode {
