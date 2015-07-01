@@ -1,8 +1,11 @@
 package org.openntf.domino.commons;
 
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Small collection of simple utilities for Strings
@@ -413,4 +416,60 @@ public enum Strings {
 		}
 	}
 
+	public static String[] toStrings(final Collection<?> coll) {
+		if (coll == null || coll.isEmpty())
+			return new String[0];
+
+		String[] strings = new String[coll.size()];
+		int i = 0;
+		for (Object o : coll) {
+			strings[i++] = toString(o);
+		}
+		return strings;
+	}
+
+	public static String[] toStrings(final Object[] arr) {
+		if (arr == null || arr.length == 0)
+			return new String[0];
+
+		Class<?> cType = arr.getClass().getComponentType();
+		if (String.class.isAssignableFrom(cType))
+			return (String[]) arr;
+
+		String[] strings = new String[arr.length];
+		int i = 0;
+		for (Object o : arr) {
+			strings[i++] = toString(o);
+		}
+		return strings;
+	}
+
+	public static String[] toStrings(final Object o) {
+		if (o == null) {
+			return new String[0];
+		}
+		Class<? extends Object> type = o.getClass();
+		if (type.isArray()) {
+			if (type.getComponentType().isPrimitive()) {
+				// cast (Object[]) wont work!
+				String[] strings = new String[Array.getLength(o)];
+				for (int i = 0; i < strings.length; i++) {
+					strings[i] = toString(Array.get(o, i));
+				}
+				return strings;
+			}
+			return toStrings((Object[]) o);
+		}
+		if (o instanceof Collection) {
+			return toStrings((Collection<?>) o);
+		}
+		if (o instanceof Iterable) {
+			List<Object> li = new ArrayList<Object>();
+			for (Object elem : (Iterable<?>) o) {
+				li.add(elem);
+			}
+			return toStrings(li);
+		}
+		return new String[] { toString(o) };
+	}
 }

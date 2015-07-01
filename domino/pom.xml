@@ -65,8 +65,9 @@
 				<module>core-impl</module>
 				<module>core-formula</module>
 				<module>core-junit</module>
+				<module>design</module>
 				<module>design-impl</module>				
-				<module>design-vfs</module>
+				
 				<!-- modules / not needed by FOCONIS -->		
 				<module>deprecated</module>				
 				<module>schema</module>

@@ -1,4 +1,4 @@
-package org.openntf.domino.exceptions;
+package org.openntf.domino.commons.exception;
 
 import java.util.logging.Logger;
 

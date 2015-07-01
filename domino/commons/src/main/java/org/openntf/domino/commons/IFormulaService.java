@@ -17,8 +17,8 @@ public interface IFormulaService {
 
 	public IFormulaContext createContext(Map<String, Object> map, Locale locale);
 
-	public IFormulaASTNode parse(String formula) throws FormulaParseException;
+	public IFormula parse(String formula) throws FormulaParseException;
 
-	public IFormulaASTNode parse(String formula, boolean useFocFormula) throws FormulaParseException;
+	public IFormula parse(String formula, boolean useFocFormula) throws FormulaParseException;
 
 }

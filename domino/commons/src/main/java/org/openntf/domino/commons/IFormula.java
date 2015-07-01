@@ -28,7 +28,7 @@ import org.openntf.domino.commons.exception.EvaluateException;
  * @author Roland Praml, Foconis AG
  * 
  */
-public interface IFormulaASTNode {
+public interface IFormula {
 
 	/**
 	 * Create a dump of the AST-Tree to System.out. Useful for debugging
