@@ -20,6 +20,7 @@ import org.openntf.domino.DocumentCollection;
 import org.openntf.domino.iterators.DocumentList;
 import org.openntf.domino.types.Null;
 
+@Deprecated
 public class DocumentSorter implements Externalizable {
 	private static final long serialVersionUID = 1L;
 	private static boolean debug = false;

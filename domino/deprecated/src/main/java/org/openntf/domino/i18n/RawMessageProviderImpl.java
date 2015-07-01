@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import org.openntf.domino.utils.Factory;
 
+@Deprecated
 public class RawMessageProviderImpl extends RawMessageProvider {
 
 	/*

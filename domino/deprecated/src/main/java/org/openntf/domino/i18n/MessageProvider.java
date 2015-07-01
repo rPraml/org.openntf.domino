@@ -22,6 +22,7 @@ import java.util.Locale;
 import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.utils.Factory;
 
+@Deprecated
 public class MessageProvider {
 
 	/**

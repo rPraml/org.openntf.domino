@@ -19,6 +19,7 @@ import org.openntf.domino.xots.Tasklet;
  * @author Roland Praml, FOCONIS AG
  * 
  */
+@Deprecated
 public abstract class ConfigurationObject {
 
 	private long nextDocAccess = 0;

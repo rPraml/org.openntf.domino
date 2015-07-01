@@ -7,6 +7,7 @@ import java.util.List;
  * Parser for console.log contents that trace NRPC API calls in Notes client
  * 
  */
+@Deprecated
 public class ClientClockParser {
 	/*
 	 * Example console.log

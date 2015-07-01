@@ -20,7 +20,7 @@ import org.openntf.domino.schema.IDatabaseSchema;
 import org.openntf.domino.schema.IDocumentDefinition;
 import org.openntf.domino.schema.IDominoType;
 import org.openntf.domino.schema.IItemDefinition;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * @author nfreeman
@@ -84,9 +84,9 @@ public class DatabaseSchema implements IDatabaseSchema, Externalizable {
 			try {
 				result = type.newInstance();
 			} catch (IllegalAccessException e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 			} catch (InstantiationException e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 			}
 			getTypeDefinitions().put(type, result);
 		}

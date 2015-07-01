@@ -18,9 +18,9 @@ import org.openntf.domino.big.impl.NoteCoordinate;
 //import javolution.util.FastSet;
 //import javolution.util.function.Equalities;
 import org.openntf.domino.big.impl.NoteList;
+import org.openntf.domino.commons.utils.TypeUtils;
 import org.openntf.domino.graph.DominoVertex;
 import org.openntf.domino.types.Null;
-import org.openntf.domino.utils.TypeUtils;
 
 public abstract class DElement implements org.openntf.domino.graph2.DElement, Serializable {
 	private static final Logger log_ = Logger.getLogger(DElement.class.getName());
@@ -92,7 +92,7 @@ public abstract class DElement implements org.openntf.domino.graph2.DElement, Se
 					if (result == null) {
 						try {
 							Object raw = doc.get(propertyName);
-							result = TypeUtils.objectToClass(raw, type, doc.getAncestorSession());
+							result = TypeUtils.objectToClass(raw, type);
 						} catch (Throwable t) {
 							log_.log(Level.WARNING, "Invalid property for document " + propertyName);
 						}

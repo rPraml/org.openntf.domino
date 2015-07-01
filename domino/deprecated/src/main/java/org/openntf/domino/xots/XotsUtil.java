@@ -3,9 +3,9 @@ package org.openntf.domino.xots;
 import java.util.Arrays;
 
 import org.openntf.domino.Database;
-import org.openntf.domino.logging.BaseOpenLogItem;
 import org.openntf.domino.xots.Tasklet.Interface;
 
+@Deprecated
 public enum XotsUtil {
 	;
 	/**
@@ -63,8 +63,9 @@ public enum XotsUtil {
 	}
 
 	public static void handleException(final Throwable t, final Database currDb) {
-		BaseOpenLogItem ol = new BaseOpenLogItem();
-		ol.setCurrentDatabase(currDb);
-		ol.logError(t);
+		// TODO Fix this
+		//		BaseOpenLogItem ol = new BaseOpenLogItem();
+		//		ol.setCurrentDatabase(currDb);
+		//		ol.logError(t);
 	}
 }

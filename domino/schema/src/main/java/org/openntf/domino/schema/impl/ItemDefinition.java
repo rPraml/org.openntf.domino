@@ -20,8 +20,8 @@ import org.openntf.domino.schema.IItemDefinition;
 import org.openntf.domino.schema.IItemListener;
 import org.openntf.domino.schema.IItemValidation;
 import org.openntf.domino.schema.impl.DatabaseSchema.Flags;
-import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
+import org.openntf.domino.utils.ODAUtils;
 
 public class ItemDefinition implements IItemDefinition, Externalizable {
 	private String name_;
@@ -190,7 +190,7 @@ public class ItemDefinition implements IItemDefinition, Externalizable {
 			try {
 				item = doc.replaceItemValueCustomDataBytes(name, "", new byte[1]);
 			} catch (IOException e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 			}
 		}
 		if (item != null) {

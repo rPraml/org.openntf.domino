@@ -3,6 +3,7 @@ package org.openntf.domino.xots;
 import org.openntf.domino.config.Configuration;
 import org.openntf.domino.config.XotsConfiguration;
 
+@Deprecated
 public class ScheduleDataBundle extends ScheduleData {
 
 	private String bundle_;

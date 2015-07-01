@@ -28,9 +28,9 @@ import org.openntf.domino.Document;
 import org.openntf.domino.Item;
 import org.openntf.domino.Session;
 import org.openntf.domino.commons.Names;
-import org.openntf.domino.exceptions.DataNotCompatibleException;
+import org.openntf.domino.commons.exception.DataNotCompatibleException;
+import org.openntf.domino.commons.exception.UnimplementedException;
 import org.openntf.domino.exceptions.ItemNotFoundException;
-import org.openntf.domino.exceptions.UnimplementedException;
 import org.openntf.domino.ext.Formula;
 import org.openntf.domino.types.BigString;
 
@@ -42,7 +42,8 @@ import com.ibm.icu.text.SimpleDateFormat;
  * @author nfreeman
  * 
  */
-public enum TypeUtilsOld {
+@Deprecated
+public enum TypeUtils {
 	;
 
 	public static final String[] DEFAULT_STR_ARRAY = { "" };
@@ -571,7 +572,7 @@ public enum TypeUtilsOld {
 		return (T) result;
 	}
 
-	private static final Logger log_ = Logger.getLogger(TypeUtilsOld.class.getName());
+	private static final Logger log_ = Logger.getLogger(TypeUtils.class.getName());
 
 	@SuppressWarnings("unchecked")
 	public static <T> T toNumberArray(final Object value, final Class<T> type) {

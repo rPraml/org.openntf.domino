@@ -45,7 +45,7 @@ import org.openntf.domino.RichTextItem;
 import org.openntf.domino.Session;
 import org.openntf.domino.Stream;
 import org.openntf.domino.commons.Strings;
-import org.openntf.domino.exceptions.DataNotCompatibleException;
+import org.openntf.domino.commons.exception.DataNotCompatibleException;
 import org.openntf.domino.exceptions.MIMEConversionException;
 import org.openntf.domino.utils.DominoUtils.LoaderObjectInputStream;
 
@@ -53,6 +53,7 @@ import org.openntf.domino.utils.DominoUtils.LoaderObjectInputStream;
  * Utility enum as a carrier for Document-centric static properties and methods.
  * 
  */
+@Deprecated
 public enum Documents {
 	;
 
@@ -72,7 +73,7 @@ public enum Documents {
 
 	/** The Constant logBackup_. */
 	//	private final static Logger logBackup_ = Logger.getLogger("com.ibm.xsp.domino");
-
+	@Deprecated
 	public static enum Flags {
 		HasAttachments, HasEmbedded, IsDeleted, IsEncrypted, IsEncryptOnSend, IsNewNote, IsProfile, IsResponse, IsSaveMessageOnSend,
 		IsSentByAgent, IsSignOnSend, IsValid;

@@ -19,6 +19,7 @@ package org.openntf.domino.utils;
  * Utility enum as a carrier for Item-centric static properties and methods.
  * 
  */
+@Deprecated
 public enum Items {
 	;
 
@@ -27,7 +28,7 @@ public enum Items {
 
 	/** The Constant logBackup_. */
 	//	private final static Logger logBackup_ = Logger.getLogger("com.ibm.xsp.domino");
-
+	@Deprecated
 	public static enum Flags {
 		IsAuthors, IsEncrypted, IsNames, IsProtected, IsReaders, IsSaveToDisk, IsSigned, IsSummary;
 

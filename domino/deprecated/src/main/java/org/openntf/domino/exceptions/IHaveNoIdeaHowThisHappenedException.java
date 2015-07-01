@@ -9,6 +9,7 @@ import java.util.logging.Logger;
  * @author Nathan T. Freeman
  * 
  */
+@Deprecated
 public class IHaveNoIdeaHowThisHappenedException extends RuntimeException {
 	@SuppressWarnings("unused")
 	private static final Logger log_ = Logger.getLogger(IHaveNoIdeaHowThisHappenedException.class.getName());

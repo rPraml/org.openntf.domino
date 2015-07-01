@@ -14,6 +14,7 @@ import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 
 /*----------------------------------------------------------------------------*/
+@Deprecated
 public class RawMessageProviderDBImpl extends RawMessageProvider {
 
 	private Database iDB;

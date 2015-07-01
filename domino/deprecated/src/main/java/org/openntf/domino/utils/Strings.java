@@ -108,6 +108,7 @@ public enum Strings {
 	public static final String TIMESTAMP_SHORTDATE = "MM/dd/yy";
 	public static final String TIMESTAMP_SIMPLETIME = "HHmmaa";
 
+	@Deprecated
 	public static enum IDTYPE {
 		BLANK, REPLICA, NOTE, UNIVERSAL;
 

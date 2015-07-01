@@ -2,9 +2,9 @@ package org.openntf.domino.tests.ntf;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
-import org.openntf.domino.junit.TestRunnerUtil;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.utils.TestRunnerUtil;
 
 public class ServerPathTest implements Runnable {
 	private long marktime;
