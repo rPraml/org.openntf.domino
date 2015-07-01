@@ -20,7 +20,7 @@ import lotus.domino.NotesException;
 import org.openntf.domino.Document;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -55,7 +55,7 @@ public class Newsletter extends BaseNonThreadSafe<org.openntf.domino.Newsletter,
 		try {
 			return fromLotus(getDelegate().formatDocument(toLotus(db), index), Document.SCHEMA, null);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -70,7 +70,7 @@ public class Newsletter extends BaseNonThreadSafe<org.openntf.domino.Newsletter,
 		try {
 			return fromLotus(getDelegate().formatMsgWithDoclinks(toLotus(db)), Document.SCHEMA, null);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -95,7 +95,7 @@ public class Newsletter extends BaseNonThreadSafe<org.openntf.domino.Newsletter,
 		try {
 			return getDelegate().getSubjectItemName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -110,7 +110,7 @@ public class Newsletter extends BaseNonThreadSafe<org.openntf.domino.Newsletter,
 		try {
 			return getDelegate().isDoScore();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -125,7 +125,7 @@ public class Newsletter extends BaseNonThreadSafe<org.openntf.domino.Newsletter,
 		try {
 			return getDelegate().isDoSubject();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -140,7 +140,7 @@ public class Newsletter extends BaseNonThreadSafe<org.openntf.domino.Newsletter,
 		try {
 			getDelegate().setDoScore(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -154,7 +154,7 @@ public class Newsletter extends BaseNonThreadSafe<org.openntf.domino.Newsletter,
 		try {
 			getDelegate().setDoSubject(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -168,7 +168,7 @@ public class Newsletter extends BaseNonThreadSafe<org.openntf.domino.Newsletter,
 		try {
 			getDelegate().setSubjectItemName(name);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

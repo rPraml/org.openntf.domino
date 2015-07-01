@@ -25,7 +25,7 @@ import org.openntf.domino.Document;
 import org.openntf.domino.MIMEEntity;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -73,7 +73,7 @@ public class MIMEHeader extends BaseNonThreadSafe<org.openntf.domino.MIMEHeader,
 		try {
 			return getDelegate().addValText(valueText);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -89,7 +89,7 @@ public class MIMEHeader extends BaseNonThreadSafe<org.openntf.domino.MIMEHeader,
 		try {
 			return getDelegate().addValText(valueText, charSet);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -114,7 +114,7 @@ public class MIMEHeader extends BaseNonThreadSafe<org.openntf.domino.MIMEHeader,
 		try {
 			return getDelegate().getHeaderVal();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -129,7 +129,7 @@ public class MIMEHeader extends BaseNonThreadSafe<org.openntf.domino.MIMEHeader,
 		try {
 			return getDelegate().getHeaderVal(folded);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -144,7 +144,7 @@ public class MIMEHeader extends BaseNonThreadSafe<org.openntf.domino.MIMEHeader,
 		try {
 			return getDelegate().getHeaderVal(folded, decoded);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -159,7 +159,7 @@ public class MIMEHeader extends BaseNonThreadSafe<org.openntf.domino.MIMEHeader,
 		try {
 			return getDelegate().getHeaderValAndParams();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -174,7 +174,7 @@ public class MIMEHeader extends BaseNonThreadSafe<org.openntf.domino.MIMEHeader,
 		try {
 			return getDelegate().getHeaderValAndParams(folded);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -189,7 +189,7 @@ public class MIMEHeader extends BaseNonThreadSafe<org.openntf.domino.MIMEHeader,
 		try {
 			return getDelegate().getHeaderValAndParams(folded, decoded);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -204,7 +204,7 @@ public class MIMEHeader extends BaseNonThreadSafe<org.openntf.domino.MIMEHeader,
 		try {
 			return getDelegate().getParamVal(paramName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -219,7 +219,7 @@ public class MIMEHeader extends BaseNonThreadSafe<org.openntf.domino.MIMEHeader,
 		try {
 			return getDelegate().getParamVal(paramName, folded);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -243,7 +243,7 @@ public class MIMEHeader extends BaseNonThreadSafe<org.openntf.domino.MIMEHeader,
 		try {
 			getDelegate().remove();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -258,7 +258,7 @@ public class MIMEHeader extends BaseNonThreadSafe<org.openntf.domino.MIMEHeader,
 		try {
 			return getDelegate().setHeaderVal(headerValue);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -274,7 +274,7 @@ public class MIMEHeader extends BaseNonThreadSafe<org.openntf.domino.MIMEHeader,
 		try {
 			return getDelegate().setHeaderValAndParams(headerParamValue);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -290,7 +290,7 @@ public class MIMEHeader extends BaseNonThreadSafe<org.openntf.domino.MIMEHeader,
 		try {
 			return getDelegate().setParamVal(parameterName, parameterValue);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -337,7 +337,7 @@ public class MIMEHeader extends BaseNonThreadSafe<org.openntf.domino.MIMEHeader,
 				lotus.domino.MIMEHeader header = entity.getNthHeader(headerName_);
 				this.setDelegate(header, true);
 			} catch (NotesException ne) {
-				DominoUtils.handleException(ne);
+				ODAUtils.handleException(ne);
 			}
 		} else {
 			if (log_.isLoggable(Level.SEVERE)) {

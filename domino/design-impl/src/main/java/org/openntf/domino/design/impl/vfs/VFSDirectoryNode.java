@@ -14,10 +14,10 @@
  * permissions and limitations under the License.
  * 
  */
-package org.openntf.domino.design.impl;
+package org.openntf.domino.design.impl.vfs;
 
-import org.openntf.domino.design.VFSNode;
-import org.openntf.domino.helpers.DatabaseMetaData;
+import org.openntf.domino.Database;
+import org.openntf.domino.design.vfs.VFSNode;
 
 /**
  * A directory node that describes a directory in the NSF Path
@@ -25,7 +25,7 @@ import org.openntf.domino.helpers.DatabaseMetaData;
  * @author Roland Praml, FOCONIS AG
  *
  */
-public class VFSDirectoryNode extends VFSAbstractNode<DatabaseMetaData> {
+public class VFSDirectoryNode extends VFSAbstractNode<Database.MetaData> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -94,7 +94,7 @@ public class VFSDirectoryNode extends VFSAbstractNode<DatabaseMetaData> {
 	 * Create a child VFSDatabaseNode. The DatabaseNode contains the designElements
 	 */
 	@Override
-	protected VFSNode newLeaf(final String name, final DatabaseMetaData t) {
+	protected VFSNode newLeaf(final String name, final Database.MetaData t) {
 		return new VFSDatabaseNode(this, name, t);
 	}
 

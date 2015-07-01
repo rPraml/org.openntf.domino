@@ -14,10 +14,10 @@
  * permissions and limitations under the License.
  * 
  */
-package org.openntf.domino.design.impl;
+package org.openntf.domino.design.impl.vfs;
 
 import org.openntf.domino.design.DesignBase;
-import org.openntf.domino.design.VFSNode;
+import org.openntf.domino.design.vfs.VFSNode;
 
 /**
  * A Virtual directory for "Code" and so on

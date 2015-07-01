@@ -20,7 +20,7 @@ import lotus.domino.NotesException;
 import org.openntf.domino.RichTextParagraphStyle;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -56,7 +56,7 @@ public class RichTextTab extends BaseNonThreadSafe<org.openntf.domino.RichTextTa
 		try {
 			getDelegate().clear();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -70,7 +70,7 @@ public class RichTextTab extends BaseNonThreadSafe<org.openntf.domino.RichTextTa
 		try {
 			return getDelegate().getPosition();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -85,7 +85,7 @@ public class RichTextTab extends BaseNonThreadSafe<org.openntf.domino.RichTextTa
 		try {
 			return getDelegate().getType();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}

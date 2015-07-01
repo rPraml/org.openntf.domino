@@ -59,7 +59,7 @@ import java.net.URI;
 import org.openntf.domino.Document;
 import org.openntf.domino.design.DesignBase;
 import org.openntf.domino.design.DesignMapping;
-import org.openntf.domino.design.VFSNode;
+import org.openntf.domino.design.vfs.VFSNode;
 import org.openntf.domino.ext.NoteClass;
 
 //@formatter:off
@@ -274,26 +274,32 @@ public enum DesignFactory implements DesignMapping {
 		filterXsp_ = filterXsp;
 	}
 
+	@Override
 	public NoteClass getNoteClass() {
 		return noteClass_;
 	}
 
+	@Override
 	public String getFlags() {
 		return flags_;
 	}
 
+	@Override
 	public String getFlagsExt() {
 		return flagsExt_;
 	}
 
+	@Override
 	public Boolean getFilterXsp() {
 		return filterXsp_;
 	}
 
+	@Override
 	public int[] getAssistFilter() {
 		return assistFilter_;
 	}
 
+	@Override
 	public boolean getInclude() {
 		return include_;
 	}
@@ -416,18 +422,22 @@ public enum DesignFactory implements DesignMapping {
 		return DesignFactory.FileResourceHidden;
 	}
 
+	@Override
 	public Class<? extends DesignBase> getInterfaceClass() {
 		return interfaceClazz_;
 	}
 
+	@Override
 	public Class<? extends AbstractDesignBase> getImplClass() {
 		return implClazz_;
 	}
 
+	@Override
 	public String getOnDiskFolder() {
 		return onDiskFolder_;
 	}
 
+	@Override
 	public String getOnDiskFileExtension() {
 		return onDiskFileExtension_;
 	}

@@ -48,7 +48,7 @@ import org.openntf.domino.ext.Formula;
 import org.openntf.domino.types.Encapsulated;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.Resurrectable;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.Factory;
 
 import com.ibm.commons.util.NotImplementedException;
@@ -193,7 +193,7 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 
 	}
@@ -207,7 +207,7 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 		try {
 			return ((Long) getCppObjMethod.invoke(getDelegate(), EMPTY_ARRAY)).longValue();
 		} catch (Exception e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0L;
 		}
 	}
@@ -221,7 +221,7 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 		try {
 			return ((Long) getCppSessionMethod.invoke(getDelegate(), EMPTY_ARRAY)).longValue();
 		} catch (Exception e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0L;
 		}
 	}
@@ -390,7 +390,7 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 		try {
 			return ((Boolean) isInvalidMethod.invoke(base, EMPTY_ARRAY)).booleanValue();
 		} catch (Exception e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return true;
 		}
 	}
@@ -411,7 +411,7 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 		try {
 			return ((Boolean) isDeadMethod.invoke(base, EMPTY_ARRAY)).booleanValue();
 		} catch (Exception e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return true;
 		}
 	}
@@ -428,7 +428,7 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 		try {
 			return ((lotus.domino.Session) getSessionMethod.invoke(base, EMPTY_ARRAY));
 		} catch (Exception e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -632,7 +632,7 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 				try {
 					return ((lotus.domino.Name) value).getCanonical();
 				} catch (NotesException e) {
-					DominoUtils.handleException(e);
+					ODAUtils.handleException(e);
 				}
 			} else if (value instanceof IDateTime) {
 				return javaToDominoFriendly(value, session, recycleThis);
@@ -757,7 +757,7 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 				}
 				return dt;
 			} catch (Throwable t) {
-				DominoUtils.handleException(t);
+				ODAUtils.handleException(t);
 				return null;
 			}
 			// return toLotus(Factory.getSession(context).createDateTime((java.util.Date) value));
@@ -872,7 +872,7 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 			result = true;
 		} catch (Throwable t) {
 			Factory.countRecycleError(base.getClass());
-			DominoUtils.handleException(t);
+			ODAUtils.handleException(t);
 			// shikata ga nai
 		} finally {
 			try {
@@ -1062,7 +1062,7 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 					break;
 				}
 			} catch (Throwable t) {
-				DominoUtils.handleException(t);
+				ODAUtils.handleException(t);
 			}
 		}
 		return result;

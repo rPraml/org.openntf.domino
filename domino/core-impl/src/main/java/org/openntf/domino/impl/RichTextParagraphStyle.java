@@ -21,7 +21,7 @@ import lotus.domino.NotesException;
 
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -58,7 +58,7 @@ public class RichTextParagraphStyle extends
 		try {
 			getDelegate().clearAllTabs();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -72,7 +72,7 @@ public class RichTextParagraphStyle extends
 		try {
 			return getDelegate().getAlignment();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -87,7 +87,7 @@ public class RichTextParagraphStyle extends
 		try {
 			return getDelegate().getFirstLineLeftMargin();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -102,7 +102,7 @@ public class RichTextParagraphStyle extends
 		try {
 			return getDelegate().getInterLineSpacing();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -117,7 +117,7 @@ public class RichTextParagraphStyle extends
 		try {
 			return getDelegate().getLeftMargin();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -132,7 +132,7 @@ public class RichTextParagraphStyle extends
 		try {
 			return getDelegate().getPagination();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -155,7 +155,7 @@ public class RichTextParagraphStyle extends
 		try {
 			return getDelegate().getRightMargin();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -170,7 +170,7 @@ public class RichTextParagraphStyle extends
 		try {
 			return getDelegate().getSpacingAbove();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -185,7 +185,7 @@ public class RichTextParagraphStyle extends
 		try {
 			return getDelegate().getSpacingBelow();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -200,7 +200,7 @@ public class RichTextParagraphStyle extends
 		try {
 			return fromLotusAsVector(getDelegate().getTabs(), org.openntf.domino.RichTextTab.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -215,7 +215,7 @@ public class RichTextParagraphStyle extends
 		try {
 			getDelegate().setAlignment(value);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -237,7 +237,7 @@ public class RichTextParagraphStyle extends
 		try {
 			getDelegate().setFirstLineLeftMargin(value);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -251,7 +251,7 @@ public class RichTextParagraphStyle extends
 		try {
 			getDelegate().setInterLineSpacing(value);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -265,7 +265,7 @@ public class RichTextParagraphStyle extends
 		try {
 			getDelegate().setLeftMargin(value);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -279,7 +279,7 @@ public class RichTextParagraphStyle extends
 		try {
 			getDelegate().setPagination(value);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -293,7 +293,7 @@ public class RichTextParagraphStyle extends
 		try {
 			getDelegate().setRightMargin(value);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -307,7 +307,7 @@ public class RichTextParagraphStyle extends
 		try {
 			getDelegate().setSpacingAbove(value);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -321,7 +321,7 @@ public class RichTextParagraphStyle extends
 		try {
 			getDelegate().setSpacingBelow(value);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -335,7 +335,7 @@ public class RichTextParagraphStyle extends
 		try {
 			getDelegate().setTab(position, type);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -349,7 +349,7 @@ public class RichTextParagraphStyle extends
 		try {
 			getDelegate().setTabs(count, startPos, interval);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -363,7 +363,7 @@ public class RichTextParagraphStyle extends
 		try {
 			getDelegate().setTabs(count, startPos, interval, type);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

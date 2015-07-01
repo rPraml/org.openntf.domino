@@ -27,7 +27,7 @@ import org.openntf.domino.ViewEntry;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.iterators.ViewNavigatorEntryIterator;
 import org.openntf.domino.iterators.ViewNavigatorSiblingIterator;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -82,7 +82,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getChild(), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -97,7 +97,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getChild(toLotus(entry)), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -122,7 +122,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getCurrent(), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -147,7 +147,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getFirst(), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -162,7 +162,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getFirstDocument(), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -177,7 +177,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getLast(), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -192,7 +192,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getLastDocument(), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -217,7 +217,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getNext(), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -232,7 +232,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getNext(toLotus(entry)), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -247,7 +247,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getNextCategory(), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -262,7 +262,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getNextDocument(), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -277,7 +277,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getNextSibling(), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -292,7 +292,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getNextSibling(toLotus(entry)), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -307,7 +307,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getNth(n), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -322,7 +322,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getParent(), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return null;
 		}
 	}
@@ -337,7 +337,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getParent(toLotus(entry)), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -362,7 +362,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getPos(pos, separator), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -377,7 +377,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getPrev(), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -392,7 +392,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getPrev(toLotus(entry)), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -407,7 +407,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getPrevCategory(), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -422,7 +422,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getPrevDocument(), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -437,7 +437,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getPrevSibling(), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -452,7 +452,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return fromLotus(getDelegate().getPrevSibling(entry), ViewEntry.SCHEMA, getParentView());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -467,7 +467,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoChild();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -482,7 +482,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoChild(toLotus(entry));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -497,7 +497,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoEntry(toLotus(entry));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -528,7 +528,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoFirst();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -543,7 +543,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoFirstDocument();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -558,7 +558,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoLast();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -573,7 +573,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoLastDocument();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -588,7 +588,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoNext();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -603,7 +603,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoNext(toLotus(entry));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -618,7 +618,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoNextCategory();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -633,7 +633,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoNextDocument();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -648,7 +648,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoNextSibling();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -663,7 +663,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoNextSibling(toLotus(entry));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -678,7 +678,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoParent();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -693,7 +693,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoParent(toLotus(entry));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -708,7 +708,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoPos(pos, separator);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -723,7 +723,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoPrev();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -738,7 +738,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoPrev(toLotus(entry));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -753,7 +753,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoPrevCategory();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -768,7 +768,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoPrevDocument();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -783,7 +783,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoPrevSibling();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -798,7 +798,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().gotoPrevSibling(toLotus(entry));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -813,7 +813,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			getDelegate().markAllRead();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -827,7 +827,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			getDelegate().markAllRead(userName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -841,7 +841,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			getDelegate().markAllUnread();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -855,7 +855,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			getDelegate().markAllUnread(userName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -869,7 +869,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			getDelegate().setAutoExpandGuidance(maxEntries, collapsedNoteIds, expandedNoteIds);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -884,7 +884,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			getDelegate().setAutoExpandGuidance(maxEntries, toLotus(collapsedNoteIds), toLotus(expandedNoteIds));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -899,7 +899,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 			getParentView().setAutoUpdate(false);
 			getDelegate().setBufferMaxEntries(entryCount);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -914,7 +914,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 			getParentView().setAutoUpdate(false);
 			getDelegate().setCacheGuidance(maxEntries);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -929,7 +929,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 			getParentView().setAutoUpdate(false);
 			getDelegate().setCacheGuidance(maxEntries, readMode);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -943,7 +943,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			getDelegate().setCacheSize(size);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -957,7 +957,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			getDelegate().setEntryOptions(options);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -971,7 +971,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			getDelegate().setMaxLevel(maxLevel);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -985,7 +985,7 @@ public class ViewNavigator extends BaseNonThreadSafe<org.openntf.domino.ViewNavi
 		try {
 			return getDelegate().skip(count);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}

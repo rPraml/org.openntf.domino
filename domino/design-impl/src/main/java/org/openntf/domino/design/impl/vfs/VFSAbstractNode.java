@@ -14,7 +14,7 @@
  * permissions and limitations under the License.
  * 
  */
-package org.openntf.domino.design.impl;
+package org.openntf.domino.design.impl.vfs;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,8 +28,8 @@ import java.util.Map;
 
 import org.openntf.domino.commons.utils.ConcurrentStringMap;
 import org.openntf.domino.design.DxlConverter;
-import org.openntf.domino.design.VFSNode;
-import org.openntf.domino.design.VFSRootNode;
+import org.openntf.domino.design.vfs.VFSNode;
+import org.openntf.domino.design.vfs.VFSRootNode;
 
 /**
  * Abstract implementation of a VFS-Node

@@ -33,7 +33,7 @@ import org.openntf.domino.commons.NameEnums.NameFormat;
 import org.openntf.domino.commons.NameEnums.NamePartKey;
 import org.openntf.domino.commons.Names;
 import org.openntf.domino.commons.Strings;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 
@@ -75,7 +75,7 @@ Comparable<org.openntf.domino.Name>, Cloneable {
 			_language = delegate.getLanguage();
 			_parserDelegate = Names.parse(delegate.getCanonical());
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		} finally {
 			// WARNING: Wrapping recycles the caller's object. This may cause issues, if 
 			// the Lotus object is used outside openNTF
@@ -93,7 +93,7 @@ Comparable<org.openntf.domino.Name>, Cloneable {
 			lotus.domino.Session rawsession = toLotus(parent);
 			return rawsession.createName(this.getCanonical());
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 		return null;
 	}
@@ -136,7 +136,7 @@ Comparable<org.openntf.domino.Name>, Cloneable {
 			DominoServer server = new DominoServer(serverName);
 			result = server.getNamesList(getCanonical());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return result;
 	}

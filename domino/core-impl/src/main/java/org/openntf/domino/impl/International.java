@@ -19,7 +19,7 @@ import lotus.domino.NotesException;
 
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -54,7 +54,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().getAMString();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return null;
 		}
 	}
@@ -69,7 +69,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().getCurrencyDigits();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return 0;
 		}
 	}
@@ -84,7 +84,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().getCurrencySymbol();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return null;
 		}
 	}
@@ -99,7 +99,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().getDateSep();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return null;
 		}
 	}
@@ -114,7 +114,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().getDecimalSep();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return null;
 		}
 	}
@@ -139,7 +139,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().getPMString();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return null;
 		}
 	}
@@ -154,7 +154,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().getThousandsSep();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return null;
 		}
 	}
@@ -169,7 +169,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().getTimeSep();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return null;
 		}
 	}
@@ -184,7 +184,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().getTimeZone();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return 0;
 		}
 	}
@@ -199,7 +199,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().getToday();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return null;
 		}
 	}
@@ -214,7 +214,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().getTomorrow();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return null;
 		}
 	}
@@ -229,7 +229,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().getYesterday();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return null;
 		}
 	}
@@ -244,7 +244,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().isCurrencySpace();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return false;
 		}
 	}
@@ -259,7 +259,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().isCurrencySuffix();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return false;
 		}
 	}
@@ -274,7 +274,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().isCurrencyZero();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return false;
 		}
 	}
@@ -289,7 +289,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().isDST();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return false;
 		}
 	}
@@ -304,7 +304,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().isDateDMY();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return false;
 		}
 	}
@@ -319,7 +319,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().isDateMDY();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return false;
 		}
 	}
@@ -334,7 +334,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().isDateYMD();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return false;
 		}
 	}
@@ -349,7 +349,7 @@ public class International extends BaseNonThreadSafe<org.openntf.domino.Internat
 		try {
 			return getDelegate().isTime24Hour();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return false;
 		}
 	}

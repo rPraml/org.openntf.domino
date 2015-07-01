@@ -7,7 +7,7 @@ import java.util.AbstractList;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * @author jgallagher
@@ -72,7 +72,7 @@ public class ModifiableStringNodeList extends AbstractList<String> {
 			try {
 				postAdd_.call();
 			} catch (Exception e1) {
-				DominoUtils.handleException(e1);
+				ODAUtils.handleException(e1);
 			}
 		}
 

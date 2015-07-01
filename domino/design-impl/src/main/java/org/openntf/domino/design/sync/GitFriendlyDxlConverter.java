@@ -9,7 +9,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.xml.XMLDocument;
 
 public class GitFriendlyDxlConverter extends DefaultDxlConverter {
@@ -40,7 +40,7 @@ public class GitFriendlyDxlConverter extends DefaultDxlConverter {
 		try {
 			importTransformer.transform(source, result);
 		} catch (TransformerException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return result.getWriter().toString();
 	}

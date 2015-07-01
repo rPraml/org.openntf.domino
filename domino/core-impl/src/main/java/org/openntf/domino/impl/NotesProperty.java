@@ -22,7 +22,7 @@ import lotus.domino.NotesException;
 import org.openntf.domino.PropertyBroker;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -57,7 +57,7 @@ public class NotesProperty extends BaseNonThreadSafe<org.openntf.domino.NotesPro
 		try {
 			getDelegate().clear();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class NotesProperty extends BaseNonThreadSafe<org.openntf.domino.NotesPro
 		try {
 			return getDelegate().getDescription();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -86,7 +86,7 @@ public class NotesProperty extends BaseNonThreadSafe<org.openntf.domino.NotesPro
 		try {
 			return getDelegate().getName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -101,7 +101,7 @@ public class NotesProperty extends BaseNonThreadSafe<org.openntf.domino.NotesPro
 		try {
 			return getDelegate().getNamespace();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -116,7 +116,7 @@ public class NotesProperty extends BaseNonThreadSafe<org.openntf.domino.NotesPro
 		try {
 			return getDelegate().getTitle();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -131,7 +131,7 @@ public class NotesProperty extends BaseNonThreadSafe<org.openntf.domino.NotesPro
 		try {
 			return getDelegate().getTypeName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -146,7 +146,7 @@ public class NotesProperty extends BaseNonThreadSafe<org.openntf.domino.NotesPro
 		try {
 			return getDelegate().getValueString();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -162,7 +162,7 @@ public class NotesProperty extends BaseNonThreadSafe<org.openntf.domino.NotesPro
 			// Does this even use DateTime? Who knows?
 			return wrapColumnValues(getDelegate().getValues(), this.getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -177,7 +177,7 @@ public class NotesProperty extends BaseNonThreadSafe<org.openntf.domino.NotesPro
 		try {
 			return getDelegate().isInput();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -192,7 +192,7 @@ public class NotesProperty extends BaseNonThreadSafe<org.openntf.domino.NotesPro
 		try {
 			getDelegate().publish();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

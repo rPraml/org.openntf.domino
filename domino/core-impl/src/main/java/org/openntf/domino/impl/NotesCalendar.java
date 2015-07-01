@@ -28,7 +28,7 @@ import org.openntf.domino.NotesCalendarEntry;
 import org.openntf.domino.NotesCalendarNotice;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -61,7 +61,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			return fromLotus(getDelegate().createEntry(iCalEntry), NotesCalendarEntry.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -74,7 +74,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			return fromLotus(getDelegate().createEntry(iCalEntry, flags), NotesCalendarEntry.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -87,7 +87,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			return getDelegate().getAutoSendNotices();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -105,7 +105,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 			return fromLotusAsVector(getDelegate().getEntries(dt1, dt2), org.openntf.domino.NotesCalendarEntry.SCHEMA, this);
 
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		} finally {
 			s_recycle(recycleThis);
@@ -126,7 +126,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 			return fromLotusAsVector(getDelegate().getEntries(dt1, dt2, skipCount, maxReturn),
 					org.openntf.domino.NotesCalendarEntry.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		} finally {
 			s_recycle(recycleThis);
@@ -141,7 +141,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			return getDelegate().getEntriesProcessed();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -154,7 +154,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			return fromLotus(getDelegate().getEntry(uid), NotesCalendarEntry.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -167,7 +167,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			return fromLotus(getDelegate().getEntryByNoteID(noteid), NotesCalendarEntry.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -180,7 +180,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			return fromLotus(getDelegate().getEntryByUNID(unid), NotesCalendarEntry.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -193,7 +193,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			return fromLotusAsVector(getDelegate().getNewInvitations(), NotesCalendarNotice.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -211,7 +211,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 			lotus.domino.DateTime dt2 = toLotus(since, recycleThis);
 			return fromLotusAsVector(getDelegate().getNewInvitations(dt1, dt2), NotesCalendarNotice.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		} finally {
 			s_recycle(recycleThis);
@@ -226,7 +226,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			return fromLotus(getDelegate().getNoticeByUNID(unid), NotesCalendarNotice.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -247,7 +247,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			return getDelegate().getReadRangeMask1();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -260,7 +260,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			return getDelegate().getReadRangeMask2();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -273,7 +273,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			return getDelegate().getReadXLotusPropsOutputLevel();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -286,7 +286,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			return fromLotus(getDelegate().getUntilTime(), DateTime.SCHEMA, getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -303,7 +303,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 			lotus.domino.DateTime dt2 = toLotus(end, recycleThis);
 			return getDelegate().readRange(dt1, dt2);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		} finally {
 			s_recycle(recycleThis);
@@ -322,7 +322,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 			lotus.domino.DateTime dt2 = toLotus(end, recycleThis);
 			return getDelegate().readRange(dt1, dt2, skipCount, maxRead);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		} finally {
 			s_recycle(recycleThis);
@@ -337,7 +337,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			getDelegate().setAutoSendNotices(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -349,7 +349,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			getDelegate().setReadRangeMask1(mask);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -361,7 +361,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			getDelegate().setReadRangeMask2(mask);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -373,7 +373,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			getDelegate().setReadXLotusPropsOutputLevel(level);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -395,7 +395,7 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 		try {
 			return getDelegate().getApptunidFromUID(arg0);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -412,17 +412,17 @@ public class NotesCalendar extends BaseNonThreadSafe<org.openntf.domino.NotesCal
 			try {
 				result = (String) chkMethod.invoke(getDelegate(), arg0, arg1);
 			} catch (IllegalArgumentException e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 			} catch (IllegalAccessException e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 			} catch (InvocationTargetException e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 			}
 		} catch (SecurityException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} catch (NoSuchMethodException e) {
 			Exception noMethod = new RuntimeException("Method is not available on this version of Domino", e);
-			DominoUtils.handleException(noMethod);
+			ODAUtils.handleException(noMethod);
 		}
 		return result;
 	}

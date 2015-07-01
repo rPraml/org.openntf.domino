@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-import org.openntf.domino.exceptions.UnimplementedException;
+import org.openntf.domino.commons.exception.UnimplementedException;
 import org.openntf.domino.nsfdata.structs.SIG;
 
 public class CData extends AbstractSequentialList<CDRecord> implements Externalizable {

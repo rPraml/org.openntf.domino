@@ -45,7 +45,7 @@ import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.exceptions.UndefinedDelegateTypeException;
 import org.openntf.domino.types.FactorySchema;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -111,7 +111,7 @@ public class WrapperFactory extends BaseImpl<lotus.domino.Base> implements org.o
 			Thread.sleep(1);
 		} catch (InterruptedException e) {
 			// and ignore this
-			//DominoUtils.handleException(e);
+			//ODAUtils.handleException(e);
 		}
 		// TODO: Recycle all?
 		//System.out.println("Online objects: " + Factory.getActiveObjectCount());
@@ -173,7 +173,7 @@ public class WrapperFactory extends BaseImpl<lotus.domino.Base> implements org.o
 			try {
 				parent = (P) findParent(lotus);
 			} catch (NotesException e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 			}
 		}
 		if (parent == null)

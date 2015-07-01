@@ -191,7 +191,7 @@ public class DominoFormatter extends ThreadLocal<Object> implements Serializable
 			try {
 				return df.parse(dateString);
 			} catch (ParseException e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 				return null;
 			}
 		}

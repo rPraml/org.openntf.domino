@@ -24,7 +24,7 @@ import org.openntf.domino.DateTime;
 import org.openntf.domino.ReplicationEntry;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -59,7 +59,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			return getDelegate().clearHistory();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -74,7 +74,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			return fromLotus(getDelegate().getCutoffDate(), DateTime.SCHEMA, getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -89,7 +89,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			return getDelegate().getCutoffInterval();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -104,7 +104,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			return getDelegate().getDontSendLocalSecurityUpdates();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -119,7 +119,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			return fromLotusAsVector(getDelegate().getEntries(), org.openntf.domino.ReplicationEntry.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -134,7 +134,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			return fromLotus(getDelegate().getEntry(source, destination), ReplicationEntry.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -149,7 +149,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			return fromLotus(getDelegate().getEntry(source, destination, createFlag), ReplicationEntry.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -172,7 +172,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			return getDelegate().getPriority();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -187,7 +187,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			return getDelegate().isAbstract();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -202,7 +202,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			return getDelegate().isCutoffDelete();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -217,7 +217,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			return getDelegate().isDisabled();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -232,7 +232,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			return getDelegate().isIgnoreDeletes();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -247,7 +247,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			return getDelegate().isIgnoreDestDeletes();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -262,7 +262,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			return getDelegate().reset();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -277,7 +277,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			return getDelegate().save();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -292,7 +292,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			getDelegate().setAbstract(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -306,7 +306,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			getDelegate().setCutoffDelete(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -320,7 +320,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			getDelegate().setCutoffInterval(interval);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -334,7 +334,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			getDelegate().setDisabled(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		((org.openntf.domino.impl.Database) getAncestorDatabase()).setReplication(flag);
 	}
@@ -349,7 +349,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			getDelegate().setDontSendLocalSecurityUpdates(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -363,7 +363,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			getDelegate().setIgnoreDeletes(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -377,7 +377,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			getDelegate().setIgnoreDestDeletes(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -391,7 +391,7 @@ public class Replication extends BaseNonThreadSafe<org.openntf.domino.Replicatio
 		try {
 			getDelegate().setPriority(priority);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

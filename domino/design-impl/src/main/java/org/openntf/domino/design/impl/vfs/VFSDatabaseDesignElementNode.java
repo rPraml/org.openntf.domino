@@ -1,4 +1,4 @@
-package org.openntf.domino.design.impl;
+package org.openntf.domino.design.impl.vfs;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +11,7 @@ import org.openntf.domino.Document;
 import org.openntf.domino.design.DesignBase;
 import org.openntf.domino.design.DesignBaseNamed;
 import org.openntf.domino.design.DxlConverter;
-import org.openntf.domino.design.VFSNode;
+import org.openntf.domino.design.vfs.VFSNode;
 import org.openntf.domino.exceptions.OpenNTFNotesException;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.xml.sax.SAXParseException;

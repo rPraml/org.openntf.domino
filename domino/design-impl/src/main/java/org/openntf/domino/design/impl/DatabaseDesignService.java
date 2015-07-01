@@ -3,7 +3,8 @@ package org.openntf.domino.design.impl;
 import org.openntf.domino.Database;
 import org.openntf.domino.DbDirectory;
 import org.openntf.domino.design.DatabaseDesign;
-import org.openntf.domino.design.VFSRootNode;
+import org.openntf.domino.design.impl.vfs.VFSRootDirectoryNode;
+import org.openntf.domino.design.vfs.VFSRootNode;
 
 public class DatabaseDesignService implements org.openntf.domino.design.DatabaseDesignService {
 	public DatabaseDesignService() {

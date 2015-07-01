@@ -25,7 +25,7 @@ import org.openntf.domino.Document;
 import org.openntf.domino.EmbeddedObject;
 import org.openntf.domino.RichTextNavigator;
 import org.openntf.domino.RichTextRange;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -68,7 +68,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().addNewLine();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -83,7 +83,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().addNewLine(count);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -98,7 +98,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().addNewLine(count, newParagraph);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -113,7 +113,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().addPageBreak();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -128,7 +128,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().addPageBreak(toLotus(pstyle));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -143,7 +143,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().addTab();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -158,7 +158,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().addTab(count);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -173,7 +173,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendDocLink(toLotus(db));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -188,7 +188,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendDocLink(toLotus(db), comment);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -203,7 +203,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendDocLink(toLotus(db), comment, hotspotText);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -218,7 +218,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendDocLink(toLotus(doc));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -233,7 +233,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendDocLink(toLotus(doc), comment);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -248,7 +248,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendDocLink(toLotus(doc), comment, hotspotText);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -263,7 +263,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendDocLink(toLotus(view));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -278,7 +278,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendDocLink(toLotus(view), comment);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -293,7 +293,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendDocLink(toLotus(view), hotspotText);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -308,7 +308,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendParagraphStyle(toLotus(pstyle));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -323,7 +323,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendRTItem(toLotus(rtitem));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -338,7 +338,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendStyle(toLotus(rstyle));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -353,7 +353,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendTable(rows, columns);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -369,7 +369,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendTable(rows, columns, labels);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -385,7 +385,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendTable(rows, columns, labels, leftMargin, toLotus(pstyles));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -400,7 +400,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().appendText(text);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -415,7 +415,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().beginInsert(toLotus(element));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -430,7 +430,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().beginInsert(toLotus(element), after);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -445,7 +445,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().beginSection(title);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -460,7 +460,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().beginSection(title, toLotus(titleStyle));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -476,7 +476,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().beginSection(title, toLotus(titleStyle), toLotus(barColor), expand);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -491,7 +491,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().compact();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -505,7 +505,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			return fromLotus(getDelegate().createNavigator(), RichTextNavigator.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 		}
 	}
@@ -520,7 +520,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			return fromLotus(getDelegate().createRange(), RichTextRange.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 		}
 	}
@@ -536,7 +536,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			return fromLotus(getDelegate().embedObject(type, className, source, name), EmbeddedObject.SCHEMA, parent);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 		}
 	}
@@ -552,7 +552,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().endInsert();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -567,7 +567,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().endSection();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -581,7 +581,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			return fromLotus(getDelegate().getEmbeddedObject(name), EmbeddedObject.SCHEMA, getAncestorDocument());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 		}
 	}
@@ -596,7 +596,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			return fromLotusAsVector(getDelegate().getEmbeddedObjects(), EmbeddedObject.SCHEMA, parent);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 		}
 	}
@@ -625,7 +625,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			return getDelegate().getFormattedText(tabStrip, lineLen, maxLen);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 		}
 	}
@@ -640,7 +640,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			return getDelegate().getNotesFont(faceName, addOnFail);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return 0;
 		}
 	}
@@ -655,7 +655,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			return getDelegate().getUnformattedText();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 		}
 	}
@@ -671,7 +671,7 @@ public class RichTextItem extends Item implements org.openntf.domino.RichTextIte
 		try {
 			getDelegate().update();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 

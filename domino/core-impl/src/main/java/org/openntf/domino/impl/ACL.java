@@ -26,7 +26,7 @@ import org.openntf.domino.Database;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.iterators.AclIterator;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 //TODO: Auto-generated Javadoc
 /**
@@ -57,7 +57,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			getDelegate().addRole(name);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			return fromLotus(getDelegate().createACLEntry(name, level), ACLEntry.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -94,7 +94,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			getDelegate().deleteRole(name);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -108,7 +108,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			return getDelegate().getAdministrationServer();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -138,7 +138,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			return fromLotus(getDelegate().getEntry(ename), ACLEntry.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -153,7 +153,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			return fromLotus(getDelegate().getFirstEntry(), ACLEntry.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -168,7 +168,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			return getDelegate().getInternetLevel();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return ACL.LEVEL_NOACCESS;
 	}
@@ -183,7 +183,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			return fromLotus(getDelegate().getNextEntry(), ACLEntry.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -198,7 +198,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			return fromLotus(getDelegate().getNextEntry(toLotus(entry)), ACLEntry.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -224,7 +224,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			return new Vector(getDelegate().getRoles());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -239,7 +239,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			return getDelegate().isAdminNames();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -254,7 +254,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			return getDelegate().isAdminReaderAuthor();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -269,7 +269,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			return getDelegate().isExtendedAccess();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -284,7 +284,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			return getDelegate().isUniformAccess();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -299,7 +299,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			getDelegate().removeACLEntry(name);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -313,7 +313,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			getDelegate().renameRole(oldName, newName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -327,7 +327,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			getDelegate().save();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -341,7 +341,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			getDelegate().setAdminNames(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -355,7 +355,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			getDelegate().setAdminReaderAuthor(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -369,7 +369,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			getDelegate().setAdministrationServer(serverName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -383,7 +383,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			getDelegate().setExtendedAccess(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -397,7 +397,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			getDelegate().setInternetLevel(level);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -419,7 +419,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 		try {
 			getDelegate().setUniformAccess(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -447,7 +447,7 @@ public class ACL extends BaseNonThreadSafe<org.openntf.domino.ACL, lotus.domino.
 			// Recaching is done in setDelegate now
 			//getFactory().recacheLotusObject(d, this, parent_);
 		} catch (Exception e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

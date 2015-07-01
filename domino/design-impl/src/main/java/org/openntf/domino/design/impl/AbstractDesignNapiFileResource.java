@@ -26,7 +26,7 @@ import org.openntf.domino.Document;
 import org.openntf.domino.design.AnyFileResource;
 import org.openntf.domino.design.DesignBaseNamed;
 import org.openntf.domino.design.DxlConverter;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * Abstract Design File Resource
@@ -87,7 +87,7 @@ public abstract class AbstractDesignNapiFileResource extends AbstractDesignNapiB
 		try {
 			getFileData(bos);
 		} catch (IOException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return bos.toByteArray();
 	}

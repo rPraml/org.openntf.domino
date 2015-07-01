@@ -24,7 +24,7 @@ import javax.imageio.ImageIO;
 
 import org.openntf.domino.Document;
 import org.openntf.domino.design.DxlConverter;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 import com.ibm.commons.util.io.ByteStreamCache;
 
@@ -44,7 +44,7 @@ public final class ImageResource extends AbstractDesignNapiFileResource implemen
 			getFileData(bsc.getOutputStream());
 			return ImageIO.read(bsc.getInputStream());
 		} catch (IOException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}

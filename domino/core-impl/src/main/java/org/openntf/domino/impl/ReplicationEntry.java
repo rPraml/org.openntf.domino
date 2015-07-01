@@ -23,7 +23,7 @@ import org.openntf.domino.Database;
 import org.openntf.domino.Replication;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -58,7 +58,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			return getDelegate().getDestination();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -73,7 +73,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			return getDelegate().getFormula();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -96,7 +96,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			return getDelegate().getSource();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -111,7 +111,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			return getDelegate().getViews();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -126,7 +126,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			return getDelegate().isIncludeACL();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -141,7 +141,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			return getDelegate().isIncludeAgents();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -156,7 +156,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			return getDelegate().isIncludeDocuments();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -171,7 +171,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			return getDelegate().isIncludeForms();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -186,7 +186,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			return getDelegate().isIncludeFormulas();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -201,7 +201,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			return getDelegate().remove();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -216,7 +216,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			return getDelegate().save();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -231,7 +231,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			getDelegate().setFormula(formula);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -245,7 +245,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			getDelegate().setIncludeACL(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -259,7 +259,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			getDelegate().setIncludeAgents(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -273,7 +273,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			getDelegate().setIncludeDocuments(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -287,7 +287,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			getDelegate().setIncludeForms(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -301,7 +301,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			getDelegate().setIncludeFormulas(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -315,7 +315,7 @@ public class ReplicationEntry extends BaseNonThreadSafe<org.openntf.domino.Repli
 		try {
 			getDelegate().setViews(views);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

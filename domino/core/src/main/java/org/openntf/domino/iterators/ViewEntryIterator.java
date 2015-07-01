@@ -19,7 +19,7 @@ import java.util.Iterator;
 
 import org.openntf.domino.ViewEntry;
 import org.openntf.domino.ViewEntryCollection;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -126,7 +126,7 @@ public class ViewEntryIterator implements Iterator<ViewEntry> {
 			result = ((currentEntry == null) ? collection_.getFirstEntry() : collection_.getNextEntry(currentEntry));
 			currentIndex_++;
 		} catch (Throwable t) {
-			DominoUtils.handleException(t);
+			ODAUtils.handleException(t);
 		} finally {
 			setCurrentEntry(result);
 		}

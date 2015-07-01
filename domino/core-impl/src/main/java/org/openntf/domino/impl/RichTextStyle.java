@@ -19,7 +19,7 @@ import lotus.domino.NotesException;
 
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * The Class RichTextStyle.
@@ -53,7 +53,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return getDelegate().getBold();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return 0;
 		}
 	}
@@ -68,7 +68,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return getDelegate().getColor();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return 0;
 		}
 	}
@@ -83,7 +83,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return getDelegate().getEffects();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return 0;
 		}
 	}
@@ -98,7 +98,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return getDelegate().getFont();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return 0;
 		}
 	}
@@ -113,7 +113,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return getDelegate().getFontSize();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return 0;
 		}
 	}
@@ -128,7 +128,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return getDelegate().getItalic();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return 0;
 		}
 	}
@@ -153,7 +153,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return getDelegate().getPassThruHTML();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return 0;
 		}
 	}
@@ -168,7 +168,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return getDelegate().getStrikeThrough();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return 0;
 		}
 	}
@@ -183,7 +183,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return getDelegate().getUnderline();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return 0;
 		}
 	}
@@ -198,7 +198,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return getDelegate().isDefault();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return false;
 		}
 	}
@@ -213,7 +213,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			getDelegate().setBold(value);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -222,7 +222,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			getDelegate().setBold(ISBN.getValue());
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -236,7 +236,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			getDelegate().setColor(value);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -250,7 +250,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			getDelegate().setEffects(value);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -264,7 +264,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			getDelegate().setFont(value);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -278,7 +278,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			getDelegate().setFontSize(value);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -292,7 +292,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			getDelegate().setItalic(value);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -306,7 +306,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			getDelegate().setPassThruHTML(value);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -320,7 +320,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			getDelegate().setStrikeThrough(value);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -334,7 +334,7 @@ public class RichTextStyle extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			getDelegate().setUnderline(value);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 

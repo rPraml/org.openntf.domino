@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import lotus.domino.NotesException;
 
 import org.openntf.domino.Base;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.Factory;
 
 /**
@@ -99,7 +99,7 @@ public class DominoReference extends WeakReference<Base<?>> {
 				}
 			} catch (NotesException e) {
 				Factory.countRecycleError(delegate_.getClass());
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 			}
 
 			if (delegate_ instanceof lotus.domino.local.EmbeddedObject) {

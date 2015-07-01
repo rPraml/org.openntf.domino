@@ -8,7 +8,7 @@ import java.util.TreeMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.xml.XMLNode;
 
 /**
@@ -58,7 +58,7 @@ HasMetadata {
 				objInputStream.close();
 
 			} catch (Exception e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 			}
 
 		}

@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * 
@@ -75,7 +75,7 @@ public class OnDiskDocument extends OnDiskAbstract<DocumentWrapper> {
 					scanner.close();
 				}
 			} catch (IOException e) {
-				DominoUtils.handleException(e, getFile().getAbsolutePath());
+				ODAUtils.handleException(e, getFile().getAbsolutePath());
 			}
 		}
 		return unid_;

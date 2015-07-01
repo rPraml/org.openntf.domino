@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.openntf.domino.commons.IFormulaASTNode;
+import org.openntf.domino.commons.IFormula;
 import org.openntf.domino.commons.exception.FormulaParseException;
 import org.openntf.formula.parse.AtFormulaParserImpl;
 import org.openntf.formula.parse.ParseException;
@@ -46,7 +46,7 @@ public abstract class FormulaParser {
 	protected FunctionFactory functionFactory;
 
 	/** the includeProvider for {@literal @}include function */
-	protected FormulaProvider<IFormulaASTNode> includeProvider;
+	protected FormulaProvider<IFormula> includeProvider;
 
 	protected Map<String, Function> customFunc;
 	protected boolean parsing = false;
@@ -56,10 +56,10 @@ public abstract class FormulaParser {
 
 	protected class FormulaCache {
 		class FormulaCacheEntry {
-			IFormulaASTNode node;
+			IFormula node;
 			int usageCount;
 
-			FormulaCacheEntry(final IFormulaASTNode n) {
+			FormulaCacheEntry(final IFormula n) {
 				node = n;
 				usageCount = 1;
 			}
@@ -80,7 +80,7 @@ public abstract class FormulaParser {
 
 		private Map<String, FormulaCacheEntry> cacheMap = new HashMap<String, FormulaCacheEntry>();
 
-		IFormulaASTNode get(final String key) {
+		IFormula get(final String key) {
 			FormulaCacheEntry fce = cacheMap.get(key);
 			if (fce == null)
 				return null;
@@ -93,7 +93,7 @@ public abstract class FormulaParser {
 		}
 
 		@SuppressWarnings("unchecked")
-		void put(final String key, final IFormulaASTNode node) {
+		void put(final String key, final IFormula node) {
 			if (cacheMap.size() > MAX_FORMULA_CACHESIZE) {
 				Object[] arr = cacheMap.entrySet().toArray();
 				Arrays.sort(arr, new FCMapEntryComparator());
@@ -180,7 +180,7 @@ public abstract class FormulaParser {
 	 * @throws ParseException
 	 *             if the formula contains errors
 	 */
-	final public IFormulaASTNode parse(final Reader reader, final boolean useFocFormula) throws FormulaParseException {
+	final public IFormula parse(final Reader reader, final boolean useFocFormula) throws FormulaParseException {
 		if (parsing) {
 			return getCopy().parse(reader, useFocFormula);
 		}
@@ -213,7 +213,7 @@ public abstract class FormulaParser {
 	 * @throws ParseException
 	 *             see: {@link #parse(Reader, boolean)}
 	 */
-	final public IFormulaASTNode parse(final InputStream sr, final String encoding, final boolean useFocFormula)
+	final public IFormula parse(final InputStream sr, final String encoding, final boolean useFocFormula)
 			throws FormulaParseException {
 		if (parsing) {
 			return getCopy().parse(sr, useFocFormula);
@@ -263,7 +263,7 @@ public abstract class FormulaParser {
 	 * @throws ParseException
 	 *             see: {@link #parse(Reader, boolean)}
 	 */
-	final public IFormulaASTNode parse(final InputStream sr, final boolean useFocFormula) throws FormulaParseException {
+	final public IFormula parse(final InputStream sr, final boolean useFocFormula) throws FormulaParseException {
 		return parse(sr, null, useFocFormula);
 	}
 
@@ -278,9 +278,9 @@ public abstract class FormulaParser {
 	 * @throws ParseException
 	 *             see: {@link #parse(Reader, boolean)}
 	 */
-	final public IFormulaASTNode parse(final String formula, final boolean useFocFormula) throws FormulaParseException {
+	final public IFormula parse(final String formula, final boolean useFocFormula) throws FormulaParseException {
 		FormulaCache formulaCache = useFocFormula ? focFormulaCache : ntfFormulaCache;
-		IFormulaASTNode node = formulaCache.get(formula);
+		IFormula node = formulaCache.get(formula);
 		if (node == null) {
 			StringReader sr = new java.io.StringReader(formula);
 			node = parse(sr, useFocFormula);
@@ -299,8 +299,8 @@ public abstract class FormulaParser {
 	 * @throws ParseException
 	 *             see: {@link #parse(Reader, boolean)}
 	 */
-	final public IFormulaASTNode parse(final String formula) throws FormulaParseException {
-		IFormulaASTNode node = parse(formula, false);
+	final public IFormula parse(final String formula) throws FormulaParseException {
+		IFormula node = parse(formula, false);
 		node.setFormula(formula);
 		return node;
 	}
@@ -330,7 +330,7 @@ public abstract class FormulaParser {
 	 * @throws ParseException
 	 *             if formula contains errors
 	 */
-	abstract public IFormulaASTNode parseFormula() throws FormulaParseException;
+	abstract public IFormula parseFormula() throws FormulaParseException;
 
 	/**
 	 * Parses the formula in Foconis-mode (inline formulas are supported)
@@ -339,9 +339,9 @@ public abstract class FormulaParser {
 	 * @throws ParseException
 	 *             if formula contains errors
 	 */
-	abstract public IFormulaASTNode parseFocFormula() throws FormulaParseException;
+	abstract public IFormula parseFocFormula() throws FormulaParseException;
 
-	public void setIncludeProvider(final FormulaProvider<IFormulaASTNode> prov) {
+	public void setIncludeProvider(final FormulaProvider<IFormula> prov) {
 		includeProvider = prov;
 	}
 
@@ -349,7 +349,7 @@ public abstract class FormulaParser {
 	 * get a node to include
 	 * 
 	 */
-	public IFormulaASTNode getInclude(final String key) {
+	public IFormula getInclude(final String key) {
 		if (includeProvider != null) {
 			return includeProvider.get(key);
 		}

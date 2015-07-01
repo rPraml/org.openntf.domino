@@ -32,8 +32,6 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import org.openntf.domino.utils.DominoUtils;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class LogUtils.
@@ -155,7 +153,8 @@ public class LogUtils {
 			if ("".equals(filePath)) {
 				return getDefaultLogConfigFile();
 			} else {
-				is = parsePropertiesStream(DominoUtils.getDominoProps(fileType, filePath));
+				// TODO RPr- we should configure logging otherwise!
+				//is = parsePropertiesStream(DominoUtils.getDominoProps(fileType, filePath));
 				if (null == is) {
 					is = getDefaultLogConfigFile();
 				}

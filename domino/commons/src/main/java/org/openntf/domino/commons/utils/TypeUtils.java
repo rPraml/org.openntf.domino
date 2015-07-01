@@ -152,7 +152,7 @@ public enum TypeUtils {
 	protected static <T extends Collection> T createCollection(Class<T> collType, final int length) {
 		try {
 			// handle Interfaces
-			if (List.class == collType || Collection.class == collType || Iterable.class == collType) {
+			if (List.class == collType || Collection.class == collType) {
 				collType = (Class<T>) ArrayList.class;
 			}
 			if (Set.class == collType) {

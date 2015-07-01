@@ -33,7 +33,7 @@ import org.openntf.domino.nsfdata.structs.cd.CData;
 import org.openntf.domino.nsfdata.structs.obj.CDObject;
 import org.openntf.domino.nsfdata.structs.obj.CDResourceEvent;
 import org.openntf.domino.nsfdata.structs.obj.CDResourceFile;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.xml.XMLDocument;
 import org.openntf.domino.utils.xml.XMLNode;
 
@@ -66,7 +66,7 @@ public abstract class AbstractDesignDxlFileResource extends AbstractDesignDxlBas
 			loadDxl(is);
 			is.close();
 		} catch (IOException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -126,7 +126,7 @@ public abstract class AbstractDesignDxlFileResource extends AbstractDesignDxlBas
 
 			}
 		} catch (IOException ioe) {
-			DominoUtils.handleException(ioe);
+			ODAUtils.handleException(ioe);
 			return null;
 		}
 	}

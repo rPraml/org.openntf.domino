@@ -37,7 +37,7 @@ import org.openntf.domino.DxlExporter;
 import org.openntf.domino.DxlExporter.RichTextOption;
 import org.openntf.domino.DxlImporter;
 import org.openntf.domino.design.DxlConverter;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.xml.XMLDocument;
 import org.openntf.domino.utils.xml.XMLNode;
 import org.xml.sax.SAXException;
@@ -582,11 +582,11 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 			dxl_.loadString(xml);
 			checkDxlFormat();
 		} catch (SAXException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} catch (IOException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} catch (ParserConfigurationException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -601,11 +601,11 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 			dxl_.loadInputStream(is);
 			checkDxlFormat();
 		} catch (SAXException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} catch (IOException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} catch (ParserConfigurationException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -651,7 +651,7 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 				importer.importDxl(converter.getDxlImportString(getDxl()), db);
 			}
 		} catch (IOException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			if (importer != null) {
 				log_.severe("Error while importing " + this + "\n" + importer.getLog());
 			}
@@ -664,7 +664,7 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 
 			}
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		// Reset the DXL so that it can pick up new noteinfo
 		setDocument(db.getDocumentByID(importer.getFirstImportedNoteID()));

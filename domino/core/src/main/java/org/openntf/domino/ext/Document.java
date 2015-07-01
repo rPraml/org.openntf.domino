@@ -10,7 +10,7 @@ import java.util.Map;
 
 import org.openntf.domino.AutoMime;
 import org.openntf.domino.Item;
-import org.openntf.domino.exceptions.DataNotCompatibleException;
+import org.openntf.domino.commons.exception.DataNotCompatibleException;
 import org.openntf.domino.exceptions.ItemNotFoundException;
 
 import com.ibm.designer.domino.napi.NotesNote;
@@ -145,6 +145,14 @@ public interface Document {
 	 * @since org.openntf.domino 2.5.0
 	 */
 	public <T> T getItemValue(final String name, final Class<T> type) throws ItemNotFoundException, DataNotCompatibleException;
+
+	/**
+	 * Same as {@link #getItemValue(String, Class)}, but accepts a fallback if data could not be converted. (Throws no
+	 * DataNotCompatibleException)
+	 * 
+	 * @since org.openntf.domino 1.5.1
+	 */
+	public <T> T getItemValue(final String name, final Class<T> type, final T fallback) throws ItemNotFoundException;
 
 	/**
 	 * Gets an Item value as list, Elements in list are casted it to a specific class, e.g. java.lang.String.class
@@ -334,14 +342,28 @@ public interface Document {
 
 	//	public void writeBinaryChunk(String name, int chunk, byte[] data);
 
+	/**
+	 * Writes a byte array as binary data
+	 */
 	public void writeBinary(String name, byte[] data, int chunkSize);
 
-	public byte[] readBinaryChunk(String name, int chunk);
+	//public byte[] readBinaryChunk(String name, int chunk);
 
+	/**
+	 * Reads the byteArray
+	 */
 	public byte[] readBinary(String name);
 
+	/**
+	 * @deprecated RPr: We should not put so much special cases into the implementation
+	 * 
+	 *             1. There may be one use case, where you need subsequent items separated with an underscore "_"<br/>
+	 *             2. There is no according write mehtod
+	 */
+	@Deprecated
 	public List<?> getItemSeriesValues(CharSequence name);
 
+	@Deprecated
 	public <T> T getItemSeriesValues(CharSequence name, Class<T> type);
 
 	//	public Map<String, List<Object>> getItemTable(CharSequence... itemnames);
@@ -352,12 +374,28 @@ public interface Document {
 	//
 	//	public void setItemTablePivot(final List<Map<String, Object>> pivot);
 
+	/**
+	 * use getItemValue(itemName, IName.class) instead
+	 * 
+	 * @param itemName
+	 * @return
+	 */
+	@Deprecated
 	public Name getItemValueName(String itemName);
 
+	/**
+	 * Returns the {@link NoteClass}
+	 */
 	public NoteClass getNoteClass();
 
+	/**
+	 * Returns if this is a default-design element
+	 */
 	boolean isDefault();
 
+	/**
+	 * Returns if this is a private design element
+	 */
 	boolean isPrivate();
 
 	/**

@@ -14,7 +14,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.openntf.domino.design.DxlConverter;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.xml.XMLDocument;
 import org.xml.sax.SAXException;
 
@@ -81,9 +81,9 @@ public class DefaultDxlConverter implements DxlConverter {
 				ret.loadInputStream(fis);
 				return ret;
 			} catch (SAXException e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 			} catch (ParserConfigurationException e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 			}
 			return null;
 		} finally {
@@ -107,9 +107,9 @@ public class DefaultDxlConverter implements DxlConverter {
 				ret.loadInputStream(is);
 				return ret;
 			} catch (SAXException e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 			} catch (ParserConfigurationException e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 			}
 			return null;
 		} finally {
@@ -179,7 +179,7 @@ public class DefaultDxlConverter implements DxlConverter {
 		try {
 			defaultTransformer.transform(source, result);
 		} catch (TransformerException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return result.getWriter().toString();
 	}

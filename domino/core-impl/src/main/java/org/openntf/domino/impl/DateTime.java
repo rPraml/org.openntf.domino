@@ -28,7 +28,7 @@ import lotus.domino.NotesException;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.IDateTime;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 
@@ -190,7 +190,7 @@ org.openntf.domino.DateTime {
 			}
 			return delegate;
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return null;
 		}
 	}
@@ -225,7 +225,7 @@ org.openntf.domino.DateTime {
 			}
 
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -241,7 +241,7 @@ org.openntf.domino.DateTime {
 			worker.adjustDay(n, preserveLocalTime);
 			workDone(worker, true);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -267,7 +267,7 @@ org.openntf.domino.DateTime {
 			worker.adjustHour(n, preserveLocalTime);
 			workDone(worker, true);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -293,7 +293,7 @@ org.openntf.domino.DateTime {
 			worker.adjustMinute(n, preserveLocalTime);
 			workDone(worker, true);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -319,7 +319,7 @@ org.openntf.domino.DateTime {
 			worker.adjustMonth(n, preserveLocalTime);
 			workDone(worker, true);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -345,7 +345,7 @@ org.openntf.domino.DateTime {
 			worker.adjustSecond(n, preserveLocalTime);
 			workDone(worker, true);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -371,7 +371,7 @@ org.openntf.domino.DateTime {
 			worker.adjustYear(n, preserveLocalTime);
 			workDone(worker, true);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -397,7 +397,7 @@ org.openntf.domino.DateTime {
 			worker.convertToZone(zone, isDST);
 			workDone(worker, true);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 		// TODO NTF - find out what this actually does. The documentation is... vague
 		//throw new UnimplementedException("convertToZone is not yet implemented.");
@@ -464,7 +464,7 @@ org.openntf.domino.DateTime {
 			ret = worker.getDateOnly();
 			workDone(worker, false);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 		return ret;
 	}
@@ -482,7 +482,7 @@ org.openntf.domino.DateTime {
 			ret = worker.getGMTTime();
 			workDone(worker, false);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 		return ret;
 	}
@@ -500,7 +500,7 @@ org.openntf.domino.DateTime {
 			ret = worker.getLocalTime();
 			workDone(worker, false);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 		return ret;
 	}
@@ -528,7 +528,7 @@ org.openntf.domino.DateTime {
 			ret = worker.getTimeOnly();
 			workDone(worker, false);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 		return ret;
 	}
@@ -557,7 +557,7 @@ org.openntf.domino.DateTime {
 			ret = worker.getZoneTime();
 			workDone(worker, false);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 		return ret;
 		// throw new UnimplementedException("getZoneTime is not yet implemented.");
@@ -625,7 +625,7 @@ org.openntf.domino.DateTime {
 			worker.setLocalDate(year, month, day, preserveLocalTime);
 			workDone(worker, true);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -695,7 +695,7 @@ org.openntf.domino.DateTime {
 		//			worker.setLocalTime(date);
 		//			workDone(worker, true);
 		//		} catch (NotesException ne) {
-		//			DominoUtils.handleException(ne);
+		//			ODAUtils.handleException(ne);
 		//		}
 	}
 
@@ -711,7 +711,7 @@ org.openntf.domino.DateTime {
 			worker.setLocalTime(hour, minute, second, hundredth);
 			workDone(worker, true);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -727,7 +727,7 @@ org.openntf.domino.DateTime {
 			worker.setLocalTime(time);
 			workDone(worker, true);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -783,7 +783,7 @@ org.openntf.domino.DateTime {
 			}
 			workDone(worker, false);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		} finally {
 			if (lotusDTTmp != null)
 				s_recycle(lotusDTTmp);
@@ -813,7 +813,7 @@ org.openntf.domino.DateTime {
 			ret = worker.toString();
 			workDone(worker, false);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 		return ret;
 	}

@@ -68,9 +68,9 @@ import org.openntf.domino.exceptions.UnableToAcquireSessionException;
 import org.openntf.domino.exceptions.UserAccessException;
 import org.openntf.domino.impl.events.GenericDominoEventFactory;
 import org.openntf.domino.types.Encapsulated;
-import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.utils.ODAUtils;
 
 import com.ibm.icu.util.Calendar;
 
@@ -84,7 +84,7 @@ import com.ibm.icu.util.Calendar;
  */
 
 public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.domino.Session, WrapperFactory> implements
-		org.openntf.domino.Session {
+org.openntf.domino.Session {
 	/** The Constant log_. */
 	private static final Logger log_ = Logger.getLogger(Session.class.getName());
 
@@ -193,7 +193,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			username_ = session.getEffectiveUserName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 	}
 
@@ -221,7 +221,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().createAdministrationProcess(server), AdministrationProcess.SCHEMA, this);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne, this);
+			ODAUtils.handleException(ne, this);
 
 		}
 		return null;
@@ -237,7 +237,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().createColorObject(), ColorObject.SCHEMA, this);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne, this);
+			ODAUtils.handleException(ne, this);
 		}
 		return null;
 	}
@@ -358,7 +358,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().createDxlExporter(), DxlExporter.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -374,7 +374,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().createDxlImporter(), DxlImporter.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -390,7 +390,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().createLog(name), Log.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -431,7 +431,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().createNewsletter(toLotus(collection)), Newsletter.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -447,7 +447,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().createRegistration(), Registration.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -463,7 +463,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().createRichTextParagraphStyle(), RichTextParagraphStyle.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -479,7 +479,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().createRichTextStyle(), RichTextStyle.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -495,7 +495,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().createStream(), Stream.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -548,7 +548,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 				return null;	//this really shouldn't be possible.
 			return wrapColumnValues(result, this);
 		} catch (Exception e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 		}
 	}
@@ -581,7 +581,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 			}
 			return ret;
 		} catch (Exception e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -598,7 +598,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotusAsVector(getDelegate().getAddressBooks(), Database.SCHEMA, this);
 		} catch (Exception e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -614,7 +614,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().getAgentContext(), AgentContext.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -636,7 +636,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 			}
 			return fromLotus(getDelegate().getCalendar(toLotus(db)), NotesCalendar.SCHEMA, parentDb);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -652,7 +652,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().getCommonUserName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -668,7 +668,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().getCredentials();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -696,7 +696,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 				currentDatabase_ = result;
 				currentDatabaseApiPath_ = result.getApiPath();
 			} catch (NotesException e) {
-				DominoUtils.handleException(e, this);
+				ODAUtils.handleException(e, this);
 				return null;
 
 			}
@@ -722,7 +722,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 					return fromLotus(getDelegate().getDatabase("", ""), Database.SCHEMA, this);
 				}
 			} catch (NotesException e) {
-				DominoUtils.handleException(e, this);
+				ODAUtils.handleException(e, this);
 				return null;
 			}
 		}
@@ -737,7 +737,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 
 		if (result == null) {
 			try {
-				boolean isDbRepId = DominoUtils.isReplicaId(db);
+				boolean isDbRepId = ODAUtils.isReplicaId(db);
 				if (isDbRepId) {
 					lotus.domino.Database nullDb;
 					synchronized (getDB_lock) {
@@ -769,14 +769,14 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 					throw new UserAccessException(
 							"User " + getEffectiveUserName() + " cannot open database " + db + " on server " + server, e);
 				} else {
-					DominoUtils.handleException(e, this);
+					ODAUtils.handleException(e, this);
 					return null;
 				}
 			}
 		}
 		return result;
 		// } catch (Exception e) {
-		// DominoUtils.handleException(e);
+		// ODAUtils.handleException(e);
 		// return null;
 		// }
 	}
@@ -816,7 +816,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().getDbDirectory(server), DbDirectory.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -832,7 +832,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().getDirectory(), Directory.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 		}
 	}
@@ -847,7 +847,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().getDirectory(server), Directory.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -863,7 +863,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().getEffectiveUserName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -894,7 +894,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().getEnvironmentString(vname);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 		}
 	}
@@ -924,7 +924,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().getEnvironmentValue(vname);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -940,7 +940,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().getHttpURL();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -956,7 +956,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().getInternational(), International.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -972,7 +972,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().getNotesVersion();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -988,7 +988,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().getOrgDirectoryPath();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -1004,7 +1004,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().getPlatform();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -1020,7 +1020,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().getPropertyBroker(), PropertyBroker.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -1036,7 +1036,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().getServerName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -1052,7 +1052,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().getSessionToken();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -1068,7 +1068,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().getSessionToken(serverName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -1084,7 +1084,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().getURL();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -1100,7 +1100,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotus(getDelegate().getURLDatabase(), Database.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -1116,7 +1116,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotusAsVector(getDelegate().getUserGroupNameList(), Name.SCHEMA, this);
 		} catch (Exception e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -1132,7 +1132,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().getUserName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -1148,7 +1148,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return fromLotusAsVector(getDelegate().getUserNameList(), Name.SCHEMA, this);
 		} catch (Exception e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -1165,7 +1165,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		//		try {
 		//			return fromLotus(getDelegate().getUserNameObject(), Name.SCHEMA, this);
 		//		} catch (NotesException e) {
-		//			DominoUtils.handleException(e, this);
+		//			ODAUtils.handleException(e, this);
 		//			return null;
 		//
 		//		}
@@ -1183,7 +1183,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 			Database db = fromLotus(doc.getParentDatabase(), Database.SCHEMA, this);
 			return fromLotus(doc, Document.SCHEMA, db);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -1201,7 +1201,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 			Database db = fromLotus(doc.getParentDatabase(), Database.SCHEMA, this);
 			return fromLotus(doc, Document.SCHEMA, db);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -1217,7 +1217,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().hashPassword(password);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -1234,7 +1234,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 			try {
 				isConvertMime_ = Boolean.valueOf(getDelegate().isConvertMIME());
 			} catch (NotesException e) {
-				DominoUtils.handleException(e, this);
+				ODAUtils.handleException(e, this);
 				isConvertMime_ = Boolean.FALSE;
 
 			}
@@ -1262,7 +1262,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().isOnServer();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return false;
 
 		}
@@ -1278,7 +1278,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().isRestricted();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return true;
 
 		}
@@ -1294,7 +1294,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().isTrackMillisecInJavaDates();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return true;
 
 		}
@@ -1310,7 +1310,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().isTrustedSession();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return false;
 
 		}
@@ -1336,7 +1336,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().resetUserPassword(serverName, userName, password, downloadCount);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 		return false;
 	}
@@ -1351,7 +1351,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().resetUserPassword(serverName, userName, password);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 
 		}
 		return false;
@@ -1375,7 +1375,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 				return fromLotus(result, null, null);
 			}
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 		}
 	}
@@ -1390,7 +1390,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().sendConsoleCommand(serverName, consoleCommand);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 
 		}
@@ -1406,7 +1406,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			getDelegate().setAllowLoopBack(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 
 		}
 	}
@@ -1422,7 +1422,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 			isConvertMime_ = Boolean.valueOf(flag);
 			getDelegate().setConvertMIME(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 
 		}
 	}
@@ -1447,7 +1447,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			getDelegate().setEnvironmentVar(vname, value, isSystem);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 
 		}
 	}
@@ -1462,7 +1462,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			getDelegate().setEnvironmentVar(vname, value);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 
 		}
 	}
@@ -1477,7 +1477,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			getDelegate().setTrackMillisecInJavaDates(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 
 		}
 	}
@@ -1492,7 +1492,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().verifyPassword(password, hashedPassword);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return false;
 		}
 	}
@@ -1726,7 +1726,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().freeResourceSearch(arg0, arg1, arg2, arg3, arg4);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 		}
 	}
@@ -1741,7 +1741,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		try {
 			return getDelegate().freeResourceSearch(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 			return null;
 		}
 	}
@@ -1756,7 +1756,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 			Vector<?> v = getDelegate().evaluate("@Unique");
 			result = String.valueOf(v.get(0));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, this);
+			ODAUtils.handleException(e, this);
 		}
 		return result;
 	}
@@ -1776,7 +1776,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 			}
 
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne, this);
+			ODAUtils.handleException(ne, this);
 		}
 		return null;
 	}
@@ -1796,7 +1796,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 			}
 
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne, this);
+			ODAUtils.handleException(ne, this);
 		}
 		return null;
 	}
@@ -1817,7 +1817,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 			}
 
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne, this);
+			ODAUtils.handleException(ne, this);
 		}
 		return null;
 	}
@@ -1839,7 +1839,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 			}
 
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne, this);
+			ODAUtils.handleException(ne, this);
 		}
 		return null;
 	}
@@ -1854,7 +1854,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 				return fromLotus(rawdb, Database.SCHEMA, this);
 			}
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne, this);
+			ODAUtils.handleException(ne, this);
 		}
 		return null;
 	}

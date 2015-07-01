@@ -29,13 +29,13 @@ import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.Resurrectable;
 import org.openntf.domino.types.SessionDescendant;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * The Interface Database.
  */
 public interface Database extends lotus.domino.Database, org.openntf.domino.Base<lotus.domino.Database>, org.openntf.domino.ext.Database,
-Resurrectable, SessionDescendant, IExceptionDetails, Externalizable {
+		Resurrectable, SessionDescendant, IExceptionDetails, Externalizable {
 
 	/**
 	 * Enum to allow easy access to Schema
@@ -650,7 +650,7 @@ Resurrectable, SessionDescendant, IExceptionDetails, Externalizable {
 			if (db.isOpen()) {
 
 				// These things are only available, if the DB is open
-				lastModifiedDate_ = DominoUtils.toJavaDateSafe(db.getLastModified());
+				lastModifiedDate_ = ODAUtils.toJavaDateSafe(db.getLastModified());
 				//		sizeQuota_ = db.getSizeQuota();
 				//		sizeWarning_ = db.getSizeWarning();
 				//		created_ = db.getCreated();

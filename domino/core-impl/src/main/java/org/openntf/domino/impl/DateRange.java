@@ -26,7 +26,7 @@ import lotus.domino.NotesException;
 import org.openntf.domino.DateTime;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 
@@ -220,7 +220,7 @@ public class DateRange extends BaseNonThreadSafe<org.openntf.domino.DateRange, l
 			setStartDateTime(dr.getStartDateTime());
 			setEndDateTime(dr.getEndDateTime());
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		} finally {
 			Base.s_recycle(dr);
 		}
@@ -247,7 +247,7 @@ public class DateRange extends BaseNonThreadSafe<org.openntf.domino.DateRange, l
 			}
 			return ret;
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return null;
 		}
 	}

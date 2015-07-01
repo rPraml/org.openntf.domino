@@ -50,9 +50,9 @@ import org.openntf.domino.commons.IRequestLifeCycle;
 import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.commons.Names;
 import org.openntf.domino.commons.ServiceLocator;
+import org.openntf.domino.commons.exception.DataNotCompatibleException;
 import org.openntf.domino.commons.utils.BundleInfos;
 import org.openntf.domino.commons.utils.CollectionUtils;
-import org.openntf.domino.exceptions.DataNotCompatibleException;
 import org.openntf.domino.exceptions.UndefinedDelegateTypeException;
 import org.openntf.domino.ext.Session.Fixes;
 import org.openntf.domino.session.INamedSessionFactory;
@@ -1237,15 +1237,11 @@ public enum Factory {
 						+ " was not correctly initalized or terminated twice", new Throwable());
 				return;
 			}
-			//		System.out.println("TEMP DEBUG: Factory thread terminating.");
-			//		Throwable trace = new Throwable();
-			//		trace.printStackTrace();
+
 			try {
 				if (tv.wrapperFactory != null) {
 					tv.wrapperFactory.recycle();
 				}
-				//		System.out.println("DEBUG: cleared " + termCount + " references from the queue...");
-				DominoUtils.setBubbleExceptions(null);
 				// The last step is to recycle ALL own sessions
 				for (Session sess : tv.ownSessions.values()) {
 					if (sess != null) {

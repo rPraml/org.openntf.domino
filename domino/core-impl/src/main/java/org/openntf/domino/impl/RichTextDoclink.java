@@ -24,7 +24,7 @@ import org.openntf.domino.RichTextStyle;
 import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -60,7 +60,7 @@ public class RichTextDoclink extends BaseNonThreadSafe<org.openntf.domino.RichTe
 		try {
 			return getDelegate().getDBReplicaID();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -75,7 +75,7 @@ public class RichTextDoclink extends BaseNonThreadSafe<org.openntf.domino.RichTe
 		try {
 			return getDelegate().getDisplayComment();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -90,7 +90,7 @@ public class RichTextDoclink extends BaseNonThreadSafe<org.openntf.domino.RichTe
 		try {
 			return getDelegate().getDocUnID();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -105,7 +105,7 @@ public class RichTextDoclink extends BaseNonThreadSafe<org.openntf.domino.RichTe
 		try {
 			return getDelegate().getHotSpotText();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -120,7 +120,7 @@ public class RichTextDoclink extends BaseNonThreadSafe<org.openntf.domino.RichTe
 		try {
 			return fromLotus(getDelegate().getHotSpotTextStyle(), RichTextStyle.SCHEMA, getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -135,7 +135,7 @@ public class RichTextDoclink extends BaseNonThreadSafe<org.openntf.domino.RichTe
 		try {
 			return getDelegate().getServerHint();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -150,7 +150,7 @@ public class RichTextDoclink extends BaseNonThreadSafe<org.openntf.domino.RichTe
 		try {
 			return getDelegate().getViewUnID();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -166,7 +166,7 @@ public class RichTextDoclink extends BaseNonThreadSafe<org.openntf.domino.RichTe
 		try {
 			getDelegate().remove();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -181,7 +181,7 @@ public class RichTextDoclink extends BaseNonThreadSafe<org.openntf.domino.RichTe
 		try {
 			getDelegate().setDBReplicaID(replicaId);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -196,7 +196,7 @@ public class RichTextDoclink extends BaseNonThreadSafe<org.openntf.domino.RichTe
 		try {
 			getDelegate().setDisplayComment(comment);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -211,7 +211,7 @@ public class RichTextDoclink extends BaseNonThreadSafe<org.openntf.domino.RichTe
 		try {
 			getDelegate().setDocUnID(unid);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -226,7 +226,7 @@ public class RichTextDoclink extends BaseNonThreadSafe<org.openntf.domino.RichTe
 		try {
 			getDelegate().setHotSpotText(text);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -241,7 +241,7 @@ public class RichTextDoclink extends BaseNonThreadSafe<org.openntf.domino.RichTe
 		try {
 			getDelegate().setHotSpotTextStyle(toLotus(rtstyle));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -256,7 +256,7 @@ public class RichTextDoclink extends BaseNonThreadSafe<org.openntf.domino.RichTe
 		try {
 			getDelegate().setServerHint(server);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -271,7 +271,7 @@ public class RichTextDoclink extends BaseNonThreadSafe<org.openntf.domino.RichTe
 		try {
 			getDelegate().setViewUnID(unid);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

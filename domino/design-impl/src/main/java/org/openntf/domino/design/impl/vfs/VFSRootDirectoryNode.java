@@ -14,14 +14,14 @@
  * permissions and limitations under the License.
  * 
  */
-package org.openntf.domino.design.impl;
+package org.openntf.domino.design.impl.vfs;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import org.openntf.domino.Database;
 import org.openntf.domino.DbDirectory;
-import org.openntf.domino.design.VFSRootNode;
-import org.openntf.domino.helpers.DatabaseMetaData;
+import org.openntf.domino.design.vfs.VFSRootNode;
 
 /**
  * The root of a server's dbDirectory
@@ -31,7 +31,7 @@ import org.openntf.domino.helpers.DatabaseMetaData;
  */
 public class VFSRootDirectoryNode extends VFSDirectoryNode implements VFSRootNode {
 	private static final long serialVersionUID = 1L;
-	private Set<DatabaseMetaData> metaDataSet;
+	private Set<Database.MetaData> metaDataSet;
 	private Set<String> virtualfolders = new HashSet<String>();
 
 	/**
@@ -51,7 +51,7 @@ public class VFSRootDirectoryNode extends VFSDirectoryNode implements VFSRootNod
 
 	@Override
 	protected void init() {
-		for (DatabaseMetaData metaData : metaDataSet) {
+		for (Database.MetaData metaData : metaDataSet) {
 
 			String fileName = metaData.getFilePath().replace('\\', '/');
 			String[] components = fileName.split("/");

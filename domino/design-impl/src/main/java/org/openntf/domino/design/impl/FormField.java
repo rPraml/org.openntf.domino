@@ -21,8 +21,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import org.openntf.domino.commons.Strings;
-import org.openntf.domino.utils.DominoUtils;
-import org.openntf.domino.utils.TypeUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.xml.XMLNode;
 
 /**
@@ -206,7 +205,7 @@ public class FormField implements org.openntf.domino.design.FormField {
 				break;
 			}
 		} catch (Exception e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -243,7 +242,7 @@ public class FormField implements org.openntf.domino.design.FormField {
 	@Override
 	public void setOnlyAllow(final Set<RTLType> onlyAllow) {
 		if (onlyAllow != null) {
-			node_.setAttribute("onlyallow", TypeUtils.join(onlyAllow, " ").toLowerCase());
+			node_.setAttribute("onlyallow", Strings.join(onlyAllow, " ").toLowerCase());
 		} else {
 			node_.setAttribute("onlyallow", "");
 		}

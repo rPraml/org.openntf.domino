@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.openntf.domino.commons.IFormulaASTNode;
+import org.openntf.domino.commons.IFormula;
 import org.openntf.domino.commons.IFormulaContext;
 import org.openntf.domino.commons.exception.EvaluateException;
 import org.openntf.domino.commons.exception.FormulaParseException;
@@ -78,12 +78,12 @@ public class FormulaService implements org.openntf.domino.commons.IFormulaServic
 	}
 
 	@Override
-	public IFormulaASTNode parse(final String formula) throws FormulaParseException {
+	public IFormula parse(final String formula) throws FormulaParseException {
 		return getParser().parse(formula);
 	}
 
 	@Override
-	public IFormulaASTNode parse(final String formula, final boolean useFocFormula) throws FormulaParseException {
+	public IFormula parse(final String formula, final boolean useFocFormula) throws FormulaParseException {
 		return getParser().parse(formula, useFocFormula);
 	}
 }

@@ -22,7 +22,7 @@ import lotus.domino.NotesException;
 import org.openntf.domino.DirectoryNavigator;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -57,7 +57,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return fromLotus(getDelegate().createNavigator(), DirectoryNavigator.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -72,7 +72,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			getDelegate().freeLookupBuffer();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -87,7 +87,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return getDelegate().getAvailableItems();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -103,7 +103,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return getDelegate().getAvailableNames();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -118,7 +118,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return getDelegate().getAvailableView();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -134,7 +134,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return getDelegate().getMailInfo(userName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -150,7 +150,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return getDelegate().getMailInfo(userName, getVersion, errorOnMultipleMatches);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -173,7 +173,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return getDelegate().getServer();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -188,7 +188,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return getDelegate().isGroupAuthorizationOnly();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -203,7 +203,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return getDelegate().isLimitMatches();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -218,7 +218,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return getDelegate().isPartialMatches();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -233,7 +233,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return getDelegate().isSearchAllDirectories();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -248,7 +248,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return getDelegate().isTrustedOnly();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -263,7 +263,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return getDelegate().isUseContextServer();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -278,7 +278,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return fromLotus(getDelegate().lookupAllNames(view, item), DirectoryNavigator.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -294,7 +294,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return fromLotus(getDelegate().lookupAllNames(view, items), DirectoryNavigator.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -309,7 +309,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return fromLotus(getDelegate().lookupNames(view, name, item), DirectoryNavigator.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -325,7 +325,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			return fromLotus(getDelegate().lookupNames(view, names, items, partialMatches), DirectoryNavigator.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -340,7 +340,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			getDelegate().setGroupAuthorizationOnly(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -354,7 +354,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			getDelegate().setLimitMatches(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -368,7 +368,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			getDelegate().setSearchAllDirectories(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -382,7 +382,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			getDelegate().setTrustedOnly(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -396,7 +396,7 @@ public class Directory extends BaseNonThreadSafe<org.openntf.domino.Directory, l
 		try {
 			getDelegate().setUseContextServer(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

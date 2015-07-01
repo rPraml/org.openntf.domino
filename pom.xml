@@ -301,6 +301,7 @@
                     <!-- The path for the to be generated properties file, it's relative to ${project.basedir} -->
                     <generateGitPropertiesFilename>src/main/resources/META-INF/git.properties</generateGitPropertiesFilename>
 
+					<runOnlyOnce>true</runOnlyOnce>
                     <!-- @since 2.1.0 -->
                     <!--
                         read up about git-describe on the in man, or it's homepage - it's a really powerful versioning helper

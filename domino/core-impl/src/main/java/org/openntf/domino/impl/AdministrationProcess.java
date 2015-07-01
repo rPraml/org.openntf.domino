@@ -24,7 +24,7 @@ import lotus.domino.NotesException;
 import org.openntf.domino.DateTime;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -57,7 +57,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().addGroupMembers(group, members);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -72,7 +72,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().addInternetCertificateToUser(user, keyringFile, keyringPassword);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -91,7 +91,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().addInternetCertificateToUser(user, keyringFile, keyringPassword, toLotus(expiration, recycleThis));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} finally {
 			s_recycle(recycleThis);
 		}
@@ -108,7 +108,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().addServerToCluster(server, cluster);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -123,7 +123,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().approveDeletePersonInDirectory(noteid);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -138,7 +138,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().approveDeleteServerInDirectory(noteid);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -153,7 +153,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().approveDesignElementDeletion(noteid);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -168,7 +168,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().approveHostedOrgStorageDeletion(noteid);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -183,7 +183,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().approveMailFileDeletion(noteid);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -198,7 +198,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().approveMovedReplicaDeletion(noteid);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -213,7 +213,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().approveNameChangeRetraction(noteid);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -228,7 +228,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().approveRenamePersonInDirectory(noteid);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -243,7 +243,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().approveRenameServerInDirectory(noteid);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -258,7 +258,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().approveReplicaDeletion(noteid);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -273,7 +273,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().approveResourceDeletion(noteid);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -288,7 +288,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().changeHTTPPassword(userName, oldPassword, newPassword);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -303,7 +303,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().configureMailAgent(userName, agentName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -318,7 +318,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().configureMailAgent(userName, agentName, activatable, enable);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -333,7 +333,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().createReplica(sourceServer, sourceDBFile, destServer);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -350,7 +350,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().createReplica(sourceServer, sourceDBFile, destServer, destDBFile, copyACL, createFTIndex);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -365,7 +365,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().deleteGroup(groupName, immediate);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -380,7 +380,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().deleteGroup(groupName, immediate, deleteWindowsGroup);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -395,7 +395,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().deleteReplicas(serverName, fileName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -410,7 +410,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().deleteServer(serverName, immediate);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -425,7 +425,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().deleteUser(userName, immediate, mailFileAction, denyGroup);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -441,7 +441,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().deleteUser(username, immediate, mailFileAction, denyGroup, deleteWindowsUser);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -456,7 +456,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().findGroupInDomain(group);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -471,7 +471,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().findServerInDomain(server);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -486,7 +486,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().findUserInDomain(user);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -511,7 +511,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().getCertificateAuthorityOrg();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -526,7 +526,7 @@ public class AdministrationProcess extends
 		try {
 			return fromLotus(getDelegate().getCertificateExpiration(), DateTime.SCHEMA, this.getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -541,7 +541,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().getCertifierFile();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -556,7 +556,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().getCertifierPassword();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -581,7 +581,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().isCertificateAuthorityAvailable();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -596,7 +596,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().isUseCertificateAuthority();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -611,7 +611,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().moveMailUser(userName, newHomeServer, newHomeServerMailPath);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -630,7 +630,7 @@ public class AdministrationProcess extends
 			return getDelegate().moveMailUser(userName, newHomeServer, newHomeServerMailPath, useSCOS, newClusterReplicas,
 					deleteOldClusterReplicas);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -645,7 +645,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().moveReplica(sourceServer, sourceDbFile, destServer);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -662,7 +662,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().moveReplica(sourceServer, sourceDbFile, destServer, destDbFile, copyACL, createFTIndex);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -677,7 +677,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().moveRoamingUser(userName, destServer, destServerPath);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -692,7 +692,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().moveUserInHierarchyComplete(requestNoteid);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -711,7 +711,7 @@ public class AdministrationProcess extends
 			return getDelegate().moveUserInHierarchyComplete(requestNoteid, lastName, firstName, middleInitial, orgUnit, altCommonName,
 					altOrgUnit, altLanguage, renameWindowsUser);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -726,7 +726,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().moveUserInHierarchyRequest(userName, targetCertifier);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -741,7 +741,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().moveUserInHierarchyRequest(userName, targetCertifier, allowPrimaryNameChange);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -756,7 +756,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().recertifyServer(server);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -771,7 +771,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().recertifyUser(userName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -786,7 +786,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().removeServerFromCluster(server);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -801,7 +801,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().renameGroup(group, newGroup);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -818,7 +818,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().renameNotesUser(userName, lastName, firstName, middleInitial, orgUnit);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -837,7 +837,7 @@ public class AdministrationProcess extends
 			return getDelegate().renameNotesUser(userName, lastName, firstName, middleInitial, orgUnit, altCommonName, altOrgUnit,
 					altLanguage, renameWindowsUser);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -855,7 +855,7 @@ public class AdministrationProcess extends
 			return getDelegate().renameWebUser(userName, newFullName, newLastName, newFirstName, newMiddleInitial, newShortName,
 					newInternetAddress);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -870,7 +870,7 @@ public class AdministrationProcess extends
 		try {
 			getDelegate().setCertificateAuthorityOrg(org);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -886,7 +886,7 @@ public class AdministrationProcess extends
 		try {
 			getDelegate().setCertificateExpiration(toLotus(expiration, recycleThis));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} finally {
 			s_recycle(recycleThis);
 		}
@@ -902,7 +902,7 @@ public class AdministrationProcess extends
 		try {
 			getDelegate().setCertifierFile(fileSpec);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -916,7 +916,7 @@ public class AdministrationProcess extends
 		try {
 			getDelegate().setCertifierPassword(password);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -930,7 +930,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().setServerDirectoryAssistanceSettings(server, dbFile);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -945,7 +945,7 @@ public class AdministrationProcess extends
 		try {
 			getDelegate().setUseCertificateAuthority(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -962,7 +962,7 @@ public class AdministrationProcess extends
 			return getDelegate().setUserPasswordSettings(userName, notesPasswordCheckSetting, notesPasswordChangeInterval,
 					notesPasswordGracePeriod, internetPasswordForceChange);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -977,7 +977,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().signDatabaseWithServerID(server, dbFile);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -992,7 +992,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().signDatabaseWithServerID(server, dbFile, updateonly);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -1007,7 +1007,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().upgradeUserToHierarchical(userName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -1024,7 +1024,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().upgradeUserToHierarchical(userName, orgUnit, altCommonName, altOrgUnit, altLanguage);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -1039,7 +1039,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().delegateMailFile(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -1052,7 +1052,7 @@ public class AdministrationProcess extends
 		try {
 			return getDelegate().setEnableOutlookSupport(arg0, arg1);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}

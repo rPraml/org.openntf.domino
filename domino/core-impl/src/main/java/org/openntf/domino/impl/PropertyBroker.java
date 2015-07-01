@@ -7,7 +7,7 @@ import lotus.domino.NotesException;
 import org.openntf.domino.NotesProperty;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 public class PropertyBroker extends BaseNonThreadSafe<org.openntf.domino.PropertyBroker, lotus.domino.PropertyBroker, Session> implements
 		org.openntf.domino.PropertyBroker {
@@ -33,7 +33,7 @@ public class PropertyBroker extends BaseNonThreadSafe<org.openntf.domino.Propert
 		try {
 			getDelegate().clearProperty(propertyName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -42,7 +42,7 @@ public class PropertyBroker extends BaseNonThreadSafe<org.openntf.domino.Propert
 		try {
 			return fromLotusAsVector(getDelegate().getInputPropertyContext(), org.openntf.domino.NotesProperty.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -52,7 +52,7 @@ public class PropertyBroker extends BaseNonThreadSafe<org.openntf.domino.Propert
 		try {
 			return fromLotus(getDelegate().getProperty(propertyName), NotesProperty.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -68,7 +68,7 @@ public class PropertyBroker extends BaseNonThreadSafe<org.openntf.domino.Propert
 		try {
 			return getDelegate().getPropertyValue(propertyName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -83,7 +83,7 @@ public class PropertyBroker extends BaseNonThreadSafe<org.openntf.domino.Propert
 		try {
 			return getDelegate().getPropertyValueString(propertyName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -98,7 +98,7 @@ public class PropertyBroker extends BaseNonThreadSafe<org.openntf.domino.Propert
 		try {
 			return getDelegate().hasProperty(propertyName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -113,7 +113,7 @@ public class PropertyBroker extends BaseNonThreadSafe<org.openntf.domino.Propert
 		try {
 			return fromLotus(getDelegate().setPropertyValue(propertyName, propertyValue), NotesProperty.SCHEMA, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -128,7 +128,7 @@ public class PropertyBroker extends BaseNonThreadSafe<org.openntf.domino.Propert
 		try {
 			getDelegate().publish();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

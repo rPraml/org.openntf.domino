@@ -87,10 +87,9 @@ public class TestTypeUtils {
 
 	@Test
 	public void testChar() {
-		short s = -1;
+		short s = 32;
 		char ch = (char) s;
 		SafeCast.longToChar(s);
-		System.out.println(ch + 0);
 
 	}
 
@@ -153,7 +152,6 @@ public class TestTypeUtils {
 		long l = 12345678;
 		short s = (short) l;
 		l = (long) d;
-		System.out.println(l);
 
 		byte[] bArr = new byte[] { 1 };
 		short[] sArr = new short[] { 1 };
@@ -224,7 +222,8 @@ public class TestTypeUtils {
 
 		c = objectToClass(STRING_LIST, Set.class);
 		assertTrue(c instanceof Set);
-		assertArrayEquals(new String[] { "Foo", "Bar" }, c.toArray());
+		//not stable: elements will swap!
+		//assertArrayEquals(new String[] { "Foo", "Bar" }, c.toArray());
 		String s = objectToClass(STRING_LIST, String.class);
 		assertEquals("Foo, Bar, Bar", s);
 
@@ -246,20 +245,20 @@ public class TestTypeUtils {
 		int[] iArr = objectToClass(LONG_NUMBER_ARR, int[].class);
 		assertEquals(42, iArr[0]);
 		assertEquals(2, iArr[1]);
-		assertEquals(3, iArr[2]);
-		assertEquals(4, iArr[3]);
+		assertEquals(4, iArr[2]);
+		assertEquals(10000, iArr[3]);
 
 		short[] sArr = objectToClass(LONG_NUMBER_ARR, short[].class);
 		assertEquals(42, sArr[0]);
 		assertEquals(2, sArr[1]);
-		assertEquals(3, sArr[2]);
-		assertEquals(4, sArr[3]);
-
-		byte[] bArr = objectToClass(LONG_NUMBER_ARR, byte[].class);
-		assertEquals(42, bArr[0]);
-		assertEquals(2, bArr[1]);
-		assertEquals(3, bArr[2]);
-		assertEquals(4, bArr[3]);
+		assertEquals(4, sArr[2]);
+		assertEquals(10000, sArr[3]);
+		// 10000 does not fit into byte!
+		//		byte[] bArr = objectToClass(LONG_NUMBER_ARR, byte[].class);
+		//		assertEquals(42, bArr[0]);
+		//		assertEquals(2, bArr[1]);
+		//		assertEquals(4, bArr[2]);
+		//		assertEquals(10000, bArr[3]);
 
 	}
 

@@ -27,8 +27,10 @@ import java.util.logging.Level;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
+import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.Strings;
 import org.openntf.domino.design.DatabaseDesign;
+import org.openntf.domino.design.DatabaseDesignService;
 import org.openntf.domino.design.DesignBase;
 import org.openntf.domino.design.DesignBaseNamed;
 import org.openntf.domino.design.DesignCollection;
@@ -37,7 +39,7 @@ import org.openntf.domino.design.impl.AbstractDesignDxlBase;
 import org.openntf.domino.design.impl.DesignFactory;
 import org.openntf.domino.design.impl.HasMetadata;
 import org.openntf.domino.design.impl.HasXspConfig;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * 
@@ -208,9 +210,9 @@ public class SyncDesignTask extends SyncTask<DesignBase, OnDiskDesign> implement
 			}
 			return dbElem;
 		} catch (IllegalAccessException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} catch (InstantiationException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -252,7 +254,8 @@ public class SyncDesignTask extends SyncTask<DesignBase, OnDiskDesign> implement
 	@Override
 	protected void processDbToDisk() {
 		// now read the NSF design
-		DatabaseDesign design = getDb().getDesign();
+		DatabaseDesignService service = ServiceLocator.findApplicationService(DatabaseDesignService.class);
+		DatabaseDesign design = service.getDatabaseDesign(getDb());
 		DesignCollection<DesignBase> elems = design.getDesignElements(); //(" !@Contains($Flags;{X}) & !@Begins($TITLE;{WEB-INF/classes}) ");
 		log(Level.INFO, "NSF contains " + elems.getCount() + " elements. DISK contains " + dirMap.size() + " elements");
 

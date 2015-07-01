@@ -45,9 +45,9 @@ import org.openntf.domino.commons.Hash;
 import org.openntf.domino.design.impl.HasMetadata;
 import org.openntf.domino.design.impl.HasXspConfig;
 import org.openntf.domino.progress.ProgressObservable;
-import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.xots.Tasklet;
 
 /**
@@ -255,9 +255,9 @@ public abstract class SyncTask<DB, DISK extends OnDiskAbstract<DB>> extends Prog
 			processDiskToDb();// progress#2
 			tearDown();
 		} catch (IOException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} catch (ClassNotFoundException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} finally {
 			log(stat.errors == 0 ? Level.INFO : Level.SEVERE, "Stop: " + getClass().getSimpleName() + ". " + stat);
 			progressStop(getClass().getSimpleName() + " done");

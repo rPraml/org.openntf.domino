@@ -29,7 +29,7 @@ import org.openntf.domino.design.DatabaseDesign;
 import org.openntf.domino.design.JarResource;
 import org.openntf.domino.design.ScriptLibraryJava;
 import org.openntf.domino.design.XspResource;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * @author jgallagher
@@ -89,7 +89,7 @@ public class DatabaseClassLoader extends org.openntf.domino.design.DatabaseClass
 				byte[] classData = bos.toByteArray();
 				return defineClass(name, classData, 0, classData.length);
 			} catch (IOException e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 			}
 			return null;
 		}

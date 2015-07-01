@@ -25,7 +25,7 @@ import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.ext.Session.Fixes;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -76,7 +76,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getAlignment();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -98,7 +98,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getColumnValuesIndex();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -113,7 +113,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getDateFmt();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -136,7 +136,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getFontColor();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -151,7 +151,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getFontFace();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -166,7 +166,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getFontPointSize();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -181,7 +181,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getFontStyle();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -196,7 +196,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getFormula();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -211,7 +211,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getHeaderAlignment();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -226,7 +226,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getHeaderFontColor();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -241,7 +241,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getHeaderFontFace();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -256,7 +256,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getHeaderFontPointSize();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -271,7 +271,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getHeaderFontStyle();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -286,7 +286,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getItemName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -301,7 +301,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getListSep();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -324,7 +324,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getNumberAttrib();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -339,7 +339,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getNumberDigits();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -354,7 +354,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getNumberFormat();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -379,7 +379,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getPosition();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -394,7 +394,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getResortToViewName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -409,7 +409,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getSecondaryResortColumnIndex();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -424,7 +424,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getTimeDateFmt();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -439,7 +439,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getTimeFmt();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -454,7 +454,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getTimeZoneFmt();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -469,7 +469,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getTitle();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -492,7 +492,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().getWidth();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -507,7 +507,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isAccentSensitiveSort();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -522,7 +522,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isCaseSensitiveSort();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -537,7 +537,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isCategory();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -552,7 +552,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isConstant();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -567,7 +567,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isField();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -582,7 +582,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isFontBold();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -597,7 +597,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isFontItalic();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -612,7 +612,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isFontStrikethrough();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -627,7 +627,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isFontUnderline();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -642,7 +642,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isFormula();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -657,7 +657,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isHeaderFontBold();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -672,7 +672,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isHeaderFontItalic();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -687,7 +687,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isHeaderFontStrikethrough();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -702,7 +702,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isHeaderFontUnderline();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -717,7 +717,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isHidden();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -732,7 +732,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isHideDetail();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -747,7 +747,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isHideFormula();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -762,7 +762,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isIcon();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -777,7 +777,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isNumberAttribParens();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -792,7 +792,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isNumberAttribPercent();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -807,7 +807,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isNumberAttribPunctuated();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -822,7 +822,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isResize();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -837,7 +837,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isResortAscending();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -852,7 +852,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isResortDescending();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -867,7 +867,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isResortToView();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -882,7 +882,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isResponse();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -897,7 +897,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isSecondaryResort();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -912,7 +912,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isSecondaryResortDescending();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -927,7 +927,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isShowTwistie();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -942,7 +942,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isSortDescending();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -957,7 +957,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			return getDelegate().isSorted();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -972,7 +972,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setAccentSensitiveSort(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -986,7 +986,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setAlignment(alignment);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1000,7 +1000,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setCaseSensitiveSort(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1014,7 +1014,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setDateFmt(format);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1028,7 +1028,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setFontBold(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1042,7 +1042,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setFontColor(color);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1056,7 +1056,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setFontFace(face);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1070,7 +1070,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setFontItalic(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1084,7 +1084,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setFontPointSize(size);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1098,7 +1098,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setFontStrikethrough(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1112,7 +1112,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setFontStyle(style);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1126,7 +1126,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setFontUnderline(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1140,7 +1140,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setFormula(formula);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1154,7 +1154,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setHeaderAlignment(alignment);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1168,7 +1168,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setHeaderFontBold(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1182,7 +1182,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setHeaderFontColor(color);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1196,7 +1196,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setHeaderFontFace(face);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1210,7 +1210,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setHeaderFontItalic(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1224,7 +1224,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setHeaderFontPointSize(size);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1238,7 +1238,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setHeaderFontStrikethrough(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1252,7 +1252,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setHeaderFontStyle(style);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1266,7 +1266,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setHeaderFontUnderline(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1280,7 +1280,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setHidden(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1294,7 +1294,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setHideDetail(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1308,7 +1308,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setHideFormula(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1322,7 +1322,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setListSep(separator);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1336,7 +1336,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setNumberAttrib(attributes);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1350,7 +1350,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setNumberAttribParens(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1364,7 +1364,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setNumberAttribPercent(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1378,7 +1378,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setNumberAttribPunctuated(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1392,7 +1392,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setNumberDigits(digits);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1406,7 +1406,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setNumberFormat(format);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1420,7 +1420,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setPosition(position);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1434,7 +1434,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setResize(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1448,7 +1448,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setResortAscending(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1462,7 +1462,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setResortDescending(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1476,7 +1476,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setResortToView(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1490,7 +1490,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setResortToViewName(name);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1504,7 +1504,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setSecondaryResort(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1518,7 +1518,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setSecondaryResortColumnIndex(index);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1532,7 +1532,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setSecondaryResortDescending(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1546,7 +1546,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setShowTwistie(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1560,7 +1560,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setSortDescending(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1574,7 +1574,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setSorted(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1588,7 +1588,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setTimeDateFmt(format);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1602,7 +1602,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setTimeFmt(format);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1616,7 +1616,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setTimeZoneFmt(format);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1630,7 +1630,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setTitle(title);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1644,7 +1644,7 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 		try {
 			getDelegate().setWidth(width);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

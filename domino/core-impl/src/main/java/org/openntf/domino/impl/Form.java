@@ -28,7 +28,7 @@ import org.openntf.domino.NoteCollection.SelectOption;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Legacy;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -64,7 +64,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().getAliases();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -90,7 +90,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().getFieldType(arg0);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 
 		}
@@ -108,7 +108,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().getFields();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -126,7 +126,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().getFormUsers();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -142,7 +142,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().getHttpURL();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -160,7 +160,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().getLockHolders();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -176,7 +176,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().getName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -204,7 +204,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().getNotesURL();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -232,7 +232,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().getReaders();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -260,7 +260,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().getURL();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -302,7 +302,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().isProtectReaders();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 
 		}
@@ -318,7 +318,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().isProtectUsers();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 
 		}
@@ -334,7 +334,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().isSubForm();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 
 		}
@@ -350,7 +350,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().lock();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 
 		}
@@ -366,7 +366,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().lock(arg0);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 
 		}
@@ -382,7 +382,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().lock(arg0, arg1);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 
 		}
@@ -398,7 +398,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().lock(arg0);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 
 		}
@@ -415,7 +415,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().lock(arg0, arg1);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 
 		}
@@ -432,7 +432,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().lock(arg0);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 
 		}
@@ -448,7 +448,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().lockProvisional();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 
 		}
@@ -464,7 +464,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().lockProvisional(arg0);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 
 		}
@@ -481,7 +481,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			return getDelegate().lockProvisional(arg0);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 
 		}
@@ -497,7 +497,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			getDelegate().remove();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -513,7 +513,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			getDelegate().setFormUsers(arg0);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -528,7 +528,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			getDelegate().setProtectReaders(arg0);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -543,7 +543,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			getDelegate().setProtectUsers(arg0);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -559,7 +559,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			getDelegate().setReaders(arg0);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -574,7 +574,7 @@ public class Form extends BaseNonThreadSafe<org.openntf.domino.Form, lotus.domin
 		try {
 			getDelegate().unlock();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}

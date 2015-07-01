@@ -60,11 +60,9 @@ import org.openntf.domino.Database;
 import org.openntf.domino.Document;
 import org.openntf.domino.RichTextItem;
 import org.openntf.domino.Session;
-import org.openntf.domino.logging.impl.IOpenLogItem.DebugLevel;
-import org.openntf.domino.logging.impl.IOpenLogItem.LogType;
-import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * @author withersp The Class OpenLogItem.
@@ -441,7 +439,7 @@ public class BaseOpenLogItem implements IOpenLogItem {
 		if ("".equals(_logDbName)) {
 			String logDbName = loadFromProps("org.openntf.domino.logging.OpenLogHandler.logDbName");
 			if ("".equals(logDbName)) {
-				setLogDbName(DominoUtils.getDominoIniVar("OpenLogPath", "OpenLog.nsf"));
+				setLogDbName(ODAUtils.getDominoIniVar("OpenLogPath", "OpenLog.nsf"));
 			} else {
 				setLogDbName(logDbName);
 			}
@@ -456,7 +454,7 @@ public class BaseOpenLogItem implements IOpenLogItem {
 	public Boolean getSuppressEventStack() {
 		String suppressEventStackTmp = loadFromProps("org.openntf.domino.logging.OpenLogHandler.suppressEventStack");
 		if ("".equals(suppressEventStackTmp)) {
-			setSuppressEventStack(Boolean.parseBoolean(DominoUtils.getDominoIniVar("SuppressEventStack", "false")));
+			setSuppressEventStack(Boolean.parseBoolean(ODAUtils.getDominoIniVar("SuppressEventStack", "false")));
 		} else {
 			setSuppressEventStack(Boolean.parseBoolean(suppressEventStackTmp));
 		}

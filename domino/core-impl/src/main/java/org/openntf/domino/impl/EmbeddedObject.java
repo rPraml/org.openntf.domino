@@ -32,7 +32,7 @@ import org.openntf.domino.Document;
 import org.openntf.domino.RichTextItem;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.xml.sax.InputSource;
 
 // TODO: Auto-generated Javadoc
@@ -220,7 +220,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			return fromLotus(getDelegate().getParent(), RichTextItem.SCHEMA, parent);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -235,7 +235,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			return getDelegate().activate(paramBoolean);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 
 		} finally {
@@ -255,7 +255,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			getDelegate().doVerb(paramString);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -270,7 +270,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			getDelegate().extractFile(paramString);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -285,7 +285,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			return getDelegate().getClassName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -301,7 +301,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			return getDelegate().getFileSize();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 
 		}
@@ -317,7 +317,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			return getDelegate().getName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -333,7 +333,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			return getDelegate().getObject();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 
 		}
@@ -357,7 +357,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			return getDelegate().getSource();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -373,7 +373,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			return getDelegate().getType();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 
 		}
@@ -390,7 +390,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			return getDelegate().getVerbs();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -407,7 +407,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			getDelegate().remove();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -422,7 +422,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			return new EOReader(getDelegate().getReader());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -447,7 +447,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			return new EOInputStream(getDelegate().getInputStream());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -470,7 +470,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			return getDelegate().parseXML(paramBoolean);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -485,7 +485,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			getDelegate().transformXML(paramObject, paramXSLTResultTarget);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -532,7 +532,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			return getFactory().fromLotus(getDelegate().getFileCreated(), DateTime.SCHEMA, getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -545,7 +545,7 @@ public class EmbeddedObject extends BaseNonThreadSafe<org.openntf.domino.Embedde
 		try {
 			return getFactory().fromLotus(getDelegate().getFileModified(), DateTime.SCHEMA, getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}

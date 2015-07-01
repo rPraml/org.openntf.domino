@@ -24,7 +24,7 @@ import org.openntf.domino.Document;
 import org.openntf.domino.RichTextItem;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -63,7 +63,7 @@ public class RichTextNavigator extends
 		try {
 			return fromLotus(getDelegate().Clone(), RichTextNavigator.SCHEMA, parent);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -78,7 +78,7 @@ public class RichTextNavigator extends
 		try {
 			return getDelegate().findFirstElement(type);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -93,7 +93,7 @@ public class RichTextNavigator extends
 		try {
 			return getDelegate().findFirstString(target);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -108,7 +108,7 @@ public class RichTextNavigator extends
 		try {
 			return getDelegate().findFirstString(target, options);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -123,7 +123,7 @@ public class RichTextNavigator extends
 		try {
 			return getDelegate().findLastElement(type);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -138,7 +138,7 @@ public class RichTextNavigator extends
 		try {
 			return getDelegate().findNextElement();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -153,7 +153,7 @@ public class RichTextNavigator extends
 		try {
 			return getDelegate().findNextElement(type);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -168,7 +168,7 @@ public class RichTextNavigator extends
 		try {
 			return getDelegate().findNextElement(type, occurrence);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -183,7 +183,7 @@ public class RichTextNavigator extends
 		try {
 			return getDelegate().findNextString(target);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -198,7 +198,7 @@ public class RichTextNavigator extends
 		try {
 			return getDelegate().findNextString(target, options);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -213,7 +213,7 @@ public class RichTextNavigator extends
 		try {
 			return getDelegate().findNthElement(type, occurrence);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -228,7 +228,7 @@ public class RichTextNavigator extends
 		try {
 			return fromLotus(getDelegate().getElement(), null, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -243,7 +243,7 @@ public class RichTextNavigator extends
 		try {
 			return fromLotus(getDelegate().getFirstElement(type), null, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -258,7 +258,7 @@ public class RichTextNavigator extends
 		try {
 			return fromLotus(getDelegate().getLastElement(type), null, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -273,7 +273,7 @@ public class RichTextNavigator extends
 		try {
 			return fromLotus(getDelegate().getNextElement(), null, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -288,7 +288,7 @@ public class RichTextNavigator extends
 		try {
 			return fromLotus(getDelegate().getNextElement(type), null, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -303,7 +303,7 @@ public class RichTextNavigator extends
 		try {
 			return fromLotus(getDelegate().getNextElement(type, occurrence), null, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -318,7 +318,7 @@ public class RichTextNavigator extends
 		try {
 			return fromLotus(getDelegate().getNthElement(type, occurrence), null, this);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -333,7 +333,7 @@ public class RichTextNavigator extends
 		try {
 			getDelegate().setCharOffset(offset);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -347,7 +347,7 @@ public class RichTextNavigator extends
 		try {
 			getDelegate().setPosition(toLotus(element));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -361,7 +361,7 @@ public class RichTextNavigator extends
 		try {
 			getDelegate().setPositionAtEnd(toLotus(element));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

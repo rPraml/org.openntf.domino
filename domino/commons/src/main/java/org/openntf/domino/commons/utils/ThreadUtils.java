@@ -1,5 +1,9 @@
 package org.openntf.domino.commons.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectStreamClass;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
@@ -8,6 +12,26 @@ import org.openntf.domino.commons.IO;
 
 public enum ThreadUtils {
 	;
+	public static class LoaderObjectInputStream extends ObjectInputStream {
+
+		public LoaderObjectInputStream(final InputStream in) throws IOException {
+			super(in);
+		}
+
+		@Override
+		protected Class<?> resolveClass(final ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+			String name = desc.getName();
+			Class<?> result = null;
+			try {
+				result = ThreadUtils.getClass(name);
+			} catch (Exception e) {
+			}
+			if (result == null) {
+				result = super.resolveClass(desc);
+			}
+			return result;
+		}
+	}
 
 	/**
 	 * Get the current context classloader

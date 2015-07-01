@@ -24,9 +24,10 @@ import org.openntf.domino.NoteCollection;
 import org.openntf.domino.Session;
 import org.openntf.domino.Stream;
 import org.openntf.domino.commons.Strings;
-import org.openntf.domino.exceptions.DataNotCompatibleException;
+import org.openntf.domino.commons.exception.DataNotCompatibleException;
+import org.openntf.domino.commons.utils.ThreadUtils;
+import org.openntf.domino.commons.utils.ThreadUtils.LoaderObjectInputStream;
 import org.openntf.domino.exceptions.MIMEConversionException;
-import org.openntf.domino.utils.DominoUtils.LoaderObjectInputStream;
 
 public enum MIMEBean {
 	;
@@ -117,7 +118,7 @@ public enum MIMEBean {
 
 		// There are three potential storage forms: Externalizable, Serializable, and StateHolder, distinguished by type or header
 		if ("x-java-externalized-object".equals(entity.getContentSubType())) {
-			Class<Externalizable> externalizableClass = (Class<Externalizable>) DominoUtils.getClass(entity.getNthHeader("X-Java-Class")
+			Class<Externalizable> externalizableClass = (Class<Externalizable>) ThreadUtils.getClass(entity.getNthHeader("X-Java-Class")
 					.getHeaderVal());
 			Externalizable restored = externalizableClass.newInstance();
 			restored.readExternal(objectStream);
@@ -129,10 +130,10 @@ public enum MIMEBean {
 			MIMEHeader storageScheme = entity.getNthHeader("X-Storage-Scheme");
 			MIMEHeader originalJavaClass = entity.getNthHeader("X-Original-Java-Class");
 			if (storageScheme != null && "StateHolder".equals(storageScheme.getHeaderVal())) {
-				Class<?> facesContextClass = DominoUtils.getClass("javax.faces.context.FacesContext");
+				Class<?> facesContextClass = ThreadUtils.getClass("javax.faces.context.FacesContext");
 				Method getCurrentInstance = facesContextClass.getMethod("getCurrentInstance");
 
-				Class<?> stateHoldingClass = DominoUtils.getClass(originalJavaClass.getHeaderVal());
+				Class<?> stateHoldingClass = ThreadUtils.getClass(originalJavaClass.getHeaderVal());
 				Method restoreStateMethod = stateHoldingClass.getMethod("restoreState", facesContextClass, Object.class);
 				result = stateHoldingClass.newInstance();
 				restoreStateMethod.invoke(result, getCurrentInstance.invoke(null), restored);
@@ -361,8 +362,8 @@ public enum MIMEBean {
 			return result;
 
 		} catch (Throwable t) {
-			DominoUtils.handleException(new MIMEConversionException("Unable to getItemValueMIME for item name " + itemname
-					+ " on document " + noteID, t));
+			ODAUtils.handleException(new MIMEConversionException("Unable to getItemValueMIME for item name " + itemname + " on document "
+					+ noteID, t));
 		}
 
 		return null;
@@ -415,8 +416,8 @@ public enum MIMEBean {
 			}
 
 		} catch (Throwable t) {
-			DominoUtils.handleException(new MIMEConversionException("Unable to getItemValueMIME for item name " + itemname
-					+ " on document " + noteID + " [Caught " + t.getClass().getName() + ": " + t.getMessage() + "]", t));
+			ODAUtils.handleException(new MIMEConversionException("Unable to getItemValueMIME for item name " + itemname + " on document "
+					+ noteID + " [Caught " + t.getClass().getName() + ": " + t.getMessage() + "]", t));
 		} finally {
 			if (entity != null && mustClose) {
 				document.closeMIMEEntities(false, itemname);

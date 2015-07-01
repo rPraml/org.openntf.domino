@@ -22,7 +22,7 @@ import lotus.domino.NotesException;
 import org.openntf.domino.Directory;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -58,7 +58,7 @@ public class DirectoryNavigator extends
 		try {
 			return getDelegate().findFirstMatch();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -73,7 +73,7 @@ public class DirectoryNavigator extends
 		try {
 			return getDelegate().findFirstName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -88,7 +88,7 @@ public class DirectoryNavigator extends
 		try {
 			return getDelegate().findNextMatch();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -103,7 +103,7 @@ public class DirectoryNavigator extends
 		try {
 			return getDelegate().findNextName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -118,7 +118,7 @@ public class DirectoryNavigator extends
 		try {
 			return getDelegate().findNthMatch(n);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -133,7 +133,7 @@ public class DirectoryNavigator extends
 		try {
 			return getDelegate().findNthName(n);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -148,7 +148,7 @@ public class DirectoryNavigator extends
 		try {
 			return getDelegate().getCurrentItem();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -163,7 +163,7 @@ public class DirectoryNavigator extends
 		try {
 			return getDelegate().getCurrentMatch();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -178,7 +178,7 @@ public class DirectoryNavigator extends
 		try {
 			return getDelegate().getCurrentMatches();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -193,7 +193,7 @@ public class DirectoryNavigator extends
 		try {
 			return getDelegate().getCurrentName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -208,7 +208,7 @@ public class DirectoryNavigator extends
 		try {
 			return getDelegate().getCurrentView();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -223,7 +223,7 @@ public class DirectoryNavigator extends
 		try {
 			return wrapColumnValues(getDelegate().getFirstItemValue(), this.getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -238,7 +238,7 @@ public class DirectoryNavigator extends
 		try {
 			return wrapColumnValues(getDelegate().getNextItemValue(), this.getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -253,7 +253,7 @@ public class DirectoryNavigator extends
 		try {
 			return wrapColumnValues(getDelegate().getNthItemValue(n), this.getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -276,7 +276,7 @@ public class DirectoryNavigator extends
 		try {
 			return getDelegate().isMatchLocated();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -291,7 +291,7 @@ public class DirectoryNavigator extends
 		try {
 			return getDelegate().isNameLocated();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}

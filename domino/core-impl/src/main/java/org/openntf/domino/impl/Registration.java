@@ -24,7 +24,7 @@ import lotus.domino.NotesException;
 import org.openntf.domino.DateTime;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -59,7 +59,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().addCertifierToAddressBook(idFile);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -74,7 +74,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().addCertifierToAddressBook(idFile, password);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -90,7 +90,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().addCertifierToAddressBook(idFile, password, location, comment);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -105,7 +105,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().addServerToAddressBook(idFile, server, domain);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -120,7 +120,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().addServerToAddressBook(idFile, server, domain, userPassword);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -137,7 +137,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().addServerToAddressBook(idFile, server, domain, userPassword, network, adminName, title, location, comment);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -152,7 +152,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().addUserProfile(userName, profile);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -166,7 +166,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().addUserToAddressBook(idFile, fullName, lastName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -181,7 +181,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().addUserToAddressBook(idFile, fullName, lastName, userPassword);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -200,7 +200,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 			return getDelegate().addUserToAddressBook(idFile, fullName, lastName, userPassword, firstName, middleName, mailServer,
 					mailFilePath, forwardingAddress, location, comment);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -215,7 +215,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().crossCertify(idFile);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -230,7 +230,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().crossCertify(idFile, certPassword);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -245,7 +245,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().crossCertify(idFile, certPassword, comment);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -260,7 +260,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().deleteIDOnServer(userName, isServerID);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -275,7 +275,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getAltOrgUnit();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -291,7 +291,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getAltOrgUnitLang();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -306,7 +306,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getCertifierIDFile();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -321,7 +321,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getCertifierName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -336,7 +336,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getCreateMailDb();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -351,7 +351,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return fromLotus(getDelegate().getExpiration(), DateTime.SCHEMA, getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -366,7 +366,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getForeignDN();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -382,7 +382,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getGroupList();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -397,7 +397,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().getIDFromServer(userName, filePath, isServerID);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -411,7 +411,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getIDType();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -426,7 +426,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getMailACLManager();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -441,7 +441,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getMailInternetAddress();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -456,7 +456,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getMailOwnerAccess();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -471,7 +471,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getMailQuotaSizeLimit();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -486,7 +486,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getMailQuotaWarningThreshold();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -502,7 +502,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getMailReplicaServers();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -517,7 +517,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getMailSystem();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -532,7 +532,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getMailTemplateName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -547,7 +547,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getMinPasswordLength();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -562,7 +562,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getOrgUnit();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -587,7 +587,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getPolicyName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -602,7 +602,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getPublicKeySize();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -617,7 +617,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getRegistrationLog();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -632,7 +632,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getRegistrationServer();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -647,7 +647,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getRoamingCleanupPeriod();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -662,7 +662,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getRoamingCleanupSetting();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -677,7 +677,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getRoamingServer();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -692,7 +692,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getRoamingSubdir();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -707,7 +707,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getShortName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -722,7 +722,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getStoreIDInAddressBook();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -737,7 +737,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().getUpdateAddressBook();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -756,7 +756,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 			// Vector is a return parameter, do not make it dominofriendly		
 			getDelegate().getUserInfo(userName, mailServer, mailFile, mailDomain, mailSystem, profile);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -770,7 +770,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().isEnforceUniqueShortName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -785,7 +785,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().isMailCreateFTIndex();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -800,7 +800,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().isNoIDFile();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -815,7 +815,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().isNorthAmerican();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -830,7 +830,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().isRoamingUser();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -845,7 +845,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().isStoreIDInMailfile();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -860,7 +860,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().isSynchInternetPassword();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -875,7 +875,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().isUseCertificateAuthority();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -890,7 +890,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().recertify(idFile);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -905,7 +905,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().recertify(idFile, certPassword);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -920,7 +920,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().recertify(idFile, certPassword, comment);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -935,7 +935,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().registerNewCertifier(org, idFile, certPassword);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -950,7 +950,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().registerNewCertifier(org, idFile, certPassword, country);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -965,7 +965,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().registerNewServer(server, idFile, domain, password);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -982,7 +982,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().registerNewServer(server, idFile, domain, serverPassword, certPassword);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -1001,7 +1001,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 			return getDelegate().registerNewServer(server, idFile, domain, serverPassword, certPassword, location, comment, network,
 					adminName, title);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -1016,7 +1016,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().registerNewUser(lastName, idFile, server);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -1033,7 +1033,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().registerNewUser(lastName, idFile, server, firstName, middleName, certPassword);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -1052,7 +1052,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 			return getDelegate().registerNewUser(lastName, idFile, server, firstName, middleName, certPassword, location, comment,
 					mailDBPath, forward, userPassword);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -1072,7 +1072,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 			return getDelegate().registerNewUser(lastName, idFile, server, firstName, middleName, certPassword, location, comment,
 					mailDBPath, forward, userPassword, altName, altNameLang);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -1088,7 +1088,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setAltOrgUnit(names);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1104,7 +1104,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setAltOrgUnitLang(toDominoFriendly(languages, getAncestorSession(), recycleThis));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} finally {
 			s_recycle(recycleThis);
 		}
@@ -1120,7 +1120,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setCertifierIDFile(idFile);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1134,7 +1134,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setCertifierName(name);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1148,7 +1148,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setCreateMailDb(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1162,7 +1162,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setEnforceUniqueShortName(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1178,7 +1178,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setExpiration(toLotus(expiration, recycleThis));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} finally {
 			s_recycle(recycleThis);
 		}
@@ -1194,7 +1194,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setForeignDN(dn);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1210,7 +1210,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setGroupList(toDominoFriendly(groups, getAncestorSession(), recycleThis));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} finally {
 			s_recycle(recycleThis);
 		}
@@ -1226,7 +1226,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setIDType(type);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1240,7 +1240,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setMailACLManager(name);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1254,7 +1254,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setMailCreateFTIndex(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1268,7 +1268,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setMailInternetAddress(address);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1282,7 +1282,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setMailOwnerAccess(access);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1296,7 +1296,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setMailQuotaSizeLimit(limit);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1310,7 +1310,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setMailQuotaWarningThreshold(threshold);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1326,7 +1326,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setMailReplicaServers(toDominoFriendly(servers, getAncestorSession(), recycleThis));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} finally {
 			s_recycle(recycleThis);
 		}
@@ -1342,7 +1342,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setMailSystem(system);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1356,7 +1356,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setMailTemplateName(name);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1370,7 +1370,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setMinPasswordLength(length);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1384,7 +1384,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setNoIDFile(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1398,7 +1398,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setNorthAmerican(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1412,7 +1412,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setOrgUnit(unit);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1426,7 +1426,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setPolicyName(name);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1440,7 +1440,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setPublicKeySize(size);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1454,7 +1454,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setRegistrationLog(name);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1468,7 +1468,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setRegistrationServer(server);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1482,7 +1482,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setRoamingCleanupPeriod(period);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1496,7 +1496,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setRoamingCleanupSetting(setting);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1510,7 +1510,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setRoamingServer(server);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1524,7 +1524,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setRoamingSubdir(dirPath);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1538,7 +1538,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setRoamingUser(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1552,7 +1552,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setShortName(shortName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1566,7 +1566,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setStoreIDInAddressBook(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1580,7 +1580,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setStoreIDInMailfile(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1594,7 +1594,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setSynchInternetPassword(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1608,7 +1608,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setUpdateAddressBook(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1622,7 +1622,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			getDelegate().setUseCertificateAuthority(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -1636,7 +1636,7 @@ public class Registration extends BaseNonThreadSafe<org.openntf.domino.Registrat
 		try {
 			return getDelegate().switchToID(idFile, userPassword);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}

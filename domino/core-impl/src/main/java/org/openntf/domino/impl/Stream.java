@@ -24,7 +24,7 @@ import lotus.domino.NotesException;
 
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -58,7 +58,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			getDelegate().close();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -72,7 +72,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			return getDelegate().getBytes();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -87,7 +87,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			return getDelegate().getCharset();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -102,7 +102,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			getDelegate().getContents(stream);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -116,7 +116,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			getDelegate().getContents(writer);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -138,7 +138,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			return getDelegate().getPosition();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -153,7 +153,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			return getDelegate().isEOS();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -168,7 +168,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			return getDelegate().isReadOnly();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -183,7 +183,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			return getDelegate().open(pathName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -198,7 +198,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			return getDelegate().open(pathName, charSet);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -213,7 +213,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			return getDelegate().read();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -228,7 +228,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			return getDelegate().read(length);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -243,7 +243,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			return getDelegate().readText();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -258,7 +258,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			return getDelegate().readText(length);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -273,7 +273,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			return getDelegate().readText(length, eolType);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -288,7 +288,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			getDelegate().setContents(stream);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -302,7 +302,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			getDelegate().setContents(reader);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -316,7 +316,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			getDelegate().setPosition(position);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -330,7 +330,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			getDelegate().truncate();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -344,7 +344,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			return getDelegate().write(buffer);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -359,7 +359,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			return getDelegate().writeText(text);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -374,7 +374,7 @@ public class Stream extends BaseNonThreadSafe<org.openntf.domino.Stream, lotus.d
 		try {
 			return getDelegate().writeText(text, eolType);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}

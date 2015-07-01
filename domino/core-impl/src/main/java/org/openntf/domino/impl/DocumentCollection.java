@@ -30,7 +30,7 @@ import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.ext.NoteClass;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -98,7 +98,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			return getDelegate().getCount();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 
 		}
@@ -114,7 +114,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			return getDelegate().getQuery();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -140,7 +140,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			return fromLotus(getDelegate().getFirstDocument(), Document.SCHEMA, getParentDatabase());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -156,7 +156,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			return fromLotus(getDelegate().getLastDocument(), Document.SCHEMA, getParentDatabase());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -172,7 +172,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			return fromLotus(getDelegate().getNextDocument(toLotus(doc)), Document.SCHEMA, getParentDatabase());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -188,7 +188,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			return fromLotus(getDelegate().getPrevDocument(toLotus(doc)), Document.SCHEMA, getParentDatabase());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -207,7 +207,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			return fromLotus(getDelegate().getNthDocument(n), Document.SCHEMA, getParentDatabase());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -223,7 +223,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			return fromLotus(getDelegate().getNextDocument(), Document.SCHEMA, getParentDatabase());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -239,7 +239,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			return fromLotus(getDelegate().getPrevDocument(), Document.SCHEMA, getParentDatabase());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -255,7 +255,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			return fromLotus(getDelegate().getDocument(toLotus(doc)), Document.SCHEMA, getParentDatabase());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -271,7 +271,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().addDocument(toLotus(doc));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -286,7 +286,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().addDocument(toLotus(doc), checkDups);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -301,7 +301,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().deleteDocument(toLotus(doc));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -316,7 +316,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().FTSearch(query);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -331,7 +331,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().FTSearch(query, maxDocs);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -351,7 +351,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 			}
 			return sorted_;
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 
 		}
@@ -371,7 +371,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().putAllInFolder(folderName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -386,7 +386,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().putAllInFolder(folderName, createOnFail);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -401,7 +401,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().removeAll(force);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -416,7 +416,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().removeAllFromFolder(folderName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -432,7 +432,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().stampAll(itemName, toItemFriendly(value, getAncestorSession(), recycleThis));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} finally {
 			s_recycle(recycleThis);
 		}
@@ -453,7 +453,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 				doc.save();
 			}
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} finally {
 			s_recycle(recycleThis);
 		}
@@ -469,7 +469,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().updateAll();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -484,7 +484,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			return fromLotus(getDelegate().getUntilTime(), DateTime.SCHEMA, getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 
 		}
@@ -500,7 +500,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().markAllRead(userName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -515,7 +515,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().markAllUnread(userName);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -530,7 +530,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().markAllRead();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -545,7 +545,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().markAllUnread();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -560,7 +560,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().intersect(noteId);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -575,7 +575,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().intersect(noteId);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -590,7 +590,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().intersect(toLotus(documents));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -605,7 +605,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().merge(noteId);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -620,7 +620,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().merge(noteId);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -635,7 +635,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().merge(toLotus(documents));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -650,7 +650,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().subtract(noteId);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -665,7 +665,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().subtract(noteId);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -680,7 +680,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			getDelegate().subtract(toLotus(documents));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 	}
@@ -695,7 +695,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			return getDelegate().contains(noteId);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 
 		}
@@ -711,7 +711,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			return getDelegate().contains(noteId);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -726,7 +726,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			return getDelegate().contains(toLotus(documents));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -741,7 +741,7 @@ public class DocumentCollection extends BaseNonThreadSafe<org.openntf.domino.Doc
 		try {
 			return fromLotus(getDelegate().cloneCollection(), DocumentCollection.SCHEMA, getAncestorDatabase());
 		} catch (Throwable t) {
-			DominoUtils.handleException(t);
+			ODAUtils.handleException(t);
 			return null;
 		}
 	}

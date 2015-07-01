@@ -23,9 +23,9 @@ import org.openntf.domino.commons.ILifeCycle;
 import org.openntf.domino.commons.IO;
 import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.session.ISessionFactory;
-import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * The Class DominoThread extends the NotesThread and clones the current SessionFactory.
@@ -159,7 +159,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 			//until the Executor is shutdown or the keep alive expires.
 		} catch (Throwable t) {
 			t.printStackTrace();
-			DominoUtils.handleException(t);
+			ODAUtils.handleException(t);
 		}
 	}
 

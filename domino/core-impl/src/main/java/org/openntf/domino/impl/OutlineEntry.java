@@ -23,7 +23,7 @@ import org.openntf.domino.Outline;
 import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -59,7 +59,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().getAlias();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -74,7 +74,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return fromLotus(getDelegate().getDatabase(), Database.SCHEMA, getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -89,7 +89,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return fromLotus(getDelegate().getDocument(), Document.SCHEMA, parent.getParentDatabase());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -104,7 +104,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().getEntryClass();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -119,7 +119,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().getFormula();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -134,7 +134,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().getFrameText();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -149,7 +149,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().getHideFormula();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -164,7 +164,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().getImagesText();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -179,7 +179,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().getKeepSelectionFocus();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -194,7 +194,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().getLabel();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -209,7 +209,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().getLevel();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -224,7 +224,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().getNamedElement();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -257,7 +257,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().getType();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -280,7 +280,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().getURL();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -295,7 +295,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().getUseHideFormula();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -310,7 +310,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return fromLotus(getDelegate().getView(), View.SCHEMA, getAncestorDatabase());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -325,7 +325,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().hasChildren();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -340,7 +340,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().isHidden();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -355,7 +355,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().isHiddenFromNotes();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -370,7 +370,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().isHiddenFromWeb();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -385,7 +385,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().isInThisDB();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -400,7 +400,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().isPrivate();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -415,7 +415,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().setAction(action);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -430,7 +430,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			getDelegate().setAlias(alias);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -444,7 +444,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			getDelegate().setFrameText(frameText);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -458,7 +458,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			getDelegate().setHidden(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -472,7 +472,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			getDelegate().setHiddenFromNotes(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -486,7 +486,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			getDelegate().setHiddenFromWeb(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -500,7 +500,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			getDelegate().setHideFormula(formula);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -514,7 +514,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			getDelegate().setImagesText(imagesText);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -528,7 +528,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			getDelegate().setKeepSelectionFocus(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -542,7 +542,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			getDelegate().setLabel(label);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -556,7 +556,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().setNamedElement(toLotus(db), elementName, entryClass);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -571,7 +571,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().setNoteLink(toLotus(db));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -586,7 +586,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().setNoteLink(toLotus(doc));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -601,7 +601,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().setNoteLink(toLotus(view));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -616,7 +616,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			return getDelegate().setURL(url);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -631,7 +631,7 @@ public class OutlineEntry extends BaseNonThreadSafe<org.openntf.domino.OutlineEn
 		try {
 			getDelegate().setUseHideFormula(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

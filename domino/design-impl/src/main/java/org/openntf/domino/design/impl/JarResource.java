@@ -24,7 +24,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.logging.Logger;
 
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 import com.ibm.commons.util.io.ByteStreamCache;
 
@@ -69,7 +69,7 @@ public final class JarResource extends AbstractDesignNapiFileResource implements
 
 			return classData;
 		} catch (IOException ioe) {
-			DominoUtils.handleException(ioe);
+			ODAUtils.handleException(ioe);
 			return null;
 		}
 	}

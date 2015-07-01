@@ -23,7 +23,7 @@ import lotus.domino.NotesException;
 
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -57,7 +57,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			getDelegate().close();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			return getDelegate().getNumActions();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return 0;
 		}
 	}
@@ -86,7 +86,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			return getDelegate().getNumErrors();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return 0;
 		}
 	}
@@ -111,7 +111,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			return getDelegate().getProgramName();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return null;
 		}
 	}
@@ -126,7 +126,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			return getDelegate().isLogActions();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return false;
 		}
 	}
@@ -141,7 +141,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			return getDelegate().isLogErrors();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return false;
 		}
 	}
@@ -156,7 +156,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			return getDelegate().isOverwriteFile();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return false;
 		}
 	}
@@ -171,7 +171,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			getDelegate().logAction(action);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -185,7 +185,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			getDelegate().logError(code, text);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -199,7 +199,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			getDelegate().logEvent(text, queue, event, severity);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -213,7 +213,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			getDelegate().openAgentLog();
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -227,7 +227,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			getDelegate().openFileLog(filePath);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -244,7 +244,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 			java.util.Vector v = toDominoFriendly(recipients, getAncestorSession(), recycleThis);
 			getDelegate().openMailLog(v, subject);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		} finally {
 			s_recycle(recycleThis);
 		}
@@ -260,7 +260,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			getDelegate().openNotesLog(server, db);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -274,7 +274,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			getDelegate().setLogActions(flag);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -288,7 +288,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			getDelegate().setLogErrors(flag);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -302,7 +302,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			getDelegate().setOverwriteFile(flag);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -316,7 +316,7 @@ public class Log extends BaseNonThreadSafe<org.openntf.domino.Log, lotus.domino.
 		try {
 			getDelegate().setProgramName(name);
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 

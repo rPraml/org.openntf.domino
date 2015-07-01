@@ -15,7 +15,7 @@
  * 
  */
 
-package org.openntf.domino.design.impl;
+package org.openntf.domino.design.impl.vfs;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -25,11 +25,12 @@ import java.util.logging.Logger;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
+import org.openntf.domino.commons.ServiceLocator;
+import org.openntf.domino.design.DatabaseDesignService;
 import org.openntf.domino.design.DesignBase;
 import org.openntf.domino.design.DesignCollection;
-import org.openntf.domino.design.VFSNode;
 import org.openntf.domino.design.sync.OnDiskDesign;
-import org.openntf.domino.helpers.DatabaseMetaData;
+import org.openntf.domino.design.vfs.VFSNode;
 import org.openntf.domino.utils.Factory.SessionType;
 
 import com.ibm.designer.domino.napi.NotesSession;
@@ -40,12 +41,12 @@ import com.ibm.designer.domino.napi.NotesSession;
  * @author Roland Praml, FOCONIS AG
  *
  */
-public class VFSDatabaseNode extends VFSAbstractNode<DesignBase> implements org.openntf.domino.design.VFSDatabaseNode {
+public class VFSDatabaseNode extends VFSAbstractNode<DesignBase> implements org.openntf.domino.design.vfs.VFSDatabaseNode {
 	public static final Logger log_ = Logger.getLogger(VFSDatabaseNode.class.getName());
 	private static final long serialVersionUID = 1L;
-	private DatabaseMetaData metaData;
+	private Database.MetaData metaData;
 
-	public VFSDatabaseNode(final VFSNode parent, final String name, final DatabaseMetaData md) {
+	public VFSDatabaseNode(final VFSNode parent, final String name, final Database.MetaData md) {
 		super(parent, name);
 		this.metaData = md;
 	}
@@ -116,7 +117,9 @@ public class VFSDatabaseNode extends VFSAbstractNode<DesignBase> implements org.
 
 	@Override
 	protected void init() {
-		DesignCollection<DesignBase> coll = getDatabase().getDesign().getDesignElements();
+		DatabaseDesignService service = ServiceLocator.findApplicationService(DatabaseDesignService.class);
+		service.getDatabaseDesign(getDatabase()).flush();
+		DesignCollection<DesignBase> coll = service.getDatabaseDesign(getDatabase()).getDesignElements();
 		for (DesignBase el : coll) {
 			String fileName = OnDiskDesign.getOnDiskPath(el);
 			String[] components = fileName.split("/");
@@ -139,7 +142,8 @@ public class VFSDatabaseNode extends VFSAbstractNode<DesignBase> implements org.
 
 	@Override
 	public void refresh() {
-		getDatabase().getDesign().flush();
+		DatabaseDesignService service = ServiceLocator.findApplicationService(DatabaseDesignService.class);
+		service.getDatabaseDesign(getDatabase()).flush();
 		clear();
 	}
 

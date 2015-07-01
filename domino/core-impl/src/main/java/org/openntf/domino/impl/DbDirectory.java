@@ -37,7 +37,7 @@ import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Legacy;
 import org.openntf.domino.ext.Session.Fixes;
 import org.openntf.domino.types.Encapsulated;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -76,7 +76,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 			name_ = delegate.getName();
 			clusterName_ = delegate.getClusterName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		//dbHolderSet_ = new ConcurrentSkipListSet<Database.MetaData>(Database.MetaData.FILEPATH_COMPARATOR);
 		type_ = Type.TEMPLATE_CANDIDATE;
@@ -267,7 +267,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 		try {
 			return fromLotus(getDelegate().createDatabase(dbFile), Database.SCHEMA, getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -295,7 +295,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 				result = getAncestorSession().getDatabase(getName(), dbFile);
 				return result;
 			} else {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 				return null;
 			}
 		}
@@ -321,7 +321,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 		try {
 			return getDelegate().getClusterName(server);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -385,7 +385,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 		//		try {
 		//			return fromLotus(getDelegate().getNextDatabase(), Database.SCHEMA, getAncestorSession());
 		//		} catch (NotesException e) {
-		//			DominoUtils.handleException(e);
+		//			ODAUtils.handleException(e);
 		//			return null;
 		//		}
 	}
@@ -545,7 +545,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 
 			setDelegate(dir, true);
 		} catch (Exception e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -582,7 +582,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 		try {
 			return getMetaDataSet().add(new Database.MetaData(db));
 		} catch (NotesException ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 			return false;
 		}
 	}
@@ -613,7 +613,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 			try {
 				return getMetaDataSet().contains(new Database.MetaData((Database) obj));
 			} catch (NotesException ne) {
-				DominoUtils.handleException(ne);
+				ODAUtils.handleException(ne);
 				return false;
 			}
 		} else {
@@ -642,7 +642,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 			try {
 				return getMetaDataSet().remove(new Database.MetaData((Database) obj));
 			} catch (NotesException ne) {
-				DominoUtils.handleException(ne);
+				ODAUtils.handleException(ne);
 				return false;
 			}
 		} else {
@@ -670,7 +670,7 @@ public class DbDirectory extends BaseNonThreadSafe<org.openntf.domino.DbDirector
 				try {
 					holders.add(new Database.MetaData((Database) obj));
 				} catch (NotesException ne) {
-					DominoUtils.handleException(ne);
+					ODAUtils.handleException(ne);
 					return false;
 				}
 			}

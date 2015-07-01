@@ -19,7 +19,7 @@ import lotus.domino.NotesException;
 
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -54,7 +54,7 @@ public class ColorObject extends BaseNonThreadSafe<org.openntf.domino.ColorObjec
 		try {
 			return getDelegate().getBlue();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -69,7 +69,7 @@ public class ColorObject extends BaseNonThreadSafe<org.openntf.domino.ColorObjec
 		try {
 			return getDelegate().getGreen();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -84,7 +84,7 @@ public class ColorObject extends BaseNonThreadSafe<org.openntf.domino.ColorObjec
 		try {
 			return getDelegate().getHue();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -99,7 +99,7 @@ public class ColorObject extends BaseNonThreadSafe<org.openntf.domino.ColorObjec
 		try {
 			return getDelegate().getLuminance();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -114,7 +114,7 @@ public class ColorObject extends BaseNonThreadSafe<org.openntf.domino.ColorObjec
 		try {
 			return getDelegate().getNotesColor();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -137,7 +137,7 @@ public class ColorObject extends BaseNonThreadSafe<org.openntf.domino.ColorObjec
 		try {
 			return getDelegate().getRed();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -152,7 +152,7 @@ public class ColorObject extends BaseNonThreadSafe<org.openntf.domino.ColorObjec
 		try {
 			return getDelegate().getSaturation();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -175,7 +175,7 @@ public class ColorObject extends BaseNonThreadSafe<org.openntf.domino.ColorObjec
 		try {
 			return getDelegate().setHSL(hue, saturation, luminance);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -190,7 +190,7 @@ public class ColorObject extends BaseNonThreadSafe<org.openntf.domino.ColorObjec
 		try {
 			getDelegate().setNotesColor(notesColor);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -204,7 +204,7 @@ public class ColorObject extends BaseNonThreadSafe<org.openntf.domino.ColorObjec
 		try {
 			return getDelegate().setRGB(red, green, blue);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}

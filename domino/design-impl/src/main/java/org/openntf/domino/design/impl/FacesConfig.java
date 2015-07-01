@@ -76,11 +76,11 @@ public class FacesConfig extends XspXmlContent implements org.openntf.domino.des
 	//		try {
 	//			getXml().loadString("<faces-config/>");
 	//		} catch (SAXException e) {
-	//			DominoUtils.handleException(e);
+	//			ODAUtils.handleException(e);
 	//		} catch (IOException e) {
-	//			DominoUtils.handleException(e);
+	//			ODAUtils.handleException(e);
 	//		} catch (ParserConfigurationException e) {
-	//			DominoUtils.handleException(e);
+	//			ODAUtils.handleException(e);
 	//		}
 	//	}
 

@@ -110,7 +110,7 @@ public abstract class AbstractXspResource extends AbstractDesignNapiFileResource
 		//			try {
 		//				setFileDataRaw("$ClassData" + index, new ByteArrayInputStream(classEntry.getValue()));
 		//			} catch (IOException e) {
-		//				DominoUtils.handleException(e);
+		//				ODAUtils.handleException(e);
 		//			}
 		//
 		//			XMLNode name = indexNode.addChildElement("text");

@@ -32,7 +32,7 @@ import org.openntf.domino.Document;
 import org.openntf.domino.MIMEHeader;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.xml.sax.InputSource;
 
 // TODO: Auto-generated Javadoc
@@ -115,7 +115,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return fromLotusMimeEntity(getDelegate().createChildEntity());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -131,7 +131,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return fromLotusMimeEntity(getDelegate().createChildEntity(toLotus(nextSibling)));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -147,7 +147,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return track(fromLotus(getDelegate().createHeader(headerName), MIMEHeader.SCHEMA, this));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -163,7 +163,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return fromLotusMimeEntity(getDelegate().createParentEntity());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -179,7 +179,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			getDelegate().decodeContent();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -194,7 +194,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			getDelegate().encodeContent(encoding);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -208,7 +208,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return getDelegate().getBoundaryEnd();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -223,7 +223,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return getDelegate().getBoundaryStart();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -238,7 +238,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return getDelegate().getCharset();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -253,7 +253,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			getDelegate().getContentAsBytes(toLotus(stream));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -267,7 +267,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			getDelegate().getContentAsBytes(toLotus(stream), decoded);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -281,7 +281,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return getDelegate().getContentAsText();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -296,7 +296,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			getDelegate().getContentAsText(toLotus(stream));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -310,7 +310,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			getDelegate().getContentAsText(toLotus(stream), decoded);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -324,7 +324,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return getDelegate().getContentSubType();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -339,7 +339,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return getDelegate().getContentType();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -354,7 +354,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return getDelegate().getEncoding();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -369,7 +369,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			getDelegate().getEntityAsText(toLotus(stream));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -384,7 +384,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			getDelegate().getEntityAsText(toLotus(stream), headerFilters);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -399,7 +399,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			getDelegate().getEntityAsText(toLotus(stream), headerFilters, inclusive);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -413,7 +413,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return fromLotusMimeEntity(getDelegate().getFirstChildEntity());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -428,7 +428,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return track(fromLotusAsVector(getDelegate().getHeaderObjects(), MIMEHeader.SCHEMA, this));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -443,7 +443,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return getDelegate().getHeaders();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -458,7 +458,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return getDelegate().getInputSource();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -473,7 +473,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return getDelegate().getInputStream();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -488,7 +488,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return fromLotusMimeEntity(getDelegate().getNextEntity());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -503,7 +503,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return fromLotusMimeEntity(getDelegate().getNextEntity(search));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -518,7 +518,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return fromLotusMimeEntity(getDelegate().getNextSibling());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -533,7 +533,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return track(fromLotus(getDelegate().getNthHeader(headerName), MIMEHeader.SCHEMA, this));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -548,7 +548,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return track(fromLotus(getDelegate().getNthHeader(headerName, instance), MIMEHeader.SCHEMA, this));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -571,7 +571,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return fromLotusMimeEntity(getDelegate().getParentEntity());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -586,7 +586,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return getDelegate().getPreamble();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -601,7 +601,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return fromLotusMimeEntity(getDelegate().getPrevEntity());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -616,7 +616,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return fromLotusMimeEntity(getDelegate().getPrevEntity(search));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -631,7 +631,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return fromLotusMimeEntity(getDelegate().getPrevSibling());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -646,7 +646,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return getDelegate().getReader();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -661,7 +661,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return getDelegate().getSomeHeaders();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -681,7 +681,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 			result = getDelegate().getSomeHeaders(v);
 			return result;
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		} finally {
 			s_recycle(recycleThis);
@@ -704,7 +704,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 			s_recycle(recycleThis);
 			return result;
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -719,7 +719,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			return getDelegate().parseXML(validate);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -735,7 +735,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			getDelegate().remove();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -756,7 +756,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			getDelegate().setContentFromBytes(toLotus(stream), contentType, encoding);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -771,7 +771,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			getDelegate().setContentFromText(toLotus(stream), contentType, encoding);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -786,7 +786,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			getDelegate().setPreamble(preamble);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -800,7 +800,7 @@ public class MIMEEntity extends BaseNonThreadSafe<org.openntf.domino.MIMEEntity,
 		try {
 			getDelegate().transformXML(style, result);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

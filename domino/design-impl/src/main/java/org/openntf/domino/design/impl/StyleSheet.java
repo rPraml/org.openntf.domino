@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 import org.openntf.domino.Document;
 import org.openntf.domino.design.DxlConverter;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * @author jgallagher
@@ -42,7 +42,7 @@ public final class StyleSheet extends AbstractDesignNapiFileResource implements 
 			return new String(bos.toByteArray(), "UTF-8");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}

@@ -26,7 +26,7 @@ import org.openntf.domino.Database;
 import org.openntf.domino.Name;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -57,7 +57,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().disableRole(role);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().enableRole(role);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -85,7 +85,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().getLevel();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return ACL.LEVEL_NOACCESS;
 	}
@@ -100,7 +100,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().getName();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -115,7 +115,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return fromLotus(getDelegate().getNameObject(), Name.SCHEMA, getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -141,7 +141,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().getRoles();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -156,7 +156,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().getUserType();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return ACLEntry.TYPE_UNSPECIFIED;
 	}
@@ -171,7 +171,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().isAdminReaderAuthor();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -186,7 +186,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().isAdminServer();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -201,7 +201,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().isCanCreateDocuments();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -216,7 +216,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().isCanCreateLSOrJavaAgent();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -231,7 +231,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().isCanCreatePersonalAgent();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -246,7 +246,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().isCanCreatePersonalFolder();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -261,7 +261,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().isCanCreateSharedFolder();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -276,7 +276,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().isCanDeleteDocuments();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -291,7 +291,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().isCanReplicateOrCopyDocuments();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -306,7 +306,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().isGroup();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -321,7 +321,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().isPerson();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -336,7 +336,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().isPublicReader();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -351,7 +351,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().isPublicWriter();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -366,7 +366,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().isRoleEnabled(role);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -381,7 +381,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			return getDelegate().isServer();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -396,7 +396,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().remove();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -410,7 +410,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setAdminReaderAuthor(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -424,7 +424,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setAdminServer(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -438,7 +438,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setCanCreateDocuments(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -452,7 +452,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setCanCreateLSOrJavaAgent(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -466,7 +466,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setCanCreatePersonalAgent(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -480,7 +480,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setCanCreatePersonalFolder(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -494,7 +494,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setCanCreateSharedFolder(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -508,7 +508,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setCanDeleteDocuments(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -522,7 +522,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setCanReplicateOrCopyDocuments(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -536,7 +536,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setGroup(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -550,7 +550,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setLevel(level);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -572,7 +572,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setName(name);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -588,7 +588,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setName(toLotus(n, recycleThis));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} finally {
 			s_recycle(recycleThis);
 		}
@@ -604,7 +604,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setPerson(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -618,7 +618,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setPublicReader(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -632,7 +632,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setPublicWriter(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -646,7 +646,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setServer(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -660,7 +660,7 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 		try {
 			getDelegate().setUserType(tp);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

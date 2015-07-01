@@ -25,7 +25,7 @@ import org.openntf.domino.Document;
 import org.openntf.domino.NotesCalendar;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -60,7 +60,7 @@ public class NotesCalendarNotice extends
 		try {
 			getDelegate().accept(comments);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -72,7 +72,7 @@ public class NotesCalendarNotice extends
 		try {
 			getDelegate().acceptCounter(comments);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -88,7 +88,7 @@ public class NotesCalendarNotice extends
 			lotus.domino.DateTime dt2 = toLotus(end, recycleThis);
 			getDelegate().counter(comments, dt1, dt2);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} finally {
 			s_recycle(recycleThis);
 		}
@@ -107,7 +107,7 @@ public class NotesCalendarNotice extends
 			lotus.domino.DateTime dt2 = toLotus(end, recycleThis);
 			getDelegate().counter(comments, dt1, dt2, keepPlaceholder);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} finally {
 			s_recycle(recycleThis);
 		}
@@ -121,7 +121,7 @@ public class NotesCalendarNotice extends
 		try {
 			getDelegate().decline(comments);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -133,7 +133,7 @@ public class NotesCalendarNotice extends
 		try {
 			getDelegate().decline(comments, keepInformed);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -145,7 +145,7 @@ public class NotesCalendarNotice extends
 		try {
 			getDelegate().declineCounter(comments);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -157,7 +157,7 @@ public class NotesCalendarNotice extends
 		try {
 			getDelegate().delegate(commentsToOrganizer, delegateTo);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -169,7 +169,7 @@ public class NotesCalendarNotice extends
 		try {
 			getDelegate().delegate(commentsToOrganizer, delegateTo, keepInformed);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -181,7 +181,7 @@ public class NotesCalendarNotice extends
 		try {
 			return fromLotus(getDelegate().getAsDocument(), Document.SCHEMA, null);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -194,7 +194,7 @@ public class NotesCalendarNotice extends
 		try {
 			return getDelegate().getNoteID();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -207,7 +207,7 @@ public class NotesCalendarNotice extends
 		try {
 			return fromLotusAsVector(getDelegate().getOutstandingInvitations(), org.openntf.domino.NotesCalendarNotice.SCHEMA, parent);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -228,7 +228,7 @@ public class NotesCalendarNotice extends
 		try {
 			return getDelegate().getUNID();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -241,7 +241,7 @@ public class NotesCalendarNotice extends
 		try {
 			return getDelegate().isOverwriteCheckEnabled();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return false;
 		}
 	}
@@ -254,7 +254,7 @@ public class NotesCalendarNotice extends
 		try {
 			return getDelegate().read();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -267,7 +267,7 @@ public class NotesCalendarNotice extends
 		try {
 			getDelegate().removeCancelled();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -279,7 +279,7 @@ public class NotesCalendarNotice extends
 		try {
 			getDelegate().requestInfo(comments);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -291,7 +291,7 @@ public class NotesCalendarNotice extends
 		try {
 			getDelegate().sendUpdatedInfo(comments);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -303,7 +303,7 @@ public class NotesCalendarNotice extends
 		try {
 			getDelegate().setOverwriteCheckEnabled(flag);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -315,7 +315,7 @@ public class NotesCalendarNotice extends
 		try {
 			getDelegate().tentativelyAccept(comments);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

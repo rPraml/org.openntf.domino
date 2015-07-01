@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openntf.domino.NoteCollection;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -69,7 +69,7 @@ public class NoteIterator implements Iterator<String> {
 					}
 				}
 			} catch (Throwable t) {
-				DominoUtils.handleException(t);
+				ODAUtils.handleException(t);
 			}
 		} else {
 			if (log_.isLoggable(Level.WARNING)) {

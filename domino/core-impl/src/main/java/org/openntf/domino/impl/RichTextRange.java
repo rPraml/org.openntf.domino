@@ -24,7 +24,7 @@ import org.openntf.domino.RichTextNavigator;
 import org.openntf.domino.RichTextStyle;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -59,7 +59,7 @@ public class RichTextRange extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return fromLotus(getDelegate().Clone(), RichTextRange.SCHEMA, parent);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -77,7 +77,7 @@ public class RichTextRange extends BaseNonThreadSafe<org.openntf.domino.RichText
 			if (result > 0)
 				markDirty();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return result;
 	}
@@ -95,7 +95,7 @@ public class RichTextRange extends BaseNonThreadSafe<org.openntf.domino.RichText
 			if (result > 0)
 				markDirty();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return result;
 	}
@@ -110,7 +110,7 @@ public class RichTextRange extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return fromLotus(getDelegate().getNavigator(), RichTextNavigator.SCHEMA, parent);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -133,7 +133,7 @@ public class RichTextRange extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return fromLotus(getDelegate().getStyle(), RichTextStyle.SCHEMA, getAncestorSession());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -148,7 +148,7 @@ public class RichTextRange extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return getDelegate().getTextParagraph();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -163,7 +163,7 @@ public class RichTextRange extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return getDelegate().getTextRun();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}
@@ -178,7 +178,7 @@ public class RichTextRange extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			return getDelegate().getType();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return 0;
 		}
 	}
@@ -194,7 +194,7 @@ public class RichTextRange extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			getDelegate().remove();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -208,7 +208,7 @@ public class RichTextRange extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			getDelegate().reset(begin, end);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -222,7 +222,7 @@ public class RichTextRange extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			getDelegate().setBegin(toLotus(element));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -236,7 +236,7 @@ public class RichTextRange extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			getDelegate().setEnd(toLotus(element));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -251,7 +251,7 @@ public class RichTextRange extends BaseNonThreadSafe<org.openntf.domino.RichText
 		try {
 			getDelegate().setStyle(toLotus(style));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

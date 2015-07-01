@@ -41,7 +41,7 @@ import org.openntf.domino.DxlImporter;
 import org.openntf.domino.View;
 import org.openntf.domino.ViewEntry;
 import org.openntf.domino.ViewEntryCollection;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.xml.XMLDocument;
 import org.xml.sax.SAXException;
 
@@ -151,11 +151,11 @@ public class SyncDocumentsTask extends SyncTask<DocumentWrapper, OnDiskDocument>
 			((lotus.domino.Document) doc).recycle();
 			docWrapper.setDocument(getDb().getDocumentByUNID(unid));
 		} catch (SAXException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} catch (ParserConfigurationException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 
@@ -167,12 +167,12 @@ public class SyncDocumentsTask extends SyncTask<DocumentWrapper, OnDiskDocument>
 			try {
 				transformer.transform(source, result);
 			} catch (TransformerException e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 			}
 			return result.getWriter().toString();
 
 		} catch (Exception e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -195,9 +195,9 @@ public class SyncDocumentsTask extends SyncTask<DocumentWrapper, OnDiskDocument>
 				pw.close();
 			}
 		} catch (ParserConfigurationException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} catch (SAXException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 
 	}

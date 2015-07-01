@@ -37,8 +37,8 @@ import org.openntf.domino.design.DesignView;
 import org.openntf.domino.design.FileResourceWebContent;
 import org.openntf.domino.design.XspResource;
 import org.openntf.domino.ext.NoteClass;
-import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
+import org.openntf.domino.utils.ODAUtils;
 
 import com.ibm.commons.util.io.ByteStreamCache;
 
@@ -420,7 +420,7 @@ public class DatabaseDesign implements org.openntf.domino.design.DatabaseDesign 
 					res.getFileData(bsc.getOutputStream());
 					props.load(bsc.getInputStream());
 				} catch (IOException e) {
-					DominoUtils.handleException(e);
+					ODAUtils.handleException(e);
 				}
 			}
 		}
@@ -618,7 +618,7 @@ public class DatabaseDesign implements org.openntf.domino.design.DatabaseDesign 
 
 	@SuppressWarnings("unchecked")
 	public <T extends DesignBase> T getDesignElement(final Class<T> type, final String name, final boolean create) {
-		if (DominoUtils.isUnid(name)) {
+		if (ODAUtils.isUnid(name)) {
 			Document doc = database_.getDocumentByUNID(name);
 			return (T) DesignFactory.fromDocument(doc);
 		}
