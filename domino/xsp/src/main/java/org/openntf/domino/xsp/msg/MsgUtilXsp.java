@@ -22,9 +22,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
-import org.openntf.domino.AsDocMap;
+import org.openntf.domino.commons.AsDocMap;
 import org.openntf.domino.commons.i18n.MessageProviderAbstract;
-import org.openntf.domino.i18n.MessageProvider;
+import org.openntf.domino.i18n.impl.MessageProvider;
 import org.openntf.domino.xsp.model.DominoDocumentMapAdapter;
 
 import com.ibm.xsp.component.UIViewRootEx;

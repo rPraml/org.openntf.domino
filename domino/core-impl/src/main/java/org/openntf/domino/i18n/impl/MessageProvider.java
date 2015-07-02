@@ -14,11 +14,12 @@
  * permissions and limitations under the License.
  * 
  */
-package org.openntf.domino.i18n;
+package org.openntf.domino.i18n.impl;
 
 import java.util.List;
 import java.util.Locale;
 
+import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.i18n.MessageProviderAbstract;
 import org.openntf.domino.commons.i18n.RawMessageProviderAbstract;
 import org.openntf.domino.utils.Factory;
@@ -31,15 +32,15 @@ public class MessageProvider extends MessageProviderAbstract {
 
 	@Override
 	protected MessageProviderAbstract getMessageProvider() {
-		List<MessageProvider> msgProv = Factory.findApplicationServices(MessageProvider.class);
+		List<MessageProviderAbstract> msgProv = ServiceLocator.findApplicationServices(MessageProviderAbstract.class);
 		if (msgProv.size() == 0)
 			throw new IllegalStateException("No MessageProvider service found");
-		return msgProv.get(0); // we take the first one.
+		return msgProv.get(0); // we take the first one. 
 	}
 
 	@Override
 	protected List<RawMessageProviderAbstract> findRawMessageProviders() {
-		return Factory.findApplicationServices(RawMessageProviderAbstract.class);
+		return ServiceLocator.findApplicationServices(RawMessageProviderAbstract.class);
 	}
 
 	@Override

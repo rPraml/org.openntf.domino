@@ -9,4 +9,19 @@
             type="org.openntf.domino.WrapperFactory">
       </service>
    </extension>
+    <extension
+         point="com.ibm.commons.Extension">
+      <service
+            class="org.openntf.domino.i18n.impl.FormulaMessageProvider"
+            type="org.openntf.domino.commons.i18n.MessageProviderAbstract">
+      </service>
+   </extension>
+   <extension
+         point="com.ibm.commons.Extension">
+      <service
+            class="org.openntf.domino.i18n.impl.RawMessageProviderImpl"
+            type="org.openntf.domino.commons.i18n.RawMessageProviderAbstract">
+      </service>
+
+   </extension>
 </plugin>
