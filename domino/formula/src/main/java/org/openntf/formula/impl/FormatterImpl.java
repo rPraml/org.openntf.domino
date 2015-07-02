@@ -29,7 +29,7 @@ import java.text.ParsePosition;
 import java.util.Date;
 import java.util.Locale;
 
-import org.openntf.formula.DateTime;
+import org.openntf.domino.commons.IDateTime;
 import org.openntf.formula.Formatter;
 
 import com.ibm.icu.text.DateFormat;
@@ -37,24 +37,27 @@ import com.ibm.icu.text.NumberFormat;
 import com.ibm.icu.text.SimpleDateFormat;
 import com.ibm.icu.util.Calendar;
 
-public class FormatterImpl implements Formatter {
+public class FormatterImpl extends Formatter {
 	private Locale iLocale;
 
 	public FormatterImpl(final Locale loc) {
 		iLocale = loc;
 	}
 
+	@Override
 	public Locale getLocale() {
 		return iLocale;
 	}
 
 	/*----------------------------------------------------------------------------*/
-	public DateTime getNewSDTInstance() {
+	@Override
+	public IDateTime getNewSDTInstance() {
 		return new DateTimeImpl(iLocale);
 	}
 
-	public DateTime getNewInitializedSDTInstance(final Date date, final boolean noDate, final boolean noTime) {
-		DateTime sdt = getNewSDTInstance();
+	@Override
+	public IDateTime getNewInitializedSDTInstance(final Date date, final boolean noDate, final boolean noTime) {
+		IDateTime sdt = getNewSDTInstance();
 		sdt.setLocalTime(date);
 		if (noDate)
 			sdt.setAnyDate();
@@ -63,33 +66,38 @@ public class FormatterImpl implements Formatter {
 		return sdt;
 	}
 
-	public DateTime getCopyOfSDTInstance(final DateTime sdt) {
+	@Override
+	public IDateTime getCopyOfSDTInstance(final IDateTime sdt) {
 		return getNewInitializedSDTInstance(sdt.toJavaDate(), sdt.isAnyDate(), sdt.isAnyTime());
 	}
 
 	/*----------------------------------------------------------------------------*/
-	public DateTime parseDate(final String image) {
+	@Override
+	public IDateTime parseDate(final String image) {
 		return parseDate(image, false);
 	}
 
-	public DateTime parseDate(final String image, final boolean parseLenient) {
-		DateTime ret = getNewSDTInstance();
+	@Override
+	public IDateTime parseDate(final String image, final boolean parseLenient) {
+		IDateTime ret = getNewSDTInstance();
 		ret.setLocalTime(image, parseLenient);
 		return ret;
 	}
 
-	public DateTime parseDateWithFormat(final String image, final String format, final boolean parseLenient) {
+	@Override
+	public IDateTime parseDateWithFormat(final String image, final String format, final boolean parseLenient) {
 		boolean[] noDT = new boolean[2];
 		Calendar cal = parseDateToCalWithFormat(image, format, noDT, parseLenient);
-		DateTime ret = getNewInitializedSDTInstance(cal.getTime(), noDT[0], noDT[1]);
+		IDateTime ret = getNewInitializedSDTInstance(cal.getTime(), noDT[0], noDT[1]);
 		return ret;
 	}
 
 	/*----------------------------------------------------------------------------*/
+	@Override
 	public Calendar parseDateToCal(String image, final boolean[] noDT, final boolean parseLenient) {
 		image = image.trim();
 		Calendar ret = getInstance(iLocale);
-		// Should an empty string lead to a DateTime with noDate=noTime=true?
+		// Should an empty string lead to a IDateTime with noDate=noTime=true?
 		// (Lotus doesn't accept empty strings here.)
 		char spec = 0;
 		if (image.equalsIgnoreCase("TODAY"))
@@ -191,6 +199,7 @@ public class FormatterImpl implements Formatter {
 	}
 
 	/*----------------------------------------------------------------------------*/
+	@Override
 	public Calendar parseDateToCalWithFormat(final String image, final String format, final boolean[] noDT, final boolean parseLenient) {
 		Calendar ret = getInstance(iLocale);
 		ret.setLenient(false);
@@ -234,10 +243,12 @@ public class FormatterImpl implements Formatter {
 	}
 
 	/*----------------------------------------------------------------------------*/
+	@Override
 	public Number parseNumber(final String image) {
 		return parseNumber(image, false);
 	}
 
+	@Override
 	public Number parseNumber(String image, final boolean lenient) {
 		image = image.trim();
 		if (!image.isEmpty()) {
@@ -259,11 +270,13 @@ public class FormatterImpl implements Formatter {
 	}
 
 	/*----------------------------------------------------------------------------*/
-	public String formatDateTime(final DateTime sdt) {
+	@Override
+	public String formatDateTime(final IDateTime sdt) {
 		return sdt.getLocalTime();
 	}
 
-	public String formatDateTime(final DateTime sdt, final LotusDateTimeOptions ldto) {
+	@Override
+	public String formatDateTime(final IDateTime sdt, final LotusDateTimeOptions ldto) {
 		if (ldto.nothingSet())
 			return formatDateTime(sdt);
 		String notSupported = "";
@@ -287,26 +300,31 @@ public class FormatterImpl implements Formatter {
 		return formatCalDateTime(cal, timeFormat);
 	}
 
+	@Override
 	public String formatCalDateTime(final Calendar cal) {
 		return formatCalDateTime(cal, TIMEFORMAT_MEDIUM);
 	}
 
+	@Override
 	public String formatCalDateTime(final Calendar cal, final int timeFormat) {
 		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, transTimeFormat(timeFormat), iLocale);
 		df.setCalendar(cal);
 		return df.format(cal.getTime());
 	}
 
+	@Override
 	public String formatCalDateOnly(final Calendar cal) {
 		DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, iLocale);
 		df.setCalendar(cal);
 		return df.format(cal.getTime());
 	}
 
+	@Override
 	public String formatCalTimeOnly(final Calendar cal) {
 		return formatCalTimeOnly(cal, TIMEFORMAT_MEDIUM);
 	}
 
+	@Override
 	public String formatCalTimeOnly(final Calendar cal, final int timeFormat) {
 		DateFormat df = DateFormat.getTimeInstance(transTimeFormat(timeFormat), iLocale);
 		df.setCalendar(cal);
@@ -321,7 +339,8 @@ public class FormatterImpl implements Formatter {
 		return DateFormat.LONG;
 	}
 
-	public String formatDateTimeWithFormat(final DateTime sdt, final String format) {
+	@Override
+	public String formatDateTimeWithFormat(final IDateTime sdt, final String format) {
 		Calendar cal = sdt.toJavaCal();
 		if (sdt.isAnyDate() || sdt.isAnyTime()) {
 			Calendar calCopy = (Calendar) cal.clone();
@@ -340,6 +359,7 @@ public class FormatterImpl implements Formatter {
 		return formatCalWithFormat(cal, format);
 	}
 
+	@Override
 	public String formatCalWithFormat(final Calendar cal, final String format) {
 		SimpleDateFormat sdf = new SimpleDateFormat(format, iLocale);
 		sdf.setCalendar(cal);
@@ -347,12 +367,14 @@ public class FormatterImpl implements Formatter {
 	}
 
 	/*----------------------------------------------------------------------------*/
+	@Override
 	public String formatNumber(final Number n) {
 		LotusNumberOptions lno = new LotusNumberOptions();
 		lno.setDefault();
 		return formatNumber(n, lno);
 	}
 
+	@Override
 	public String formatNumber(final Number n, final LotusNumberOptions lno) {
 		NumberFormat nf;
 		/*

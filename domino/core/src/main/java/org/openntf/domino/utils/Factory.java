@@ -15,30 +15,22 @@
  */
 package org.openntf.domino.utils;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.StringReader;
-import java.security.AccessControlException;
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import lotus.domino.NotesException;
-import lotus.notes.NotesThread;
+import lotus.domino.NotesThread;
 
 import org.openntf.domino.AutoMime;
 import org.openntf.domino.Base;
@@ -47,13 +39,19 @@ import org.openntf.domino.DocumentCollection;
 import org.openntf.domino.Session;
 import org.openntf.domino.Session.RunContext;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.commons.impl.NameParser;
-import org.openntf.domino.commons.utils.GitProperties;
-import org.openntf.domino.commons.utils.StringsUtils;
-import org.openntf.domino.exceptions.DataNotCompatibleException;
+import org.openntf.domino.commons.ILifeCycle;
+import org.openntf.domino.commons.IO;
+import org.openntf.domino.commons.IRequest;
+import org.openntf.domino.commons.IRequestLifeCycle;
+import org.openntf.domino.commons.LifeCycleManager;
+import org.openntf.domino.commons.Names;
+import org.openntf.domino.commons.ServiceLocator;
+import org.openntf.domino.commons.exception.DataNotCompatibleException;
+import org.openntf.domino.commons.utils.BundleInfos;
+import org.openntf.domino.commons.utils.CollectionUtils;
+import org.openntf.domino.commons.utils.ThreadUtils;
 import org.openntf.domino.exceptions.UndefinedDelegateTypeException;
 import org.openntf.domino.ext.Session.Fixes;
-import org.openntf.domino.logging.Logging;
 import org.openntf.domino.session.INamedSessionFactory;
 import org.openntf.domino.session.ISessionFactory;
 import org.openntf.domino.session.NamedSessionFactory;
@@ -63,8 +61,6 @@ import org.openntf.domino.session.SessionFullAccessFactory;
 import org.openntf.domino.session.TrustedSessionFactory;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.SessionDescendant;
-import org.openntf.service.IServiceLocator;
-import org.openntf.service.ServiceLocatorFinder;
 
 /**
  * The Enum Factory. Does the Mapping lotusObject <=> OpenNTF-Object
@@ -72,20 +68,9 @@ import org.openntf.service.ServiceLocatorFinder;
 public enum Factory {
 	;
 
-	/**
-	 * Printer class (will be modified by XSP-environment), so that the Factory prints directly to Console (so no "HTTP JVM" Prefix is
-	 * there)
-	 * 
-	 * @author Roland Praml, FOCONIS AG
-	 * 
-	 */
-	public static class Printer {
-		public void println(final String s) {
-			System.out.println(s);
-		}
-	}
+	private static final String _bundleName = "org.openntf.domino.core";
 
-	public static Printer printer = new Printer();
+	//private static final GitProperties gitProperties = GitProperties.getInstance(Factory.class.getClassLoader(), _bundleName);
 
 	/**
 	 * An identifier for the different session types the factory can create.
@@ -177,7 +162,7 @@ public enum Factory {
 		}
 	}
 
-	public static class ThreadConfig {
+	public static class ThreadConfig implements IRequest {
 		public final Fixes[] fixes;
 		public final AutoMime autoMime;
 		public final boolean bubbleExceptions;
@@ -203,6 +188,64 @@ public enum Factory {
 	 * 
 	 */
 	private static class Counters {
+		static class Counter {
+			private final AtomicInteger globalCounter;
+			private final ThreadLocal<AtomicInteger> threadCounter;
+
+			public Counter(final boolean countPerThread) {
+				if (countPerThread) {
+					globalCounter = null;
+					threadCounter = new ThreadLocal<AtomicInteger>() {
+						@Override
+						protected AtomicInteger initialValue() {
+							return new AtomicInteger(0);
+						}
+					};
+				} else {
+					globalCounter = new AtomicInteger(0);
+					threadCounter = null;
+				}
+			}
+
+			/**
+			 * Increment.
+			 * 
+			 * @return the int
+			 */
+			public int increment() {
+				if (globalCounter == null) {
+					return threadCounter.get().incrementAndGet();
+				} else {
+					return globalCounter.incrementAndGet();
+				}
+			}
+
+			/**
+			 * Decrement.
+			 * 
+			 * @return the int
+			 */
+			public int decrement() {
+				if (globalCounter == null) {
+					return threadCounter.get().decrementAndGet();
+				} else {
+					return globalCounter.decrementAndGet();
+				}
+			}
+
+			/**
+			 * read the value
+			 * 
+			 * @return the int value
+			 */
+			public int intValue() {
+				if (globalCounter == null) {
+					return threadCounter.get().intValue();
+				} else {
+					return globalCounter.intValue();
+				}
+			}
+		}
 
 		/** The lotus counter. */
 		private final Counter lotus;
@@ -255,9 +298,7 @@ public enum Factory {
 	private static class ThreadVariables {
 		private WrapperFactory wrapperFactory;
 
-		private ClassLoader classLoader;
-
-		private IServiceLocator serviceLocator;
+		//private ClassLoader classLoader;
 
 		/**
 		 * Support for different Locale
@@ -276,19 +317,15 @@ public enum Factory {
 		/** These sessions will be recycled at the end of that thread. Key = UserName of session */
 		public Map<String, Session> ownSessions = new HashMap<String, Session>();
 
-		private List<Runnable> terminateHooks;
-
 		private ThreadConfig threadConfig;
 
-		public ThreadVariables(final ThreadConfig tc) {
-			threadConfig = tc;
+		public ThreadVariables(final IRequest tc) {
+			threadConfig = (ThreadConfig) tc;
 		}
 
 		/** clear the object */
 		private void clear() {
 			wrapperFactory = null;
-			classLoader = null;
-			serviceLocator = null;
 			for (int i = 0; i < SessionType.SIZE; i++) {
 				sessionHolders[i] = null;
 				sessionFactories[i] = null;
@@ -299,28 +336,6 @@ public enum Factory {
 
 		}
 
-		public void removeTerminateHook(final Runnable hook) {
-			if (terminateHooks == null)
-				return;
-			terminateHooks.remove(hook);
-
-		}
-
-		public void addTerminateHook(final Runnable hook) {
-			if (terminateHooks == null) {
-				terminateHooks = new ArrayList<Runnable>();
-			}
-			terminateHooks.add(hook);
-		}
-
-		public void terminate() {
-			if (terminateHooks != null) {
-				for (Runnable hook : terminateHooks) {
-					hook.run();
-				}
-				terminateHooks = null;
-			}
-		}
 	}
 
 	private static ISessionFactory[] defaultSessionFactories = new ISessionFactory[SessionType.SIZE];
@@ -332,8 +347,7 @@ public enum Factory {
 	 */
 	private static ThreadLocal<ThreadVariables> threadVariables_ = new ThreadLocal<ThreadVariables>();
 
-	private static List<Runnable> globalTerminateHooks = new ArrayList<Runnable>();
-	private static List<Runnable> shutdownHooks = new ArrayList<Runnable>();
+	//private static List<Runnable> globalTerminateHooks = new ArrayList<Runnable>();
 
 	private static String localServerName;
 	private static boolean napiPresent_;
@@ -350,12 +364,6 @@ public enum Factory {
 		if (tv == null)
 			return PERMISSIVE_THREAD_CONFIG;
 		return tv.threadConfig;
-	}
-
-	public static final String _bundleName = "org.openntf.domino.core";
-
-	public static final GitProperties getGitProperties() {
-		return GitProperties.getInstance(Factory.class.getClassLoader(), _bundleName);
 	}
 
 	private static Map<String, String> ENVIRONMENT;
@@ -379,10 +387,13 @@ public enum Factory {
 				}
 			}
 		}
-		GitProperties gp = getGitProperties();
-		ENVIRONMENT.put("version", gp.getCommitIdDescribe());
+		BundleInfos bi = BundleInfos.getInstance(Factory.class);
+
+		// TODO Should we really put all this in Environment?
+		ENVIRONMENT.put("version", bi.getBuildVersion()); // This is "1.5.1-SNAPSHOT"
+		ENVIRONMENT.put("commit-id", bi.getCommitIdDescribe()); // This is "v1.5.0-52-g280dd1a-dirty"
 		ENVIRONMENT.put("title", _bundleName);
-		ENVIRONMENT.put("url", "org.openntf");
+		ENVIRONMENT.put("url", "https://www.openntf.org");
 	}
 
 	public static String getEnvironment(final String key) {
@@ -576,8 +587,6 @@ public enum Factory {
 		return result;
 	}
 
-	private static WrapperFactory DEFAULT_WRAPPER_FACTORY = new org.openntf.domino.impl.WrapperFactory();
-
 	/**
 	 * returns the wrapper factory for this thread
 	 * 
@@ -585,21 +594,13 @@ public enum Factory {
 	 */
 	public static WrapperFactory getWrapperFactory() {
 		ThreadVariables tv = getThreadVariables();
-		WrapperFactory wf = tv.wrapperFactory;
-		if (wf == null) {
-			try {
-				List<WrapperFactory> wfList = findApplicationServices(WrapperFactory.class);
-				if (wfList.size() > 0)
-					wf = wfList.get(0);
-				else
-					wf = DEFAULT_WRAPPER_FACTORY;
-			} catch (Throwable t) {
-				log_.log(Level.WARNING, "Getting default WrapperFactory", t);
-				wf = DEFAULT_WRAPPER_FACTORY;
+		if (tv.wrapperFactory == null) {
+			tv.wrapperFactory = ServiceLocator.findApplicationService(WrapperFactory.class);
+			if (tv.wrapperFactory == null) {
+				throw new IllegalStateException("Could not find WrapperFactory in services");
 			}
-			tv.wrapperFactory = wf;
 		}
-		return wf;
+		return tv.wrapperFactory;
 	}
 
 	/**
@@ -1029,44 +1030,9 @@ public enum Factory {
 	//		currentDatabaseHolder_.set(null);
 	//	}
 
+	@Deprecated
 	public static ClassLoader getClassLoader() {
-		ThreadVariables tv = getThreadVariables();
-		if (tv.classLoader == null) {
-			ClassLoader loader = null;
-			try {
-				loader = AccessController.doPrivileged(new PrivilegedExceptionAction<ClassLoader>() {
-					@Override
-					public ClassLoader run() throws Exception {
-						return Thread.currentThread().getContextClassLoader();
-					}
-				});
-			} catch (AccessControlException e) {
-				e.printStackTrace();
-			} catch (PrivilegedActionException e) {
-				e.printStackTrace();
-			}
-			setClassLoader(loader);
-		}
-		return tv.classLoader;
-	}
-
-	public static <T> List<T> findApplicationServices(final Class<T> serviceClazz) {
-
-		ThreadVariables tv = getThreadVariables();
-
-		if (tv.serviceLocator == null) {
-			tv.serviceLocator = ServiceLocatorFinder.findServiceLocator();
-		}
-		if (tv.serviceLocator == null) {
-			throw new IllegalStateException("No service locator available so we cannot find the application services for "
-					+ serviceClazz.getName());
-		}
-
-		return tv.serviceLocator.findApplicationServices(serviceClazz);
-	}
-
-	public static void setClassLoader(final ClassLoader loader) {
-		getThreadVariables().classLoader = loader;
+		return ThreadUtils.getContextClassLoader();
 	}
 
 	// avoid clear methods
@@ -1098,66 +1064,18 @@ public enum Factory {
 	 * Begin with a clear environment. Initialize this thread
 	 * 
 	 */
+	@Deprecated
 	public static void initThread(final ThreadConfig tc) { // RPr: Method was deliberately renamed
-		if (startups == 0) {
-			throw new IllegalStateException("Factory is not yet started");
-		}
-		if (log_.isLoggable(Level.FINER)) {
-			log_.log(Level.FINER, "Factory.initThread()", new Throwable());
-		}
-		if (threadVariables_.get() != null) {
-			log_.log(Level.SEVERE, "WARNING - Thread " + Thread.currentThread().getName()
-					+ " was not correctly terminated or initialized twice", new Throwable());
-		}
-		//		System.out.println("TEMP DEBUG: Factory thread initializing.");
-		//		Throwable t = new Throwable();
-		//		t.printStackTrace();
-		threadVariables_.set(new ThreadVariables(tc));
+		LifeCycleManager.beforeRequest(tc);
 	}
 
 	/**
 	 * terminate the current thread.
 	 */
+	@Deprecated
 	public static void termThread() { // RPr: Method was deliberately renamed
-		if (log_.isLoggable(Level.FINER)) {
-			log_.log(Level.FINER, "Factory.termThread()", new Throwable());
-		}
-		ThreadVariables tv = threadVariables_.get();
-		if (tv == null) {
-			log_.log(Level.SEVERE, "WARNING - Thread " + Thread.currentThread().getName()
-					+ " was not correctly initalized or terminated twice", new Throwable());
-			return;
-		}
-		//		System.out.println("TEMP DEBUG: Factory thread terminating.");
-		//		Throwable trace = new Throwable();
-		//		trace.printStackTrace();
-		try {
+		LifeCycleManager.afterRequest();
 
-			for (Runnable term : globalTerminateHooks) {
-				term.run();
-			}
-			tv.terminate();
-			if (tv.wrapperFactory != null) {
-				tv.wrapperFactory.recycle();
-			}
-			//		System.out.println("DEBUG: cleared " + termCount + " references from the queue...");
-			DominoUtils.setBubbleExceptions(null);
-			// The last step is to recycle ALL own sessions
-			for (Session sess : tv.ownSessions.values()) {
-				if (sess != null) {
-					sess.recycle();
-				}
-			}
-		} catch (Throwable t) {
-			log_.log(Level.SEVERE, "An error occured while terminating the factory", t);
-		} finally {
-			tv.clear();
-			threadVariables_.set(null);
-			System.gc();
-		}
-		if (counters != null) {
-			System.out.println(dumpCounters(true));
-		}
 	}
 
 	private static File getConfigFileFallback() {
@@ -1204,18 +1122,44 @@ public enum Factory {
 
 	private static int startups = 0;
 
+	@Deprecated
 	public static void startup() {
+		LifeCycleManager.startup();
+		//		synchronized (Factory.class) {
+		//			if (startups > 0) {
+		//				startups++;
+		//				return;
+		//			}
+		//			NotesThread.sinitThread();
+		//			try {
+		//				lotus.domino.Session sess = lotus.domino.NotesFactory.createSession();
+		//				try {
+		//					startup(sess);
+		//				} finally {
+		//					sess.recycle();
+		//				}
+		//			} catch (NotesException e) {
+		//				e.printStackTrace();
+		//			} finally {
+		//				NotesThread.stermThread();
+		//			}
+		//		}
+	}
 
-		synchronized (Factory.class) {
-			if (startups > 0) {
-				startups++;
-				return;
-			}
+	public static boolean isNapiPresent() {
+		return napiPresent_;
+	}
+
+	public static class LifeCycle implements ILifeCycle, IRequestLifeCycle {
+
+		@Override
+		public void startup() {
 			NotesThread.sinitThread();
 			try {
 				lotus.domino.Session sess = lotus.domino.NotesFactory.createSession();
 				try {
-					startup(sess);
+					Factory.startup(sess);
+					startups = 1;
 				} finally {
 					sess.recycle();
 				}
@@ -1224,36 +1168,100 @@ public enum Factory {
 			} finally {
 				NotesThread.stermThread();
 			}
-		}
-	}
 
-	public static boolean isNapiPresent() {
-		return napiPresent_;
+		}
+
+		@Override
+		public void shutdown() {
+			// TODO Auto-generated method stub
+			startups = 0;
+
+		}
+
+		@Override
+		public int getPriority() {
+			// load after commons
+			return 10;
+		}
+
+		@Override
+		public void beforeRequest(final IRequest request) {
+			if (log_.isLoggable(Level.FINER)) {
+				log_.log(Level.FINER, "Factory.initThread()", new Throwable());
+			}
+			if (threadVariables_.get() != null) {
+				log_.log(Level.SEVERE, "WARNING - Thread " + Thread.currentThread().getName()
+						+ " was not correctly terminated or initialized twice", new Throwable());
+			}
+			//		System.out.println("TEMP DEBUG: Factory thread initializing.");
+			//		Throwable t = new Throwable();
+			//		t.printStackTrace();
+			threadVariables_.set(new ThreadVariables(request));
+
+		}
+
+		@Override
+		public void afterRequest() {
+			if (log_.isLoggable(Level.FINER)) {
+				log_.log(Level.FINER, "Factory.termThread()", new Throwable());
+			}
+			ThreadVariables tv = threadVariables_.get();
+			if (tv == null) {
+				log_.log(Level.SEVERE, "WARNING - Thread " + Thread.currentThread().getName()
+						+ " was not correctly initalized or terminated twice", new Throwable());
+				return;
+			}
+
+			try {
+				if (tv.wrapperFactory != null) {
+					tv.wrapperFactory.recycle();
+				}
+				// The last step is to recycle ALL own sessions
+				for (Session sess : tv.ownSessions.values()) {
+					if (sess != null) {
+						sess.recycle();
+					}
+				}
+
+			} catch (Throwable t) {
+				log_.log(Level.SEVERE, "An error occured while terminating the factory", t);
+			} finally {
+				tv.clear();
+				threadVariables_.set(null);
+				System.gc();
+			}
+			if (counters != null) {
+				System.out.println(dumpCounters(true));
+			}
+
+		}
+
 	}
 
 	private static synchronized void startup(final lotus.domino.Session session) {
 		if (session instanceof org.openntf.domino.Session) {
 			throw new UnsupportedOperationException("Initialization must be done on the raw session! How did you get that session?");
 		}
+
 		try {
 			NapiUtil.init();
 			napiPresent_ = true;
-			Factory.println("Info", "NAPI is present");
+			Factory.println("    NAPI:               present");
 		} catch (Throwable t) {
-			Factory.println("Info", "NAPI not present (Reason: " + t.toString() + ")");
+			Factory.println("    NAPI:               not present (Reason: " + t.toString() + ")");
 			napiPresent_ = false;
 		}
 		File iniFile;
 		try {
 			localServerName = session.getUserName();
-			NameParser.setLocalServerName(localServerName);
+			Names.setLocalServerName(localServerName);
 			iniFile = new File(session.evaluate("@ConfigFile").get(0).toString());
 		} catch (NotesException e) {
-			Factory.println("WARNING: @ConfigFile returned " + e.getMessage() + " Using fallback to locate notes.ini");
+			Factory.println("WARNING", "@ConfigFile returned " + e.getMessage() + " Using fallback to locate notes.ini");
 			iniFile = getConfigFileFallback();
 		}
 
-		Factory.println("Starting the OpenNTF Domino API... Using notes.ini: " + iniFile);
+		Factory.println("    Using notes.ini:    " + iniFile);
 
 		try {
 			Scanner scanner = new Scanner(iniFile);
@@ -1261,7 +1269,7 @@ public enum Factory {
 			loadEnvironment(scanner);
 			scanner.close();
 		} catch (FileNotFoundException e) {
-			Factory.println("Cannot read notes.ini. Giving up");
+			Factory.println("WARNING", "Cannot read notes.ini. Giving up");
 			e.printStackTrace();
 		}
 
@@ -1300,30 +1308,6 @@ public enum Factory {
 		setDefaultSessionFactory(new TrustedSessionFactory(defaultApiPath), SessionType.TRUSTED);
 		setDefaultSessionFactory(new SessionFullAccessFactory(defaultApiPath), SessionType.FULL_ACCESS);
 
-		startups = 1;
-		//		Factory.println("OpenNTF API Version " + ENVIRONMENT.get("version") + " started");
-		GitProperties gp = getGitProperties();
-		Factory.println("########################################################################");
-		Factory.println("# OpenNTF API started");
-		Factory.println("# Commit-ID:          " + gp.getCommitId());
-		Factory.println("# Commit-ID-Describe: " + gp.getCommitIdDescribe());
-		Factory.println("# Commit-Timestamp:   " + gp.getCommitTime());
-		Factory.println("########################################################################");
-
-		// Start up logging
-		try {
-			AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
-				@Override
-				public Object run() throws Exception {
-					Logging.getInstance().startUp();
-					return null;
-				}
-			});
-		} catch (AccessControlException e) {
-			e.printStackTrace();
-		} catch (PrivilegedActionException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public static void setDefaultSessionFactory(final ISessionFactory sessionFactory, final SessionType mode) {
@@ -1337,24 +1321,26 @@ public enum Factory {
 
 	}
 
-	public static synchronized void shutdown() {
-		if (startups > 1)
-			return;
-		if (startups != 1)
-			throw new IllegalStateException("Factory.shutdown() was called more than Factory.startup()");
-		Factory.println("Shutting down the OpenNTF Domino API... ");
-		Runnable[] copy = shutdownHooks.toArray(new Runnable[shutdownHooks.size()]);
-		for (Runnable term : copy) {
-			try {
-				term.run();
-			} catch (Throwable t) {
-				t.printStackTrace();
-			}
-		}
-		Factory.println("OpenNTF Domino API shut down");
-		startups--;
-	}
+	//	@Deprecated
+	//	public static synchronized void shutdown() {
+	//		if (startups > 1)
+	//			return;
+	//		if (startups != 1)
+	//			throw new IllegalStateException("Factory.shutdown() was called more than Factory.startup()");
+	//		Factory.println("Shutting down the OpenNTF Domino API... ");
+	//		Runnable[] copy = shutdownHooks.toArray(new Runnable[shutdownHooks.size()]);
+	//		for (Runnable term : copy) {
+	//			try {
+	//				term.run();
+	//			} catch (Throwable t) {
+	//				t.printStackTrace();
+	//			}
+	//		}
+	//		Factory.println("OpenNTF Domino API shut down");
+	//		startups--;
+	//	}
 
+	@Deprecated
 	public static boolean isStarted() {
 		return startups > 0;
 	}
@@ -1433,7 +1419,7 @@ public enum Factory {
 
 		if (!counters.classes.isEmpty() && details) {
 			sb.append("\n=== The following objects were left in memory ===");
-			for (Entry<Class<?>, Counter> e : counters.classes.entrySet()) {
+			for (Entry<Class<?>, Counters.Counter> e : counters.classes.entrySet()) {
 				int i = e.getValue().intValue();
 				if (i != 0) {
 					sb.append("\n" + i + "\t" + e.getKey().getName());
@@ -1781,86 +1767,40 @@ public enum Factory {
 		return result;
 	}
 
-	/**
-	 * Add a hook that will run on the next "terminate" call
-	 * 
-	 * @param hook
-	 *            the hook that should run on next terminate
-	 * 
-	 */
-	public static void addTerminateHook(final Runnable hook, final boolean global) {
-		if (global) {
-			globalTerminateHooks.add(hook);
-		} else {
-			getThreadVariables().addTerminateHook(hook);
-		}
-	}
-
-	public static void removeTerminateHook(final Runnable hook, final boolean global) {
-		if (global) {
-			globalTerminateHooks.remove(hook);
-		} else {
-			getThreadVariables().removeTerminateHook(hook);
-		}
-	}
-
-	/**
-	 * Add a hook that will run on shutdown
-	 */
-	public static void addShutdownHook(final Runnable hook) {
-		shutdownHooks.add(hook);
-	}
-
-	/**
-	 * Remove a shutdown hook
-	 * 
-	 * @param hook
-	 *            the hook that should be removed
-	 */
-	public static void removeShutdownHook(final Runnable hook) {
-		shutdownHooks.remove(hook);
-	}
+	//	/**
+	//	 * Add a hook that will run on shutdown
+	//	 */
+	//	public static void addShutdownHook(final Runnable hook) {
+	//		shutdownHooks.add(hook);
+	//	}
+	//
+	//	/**
+	//	 * Remove a shutdown hook
+	//	 * 
+	//	 * @param hook
+	//	 *            the hook that should be removed
+	//	 */
+	//	public static void removeShutdownHook(final Runnable hook) {
+	//		shutdownHooks.remove(hook);
+	//	}
 
 	public static String getLocalServerName() {
 		return localServerName;
 	}
 
-	public static void println(String prefix, final String lines) {
-		BufferedReader reader = new BufferedReader(new StringReader(lines));
-		String line;
-		try {
-			if (StringsUtils.isBlankString(prefix)) {
-				prefix = "[ODA] ";
-			} else {
-				prefix = "[ODA::" + prefix + "] ";
-			}
-			while ((line = reader.readLine()) != null) {
-				if (line.length() > 0)
-					printer.println(prefix + line);
-			}
-		} catch (IOException ioex) {
-
-		}
+	@Deprecated
+	public static void println(final String prefix, final String lines) {
+		IO.println(prefix, lines);
 	}
 
+	@Deprecated
 	public static void println(final Object x) {
-		println(null, String.valueOf(x));
+		IO.println(x);
 	}
 
+	@Deprecated
 	public static void println(final Object source, final Object x) {
-		if (source == null) {
-			println(null, String.valueOf(x));
-		} else {
-			String prefix;
-			if (source instanceof String) {
-				prefix = (String) source;
-			} else if (source instanceof Class) {
-				prefix = ((Class<?>) source).getSimpleName();
-			} else {
-				prefix = source.getClass().getSimpleName();
-			}
-			println(prefix, String.valueOf(x));
-		}
+		IO.println(source, x);
 	}
 
 }

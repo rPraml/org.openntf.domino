@@ -21,6 +21,9 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.List;
 
+import org.openntf.domino.commons.IDateTime;
+import org.openntf.domino.commons.exception.EvaluateException;
+
 /**
  * This Valueholder is to hold single or multiple values.
  * 
@@ -219,7 +222,7 @@ public abstract class ValueHolder implements Serializable {
 					if (vh == null) {
 						vh = createValueHolder(o.getClass(), lh);
 					}
-					vh.add(o);
+					vh.addObject(o);
 				}
 			}
 
@@ -236,13 +239,13 @@ public abstract class ValueHolder implements Serializable {
 					if (vh == null) {
 						vh = createValueHolder(o.getClass(), lh);
 					}
-					vh.add(o);
+					vh.addObject(o);
 				}
 			}
 
 		} else {
 			vh = createValueHolder(init.getClass(), 1);
-			vh.add(init);
+			vh.addObject(init);
 		}
 		if (vh == null)
 			return valueDefault();
@@ -321,14 +324,14 @@ public abstract class ValueHolder implements Serializable {
 	}
 
 	/**
-	 * Initializes a new ValueHolder that contains a DateTime
+	 * Initializes a new ValueHolder that contains a IDateTime
 	 * 
 	 * @param init
-	 *            the DateTime
+	 *            the IDateTime
 	 * @return the ValueHolder
 	 */
-	public static ValueHolder valueOf(final DateTime init) {
-		ValueHolder vh = new ValueHolderObject<DateTime>(1);
+	public static ValueHolder valueOf(final IDateTime init) {
+		ValueHolder vh = new ValueHolderObject<IDateTime>(1);
 		vh.add(init);
 		vh.immutable = true;
 		return vh;
@@ -388,9 +391,8 @@ public abstract class ValueHolder implements Serializable {
 	 *            the position
 	 * @return the entry as Object
 	 * 
-	 * @Deprecated if you know the datatype, use the apropriate get-Method!
+	 *         if you know the datatype, use the apropriate get-Method!
 	 */
-	@Deprecated
 	public Object get(final int i) {
 		switch (dataType) {
 		case ERROR:
@@ -425,9 +427,9 @@ public abstract class ValueHolder implements Serializable {
 	}
 
 	/**
-	 * Returns the value at position i as DateTime
+	 * Returns the value at position i as IDateTime
 	 */
-	public DateTime getDateTime(final int i) {
+	public IDateTime getDateTime(final int i) {
 		throw new ClassCastException("DATETIME expected. Got '" + dataType + "'");
 	}
 
@@ -516,7 +518,7 @@ public abstract class ValueHolder implements Serializable {
 		throw new IllegalArgumentException("Cannot mix datatypes " + dataType + " and BOOLEAN");
 	}
 
-	public boolean add(final DateTime bool) {
+	public boolean add(final IDateTime bool) {
 		throw new IllegalArgumentException("Cannot mix datatypes " + dataType + " and DATETIME");
 	}
 
@@ -531,8 +533,7 @@ public abstract class ValueHolder implements Serializable {
 	/**
 	 * Add anything as value. Better use the apropriate "add" method. it is faster
 	 */
-	@Deprecated
-	public boolean add(final Object obj) {
+	public boolean addObject(final Object obj) {
 		checkImmutable();
 
 		if (dataType == DataType.ERROR) {
@@ -551,8 +552,8 @@ public abstract class ValueHolder implements Serializable {
 		} else if (obj instanceof Boolean) {
 			return add(((Boolean) obj).booleanValue());
 
-		} else if (obj instanceof DateTime) {
-			return add((DateTime) obj);
+		} else if (obj instanceof IDateTime) {
+			return add((IDateTime) obj);
 
 			//} else if (obj instanceof RuntimeException) {
 			//	setError((RuntimeException) obj);

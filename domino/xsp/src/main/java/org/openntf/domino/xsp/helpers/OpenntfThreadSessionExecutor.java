@@ -3,9 +3,9 @@ package org.openntf.domino.xsp.helpers;
 import lotus.domino.NotesException;
 
 import org.eclipse.core.runtime.Status;
-import org.openntf.domino.ExceptionDetails;
 import org.openntf.domino.Session;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.commons.exception.IExceptionDetails;
+import org.openntf.domino.utils.ODAUtils;
 
 import com.ibm.domino.xsp.module.nsf.ThreadSessionExecutor;
 
@@ -19,7 +19,7 @@ public class OpenntfThreadSessionExecutor<IStatus> extends ThreadSessionExecutor
 		try {
 			return run(session.getFactory().toLotus(session));
 		} catch (NotesException e) {
-			DominoUtils.handleException(e, (ExceptionDetails) this);
+			ODAUtils.handleException(e, (IExceptionDetails) this);
 			return (IStatus) Status.CANCEL_STATUS;
 		}
 	}

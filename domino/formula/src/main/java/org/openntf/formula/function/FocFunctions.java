@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.MissingResourceException;
 
-import org.openntf.formula.DateTime;
+import org.openntf.domino.commons.IDateTime;
 import org.openntf.formula.Formatter;
 import org.openntf.formula.FormulaContext;
 import org.openntf.formula.Function;
@@ -85,14 +85,14 @@ public enum FocFunctions {
 		int dayPart = getRelativePart(ctx, params[2].getObject(0), true, aux);
 		boolean dayIsAbs = aux[0];
 		boolean dayIsUltimo = aux[1];
-		DateTime refDate;
+		IDateTime refDate;
 		Formatter formatter = ctx.getFormatter();
 		if (params.length == 4)
 			refDate = formatter.getCopyOfSDTInstance(params[3].getDateTime(0));
 		else {
 			Object o = ctx.getParam("@FocDate:Bezug");
-			if (o instanceof DateTime)
-				refDate = formatter.getCopyOfSDTInstance((DateTime) o);
+			if (o instanceof IDateTime)
+				refDate = formatter.getCopyOfSDTInstance((IDateTime) o);
 			else
 				refDate = formatter.getNewInitializedSDTInstance(new Date(), false, true);
 		}
@@ -222,6 +222,7 @@ public enum FocFunctions {
 			parTypes[i] = parValues[i].getClass();
 		}
 		Object o = AccessController.doPrivileged(new PrivilegedAction<Object>() {
+			@Override
 			public Object run() {
 				ClassLoader cl = Thread.currentThread().getContextClassLoader();
 				if (cl == null)

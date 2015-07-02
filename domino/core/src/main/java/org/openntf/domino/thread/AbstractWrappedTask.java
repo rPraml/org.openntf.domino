@@ -6,6 +6,8 @@ import java.util.concurrent.Callable;
 
 import lotus.domino.NotesThread;
 
+import org.openntf.domino.commons.IRequest;
+import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.session.ISessionFactory;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
@@ -23,7 +25,7 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 	protected Tasklet.Scope scope;
 	protected Tasklet.Context context;
 	protected ISessionFactory sessionFactory;
-	protected Factory.ThreadConfig sourceThreadConfig;
+	protected IRequest taskRequest;
 
 	/**
 	 * Determines the sessionType under which the current runnable should run. The first non-null value of the following list is returned
@@ -60,7 +62,7 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 			sessionFactory = dominoRunnable.getSessionFactory();
 			scope = dominoRunnable.getScope();
 			context = dominoRunnable.getContext();
-			sourceThreadConfig = dominoRunnable.getThreadConfig();
+			taskRequest = dominoRunnable.getThreadConfig();
 		}
 		Tasklet annot = task.getClass().getAnnotation(Tasklet.class);
 
@@ -123,22 +125,22 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 			if (scope == null) {
 				scope = Tasklet.Scope.NONE;
 			}
-			if (sourceThreadConfig == null) {
+			if (taskRequest == null) {
 				switch (annot.threadConfig()) {
 				case CLONE:
-					sourceThreadConfig = Factory.getThreadConfig();
+					taskRequest = Factory.getThreadConfig();
 					break;
 				case PERMISSIVE:
-					sourceThreadConfig = Factory.PERMISSIVE_THREAD_CONFIG;
+					taskRequest = Factory.PERMISSIVE_THREAD_CONFIG;
 					break;
 				case STRICT:
-					sourceThreadConfig = Factory.STRICT_THREAD_CONFIG;
+					taskRequest = Factory.STRICT_THREAD_CONFIG;
 					break;
 				}
 			}
 		}
-		if (sourceThreadConfig == null)
-			sourceThreadConfig = Factory.getThreadConfig();
+		if (taskRequest == null)
+			taskRequest = Factory.getThreadConfig();
 	}
 
 	/**
@@ -191,11 +193,11 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 	protected Object callOrRun() throws Exception {
 
 		NotesThread.sinitThread();
-		Factory.initThread(sourceThreadConfig);
+		LifeCycleManager.beforeRequest(taskRequest);
 		try {
 			return invokeWrappedTask();
 		} finally {
-			Factory.termThread();
+			LifeCycleManager.afterRequest();
 			NotesThread.stermThread();
 		}
 	}

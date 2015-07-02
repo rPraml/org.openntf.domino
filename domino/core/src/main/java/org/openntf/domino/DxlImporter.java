@@ -50,9 +50,11 @@ public interface DxlImporter extends Base<lotus.domino.DxlImporter>, lotus.domin
 	 * 
 	 */
 	public static enum DocumentImportOption {
-		IGNORE(DxlImporter.DXLIMPORTOPTION_IGNORE), CREATE(DxlImporter.DXLIMPORTOPTION_CREATE), REPLACE_ELSE_CREATE(
-				DxlImporter.DXLIMPORTOPTION_REPLACE_ELSE_CREATE), REPLACE_ELSE_IGNORE(DxlImporter.DXLIMPORTOPTION_REPLACE_ELSE_IGNORE), UPDATE_ELSE_CREATE(
-				DxlImporter.DXLIMPORTOPTION_UPDATE_ELSE_CREATE), UPDATE_ELSE_IGNORE(DxlImporter.DXLIMPORTOPTION_UPDATE_ELSE_IGNORE);
+		IGNORE(DxlImporter.DXLIMPORTOPTION_IGNORE), CREATE(DxlImporter.DXLIMPORTOPTION_CREATE),
+		REPLACE_ELSE_CREATE(DxlImporter.DXLIMPORTOPTION_REPLACE_ELSE_CREATE),
+		REPLACE_ELSE_IGNORE(DxlImporter.DXLIMPORTOPTION_REPLACE_ELSE_IGNORE),
+		UPDATE_ELSE_CREATE(DxlImporter.DXLIMPORTOPTION_UPDATE_ELSE_CREATE),
+		UPDATE_ELSE_IGNORE(DxlImporter.DXLIMPORTOPTION_UPDATE_ELSE_IGNORE);
 
 		private final int value_;
 
@@ -81,8 +83,9 @@ public interface DxlImporter extends Base<lotus.domino.DxlImporter>, lotus.domin
 	 * 
 	 */
 	public static enum DesignImportOption {
-		IGNORE(DxlImporter.DXLIMPORTOPTION_IGNORE), CREATE(DxlImporter.DXLIMPORTOPTION_CREATE), REPLACE_ELSE_CREATE(
-				DxlImporter.DXLIMPORTOPTION_REPLACE_ELSE_CREATE), REPLACE_ELSE_IGNORE(DxlImporter.DXLIMPORTOPTION_REPLACE_ELSE_IGNORE);
+		IGNORE(DxlImporter.DXLIMPORTOPTION_IGNORE), CREATE(DxlImporter.DXLIMPORTOPTION_CREATE),
+		REPLACE_ELSE_CREATE(DxlImporter.DXLIMPORTOPTION_REPLACE_ELSE_CREATE),
+		REPLACE_ELSE_IGNORE(DxlImporter.DXLIMPORTOPTION_REPLACE_ELSE_IGNORE);
 
 		private final int value_;
 
@@ -111,8 +114,9 @@ public interface DxlImporter extends Base<lotus.domino.DxlImporter>, lotus.domin
 	 * 
 	 */
 	public static enum AclImportOption {
-		IGNORE(DxlImporter.DXLIMPORTOPTION_IGNORE), REPLACE_ELSE_IGNORE(DxlImporter.DXLIMPORTOPTION_REPLACE_ELSE_IGNORE), UPDATE_ELSE_CREATE(
-				DxlImporter.DXLIMPORTOPTION_UPDATE_ELSE_CREATE), UPDATE_ELSE_IGNORE(DxlImporter.DXLIMPORTOPTION_UPDATE_ELSE_IGNORE);
+		IGNORE(DxlImporter.DXLIMPORTOPTION_IGNORE), REPLACE_ELSE_IGNORE(DxlImporter.DXLIMPORTOPTION_REPLACE_ELSE_IGNORE),
+		UPDATE_ELSE_CREATE(DxlImporter.DXLIMPORTOPTION_UPDATE_ELSE_CREATE),
+		UPDATE_ELSE_IGNORE(DxlImporter.DXLIMPORTOPTION_UPDATE_ELSE_IGNORE);
 
 		private final int value_;
 
@@ -135,8 +139,8 @@ public interface DxlImporter extends Base<lotus.domino.DxlImporter>, lotus.domin
 	}
 
 	public static enum InputValidationOption {
-		NEVER(DxlImporter.DXLVALIDATIONOPTION_VALIDATE_NEVER), ALWAYS(DxlImporter.DXLVALIDATIONOPTION_VALIDATE_ALWAYS), AUTO(
-				DxlImporter.DXLVALIDATIONOPTION_VALIDATE_AUTO);
+		NEVER(DxlImporter.DXLVALIDATIONOPTION_VALIDATE_NEVER), ALWAYS(DxlImporter.DXLVALIDATIONOPTION_VALIDATE_ALWAYS),
+		AUTO(DxlImporter.DXLVALIDATIONOPTION_VALIDATE_AUTO);
 
 		private final int value_;
 
@@ -302,10 +306,9 @@ public interface DxlImporter extends Base<lotus.domino.DxlImporter>, lotus.domin
 	@Override
 	public void importDxl(final String dxl, final lotus.domino.Database database);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.DxlImporter#setAclImportOption(int)
+	 * @deprecated use {@link org.openntf.domino.ext.DxlImporter#setAclImportOption(AclImportOption)}
 	 */
 	@Override
 	@Deprecated
@@ -327,19 +330,17 @@ public interface DxlImporter extends Base<lotus.domino.DxlImporter>, lotus.domin
 	@Override
 	public void setCreateFTIndex(final boolean flag);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.DxlImporter#setDesignImportOption(int)
+	 * @deprecated use {@link org.openntf.domino.ext.DxlImporter#setDesignImportOption(DesignImportOption)}
 	 */
 	@Override
 	@Deprecated
 	public void setDesignImportOption(final int option);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.DxlImporter#setDocumentImportOption(int)
+	 * @deprecated use {@link org.openntf.domino.ext.DxlImporter#setDocumentImportOption(DocumentImportOption)}
 	 */
 	@Override
 	@Deprecated
@@ -353,10 +354,9 @@ public interface DxlImporter extends Base<lotus.domino.DxlImporter>, lotus.domin
 	@Override
 	public void setExitOnFirstFatalError(final boolean flag);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.DxlImporter#setInputValidationOption(int)
+	 * @deprecated use {@link org.openntf.domino.ext.DxlImporter#setInputValidationOption(InputValidationOption)}
 	 */
 	@Override
 	@Deprecated

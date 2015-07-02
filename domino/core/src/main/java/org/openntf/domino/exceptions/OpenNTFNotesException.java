@@ -3,7 +3,7 @@ package org.openntf.domino.exceptions;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openntf.domino.ExceptionDetails;
+import org.openntf.domino.commons.exception.IExceptionDetails;
 
 public class OpenNTFNotesException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
@@ -47,56 +47,56 @@ public class OpenNTFNotesException extends RuntimeException {
 	}
 
 	// in the most cases we will have only one exDetail.
-	private transient ExceptionDetails exceptionDetails_;
+	private transient IExceptionDetails IExceptionDetails_;
 	// the List is only used if we have more than once ExceptionDetalis
-	private transient List<ExceptionDetails> moreExceptionDetails_;
+	private transient List<IExceptionDetails> moreIExceptionDetails_;
 
 	/**
-	 * This method is called if we bubble up and reach an other object that implements also ExceptionDetails
+	 * This method is called if we bubble up and reach an other object that implements also IExceptionDetails
 	 * 
 	 */
-	public void addExceptionDetails(final ExceptionDetails ed) {
-		if (exceptionDetails_ == null) {
-			exceptionDetails_ = ed;
+	public void addExceptionDetails(final IExceptionDetails ed) {
+		if (IExceptionDetails_ == null) {
+			IExceptionDetails_ = ed;
 			return;
 		}
-		if (moreExceptionDetails_ == null) {
-			moreExceptionDetails_ = new ArrayList<ExceptionDetails>();
+		if (moreIExceptionDetails_ == null) {
+			moreIExceptionDetails_ = new ArrayList<IExceptionDetails>();
 		}
-		moreExceptionDetails_.add(ed);
+		moreIExceptionDetails_.add(ed);
 
 	}
 
-	//public ExceptionDetails getExceptionDetails() {
-	//	return exceptionDetails_;
+	//public IExceptionDetails getIExceptionDetails() {
+	//	return IExceptionDetails_;
 	//}
 
-	//public void setExceptionDetails(final ExceptionDetails ed) {
-	//	this.exceptionDetails_ = ed;
+	//public void setIExceptionDetails(final IExceptionDetails ed) {
+	//	this.IExceptionDetails_ = ed;
 	//}
 
-	public OpenNTFNotesException(final String message, final Throwable cause, final ExceptionDetails ed) {
+	public OpenNTFNotesException(final String message, final Throwable cause, final IExceptionDetails ed) {
 		this(message, cause);
-		exceptionDetails_ = ed;
+		IExceptionDetails_ = ed;
 	}
 
-	public OpenNTFNotesException(final Throwable cause, final ExceptionDetails ed) {
+	public OpenNTFNotesException(final Throwable cause, final IExceptionDetails ed) {
 		this(cause);
-		exceptionDetails_ = ed;
+		IExceptionDetails_ = ed;
 	}
 
-	public List<ExceptionDetails.Entry> getExceptionDetails() {
-		if (exceptionDetails_ == null)
+	public List<IExceptionDetails.Entry> getExceptionDetails() {
+		if (IExceptionDetails_ == null)
 			return null;
-		ArrayList<ExceptionDetails.Entry> ret = new ArrayList<ExceptionDetails.Entry>();
+		ArrayList<IExceptionDetails.Entry> ret = new ArrayList<IExceptionDetails.Entry>();
 		try {
-			exceptionDetails_.fillExceptionDetails(ret);
+			IExceptionDetails_.fillExceptionDetails(ret);
 		} catch (Throwable t) {
 			// we will ignore ANY error that occurs while gathering more information (it could happen that the DB is closed now and you get stuck in a loop)
 		}
 
-		if (moreExceptionDetails_ != null) {
-			for (ExceptionDetails med : moreExceptionDetails_) {
+		if (moreIExceptionDetails_ != null) {
+			for (IExceptionDetails med : moreIExceptionDetails_) {
 				try {
 					med.fillExceptionDetails(ret);
 				} catch (Throwable t) {

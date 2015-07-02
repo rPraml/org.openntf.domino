@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import org.openntf.domino.Database;
+import org.openntf.domino.commons.IO;
 import org.openntf.domino.utils.Factory;
 
 import com.ibm.commons.util.StringUtil;
@@ -38,7 +39,7 @@ public enum ModuleLoader {
 				}
 			}
 			if (nsfservice_ == null) {
-				Factory.println("WARNING: Setting up our own NSFService. (This may happen in a test environment, but should NOT happen on a server)");
+				IO.println("WARNING: Setting up our own NSFService. (This may happen in a test environment, but should NOT happen on a server)");
 				nsfservice_ = new NSFService(LCDEnvironment.getInstance());
 			}
 		}

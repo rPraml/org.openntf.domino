@@ -1,0 +1,105 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.openntf.domino</groupId>
+		<artifactId>root</artifactId>
+		<version>1.5.1-SNAPSHOT</version>
+	</parent>
+	
+	<artifactId>design</artifactId>
+	<name>OpenNTF Domino Design virtual file system</name>
+
+	<packaging>bundle</packaging>
+	<build>
+			
+		<plugins>
+			<plugin> 
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+
+						<Export-Package>
+							org.openntf.domino.impl.*
+						</Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+			
+
+		</plugins>
+	</build>
+
+	<dependencies>
+
+		
+		<!-- The notes-api is bundled by the ibm-build-management -->
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>core</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- 
+		<dependency>
+			<groupId>com.ibm.domino</groupId>
+			<artifactId>napi</artifactId>
+			<version>9.0.1</version>
+		</dependency>
+		 -->
+		
+		
+		<!-- add to plugin 
+		<dependency>
+			<groupId>com.ibm.commons</groupId>
+			<artifactId>com.ibm.commons</artifactId>
+			<version>9.0.1</version>
+		</dependency>
+		-->
+		
+		<!-- Javolution: needed by the CD-stuff -->		
+		<dependency>
+			<groupId>org.javolution</groupId>
+			<artifactId>javolution-core-java</artifactId>
+			<version>6.1.0-ODA-151-SNAPSHOT</version>
+		</dependency> 
+		<!-- 
+		<dependency>
+			<groupId>org.openntf</groupId>
+			<artifactId>formula</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>commons</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+		</dependency>
+		
+		 -->
+		<!-- TODO: Remove these Deps if separated in a own project 
+		<dependency>
+			<groupId>com.tinkerpop.blueprints</groupId>
+			<artifactId>blueprints-core</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.tinkerpop</groupId>
+			<artifactId>frames</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+		-->
+	</dependencies>
+
+	<organization>
+		<name>OpenNTF</name>
+		<url>http://www.openntf.org</url>
+	</organization>
+</project>

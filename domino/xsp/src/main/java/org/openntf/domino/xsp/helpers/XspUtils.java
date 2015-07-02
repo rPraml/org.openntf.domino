@@ -6,7 +6,7 @@ package org.openntf.domino.xsp.helpers;
 import java.util.logging.Logger;
 
 import org.openntf.domino.Document;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.XSPUtil;
 import org.openntf.domino.xsp.ODAPlatform;
 
@@ -17,6 +17,7 @@ import com.ibm.xsp.model.domino.wrapped.DominoDocument;
  * 
  *         Class of XPages utilities
  */
+@Deprecated
 public class XspUtils {
 	@SuppressWarnings("unused")
 	private static final Logger log_ = Logger.getLogger(XspUtils.class.getName());
@@ -48,7 +49,7 @@ public class XspUtils {
 			}
 			System.out.println(beDoc.getUniversalID());
 		} catch (Throwable e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 		return beDoc;

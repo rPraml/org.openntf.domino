@@ -23,7 +23,7 @@ import org.openntf.domino.types.FactorySchema;
  * The Interface ViewEntryCollection.
  */
 public interface ViewEntryCollection extends Base<lotus.domino.ViewEntryCollection>, lotus.domino.ViewEntryCollection,
-		org.openntf.domino.ext.ViewEntryCollection, Iterable<ViewEntry>, DatabaseDescendant {
+org.openntf.domino.ext.ViewEntryCollection, Iterable<ViewEntry>, DatabaseDescendant {
 
 	public static class Schema extends FactorySchema<ViewEntryCollection, lotus.domino.ViewEntryCollection, View> {
 		@Override
@@ -148,34 +148,31 @@ public interface ViewEntryCollection extends Base<lotus.domino.ViewEntryCollecti
 	@Override
 	public ViewEntry getLastEntry();
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.ViewEntryCollection#getNextEntry()
+	 * @deprecated use iterators
 	 */
 	@Override
 	@Deprecated
 	@Legacy(Legacy.ITERATION_WARNING)
 	public ViewEntry getNextEntry();
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.ViewEntryCollection#getNextEntry(lotus.domino.ViewEntry)
-	 */
+	 * @deprecated use iterators
+	 * */
 	@Override
 	@Deprecated
 	@Legacy(Legacy.ITERATION_WARNING)
 	public ViewEntry getNextEntry(final lotus.domino.ViewEntry entry);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.ViewEntryCollection#getNthEntry(int)
-	 */
+	 * @deprecated this method is slow in most cases and should not be used in loops. If you do not use it in a loop you can use
+	 *             {@link #getEntryAt(int)} which provides exactly the same functionality
+	 * */
 	@Override
 	@Deprecated
-	@Legacy(Legacy.ITERATION_WARNING)
 	public ViewEntry getNthEntry(final int n);
 
 	/*

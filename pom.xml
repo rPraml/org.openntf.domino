@@ -11,6 +11,18 @@
 		<!-- Specify a URL to download the Domino Binaires for the CI Domain -->
 		<domino.binary.url />
 		<domino.deploy.url />
+
+		<!-- it's always a good idea to use UTF8 -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!-- We must use java 1.6 compiler level -->
+		<compiler>1.6</compiler>
+		<skip.tests>false</skip.tests>
+		<domino.installdir>${user.home}/.m2/openntf-domino-ci/bin</domino.installdir>
+		
+		<maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
+		<osgi.qualifier>${maven.build.timestamp}</osgi.qualifier>
 	</properties>
 	
 	<name>OpenNTF Domino Aggregator</name>
@@ -18,8 +30,8 @@
 	    <connection>scm:git:git@github.com:rPraml/org.openntf.domino.git</connection>
         <developerConnection>scm:git:git@github.com:rPraml/org.openntf.domino.git</developerConnection>
         <url>git@github.com:rPraml/org.openntf.domino.git</url>
-      <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+ 	</scm>
 	
 	<profiles>
 		<profile>
@@ -51,19 +63,99 @@
 				<module>domino</module>
 			</modules>
 		</profile>
+		
+		
 		<profile>
-			<id>IDE</id>
+			<id>eclipse</id>
 			<activation>
 				<property>
 					<name>m2e.version</name>
 				</property>
 			</activation>
 			<modules>
+				<!-- ci-setup & thirdparty is not built in eclipse -->
 				<module>domino</module>
 			</modules>			
 			<build>
-				<!-- Put the IDE's build output in a folder other than target, so that IDE builds don't interact with Maven builds -->
+				<!-- 
+					Put the IDE's build output in a folder other than target, so that IDE builds don't interact with Maven builds
+					copy all other stuff to that location where eclipse expects MANIFEST.MF + plugin.xml 
+				-->
 				<directory>target-ide</directory>
+				<plugins>
+				<!-- 
+		            <plugin>
+		    			<artifactId>maven-clean-plugin</artifactId>
+		    			<version>2.6.1</version>
+					    <configuration>
+		      				<filesets>
+		        				<fileset>
+		      						<directory>target</directory>
+		      						<includes>
+		      							<include>**</include>
+		      						</includes>
+		      					</fileset>
+		        				<fileset>
+		      						<directory>target-ide</directory>
+		      						<includes>
+		      							<include>**</include>
+		      						</includes>
+		      					</fileset>		      					
+		      					<fileset>
+		      						<directory>bin</directory>
+		      						<includes>
+		      							<include>**</include>
+		      						</includes>
+		      					</fileset>
+		      					<fileset>
+		      						<directory>META-INF</directory>
+		      						<includes>
+		      							<include>**</include>
+		      						</includes>
+		                		</fileset>
+								<fileset>
+		      						<directory>${basedir}</directory>
+		      						<includes>
+		      							<include>plugin.xml</include>
+		      							<include>*faces-config.xml</include>
+										<include>*.xsp-config</include>
+		      						</includes>
+		      					</fileset>                		
+		      				</filesets>
+		    			</configuration>
+		  			</plugin>
+				 -->
+		  			<!-- 
+		  			<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>2.7</version>
+						<executions>
+							<execution>
+								<id>copy-eclipse-specific-resources</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${basedir}</outputDirectory>
+									<overwrite>true</overwrite>
+									<resources>
+										<resource>
+											<directory>${project.build.outputDirectory}</directory>
+											<includes>
+												<include>plugin.xml</include>
+												<include>*faces-config.xml</include>
+												<include>*.xsp-config</include>
+												<include>META-INF/MANIFEST.MF</include>
+											</includes>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					 -->
+  				</plugins>
 			</build>
 		</profile>
 	</profiles>
@@ -71,12 +163,8 @@
 	<!-- preconfiguring all plugins that are used in this build -->
 	<build>
 		<pluginManagement>
+			<!--  here you can preconfigure all plugins that are used below this POM -->
 			<plugins>
-				<plugin>
-					<groupId>org.apache.felix</groupId>
-					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.5.3</version>
-				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
@@ -85,7 +173,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.2</version>
+					<version>2.10.3</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -95,9 +183,169 @@
 						<tagNameFormat>v@{project.version}</tagNameFormat>
 						<pushChanges>false</pushChanges>
 					</configuration>
-				 </plugin>		
+				 </plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.8.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
+		
+				<!-- This is the central configuration of the maven-bundle plugin -->
+				<plugin>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>maven-bundle-plugin</artifactId>
+					<version>2.5.3</version>
+					<extensions>true</extensions>
+					<configuration>
+						<singleton>true</singleton>
+						<source>${compiler}</source>
+						<target>${compiler}</target>
+						<showWarnings>false</showWarnings>
+						<showDeprecation>false</showDeprecation>
+						<!--  CHECKME RPr: Do we really need all these instructions? -->
+						<instructions>
+						    <singleton>true</singleton> <!-- it seems that singleton does not work -->
+						    <!-- Note: The MANIFEST.MF is generated again by the p2-maven-plugin -->
+							<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
+						
+							<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+							<Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
+						
+							<_snapshot>${osgi.qualifier}</_snapshot>
+							<_removeheaders>Bnd-LastModified,Built-By,Build-Jdk,Created-By,Tool</_removeheaders>
+						</instructions>
+					</configuration>
+				</plugin>
+				
+				<!-- The maven compiler plugin. It uses javac - so you will need SDK! -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<!-- 3.1 is the newest, but has bugs. we use the same as tinkerpop-frames -->
+					<version>2.3.2</version>
+					<configuration>
+						<source>${compiler}</source>
+						<target>${compiler}</target>
+	
+						<showWarnings>false</showWarnings>
+						<showDeprecation>false</showDeprecation>
+						<compilerArgs>
+							<!-- good reference for XLint is: http://www.javaworld.com/article/2073587/javac-s&#x2D;&#x2D;xlint-options.html
+								Normally, a BootstrapClassPath to a 1.6/rt.jar should be set. But I did not
+								figure out how! <arg>-Xlint:all,-options</arg> -->
+	
+							<!-- <arg>-verbose</arg> -->
+							<!-- RPr: We may have fun if we really enable this :) -->
+							<!-- <arg>-Werror</arg> -->
+	
+						</compilerArgs>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
+		
+		<!-- These plugins are enabled by default in all submodules -->
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>animal-sniffer-maven-plugin</artifactId>
+				<version>1.14</version>
+				<configuration>
+					<signature>
+						<groupId>org.codehaus.mojo.signature</groupId>
+						<artifactId>java16</artifactId>
+						<version>1.1</version>
+					</signature>
+				</configuration>
+				<executions>
+					<execution>
+						<id>ensure-java-1.6-class-library</id>
+						<phase>test</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- javadoc configuration <plugin> <groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId> <version>2.9</version> <executions>
+				<execution> <id>attach-javadocs</id> <goals> <goal>jar</goal> </goals> </execution>
+				</executions> <configuration> <failOnError>false</failOnError> <excludePackageNames>com.sun.*:com.ibm.icu.*:com.ibm.commons.*:com.ibm.sbt.core.*:com.ibm.sbt.plugin.*:com.ibm.sbt.jslibrray.*:com.ibm.sbt.proxy.*:com.ibm.sbt.security.*:*.util.*:com.ibm.sbt.portlet.*:com.ibm.sbt.playground.*:demo.*:acme.*</excludePackageNames>
+				</configuration> </plugin> -->
+
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.1.15</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                         </goals>
+                    </execution>
+                </executions>
+
+                <configuration>
+
+                    <!-- Default value is dd.MM.yyyy '@' HH:mm:ss z -->
+                    <dateFormat>yyyy-MM-dd HH:mm:ss</dateFormat>
+
+                    <!-- this is false by default, forces the plugin to generate the git.properties file -->
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+
+                    <!-- The path for the to be generated properties file, it's relative to ${project.basedir} -->
+                    <generateGitPropertiesFilename>src/main/resources/META-INF/git.properties</generateGitPropertiesFilename>
+
+					<runOnlyOnce>true</runOnlyOnce>
+                    <!-- @since 2.1.0 -->
+                    <!--
+                        read up about git-describe on the in man, or it's homepage - it's a really powerful versioning helper
+                        and the recommended way to use git-commit-id-plugin. The configuration bellow is optional,
+                        by default describe will run "just like git-describe on the command line", even though it's a JGit reimplementation.
+                    -->
+                    <gitDescribe>
+
+                        <!-- don't generate the describe property -->
+                        <skip>false</skip>
+
+                        <!--
+                            if no tag was found "near" this commit, just print the commit's id instead,
+                            helpful when you always expect this field to be not-empty
+                        -->
+                        <always>false</always>
+                        <!--
+                             how many chars should be displayed as the commit object id?
+                             7 is git's default,
+                             0 has a special meaning (see end of this README.md),
+                             and 40 is the maximum value here
+                        -->
+                        <abbrev>7</abbrev>
+
+                        <!-- when the build is triggered while the repo is in "dirty state", append this suffix -->
+                        <dirty>-dirty</dirty>
+
+                        <!-- Only consider tags matching the given pattern. This can be used to avoid leaking private tags from the repository. -->
+                        <match>*</match>
+
+                        <!--
+                             always print using the "tag-commits_from_tag-g_commit_id-maybe_dirty" format, even if "on" a tag.
+                             The distance will always be 0 if you're "on" the tag.
+                        -->
+                        <forceLongFormat>false</forceLongFormat>
+                    </gitDescribe>
+                </configuration>
+
+            </plugin>
+            
+
+  			
+  			
+    	</plugins>
 		
 	</build>
 	<!-- List all developers here -->

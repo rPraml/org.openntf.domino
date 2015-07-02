@@ -15,7 +15,6 @@ import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
 import org.openntf.domino.events.IDominoEventFactory;
-import org.openntf.domino.utils.DominoFormatter;
 import org.openntf.domino.utils.Factory.SessionType;
 
 import com.ibm.icu.util.Calendar;
@@ -60,8 +59,8 @@ public interface Session {
 		/** ViewEntries should return correct column values. (Constant values are ommited) */
 		VIEWENTRY_RETURN_CONSTANT_VALUES,
 
-		/** Alternative implementation of Names */
-		ODA_NAMES
+		/** the java formula engine should be used */
+		FORMULA_ENGINE
 	}
 
 	/**
@@ -207,16 +206,6 @@ public interface Session {
 	public DateTime createDateTime(Calendar date);
 
 	/**
-	 * Creates a Name object using a standard lotus.domino.Session, in case the fix is not enabled
-	 * 
-	 * @param name
-	 *            String for which to convert into a Notes Name
-	 * @return The newly create {@link Name} object.
-	 * @since 5.0.0
-	 */
-	public Name createNameNonODA(String name);
-
-	/**
 	 * Tells whether the current session object represents an anonymous user.
 	 * 
 	 * @return boolean, whether the session is an anonymous user
@@ -254,18 +243,6 @@ public interface Session {
 	 *            boolean to enable or diable
 	 */
 	public void setFixEnable(Fixes fix, boolean value);
-
-	/**
-	 * Converts a String name to common name format. Deprecated in favour of
-	 * {@link org.openntf.domino.utils.DominoUtils#toCommonName(String)}. That method is more performant and avoids creating a Name object.
-	 * 
-	 * @param name
-	 *            String hierarchical name to convert
-	 * @return String name converted to common name format
-	 * @since org.openntf.domino 4.5.0
-	 */
-	@Deprecated
-	public String toCommonName(String name);
 
 	/**
 	 * Easter egg method to print a boogie image onto the server console :-)
@@ -423,8 +400,10 @@ public interface Session {
 	 * Returns a Domino Formatter
 	 * 
 	 * @return the formatter
+	 * @deprecated 2015-06-30/RPr: explain me the use case
 	 */
-	DominoFormatter getFormatter();
+	@Deprecated
+	org.openntf.domino.utils.DominoFormatter getFormatter();
 
 	/**
 	 * Sets the session type on construction, so that it can be recreated if used across threads

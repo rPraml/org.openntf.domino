@@ -1,12 +1,32 @@
 *.class
 *.iml
 *.releaseBackup
-# do not recursive exclude folders (otherwise a package named "bin" may not get recognized)
-/target
-/bin
+*.git.properties
+
+git.properties
+
+# maven-build directory. hopefully no one uses "target" in a package name
+target/
+target-ide/
+
+# eclipse related files
+.classpath
+
+# maven-build directory. hopefully no one uses "bin" in a package name
+bin/
+
+# The IBM Technical support log directory
+IBM_TECHNICAL_SUPPORT
+
+
+
+
 
 # list all deleted folders here
+# this should be pruned in future
 
+
+OSGI-OPT/
 /org.openntf.domino.plugin
 /de.foconis.test
 /org.openntf.formula/lib
@@ -25,4 +45,7 @@
 /domino/externals/rxjava
 /domino/externals/tinkerpop
 /domino/junit4xpages
-**/src/main/resources/*.git.properties
+
+
+
+

@@ -4,6 +4,13 @@
    <extension
          point="com.ibm.commons.Extension">
       <service
+            class="org.openntf.formula.FormulaService"
+            type="org.openntf.domino.commons.IFormulaService">
+      </service>
+   </extension>
+   <extension
+         point="com.ibm.commons.Extension">
+      <service
             class="org.openntf.formula.function.Operators$Functions"
             type="org.openntf.formula.FunctionSet">
       </service>

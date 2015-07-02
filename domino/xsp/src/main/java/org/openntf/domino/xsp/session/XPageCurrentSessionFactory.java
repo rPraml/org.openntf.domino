@@ -5,7 +5,7 @@ import javax.servlet.ServletException;
 import lotus.domino.NotesException;
 
 import org.openntf.domino.Session;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.xsp.xots.FakeHttpRequest;
 
 import com.ibm.designer.runtime.domino.bootstrap.util.StringUtil;
@@ -42,7 +42,7 @@ public class XPageCurrentSessionFactory extends AbstractXPageSessionFactory {
 				}
 			}
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 
 	}
@@ -82,11 +82,11 @@ public class XPageCurrentSessionFactory extends AbstractXPageSessionFactory {
 			}
 
 		} catch (ServletException e) { // ctx.initRequest
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} catch (NotesException e) { // common notes exception
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		} catch (NException e) { // napi
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}

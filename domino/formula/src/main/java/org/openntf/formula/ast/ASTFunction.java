@@ -19,7 +19,7 @@ package org.openntf.formula.ast;
 
 import java.util.Set;
 
-import org.openntf.formula.EvaluateException;
+import org.openntf.domino.commons.exception.EvaluateException;
 import org.openntf.formula.FormulaContext;
 import org.openntf.formula.FormulaReturnException;
 import org.openntf.formula.Function;

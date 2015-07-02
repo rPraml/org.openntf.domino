@@ -27,12 +27,9 @@ import org.openntf.domino.Database.Type;
 import org.openntf.domino.Document;
 import org.openntf.domino.DocumentCollection;
 import org.openntf.domino.NoteCollection.SelectOption;
-import org.openntf.domino.annotations.Incomplete;
-import org.openntf.domino.design.DatabaseDesign;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
 import org.openntf.domino.events.IDominoEventFactory;
-import org.openntf.domino.schema.IDatabaseSchema;
 import org.openntf.domino.transactions.DatabaseTransaction;
 
 import com.ibm.designer.domino.napi.NotesDatabase;
@@ -294,15 +291,6 @@ public interface Database extends Base {
 			final Set<FTSearchOption> otherOpt, final int start);
 
 	/**
-	 * Gets a {@link org.openntf.domino design.DatabaseDesign} object providing access to various design elements of this database. The
-	 * class also has helper methods to create some design resources, e.g. {@link org.openntf.domino.design.DatabaseDesign#createView()}
-	 * 
-	 * @return DatabaseDesign object
-	 * @since org.openntf.domino 1.0.0
-	 */
-	public DatabaseDesign getDesign();
-
-	/**
 	 * Returns the shared XPage Design Template (if this is a Single Copy XPage Database)
 	 * 
 	 * @return the shared XPage Design Template (or null, if this is no SCXD-DB)
@@ -326,9 +314,15 @@ public interface Database extends Base {
 	 */
 	public Document getDocumentWithKey(final Serializable key);
 
+	/**
+	 * @deprecated TODO why? Use {@link #getDocumentWithKey(Serializable)} instead?
+	 */
 	@Deprecated
 	public Document getDocumentByKey(Serializable key);
 
+	/**
+	 * @deprecated TODO why? Use {@link #getDocumentWithKey(Serializable, boolean)} instead?
+	 */
 	@Deprecated
 	public Document getDocumentByKey(Serializable key, boolean createOnFail);
 
@@ -612,23 +606,23 @@ public interface Database extends Base {
 	 */
 	public Map<Serializable, org.openntf.domino.Document> getDocumentMap();
 
-	/**
-	 * Gets the schema for the database. Not yet complete
-	 * 
-	 * @return instance of IDatabaseSchema interface
-	 * @since org.openntf.domino 2.5.0
-	 */
-	@Incomplete
-	public IDatabaseSchema getSchema();
-
-	/**
-	 * Sets the schema for the database. Not yet complete
-	 * 
-	 * @param schema
-	 *            instance of IDatabaseSchema interface
-	 * @since org.openntf.domino 2.5.0
-	 */
-	public void setSchema(IDatabaseSchema schema);
+	//	/**
+	//	 * Gets the schema for the database. Not yet complete
+	//	 * 
+	//	 * @return instance of IDatabaseSchema interface
+	//	 * @since org.openntf.domino 2.5.0
+	//	 */
+	//	@Incomplete
+	//	public IDatabaseSchema getSchema();
+	//
+	//	/**
+	//	 * Sets the schema for the database. Not yet complete
+	//	 * 
+	//	 * @param schema
+	//	 *            instance of IDatabaseSchema interface
+	//	 * @since org.openntf.domino 2.5.0
+	//	 */
+	//	public void setSchema(IDatabaseSchema schema);
 
 	/**
 	 * Checks whether replication is disabled for this database
@@ -702,5 +696,12 @@ public interface Database extends Base {
 	 * @return the NAPI-NotesDatabase object
 	 */
 	public NotesDatabase getNapiDatabase();
+
+	/**
+	 * Returns TRUE if the database is design-protected
+	 * 
+	 * @return
+	 */
+	public boolean isDesignProtected();
 
 }

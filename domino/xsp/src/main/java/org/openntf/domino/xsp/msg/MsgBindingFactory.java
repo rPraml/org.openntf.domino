@@ -7,6 +7,7 @@ import javax.faces.el.ValueBinding;
 import com.ibm.xsp.binding.BindingFactory;
 import com.ibm.xsp.util.ValueBindingUtil;
 
+@Deprecated
 public class MsgBindingFactory implements BindingFactory {
 
 	/** the prefix for the engine (= <code>"msg"</code>) */

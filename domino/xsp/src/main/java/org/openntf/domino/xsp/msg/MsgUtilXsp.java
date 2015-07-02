@@ -22,7 +22,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
-import org.openntf.domino.AsDocMap;
+import org.openntf.domino.commons.AsDocMap;
 import org.openntf.domino.i18n.MessageProvider;
 import org.openntf.domino.xsp.model.DominoDocumentMapAdapter;
 
@@ -30,6 +30,7 @@ import com.ibm.xsp.component.UIViewRootEx;
 import com.ibm.xsp.extlib.util.ExtLibUtil;
 import com.ibm.xsp.model.domino.wrapped.DominoDocument;
 
+@Deprecated
 public enum MsgUtilXsp {
 	;
 

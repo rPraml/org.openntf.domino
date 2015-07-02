@@ -76,7 +76,7 @@ So I've deleted ALL these files, the m2eclipse plugin will recreate these files 
 * `domino\org.openntf.domino.feature.group` + `org.openntf.domino.updatesite`<br/>
   UpdateSite is generated in a complete different way.<br/>
   **NOW:** Updatesite is in `domino\updatesite\target\repository`<br/>
-  [ ] TODO: submit patch requests of p2-maven-plugin to Author.
+  [X] TODO: submit patch requests of p2-maven-plugin to Author.
 
 
 ### Changes in `domino\core`
@@ -104,7 +104,7 @@ So I've deleted ALL these files, the m2eclipse plugin will recreate these files 
   guava was used in the core => Now it doesn't require guava any more
   
 * Removed `DominoGraph.clearDocumentCache();` in `Factory.termThread`
-  [ ] **IMPORTANT TODO:** the graph bundle must register a `terminateHook` to clear the graph-cache
+  [X] **IMPORTANT TODO:** the graph bundle must register a `terminateHook` to clear the graph-cache
   
 so in total, there were only 2 LOC that have changed in the core.
 

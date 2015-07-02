@@ -19,9 +19,13 @@ package org.openntf.formula.ast;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import org.openntf.formula.EvaluateException;
+import org.openntf.domino.commons.IFormulaContext;
+import org.openntf.domino.commons.IFormulaService;
+import org.openntf.domino.commons.ServiceLocator;
+import org.openntf.domino.commons.exception.EvaluateException;
 import org.openntf.formula.FormulaContext;
 import org.openntf.formula.FormulaReturnException;
 import org.openntf.formula.ValueHolder;
@@ -58,6 +62,7 @@ public abstract class SimpleNode implements Node {
 	/* (non-Javadoc)
 	 * @see org.openntf.formula.ASTNode#setFormula(java.lang.String)
 	 */
+	@Override
 	public void setFormula(final String formula) {
 		this.formula = formula;
 	}
@@ -65,6 +70,7 @@ public abstract class SimpleNode implements Node {
 	/* (non-Javadoc)
 	 * @see org.openntf.formula.ASTNode#getFormula()
 	 */
+	@Override
 	public String getFormula() {
 		if (formula != null)
 			return formula;
@@ -77,13 +83,15 @@ public abstract class SimpleNode implements Node {
 	 * (non-Javadoc)
 	 * @see org.openntf.formula.ast.Node#jjtOpen()
 	 */
+	@Override
 	public void jjtOpen() {
 	}
 
 	/*
-	* (non-Javadoc)
-	* @see org.openntf.formula.ast.Node#jjtClose()
-	*/
+	 * (non-Javadoc)
+	 * @see org.openntf.formula.ast.Node#jjtClose()
+	 */
+	@Override
 	public void jjtClose() {
 	}
 
@@ -91,6 +99,7 @@ public abstract class SimpleNode implements Node {
 	 * (non-Javadoc)
 	 * @see org.openntf.formula.ast.Node#jjtSetParent(org.openntf.formula.ast.Node)
 	 */
+	@Override
 	public void jjtSetParent(final Node n) {
 		parent = n;
 	}
@@ -99,6 +108,7 @@ public abstract class SimpleNode implements Node {
 	 * (non-Javadoc)
 	 * @see org.openntf.formula.ast.Node#jjtGetParent()
 	 */
+	@Override
 	public Node jjtGetParent() {
 		return parent;
 	}
@@ -107,6 +117,7 @@ public abstract class SimpleNode implements Node {
 	 * (non-Javadoc)
 	 * @see org.openntf.formula.ast.Node#jjtAddChild(org.openntf.formula.ast.Node, int)
 	 */
+	@Override
 	public void jjtAddChild(final Node n, final int i) {
 		if (children == null) {
 			children = new Node[i + 1];
@@ -122,6 +133,7 @@ public abstract class SimpleNode implements Node {
 	 * (non-Javadoc)
 	 * @see org.openntf.formula.ast.Node#jjtGetChild(int)
 	 */
+	@Override
 	public Node jjtGetChild(final int i) {
 		return children[i];
 	}
@@ -130,6 +142,7 @@ public abstract class SimpleNode implements Node {
 	 * (non-Javadoc)
 	 * @see org.openntf.formula.ast.Node#jjtGetNumChildren()
 	 */
+	@Override
 	public int jjtGetNumChildren() {
 		return (children == null) ? 0 : children.length;
 	}
@@ -157,6 +170,7 @@ public abstract class SimpleNode implements Node {
 	 * (non-Javadoc)
 	 * @see org.openntf.formula.ast.Node#dump(java.lang.String)
 	 */
+	@Override
 	public void dump(final String prefix) {
 		System.out.println(toString(prefix));
 		if (children != null) {
@@ -169,21 +183,24 @@ public abstract class SimpleNode implements Node {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.openntf.formula.ast.Node#evaluate(org.openntf.formula.FormulaContext)
-	 */
-	public abstract ValueHolder evaluate(FormulaContext ctx) throws FormulaReturnException;
+	@Override
+	public List<Object> solve(final Map<String, Object> map) throws EvaluateException {
+		// TODO Auto-generated method stub
+		IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
+		IFormulaContext ctx = service.createContext(map);
+		return solve(ctx);
+	}
 
 	/* (non-Javadoc)
 	 * @see org.openntf.formula.ast.Node#solve(org.openntf.formula.FormulaContext)
 	 */
+
 	@Override
-	public final List<Object> solve(final FormulaContext ctx) throws EvaluateException {
+	public final List<Object> solve(final IFormulaContext ctx) throws EvaluateException {
 		try {
 			ValueHolder vh;
 			try {
-				vh = evaluate(ctx);
+				vh = evaluate((FormulaContext) ctx);
 			} catch (FormulaReturnException e) {
 				vh = e.getValue();
 			}
@@ -245,6 +262,7 @@ public abstract class SimpleNode implements Node {
 	 * (non-Javadoc)
 	 * @see org.openntf.formula.ast.Node#getFunctions()
 	 */
+	@Override
 	public Set<String> getFunctions() {
 		initInspection();
 		return functions;
@@ -255,6 +273,7 @@ public abstract class SimpleNode implements Node {
 	 * (non-Javadoc)
 	 * @see org.openntf.formula.ast.Node#getVariables()
 	 */
+	@Override
 	public Set<String> getVariables() {
 		initInspection();
 		return variables;
@@ -265,6 +284,7 @@ public abstract class SimpleNode implements Node {
 	 * (non-Javadoc)
 	 * @see org.openntf.formula.ast.Node#getReadFields()
 	 */
+	@Override
 	public Set<String> getReadFields() {
 		initInspection();
 		return readFields;
@@ -275,6 +295,7 @@ public abstract class SimpleNode implements Node {
 	 * (non-Javadoc)
 	 * @see org.openntf.formula.ast.Node#getModifiedFields()
 	 */
+	@Override
 	public Set<String> getModifiedFields() {
 		initInspection();
 		return modifiedFields;

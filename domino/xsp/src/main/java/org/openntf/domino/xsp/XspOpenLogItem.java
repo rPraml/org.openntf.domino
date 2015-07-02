@@ -85,10 +85,10 @@ import lotus.domino.NotesException;
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
 import org.openntf.domino.RichTextItem;
-import org.openntf.domino.logging.BaseOpenLogItem;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.logging.impl.BaseOpenLogItem;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.utils.ODAUtils;
 
 import com.ibm.commons.util.StringUtil;
 import com.ibm.icu.util.Calendar;
@@ -149,7 +149,7 @@ public class XspOpenLogItem extends BaseOpenLogItem {
 				super.setThisAgent(fromPage);
 			}
 		} catch (Throwable t) {
-			DominoUtils.handleException(t);
+			ODAUtils.handleException(t);
 		}
 	}
 
@@ -181,7 +181,7 @@ public class XspOpenLogItem extends BaseOpenLogItem {
 			}
 			return logEmail_;
 		} catch (Throwable t) {
-			DominoUtils.handleException(t);
+			ODAUtils.handleException(t);
 			return "";
 		}
 	}
@@ -204,7 +204,7 @@ public class XspOpenLogItem extends BaseOpenLogItem {
 			}
 			return super.getLogDbName();
 		} catch (Throwable t) {
-			DominoUtils.handleException(t);
+			ODAUtils.handleException(t);
 			return "OpenLog.nsf";
 		}
 	}
@@ -224,7 +224,7 @@ public class XspOpenLogItem extends BaseOpenLogItem {
 				return true;
 			}
 		} catch (Throwable t) {
-			DominoUtils.handleException(t);
+			ODAUtils.handleException(t);
 			return false;
 		}
 	}
@@ -249,7 +249,7 @@ public class XspOpenLogItem extends BaseOpenLogItem {
 			}
 			return displayError_;
 		} catch (Throwable t) {
-			DominoUtils.handleException(t);
+			ODAUtils.handleException(t);
 			return false;
 		}
 	}
@@ -272,7 +272,7 @@ public class XspOpenLogItem extends BaseOpenLogItem {
 			}
 			return displayErrorGeneric_;
 		} catch (Throwable t) {
-			DominoUtils.handleException(t);
+			ODAUtils.handleException(t);
 			return "";
 		}
 	}
@@ -285,7 +285,7 @@ public class XspOpenLogItem extends BaseOpenLogItem {
 			}
 			return defaultLevel_;
 		} catch (Throwable t) {
-			DominoUtils.handleException(t);
+			ODAUtils.handleException(t);
 			return "2";
 		}
 	}
@@ -326,7 +326,7 @@ public class XspOpenLogItem extends BaseOpenLogItem {
 			return getMessage();
 
 		} catch (Exception e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			setLogSuccess(false);
 			return "";
 		}
@@ -462,7 +462,7 @@ public class XspOpenLogItem extends BaseOpenLogItem {
 			logDoc.save(true);
 			retval = true;
 		} catch (Throwable t) {
-			DominoUtils.handleException(t);
+			ODAUtils.handleException(t);
 		}
 
 		return retval;
@@ -486,7 +486,7 @@ public class XspOpenLogItem extends BaseOpenLogItem {
 			}
 			FacesContext.getCurrentInstance().addMessage(component, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
 		} catch (Throwable t) {
-			DominoUtils.handleException(t);
+			ODAUtils.handleException(t);
 		}
 	}
 }

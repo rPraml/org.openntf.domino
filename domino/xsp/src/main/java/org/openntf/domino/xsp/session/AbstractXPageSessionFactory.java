@@ -3,6 +3,7 @@ package org.openntf.domino.xsp.session;
 import org.openntf.domino.AutoMime;
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
+import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.ext.Session.Fixes;
 import org.openntf.domino.session.ISessionFactory;
 import org.openntf.domino.utils.Factory;
@@ -61,8 +62,7 @@ public abstract class AbstractXPageSessionFactory implements ISessionFactory {
 	protected long createUserNameList(final String userName) throws NException {
 		final long userHandle = NotesUtil.createUserNameList(userName);
 		if (userHandle != 0) {
-
-			Factory.addTerminateHook(new Runnable() {
+			LifeCycleManager.onRequestEnd(new Runnable() {
 				@Override
 				public void run() {
 					try {
@@ -70,7 +70,7 @@ public abstract class AbstractXPageSessionFactory implements ISessionFactory {
 					} catch (NException e) {
 					}
 				}
-			}, false);
+			});
 		}
 		return userHandle;
 	}

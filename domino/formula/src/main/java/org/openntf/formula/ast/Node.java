@@ -18,7 +18,7 @@
 
 package org.openntf.formula.ast;
 
-import org.openntf.formula.ASTNode;
+import org.openntf.domino.commons.IFormula;
 import org.openntf.formula.FormulaContext;
 import org.openntf.formula.FormulaReturnException;
 import org.openntf.formula.ValueHolder;
@@ -27,7 +27,7 @@ import org.openntf.formula.ValueHolder;
    machinery for constructing the parent and child relationships
    between nodes. */
 
-public interface Node extends ASTNode {
+public interface Node extends IFormula {
 
 	/**
 	 * This method is called after the node has been made the current node. It indicates that child nodes can now be added to it.

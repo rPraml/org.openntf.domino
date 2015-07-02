@@ -46,6 +46,8 @@ import com.ibm.xsp.model.domino.wrapped.DominoViewEntry;
  *         OpenntfNABNamePickerData, for use with the NamePicker control
  */
 @SuppressWarnings("javadoc")
+@Deprecated
+// uses some deprecated name stuff which has to be fixed first
 public class OpenntfNABNamePickerData extends DominoNABNamePickerData {
 
 	private String addressBookSel;

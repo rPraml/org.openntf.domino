@@ -15,8 +15,8 @@ import java.util.logging.Logger;
 
 import org.openntf.domino.Document;
 import org.openntf.domino.Item;
-import org.openntf.domino.exceptions.UnimplementedException;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.commons.exception.UnimplementedException;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * @author nfreeman
@@ -79,7 +79,7 @@ public class ItemVector extends Vector<Item> {
 			//			}
 			//			session.setConvertMIME(convertMime);
 		} catch (Exception ne) {
-			DominoUtils.handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 	}
 
@@ -122,6 +122,9 @@ public class ItemVector extends Vector<Item> {
 		return itemNames_.addAll(arg0, names);
 	}
 
+	/**
+	 * @deprecated use {@link #add(Item)}
+	 */
 	@Override
 	@Deprecated
 	public void addElement(final Item arg0) {

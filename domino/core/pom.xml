@@ -12,64 +12,55 @@
 
 	<packaging>bundle</packaging>
 	<build>
+			
 		<plugins>
-			<plugin>  
+			<plugin> 
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.5.3</version>
-				<extensions>true</extensions>
 				<configuration>
-					<singleton>true</singleton>
 					<instructions>
 
 						<!-- TODO 1: We must specify exportPackage, otherwise .impl. is not exported -->
 						<!-- TODO 2: move domino.impl to own package and remove exportPackage -->
 						<Export-Package>
 							!*.test,
+							!org.openntf.domino.commons.*,
 							org.openntf.domino.*,
 							org.openntf.arpa,
 							org.openntf.calendars
 						</Export-Package>
 
-						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
-						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+						<!-- junit is optional. (if it is not present you cannot run unittests on server) -->
+                        <Import-Package>
+                            org.junit.*;resolution:=optional,
+                            *
+                        </Import-Package>
+
+						<!--  TODO: Eclipse build
 						<Import-Package>
-							org.junit.*;resolution:=optional,
-							*
+							lotus.domino
 						</Import-Package>
   
-  						<!-- BND generated import-packages does not work in DominoServer -->
-  						<!-- 
-  							so we import just lotus.domino	(do not know why, it was several times added to original MANIFEST.MF 
-   						
-  						
- 						
- 
+
 						<Require-Bundle>
 							com.ibm.notes.java.api;bundle-version="[8.5.3,10.0.0)",
 							com.ibm.domino.napi;bundle-version="[9.0.1,10.0.0)";visibility=reexport,
 							com.ibm.commons;bundle-version="[9.0.0,10.0.0)",
 							org.javolution.core-java;bundle-version="[6.1.0,7.0.0)",
 							org.openntf.formula;bundle-version="1.5.0";visibility=reexport
-						</Require-Bundle>
--->
+ 						</Require-Bundle>
+ 						-->
 					</instructions>
 				</configuration>
-			
 			</plugin>
+			
 
 		</plugins>
 	</build>
 
 	<dependencies>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>provided</scope>
-		</dependency>
-		
+
 		<!-- The notes-api is bundled by the ibm-build-management -->
 		<dependency>
 			<groupId>com.ibm.notes</groupId>
@@ -83,46 +74,34 @@
 			<version>9.0.1</version>
 		</dependency>
 		
-		
-		<!-- add to plugin -->
-		<dependency>
-			<groupId>com.ibm.commons</groupId>
-			<artifactId>com.ibm.commons</artifactId>
-			<version>9.0.1</version>
-		</dependency>
-		
-		<!-- Javolution: needed by the CD-stuff -->		
-		<dependency>
-			<groupId>org.javolution</groupId>
-			<artifactId>javolution-core-java</artifactId>
-			<version>6.1.0-ODA-151-SNAPSHOT</version>
-		</dependency> 
-		
-		<dependency>
-			<groupId>org.openntf</groupId>
-			<artifactId>formula</artifactId>
-			<version>1.5.1-SNAPSHOT</version>
-		</dependency>
-		
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
 			<artifactId>commons</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
-		
-		<!-- TODO: Remove these Deps if separated in a own project 
+
 		<dependency>
-			<groupId>com.tinkerpop.blueprints</groupId>
-			<artifactId>blueprints-core</artifactId>
-			<version>2.6.0</version>
-		</dependency>
-		
+			<groupId>org.javolution</groupId>
+			<artifactId>javolution-core-java</artifactId>
+			<version>6.1.0-ODA-151-SNAPSHOT</version>
+		</dependency> 
+		<!--
 		<dependency>
-			<groupId>com.tinkerpop</groupId>
-			<artifactId>frames</artifactId>
-			<version>2.6.0</version>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>core-junit</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+			<scope>test</scope>
 		</dependency>
 		-->
+ 
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+
+				
 	</dependencies>
 
 	<organization>

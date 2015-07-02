@@ -110,7 +110,7 @@ public enum NameEnums {
 		/**
 		 * There are only 4 OUs allowed
 		 */
-		TWO_MANY_OUS,
+		TOO_MANY_OUS,
 		/**
 		 * Invalid RFC822 Internet address
 		 */

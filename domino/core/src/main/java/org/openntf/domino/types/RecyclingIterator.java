@@ -22,7 +22,9 @@ import java.util.Iterator;
  * 
  * @param <T>
  *            the generic type
+ * @deprecated 2015-06-29/RPr: this class is never used in ODA
  */
+@Deprecated
 public interface RecyclingIterator<T> extends Iterator<T> {
 
 }

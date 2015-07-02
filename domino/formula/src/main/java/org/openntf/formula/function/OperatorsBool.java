@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openntf.formula.DateTime;
+import org.openntf.domino.commons.IDateTime;
 import org.openntf.formula.FormulaContext;
 import org.openntf.formula.Function;
 import org.openntf.formula.FunctionSet;
@@ -174,7 +174,7 @@ public class OperatorsBool extends OperatorsAbstract {
 	}
 
 	@Override
-	protected ValueHolder evaluateDateTime(final FormulaContext ctx, final DateTime dt1, final DateTime dt2) {
+	protected ValueHolder evaluateDateTime(final FormulaContext ctx, final IDateTime dt1, final IDateTime dt2) {
 		throw new UnsupportedOperationException("'" + getImage() + "' is not supported for STRING");
 	}
 

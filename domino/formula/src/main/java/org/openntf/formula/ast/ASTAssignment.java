@@ -127,5 +127,6 @@ public class ASTAssignment extends SimpleNode {
 		}
 
 	}
+
 }
 /* JavaCC - OriginalChecksum=5985303b30076529d3e2aa0d267e0702 (do not edit this line) */

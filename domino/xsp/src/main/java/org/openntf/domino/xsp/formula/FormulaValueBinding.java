@@ -24,11 +24,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.PropertyNotFoundException;
 
+import org.openntf.domino.commons.IFormula;
+import org.openntf.domino.commons.IFormulaService;
+import org.openntf.domino.commons.ServiceLocator;
+import org.openntf.domino.commons.exception.EvaluateException;
+import org.openntf.domino.commons.exception.FormulaParseException;
 import org.openntf.domino.xsp.model.DominoDocumentMapAdapter;
-import org.openntf.formula.ASTNode;
-import org.openntf.formula.EvaluateException;
-import org.openntf.formula.FormulaParseException;
-import org.openntf.formula.Formulas;
 
 import com.ibm.xsp.binding.ValueBindingEx;
 import com.ibm.xsp.exception.EvaluationExceptionEx;
@@ -46,7 +47,7 @@ import com.ibm.xsp.util.ValueBindingUtil;
 public class FormulaValueBinding extends ValueBindingEx {
 
 	private String formulaStr;
-	private transient SoftReference<ASTNode> astNodeCache;
+	private transient SoftReference<IFormula> FormulaASTNodeCache;
 
 	/**
 	 * Constructor
@@ -94,9 +95,10 @@ public class FormulaValueBinding extends ValueBindingEx {
 		}
 		List<Object> ret = null;
 		try {
-			FormulaContextXsp fctx = (FormulaContextXsp) Formulas.createContext(dataMap, Formulas.getParser());
+			IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
+			FormulaContextXsp fctx = (FormulaContextXsp) service.createContext(dataMap);
 			fctx.init(this.getComponent(), ctx);
-			ret = getASTNode().solve(fctx);
+			ret = getFormulaASTNode().solve(fctx);
 		} catch (EvaluateException e) {
 			throw new EvaluationException(e);
 		} catch (FormulaParseException e) {
@@ -174,21 +176,21 @@ public class FormulaValueBinding extends ValueBindingEx {
 	}
 
 	/**
-	 * Returns the corresponding {@link ASTNode} for the formula
+	 * Returns the corresponding {@link IFormula} for the formula
 	 * 
-	 * @return {@link ASTNode}
+	 * @return {@link IFormula}
 	 * @throws FormulaParseException
 	 *             if the formula was invalid
 	 */
-	protected ASTNode getASTNode() throws FormulaParseException {
-		if (astNodeCache != null) {
-			ASTNode node = astNodeCache.get();
+	protected IFormula getFormulaASTNode() throws FormulaParseException {
+		if (FormulaASTNodeCache != null) {
+			IFormula node = FormulaASTNodeCache.get();
 			if (node != null)
 				return node;
 		}
-
-		ASTNode node = Formulas.getParser().parse(formulaStr);
-		astNodeCache = new SoftReference<ASTNode>(node);
+		IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
+		IFormula node = service.parse(formulaStr);
+		FormulaASTNodeCache = new SoftReference<IFormula>(node);
 		return node;
 
 	}

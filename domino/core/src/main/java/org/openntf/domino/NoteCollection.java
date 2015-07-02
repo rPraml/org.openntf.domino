@@ -22,7 +22,7 @@ import org.openntf.domino.types.FactorySchema;
  * The Interface NoteCollection.
  */
 public interface NoteCollection extends Base<lotus.domino.NoteCollection>, lotus.domino.NoteCollection,
-		org.openntf.domino.ext.NoteCollection, Iterable<String>, DatabaseDescendant {
+org.openntf.domino.ext.NoteCollection, org.openntf.domino.ext.NoteIDContainer, Iterable<String>, DatabaseDescendant {
 
 	public static class Schema extends FactorySchema<NoteCollection, lotus.domino.NoteCollection, Database> {
 		@Override

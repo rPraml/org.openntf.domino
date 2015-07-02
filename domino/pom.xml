@@ -24,6 +24,9 @@
 		<javassist-version>3.18.2-GA</javassist-version>
 		<tinkerpop-blueprints-version>2.6.0</tinkerpop-blueprints-version>
 		<skip.tests>false</skip.tests>
+		<!-- 3.8 is ICU from central maven repository -->
+		
+		<icu-version>3.8</icu-version>
 		<domino.installdir>${user.home}/.m2/openntf-domino-ci/bin</domino.installdir>
 	</properties>
 
@@ -36,9 +39,7 @@
 
 	<!-- the name of this project Children must refer exactly to this groupID:artifactId:version
 		Note: The maven-release-plugin can change this info in all dependent POMs -->
-	<groupId>org.openntf.domino</groupId>
 	<artifactId>root</artifactId>
-	<version>1.5.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 
@@ -47,19 +48,6 @@
 		<url>file:///${basedir}/ibm-build-management/repository</url> <layout>default</layout>
 		</repository> </repositories> -->
 
-	<dependencies>
-		<dependency>
-			<groupId>org.openntf</groupId>
-			<artifactId>thirdparty</artifactId>
-			<version>1.5.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 
 	<profiles>
 		<profile>
@@ -69,19 +57,73 @@
 			</activation>
 			<modules>
 				<module>ci-env</module>
+				
 				<module>commons</module>
-				<module>formula</module>
-				<module>core</module>
-				<module>xsp</module>
+				<module>formula</module> 
 				<module>externals</module>
+				<module>core</module>
+				<module>core-impl</module>
+				<module>core-formula</module>
+				<module>core-junit</module>
+				<module>design</module>
+				<module>design-impl</module>				
+				
+				<!-- modules / not needed by FOCONIS -->
+				<module>deprecated</module>				
+				<module>schema</module>
 				<module>graph</module>
+				<module>xsp</module>
+				<module>rest</module>
+				
 				<module>updatesite</module>
-				<!-- <module>graph</module> <module>externals</module> <module>formula</module>
-					<module>junit4xpages</module> <module>tests</module> <module>org.openntf.domino.feature.group</module>
-					<module>org.openntf.domino.updatesite</module> <module>oda-dist</module> -->
+				<!--	-->		
 			</modules>
 		</profile>
 
+		<profile>
+			<id>oda-dist</id>
+			<modules>
+				<module>ci-env</module>
+				
+				<module>commons</module>
+				<module>formula</module> 
+				<module>externals</module>
+				<module>core</module>
+				<module>core-impl</module>
+				<module>core-formula</module>
+				<module>design-impl</module>				
+
+				<!-- modules / not needed by FOCONIS -->				
+				<module>schema</module>
+				<module>graph</module>
+				<module>xsp</module>
+				<module>rest</module>
+				
+				<module>updatesite</module>
+				<!--  AND oda-dist  -->
+				<module>oda-dist</module>
+			</modules>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<failOnError>false</failOnError>
+							<excludePackageNames>com.sun.*:com.ibm.icu.*:com.ibm.commons.*:com.ibm.sbt.core.*:com.ibm.sbt.plugin.*:com.ibm.sbt.jslibrray.*:com.ibm.sbt.proxy.*:com.ibm.sbt.security.*:*.util.*:com.ibm.sbt.portlet.*:com.ibm.sbt.playground.*:demo.*:acme.*</excludePackageNames>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<!-- Here we can add different build profiles. A "mvn install -Pcore" will
 			install the core only -->
 		<profile>
@@ -111,38 +153,6 @@
 
 	<build>
 		<plugins>
-			<!-- The maven compiler plugin. It uses javac - so you will need SDK! -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<!-- 3.1 is the newest, but has bugs. we use the same as tinkerpop-frames -->
-				<version>2.3.2</version>
-				<configuration>
-					<source>${compiler}</source>
-					<target>${compiler}</target>
-
-					<showWarnings>false</showWarnings>
-					<showDeprecation>false</showDeprecation>
-					<compilerArgs>
-						<!-- good reference for XLint is: http://www.javaworld.com/article/2073587/javac-s&#x2D;&#x2D;xlint-options.html
-							Normally, a BootstrapClassPath to a 1.6/rt.jar should be set. But I did not
-							figure out how! <arg>-Xlint:all,-options</arg> -->
-
-						<!-- <arg>-verbose</arg> -->
-						<!-- RPr: We may have fun if we really enable this :) -->
-						<!-- <arg>-Werror</arg> -->
-
-					</compilerArgs>
-				</configuration>
-			</plugin>
-
-			<!-- the enforcer plugin controls certain environment rules, don't know
-				if we need this <plugin> <artifactId>maven-enforcer-plugin</artifactId> <version>1.3.1</version>
-				<executions> <execution> <id>enforce-all</id> <goals> <goal>enforce</goal>
-				</goals> <configuration> <rules> <DependencyConvergence /> <requireJavaVersion>
-				<version>[1.6,1.8)</version> </requireJavaVersion> </rules> </configuration>
-				</execution> </executions> </plugin> -->
-
 
 			<!-- Build helper to include LICENSE + NOTICE in every project -->
 			<plugin>
@@ -211,97 +221,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>animal-sniffer-maven-plugin</artifactId>
-				<version>1.14</version>
-				<configuration>
-					<signature>
-						<groupId>org.codehaus.mojo.signature</groupId>
-						<artifactId>java16</artifactId>
-						<version>1.1</version>
-					</signature>
-				</configuration>
-				<executions>
-					<execution>
-						<id>ensure-java-1.6-class-library</id>
-						<phase>test</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<!-- javadoc configuration <plugin> <groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId> <version>2.9</version> <executions>
-				<execution> <id>attach-javadocs</id> <goals> <goal>jar</goal> </goals> </execution>
-				</executions> <configuration> <failOnError>false</failOnError> <excludePackageNames>com.sun.*:com.ibm.icu.*:com.ibm.commons.*:com.ibm.sbt.core.*:com.ibm.sbt.plugin.*:com.ibm.sbt.jslibrray.*:com.ibm.sbt.proxy.*:com.ibm.sbt.security.*:*.util.*:com.ibm.sbt.portlet.*:com.ibm.sbt.playground.*:demo.*:acme.*</excludePackageNames>
-				</configuration> </plugin> -->
-
-            <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-                <version>2.1.15</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>revision</goal>
-                         </goals>
-                    </execution>
-                </executions>
-
-                <configuration>
-
-                    <!-- Default value is dd.MM.yyyy '@' HH:mm:ss z -->
-                    <dateFormat>yyyy-MM-dd HH:mm:ss</dateFormat>
-
-                    <!-- this is false by default, forces the plugin to generate the git.properties file -->
-                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
-
-                    <!-- The path for the to be generated properties file, it's relative to ${project.basedir} -->
-                    <generateGitPropertiesFilename>src/main/resources/${project.groupId}.${project.artifactId}.git.properties</generateGitPropertiesFilename>
-
-                    <!-- @since 2.1.0 -->
-                    <!--
-                        read up about git-describe on the in man, or it's homepage - it's a really powerful versioning helper
-                        and the recommended way to use git-commit-id-plugin. The configuration bellow is optional,
-                        by default describe will run "just like git-describe on the command line", even though it's a JGit reimplementation.
-                    -->
-                    <gitDescribe>
-
-                        <!-- don't generate the describe property -->
-                        <skip>false</skip>
-
-                        <!--
-                            if no tag was found "near" this commit, just print the commit's id instead,
-                            helpful when you always expect this field to be not-empty
-                        -->
-                        <always>false</always>
-                        <!--
-                             how many chars should be displayed as the commit object id?
-                             7 is git's default,
-                             0 has a special meaning (see end of this README.md),
-                             and 40 is the maximum value here
-                        -->
-                        <abbrev>7</abbrev>
-
-                        <!-- when the build is triggered while the repo is in "dirty state", append this suffix -->
-                        <dirty>-dirty</dirty>
-
-                        <!-- Only consider tags matching the given pattern. This can be used to avoid leaking private tags from the repository. -->
-                        <match>*</match>
-
-                        <!--
-                             always print using the "tag-commits_from_tag-g_commit_id-maybe_dirty" format, even if "on" a tag.
-                             The distance will always be 0 if you're "on" the tag.
-                        -->
-                        <forceLongFormat>false</forceLongFormat>
-                    </gitDescribe>
-                </configuration>
-
-            </plugin>
-
 		</plugins>
 	</build>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<!--  externals is independet, so it has no parent  -->
+	<!--  externals is independent, so it has no parent  -->
 	<!-- Don't know if this is really a good decision! -->
 	<parent>
 		<groupId>org.openntf.domino</groupId>
@@ -9,8 +9,6 @@
 		<version>1.5.1-SNAPSHOT</version>
 	</parent>
 	
-	<groupId>org.openntf.domino</groupId>
-	<version>1.5.1-SNAPSHOT</version>
 	<artifactId>externals</artifactId>
 	<packaging>pom</packaging>
 
@@ -31,6 +29,7 @@
 				<!-- 3.1 is the newest, but has bugs. we use the same as tinkerpop-frames -->
 				<version>2.3.2</version>
 				<configuration>
+					<manifestLocation>META-INF</manifestLocation>
 					<source>${compiler}</source>
 					<target>${compiler}</target>
 					

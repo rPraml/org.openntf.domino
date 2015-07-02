@@ -20,7 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.openntf.formula.DateTime;
+import org.openntf.domino.commons.IDateTime;
 import org.openntf.formula.Formatter;
 import org.openntf.formula.FormulaContext;
 import org.openntf.formula.Function;
@@ -74,7 +74,7 @@ public enum DateTimeFunctions {
 	@ParamCount({ 0, 2 })
 	public static ValueHolder atNow(final FormulaContext ctx, final ValueHolder params[]) {
 		if (params == null || params.length == 0) {
-			DateTime sdt = getSDTDefaultLocale(ctx);
+			IDateTime sdt = getSDTDefaultLocale(ctx);
 			sdt.setNow();
 			return ValueHolder.valueOf(sdt);
 		}
@@ -82,12 +82,12 @@ public enum DateTimeFunctions {
 	}
 
 	/*----------------------------------------------------------------------------*/
-	private static DateTime getSDTDefaultLocale(final FormulaContext ctx) {
+	private static IDateTime getSDTDefaultLocale(final FormulaContext ctx) {
 		return ctx.getFormatter().getNewSDTInstance();
 	}
 
 	/*----------------------------------------------------------------------------*/
-	private static DateTime getSDTCopy(final FormulaContext ctx, final DateTime sdt) {
+	private static IDateTime getSDTCopy(final FormulaContext ctx, final IDateTime sdt) {
 		return ctx.getFormatter().getCopyOfSDTInstance(sdt);
 	}
 
@@ -97,43 +97,43 @@ public enum DateTimeFunctions {
 	 */
 	/*----------------------------------------------------------------------------*/
 	@ParamCount(1)
-	public static int atYear(final DateTime dt) {
+	public static int atYear(final IDateTime dt) {
 		return dt.toJavaCal().get(Calendar.YEAR);
 	}
 
 	/*----------------------------------------------------------------------------*/
 	@ParamCount(1)
-	public static int atMonth(final DateTime dt) {
+	public static int atMonth(final IDateTime dt) {
 		return dt.toJavaCal().get(Calendar.MONTH) + 1;
 	}
 
 	/*----------------------------------------------------------------------------*/
 	@ParamCount(1)
-	public static int atDay(final DateTime dt) {
+	public static int atDay(final IDateTime dt) {
 		return dt.toJavaCal().get(Calendar.DAY_OF_MONTH);
 	}
 
 	/*----------------------------------------------------------------------------*/
 	@ParamCount(1)
-	public static int atHour(final DateTime dt) {
+	public static int atHour(final IDateTime dt) {
 		return dt.toJavaCal().get(Calendar.HOUR_OF_DAY);
 	}
 
 	/*----------------------------------------------------------------------------*/
 	@ParamCount(1)
-	public static int atMinute(final DateTime dt) {
+	public static int atMinute(final IDateTime dt) {
 		return dt.toJavaCal().get(Calendar.MINUTE);
 	}
 
 	/*----------------------------------------------------------------------------*/
 	@ParamCount(1)
-	public static int atSecond(final DateTime dt) {
+	public static int atSecond(final IDateTime dt) {
 		return dt.toJavaCal().get(Calendar.SECOND);
 	}
 
 	/*----------------------------------------------------------------------------*/
 	@ParamCount(1)
-	public static int atWeekday(final DateTime dt) {
+	public static int atWeekday(final IDateTime dt) {
 		return dt.toJavaCal().get(Calendar.DAY_OF_WEEK);
 	}
 
@@ -147,7 +147,7 @@ public enum DateTimeFunctions {
 		if (params.length == 2)
 			throw new IllegalArgumentException("Expected: 1, 3, or 6 parameters");
 		if (params.length >= 3) {
-			DateTime sdt = getSDTDefaultLocale(ctx);
+			IDateTime sdt = getSDTDefaultLocale(ctx);
 			sdt.setLocalDate(params[0].getInt(0), params[1].getInt(0), params[2].getInt(0));
 			// 4 or 5 parameters are accepted by Lotus, but parameters 4 and 5 are ignored
 			if (params.length == 6)
@@ -157,7 +157,7 @@ public enum DateTimeFunctions {
 			return ValueHolder.valueOf(sdt);	// Multiple values are accepted, but ignored by Lotus
 		}
 		ValueHolder vh = params[0];	//Remains: length=1, which works completely different
-		ValueHolder ret = ValueHolder.createValueHolder(DateTime.class, vh.size);
+		ValueHolder ret = ValueHolder.createValueHolder(IDateTime.class, vh.size);
 		for (int i = 0; i < vh.size; i++)
 			ret.add(getSDTCopy(ctx, vh.getDateTime(i)));
 		return ret;
@@ -170,7 +170,7 @@ public enum DateTimeFunctions {
 			throw new IllegalArgumentException("Expected: 1, 3, or 6 parameters");
 		// 4 or 5 parameters are accepted by Lotus, but they are ignored
 		if (params.length >= 3 && params.length <= 5) {		// I was surprised.
-			DateTime sdt = getSDTDefaultLocale(ctx);
+			IDateTime sdt = getSDTDefaultLocale(ctx);
 			sdt.setAnyDate();
 			sdt.setAnyTime();
 			return ValueHolder.valueOf(sdt);
@@ -178,9 +178,9 @@ public enum DateTimeFunctions {
 		if (params.length == 6)		// I was surprised once more!
 			return atDate(ctx, params);
 		ValueHolder vh = params[0];	//Remains: length=1, which works completely different
-		ValueHolder ret = ValueHolder.createValueHolder(DateTime.class, vh.size);
+		ValueHolder ret = ValueHolder.createValueHolder(IDateTime.class, vh.size);
 		for (int i = 0; i < vh.size; i++) {
-			DateTime sdt = getSDTCopy(ctx, vh.getDateTime(i));
+			IDateTime sdt = getSDTCopy(ctx, vh.getDateTime(i));
 			sdt.setAnyDate();
 			ret.add(sdt);
 		}
@@ -194,13 +194,13 @@ public enum DateTimeFunctions {
 			throw new UnsupportedOperationException("@TimeMerge with 3 parameters not yet implemented");
 		ValueHolder dates = params[0];
 		ValueHolder times = params[1];
-		ValueHolder ret = ValueHolder.createValueHolder(DateTime.class, dates.size);
+		ValueHolder ret = ValueHolder.createValueHolder(IDateTime.class, dates.size);
 		for (int i = 0; i < dates.size; i++) {	// If there are more times than dates, they are ignored by Lotus
-			DateTime date = dates.getDateTime(i);
-			DateTime time = times.getDateTime(i);
+			IDateTime date = dates.getDateTime(i);
+			IDateTime time = times.getDateTime(i);
 			Calendar calDate = date.toJavaCal();
 			Calendar calTime = time.toJavaCal();
-			DateTime sdt = getSDTDefaultLocale(ctx);
+			IDateTime sdt = getSDTDefaultLocale(ctx);
 			if (date.isAnyDate())
 				sdt.setAnyDate();
 			else
@@ -257,11 +257,11 @@ public enum DateTimeFunctions {
 					excludeDays[ex] = true;
 			}
 		}
-		TreeSet<DateTime> excludeDates = new TreeSet<DateTime>(fromDays.getDateTime(0));
+		TreeSet<IDateTime> excludeDates = new TreeSet<IDateTime>(fromDays.getDateTime(0));
 		if (params.length == 4) {
 			ValueHolder exclVH = params[3];
 			for (int i = 0; i < exclVH.size; i++) {
-				DateTime sdt = exclVH.getDateTime(i);
+				IDateTime sdt = exclVH.getDateTime(i);
 				if (sdt.isAnyDate())
 					continue;
 				if (!sdt.isAnyTime()) {
@@ -274,8 +274,8 @@ public enum DateTimeFunctions {
 		int max = (fromDays.size >= toDays.size) ? fromDays.size : toDays.size;
 		ValueHolder ret = ValueHolder.createValueHolder(int.class, max);
 		for (int i = 0; i < max; i++) {
-			DateTime sdtFrom = fromDays.getDateTime(i);
-			DateTime sdtTo = toDays.getDateTime(i);
+			IDateTime sdtFrom = fromDays.getDateTime(i);
+			IDateTime sdtTo = toDays.getDateTime(i);
 			int busDays;
 			if (sdtFrom.isAnyDate() || sdtTo.isAnyDate())
 				busDays = -1;
@@ -287,8 +287,8 @@ public enum DateTimeFunctions {
 	}
 
 	/*----------------------------------------------------------------------------*/
-	private static int calcBusDays(final FormulaContext ctx, DateTime sdtFrom, DateTime sdtTo, final boolean[] excludeDays,
-			final TreeSet<DateTime> excludeDates) {
+	private static int calcBusDays(final FormulaContext ctx, IDateTime sdtFrom, IDateTime sdtTo, final boolean[] excludeDays,
+			final TreeSet<IDateTime> excludeDates) {
 		sdtFrom = getSDTCopy(ctx, sdtFrom);
 		sdtFrom.setAnyTime();
 		if (!sdtTo.isAnyTime()) {
@@ -322,9 +322,9 @@ public enum DateTimeFunctions {
 		int adjustHours = params[4].getInt(0);
 		int adjustMinutes = params[5].getInt(0);
 		int adjustSeconds = params[6].getInt(0);
-		ValueHolder ret = ValueHolder.createValueHolder(DateTime.class, toAdjust.size);
+		ValueHolder ret = ValueHolder.createValueHolder(IDateTime.class, toAdjust.size);
 		for (int i = 0; i < toAdjust.size; i++) {
-			DateTime sdt = getSDTCopy(ctx, toAdjust.getDateTime(i));
+			IDateTime sdt = getSDTCopy(ctx, toAdjust.getDateTime(i));
 			if (!sdt.isAnyDate()) {
 				if (adjustYears != 0)
 					sdt.adjustYear(adjustYears);
@@ -351,16 +351,16 @@ public enum DateTimeFunctions {
 	 * @ListLocales, @SetLocale, @PTest (for testing with a different Locale)
 	 */
 	/*----------------------------------------------------------------------------*/
-	private static DateTime getSDTLocalSetLocale() {
-		return org.openntf.formula.Formulas.getFormatter(iLocale).getNewSDTInstance();
+	private static IDateTime getSDTLocalSetLocale() {
+		return Formatter.getFormatter(iLocale).getNewSDTInstance();
 	}
 
 	/*----------------------------------------------------------------------------*/
 	/*private*/static Locale iLocale = null;
 	private static String[] localStrs = { "GERMANY", "US", "CANADA", //
-			"UK", "CHINA", "FRANCE" };
+		"UK", "CHINA", "FRANCE" };
 	private static Locale[] locales = { Locale.GERMANY, Locale.US, Locale.CANADA, //
-			Locale.UK, Locale.CHINA, Locale.FRANCE };
+		Locale.UK, Locale.CHINA, Locale.FRANCE };
 
 	/*----------------------------------------------------------------------------*/
 	@ParamCount(0)
@@ -393,7 +393,7 @@ public enum DateTimeFunctions {
 	/*----------------------------------------------------------------------------*/
 	@ParamCount(1)
 	public static String atDTTest(final String s) {
-		DateTime sdt = getSDTLocalSetLocale();
+		IDateTime sdt = getSDTLocalSetLocale();
 		sdt.setLocalTime(s);
 		return sdt.getLocalTime();
 	}
@@ -401,7 +401,7 @@ public enum DateTimeFunctions {
 	/*----------------------------------------------------------------------------*/
 	@ParamCount(1)
 	public static String atNTest(final String s) {
-		Formatter formatter = org.openntf.formula.Formulas.getFormatter(iLocale);
+		Formatter formatter = Formatter.getFormatter(iLocale);
 		Number n = formatter.parseNumber(s, true);
 		return formatter.formatNumber(n);
 	}

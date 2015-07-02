@@ -29,7 +29,7 @@ import org.openntf.domino.types.Resurrectable;
  * The Interface View.
  */
 public interface View extends lotus.domino.View, org.openntf.domino.ext.View, Base<lotus.domino.View>, Design, Resurrectable,
-DatabaseDescendant, Externalizable {
+		DatabaseDescendant, Externalizable {
 
 	public static class Schema extends FactorySchema<View, lotus.domino.View, Database> {
 		@Override
@@ -328,10 +328,9 @@ DatabaseDescendant, Externalizable {
 	public int FTSearchSorted(final String query, final int maxDocs, final String column, final boolean ascending, final boolean exact,
 			final boolean variants, final boolean fuzzy);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.View#FTSearchSorted(java.util.Vector)
+	 * @deprecated TODO why?
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -339,10 +338,9 @@ DatabaseDescendant, Externalizable {
 	@Legacy({ Legacy.INTERFACES_WARNING, Legacy.GENERICS_WARNING })
 	public int FTSearchSorted(final Vector query);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.View#FTSearchSorted(java.util.Vector, int)
+	 * @deprecated TODO why?
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -350,10 +348,9 @@ DatabaseDescendant, Externalizable {
 	@Legacy({ Legacy.INTERFACES_WARNING, Legacy.GENERICS_WARNING })
 	public int FTSearchSorted(final Vector query, final int maxDocs);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.View#FTSearchSorted(java.util.Vector, int, int)
+	 * @deprecated TODO why?
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -361,10 +358,9 @@ DatabaseDescendant, Externalizable {
 	@Legacy({ Legacy.INTERFACES_WARNING, Legacy.GENERICS_WARNING })
 	public int FTSearchSorted(final Vector query, final int maxDocs, final int column);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.View#FTSearchSorted(java.util.Vector, int, int, boolean, boolean, boolean, boolean)
+	 * @deprecated TODO why?
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -373,10 +369,9 @@ DatabaseDescendant, Externalizable {
 	public int FTSearchSorted(final Vector query, final int maxDocs, final int column, final boolean ascending, final boolean exact,
 			final boolean variants, final boolean fuzzy);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.View#FTSearchSorted(java.util.Vector, int, java.lang.String)
+	 * @deprecated TODO why?
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -384,10 +379,9 @@ DatabaseDescendant, Externalizable {
 	@Legacy({ Legacy.INTERFACES_WARNING, Legacy.GENERICS_WARNING })
 	public int FTSearchSorted(final Vector query, final int maxDocs, final String column);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.View#FTSearchSorted(java.util.Vector, int, java.lang.String, boolean, boolean, boolean, boolean)
+	 * @deprecated TODO why?
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -834,10 +828,9 @@ DatabaseDescendant, Externalizable {
 	@Override
 	public Document getPrevSibling(final lotus.domino.Document doc);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.View#getReaders()
+	 * @deprecated TODO why?
 	 */
 	@Override
 	@Deprecated
@@ -1044,10 +1037,9 @@ DatabaseDescendant, Externalizable {
 	@Override
 	public boolean lock(final String name, final boolean provisionalOk);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.View#lock(java.util.Vector)
+	 * @deprecated TODO why?
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -1055,10 +1047,9 @@ DatabaseDescendant, Externalizable {
 	@Legacy({ Legacy.INTERFACES_WARNING, Legacy.GENERICS_WARNING })
 	public boolean lock(final Vector names);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.View#lock(java.util.Vector, boolean)
+	 * @deprecated TODO why?
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -1082,10 +1073,9 @@ DatabaseDescendant, Externalizable {
 	@Override
 	public boolean lockProvisional(final String name);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.View#lockProvisional(java.util.Vector)
+	 * @deprecated TODO why?
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -1197,10 +1187,9 @@ DatabaseDescendant, Externalizable {
 	@Override
 	public void setAliases(final String alias);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.View#setAliases(java.util.Vector)
+	 * @deprecated TODO why?
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -1264,10 +1253,9 @@ DatabaseDescendant, Externalizable {
 	@Override
 	public void setProtectReaders(final boolean flag);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.View#setReaders(java.util.Vector)
+	 * @deprecated TODO why?
 	 */
 	@SuppressWarnings("rawtypes")
 	@Override

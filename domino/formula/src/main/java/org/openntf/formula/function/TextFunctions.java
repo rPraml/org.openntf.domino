@@ -29,13 +29,12 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.openntf.formula.DateTime;
+import org.openntf.domino.commons.IDateTime;
+import org.openntf.domino.commons.exception.FormulaParseException;
 import org.openntf.formula.Formatter;
 import org.openntf.formula.Formatter.LotusDateTimeOptions;
 import org.openntf.formula.FormulaContext;
-import org.openntf.formula.FormulaParseException;
 import org.openntf.formula.FormulaParser;
-import org.openntf.formula.Formulas;
 import org.openntf.formula.Function;
 import org.openntf.formula.FunctionFactory;
 import org.openntf.formula.FunctionSet;
@@ -658,7 +657,7 @@ public enum TextFunctions {
 			val = vh.getString(i);
 			if (val.isEmpty() && emptySpecial)
 				val = "0";
-			ret.add(ctx.getFormatter().parseNumber(val, true));	// lenient=true
+			ret.addObject(ctx.getFormatter().parseNumber(val, true));	// lenient=true
 		}
 		return ret;
 	}
@@ -687,7 +686,7 @@ public enum TextFunctions {
 
 	/*----------------------------------------------------------------------------*/
 	private static ValueHolder strToDateTime(final FormulaContext ctx, final ValueHolder vh) {
-		ValueHolder ret = ValueHolder.createValueHolder(DateTime.class, vh.size);
+		ValueHolder ret = ValueHolder.createValueHolder(IDateTime.class, vh.size);
 		Formatter formatter = ctx.getFormatter();
 		String val = null;
 		for (int i = 0; i < vh.size; i++) {
@@ -955,7 +954,7 @@ public enum TextFunctions {
 			break;
 		default:
 			for (int i = first; i < last; i++)
-				ret.add(vh.getObject(i));
+				ret.addObject(vh.getObject(i));
 		}
 		return ret;
 	}
@@ -1074,7 +1073,7 @@ public enum TextFunctions {
 	 */
 	/*----------------------------------------------------------------------------*/
 	@DiffersFromLotus({ "Options [ACCENT(IN)SENSITIVE] and [PITCH(IN)SENSITIVE] aren't yet supported",
-			"String compare is done via String.compareTo" })
+	"String compare is done via String.compareTo" })
 	@ParamCount({ 2, 3 })
 	public static ValueHolder atCompare(final ValueHolder[] params) {
 		boolean caseSensitive = true;
@@ -1107,11 +1106,11 @@ public enum TextFunctions {
 				cmp = (s2 == null) ? 0 : -1;
 			else
 				cmp = caseSensitive ? s1.compareTo(s2) : s1.compareToIgnoreCase(s2);
-			if (cmp < 0)
-				cmp = -1;
-			else if (cmp > 0)
-				cmp = 1;
-			ret.add(cmp);
+				if (cmp < 0)
+					cmp = -1;
+				else if (cmp > 0)
+					cmp = 1;
+				ret.add(cmp);
 		}
 		return (ret);
 	}
@@ -1316,7 +1315,7 @@ public enum TextFunctions {
 		}
 		String format = params[1].getString(0);
 		ValueHolder vh = params[0];
-		ValueHolder ret = ValueHolder.createValueHolder(DateTime.class, vh.size);
+		ValueHolder ret = ValueHolder.createValueHolder(IDateTime.class, vh.size);
 		for (int i = 0; i < vh.size; i++)
 			ret.add(ctx.getFormatter().parseDateWithFormat(vh.getString(i), format, parseLenient));
 		return ret;
@@ -1325,14 +1324,15 @@ public enum TextFunctions {
 	/*----------------------------------------------------------------------------*/
 	@OpenNTF
 	@ParamCount(2)
-	public static String atTextFromDateTimeF(final FormulaContext ctx, final DateTime sdt, final String format) {
+	public static String atTextFromDateTimeF(final FormulaContext ctx, final IDateTime sdt, final String format) {
 		return ctx.getFormatter().formatDateTimeWithFormat(sdt, format);
 	}
 
 	/*----------------------------------------------------------------------------*/
 
 	public static ValueHolder atListSupportedFunctions(final FormulaContext ctx) {
-		FunctionFactory ff = Formulas.getFunctionFactory();
+
+		FunctionFactory ff = ctx.getParser().getFunctionFactory();
 
 		List<String> functions = new ArrayList<String>(ff.getFunctions().keySet());
 		Collections.sort(functions);

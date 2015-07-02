@@ -12,6 +12,7 @@ import org.openntf.domino.xsp.xots.XotsDominoExecutor.XotsModuleTasklet;
 
 import com.ibm.domino.xsp.module.nsf.NotesContext;
 
+@Deprecated
 public class TaskletWorkerExecutor<T> extends XotsModuleTasklet implements WorkerExecutor<T> {
 	BlockingQueue<T> q = new LinkedBlockingQueue<T>();
 	private static final int NOT_RUNNING = 0;

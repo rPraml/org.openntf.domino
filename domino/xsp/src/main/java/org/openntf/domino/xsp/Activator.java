@@ -25,6 +25,7 @@ public class Activator extends Plugin {
 	public static Activator instance;
 
 	private static String version;
+	@SuppressWarnings("rawtypes")
 	private ServiceRegistration consoleCommandService;
 
 	//private static BundleContext context;
@@ -77,7 +78,7 @@ public class Activator extends Plugin {
 	 */
 	public static String getVersion() {
 		if (version == null) {
-			version = (String) instance.getBundle().getHeaders().get("Bundle-Version");
+			version = String.valueOf(instance.getBundle().getHeaders().get("Bundle-Version"));
 		}
 		return version;
 	}
