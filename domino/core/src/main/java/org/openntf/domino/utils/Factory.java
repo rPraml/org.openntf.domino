@@ -61,6 +61,7 @@ import org.openntf.domino.session.SessionFullAccessFactory;
 import org.openntf.domino.session.TrustedSessionFactory;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.SessionDescendant;
+import org.openntf.domino.utils.Factory.SessionType;
 
 /**
  * The Enum Factory. Does the Mapping lotusObject <=> OpenNTF-Object
@@ -1219,7 +1220,7 @@ public enum Factory {
 				// The last step is to recycle ALL own sessions
 				for (Session sess : tv.ownSessions.values()) {
 					if (sess != null) {
-						sess.recycle();
+						sess.recycleLegacy();
 					}
 				}
 

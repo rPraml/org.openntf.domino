@@ -32,8 +32,6 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import lotus.domino.NotesException;
-
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
 import org.openntf.domino.DxlExporter;
@@ -148,13 +146,11 @@ public class SyncDocumentsTask extends SyncTask<DocumentWrapper, OnDiskDocument>
 			}
 			dxlImporter.importDxl(transformXslt(importTransformer, dxl), getDb());
 			// after import we must recycle current document (cast necessary, because recycle is deprecated)
-			((lotus.domino.Document) doc).recycle();
+			doc.recycleLegacy();
 			docWrapper.setDocument(getDb().getDocumentByUNID(unid));
 		} catch (SAXException e) {
 			ODAUtils.handleException(e);
 		} catch (ParserConfigurationException e) {
-			ODAUtils.handleException(e);
-		} catch (NotesException e) {
 			ODAUtils.handleException(e);
 		}
 	}

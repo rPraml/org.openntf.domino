@@ -109,6 +109,10 @@ public class ViewEntryCollection extends BaseNonThreadSafe<org.openntf.domino.Vi
 
 			@Override
 			public boolean hasNext() {
+				if (currEntry != null) {
+					// keep memory low. We recycle entries as fast as possible
+					currEntry.recycleLegacy();
+				}
 				return nextEntry != null; // something in Queue?
 			}
 
@@ -317,9 +321,7 @@ public class ViewEntryCollection extends BaseNonThreadSafe<org.openntf.domino.Vi
 	@Override
 	public ViewEntry getNextEntry(final lotus.domino.ViewEntry entry) {
 		try {
-			ViewEntry result = fromLotus(getDelegate().getNextEntry(toLotus(entry)), ViewEntry.SCHEMA, parent);
-			entry.recycle();
-			return result;
+			return fromLotus(getDelegate().getNextEntry(toLotus(entry)), ViewEntry.SCHEMA, parent);
 		} catch (NotesException e) {
 			ODAUtils.handleException(e);
 			return null;

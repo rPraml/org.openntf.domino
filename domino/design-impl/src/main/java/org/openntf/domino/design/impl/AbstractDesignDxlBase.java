@@ -29,8 +29,6 @@ import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import lotus.domino.NotesException;
-
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
 import org.openntf.domino.DxlExporter;
@@ -657,15 +655,12 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 			}
 			return false;
 		}
-		try {
-			if (document_ != null) {
-				//document has to be recycled manually here, in order to set a new Document afterwards.
-				((lotus.domino.Document) document_).recycle(); // cast necessary, because recycle is deprecated in ODA
 
-			}
-		} catch (NotesException e) {
-			ODAUtils.handleException(e);
+		if (document_ != null) {
+			//document has to be recycled manually here, in order to set a new Document afterwards.
+			document_.recycleLegacy();
 		}
+
 		// Reset the DXL so that it can pick up new noteinfo
 		setDocument(db.getDocumentByID(importer.getFirstImportedNoteID()));
 		return true;
