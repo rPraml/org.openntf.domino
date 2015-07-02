@@ -27,7 +27,7 @@ import java.util.Set;
 import lotus.domino.NotesException;
 
 import org.openntf.domino.Document;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 import com.ibm.xsp.model.domino.wrapped.DominoDocument;
 
@@ -79,7 +79,7 @@ public class DominoDocumentMapAdapter implements Map<String, Object>, Serializab
 		try {
 			return delegate.hasItem(key.toString());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return false;
 	}
@@ -179,7 +179,7 @@ public class DominoDocumentMapAdapter implements Map<String, Object>, Serializab
 			org.openntf.domino.Document doc = (Document) delegate.getDocument(true);
 			return doc.keySet();
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return null;
 	}
@@ -214,7 +214,7 @@ public class DominoDocumentMapAdapter implements Map<String, Object>, Serializab
 		try {
 			delegate.removeItem(key.toString());
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 		return old;
 	}

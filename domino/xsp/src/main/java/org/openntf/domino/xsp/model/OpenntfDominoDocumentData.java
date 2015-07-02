@@ -27,6 +27,8 @@ import lotus.domino.Database;
 import lotus.domino.Document;
 import lotus.domino.NotesException;
 
+import org.openntf.domino.utils.ODAUtils;
+
 import com.ibm.commons.util.StringUtil;
 import com.ibm.xsp.FacesExceptionEx;
 import com.ibm.xsp.acl.NoAccessSignal;
@@ -57,7 +59,7 @@ public class OpenntfDominoDocumentData extends DominoDocumentData {
 				}
 			});
 		} catch (Exception e) {
-			org.openntf.domino.utils.DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 
 		}
 
@@ -72,7 +74,7 @@ public class OpenntfDominoDocumentData extends DominoDocumentData {
 		try {
 			return (Database) openDatabaseMethod.invoke(this, (Object[]) null);
 		} catch (Exception e) {
-			org.openntf.domino.utils.DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}

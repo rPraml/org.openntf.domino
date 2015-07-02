@@ -24,6 +24,7 @@ import com.ibm.xsp.binding.ValueBindingEx;
 import com.ibm.xsp.exception.EvaluationExceptionEx;
 import com.ibm.xsp.util.ValueBindingUtil;
 
+@Deprecated
 public class MsgValueBinding extends ValueBindingEx {
 
 	private String msgPar;

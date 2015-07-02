@@ -63,6 +63,7 @@ import org.openntf.domino.commons.IO;
 import org.openntf.domino.commons.Strings;
 import org.openntf.domino.commons.exception.DataNotCompatibleException;
 import org.openntf.domino.commons.exception.IExceptionDetails;
+import org.openntf.domino.commons.utils.ThreadUtils;
 import org.openntf.domino.commons.utils.TypeUtils;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
@@ -2698,11 +2699,13 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 
 			} else {
 				// Check to see if it's a StateHolder
-				// TODO RPr: Is this really needed or only a theoretical approach? See above...
+				// TODO RPr: Is this really needed or only a theoretical approach? See above... 
 				try {
-					Class<?> stateHolderClass = Class.forName("javax.faces.component.StateHolder", true, Factory.getClassLoader());
+					Class<?> stateHolderClass = Class.forName("javax.faces.component.StateHolder", true,
+							ThreadUtils.getContextClassLoader());
 					if (stateHolderClass.isInstance(value)) {
-						Class<?> facesContextClass = Class.forName("javax.faces.context.FacesContext", true, Factory.getClassLoader());
+						Class<?> facesContextClass = Class.forName("javax.faces.context.FacesContext", true,
+								ThreadUtils.getContextClassLoader());
 						Method getCurrentInstance = facesContextClass.getMethod("getCurrentInstance");
 						Method saveState = stateHolderClass.getMethod("saveState", facesContextClass);
 						Serializable state = (Serializable) saveState.invoke(value, getCurrentInstance.invoke(null));

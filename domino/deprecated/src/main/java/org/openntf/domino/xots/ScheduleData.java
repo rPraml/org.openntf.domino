@@ -2,6 +2,7 @@ package org.openntf.domino.xots;
 
 import org.openntf.domino.config.XotsConfiguration;
 
+@Deprecated
 public abstract class ScheduleData {
 
 	//	private String replicaID;

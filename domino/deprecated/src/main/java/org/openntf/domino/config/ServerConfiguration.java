@@ -3,6 +3,7 @@ package org.openntf.domino.config;
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
 
+@Deprecated
 public class ServerConfiguration extends ConfigurationObject {
 
 	private String serverName_;

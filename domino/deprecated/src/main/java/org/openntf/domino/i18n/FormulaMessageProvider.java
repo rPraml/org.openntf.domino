@@ -22,10 +22,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openntf.domino.AsDocMap;
-import org.openntf.domino.commons.IFormulaASTNode;
-import org.openntf.domino.commons.IFormulaService;
+import org.openntf.domino.commons.AsDocMap;
+import org.openntf.domino.commons.IFormula;
 import org.openntf.domino.commons.IFormulaContext;
+import org.openntf.domino.commons.IFormulaService;
 import org.openntf.domino.commons.ServiceLocator;
 
 /**
@@ -37,6 +37,7 @@ import org.openntf.domino.commons.ServiceLocator;
  * @author Roland Praml, FOCONIS AG
  * 
  */
+@Deprecated
 public class FormulaMessageProvider extends MessageProvider {
 	private static final Logger log_ = Logger.getLogger(FormulaMessageProvider.class.getName());
 
@@ -77,7 +78,7 @@ public class FormulaMessageProvider extends MessageProvider {
 		try {
 			IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
 
-			IFormulaASTNode ast = service.parse(msgString, true);
+			IFormula ast = service.parse(msgString, true);
 			IFormulaContext ctx = service.createContext(map, loc);
 
 			// ctx.useBooleans(false);

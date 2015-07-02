@@ -8,6 +8,7 @@ import com.ibm.xsp.servlet.local.LocalHttpServletRequest;
 import com.ibm.xsp.servlet.local.LocalHttpSession;
 
 @SuppressWarnings("deprecation")
+// RPr: I don't think we can remove this
 public class FakeHttpRequest extends LocalHttpServletRequest {
 	HttpSession session = new LocalHttpSession();
 	private String userName_;

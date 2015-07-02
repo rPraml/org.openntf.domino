@@ -25,9 +25,10 @@ import lotus.domino.Stream;
  * Utility enum as a carrier for Stream-centric static properties and methods.
  * 
  */
+@Deprecated
 public enum Streams {
 	;
-
+	@Deprecated
 	public static class MIMEBufferedInputStream extends InputStream {
 		private static final int DEFAULT_BUFFER_SIZE = 16384;
 

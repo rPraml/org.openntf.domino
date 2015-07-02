@@ -822,4 +822,9 @@ public class WrapperFactory extends BaseImpl<lotus.domino.Base> implements org.o
 		return false;
 	}
 
+	@Override
+	public int getPriority() {
+		return 99;
+	}
+
 }

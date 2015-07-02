@@ -10,6 +10,7 @@ import org.openntf.domino.thread.DominoExecutor;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.xots.Tasklet;
 
+@Deprecated
 public class XotsConfiguration extends ConfigurationObject {
 
 	private String apiPath_;

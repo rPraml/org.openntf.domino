@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 
-import org.openntf.domino.utils.Factory;
+import org.openntf.domino.commons.IO;
 import org.openntf.domino.xsp.ODAPlatform;
 
 import com.ibm.commons.Platform;
@@ -42,12 +42,12 @@ public class OpenntfHttpService extends HttpService {
 		// TODO: better recognition if we run on server or not
 		if (IS_SERVER && System.getSecurityManager() instanceof lotus.notes.AgentSecurityManager) {
 			try {
-				Factory.printer = new Factory.Printer() {
+				IO.setPrinter(new IO.Printer() {
 					@Override
 					public void println(final String s) {
 						com.ibm.domino.xsp.bridge.http.engine.XspCmdEnvironment.console(s);
 					}
-				};
+				});
 			} catch (Exception e) {
 				log_.warning("Could not set up console printer");
 			}
@@ -109,7 +109,7 @@ public class OpenntfHttpService extends HttpService {
 	public boolean doService(final String contextPath, final String path, final HttpSessionAdapter httpSession,
 			final HttpServletRequestAdapter httpRequest, final HttpServletResponseAdapter httpResponse) throws ServletException,
 			IOException {
-		Factory.println(this, "DEBUG: The OpenntfHttpService has received an HttpRequest!");
+		IO.println(this, "DEBUG: The OpenntfHttpService has received an HttpRequest!");
 		return false;
 	}
 

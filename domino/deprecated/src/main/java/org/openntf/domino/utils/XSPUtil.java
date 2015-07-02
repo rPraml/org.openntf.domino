@@ -14,6 +14,7 @@ import org.openntf.domino.utils.Factory.SessionType;
 /**
  * The Enum XSPUtil.
  */
+@Deprecated
 public enum XSPUtil {
 
 	/** The instance. */

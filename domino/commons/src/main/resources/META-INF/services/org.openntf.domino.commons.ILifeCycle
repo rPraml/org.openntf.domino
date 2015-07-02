@@ -1,1 +1,1 @@
-org.openntf.domino.commons.StandardLifeCycle
+org.openntf.domino.commons.impl.CommonsLifeCycle

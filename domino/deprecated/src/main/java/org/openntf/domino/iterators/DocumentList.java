@@ -19,11 +19,12 @@ import org.openntf.domino.DateTime;
 import org.openntf.domino.DocumentCollection;
 import org.openntf.domino.View;
 import org.openntf.domino.annotations.Incomplete;
-import org.openntf.domino.exceptions.UnimplementedException;
+import org.openntf.domino.commons.exception.UnimplementedException;
 import org.openntf.domino.utils.CollectionUtils;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.TypeUtils;
 
+@Deprecated
 public class DocumentList extends BaseImpl<lotus.domino.DocumentCollection> implements org.openntf.domino.DocumentList {
 	protected int realNidLength_;
 	/*TODO 
@@ -255,8 +256,7 @@ public class DocumentList extends BaseImpl<lotus.domino.DocumentCollection> impl
 		nids_ = nids;
 	}
 
-	@Override
-	public int[] getNoteIDs() {
+	public int[] getNids() {
 		if (usingList_) {
 			return TypeUtils.toIntArray(getNidList());
 		} else {
@@ -852,10 +852,10 @@ public class DocumentList extends BaseImpl<lotus.domino.DocumentCollection> impl
 		} else {
 			org.openntf.domino.Database db = getParentDatabase();
 			org.openntf.domino.DocumentCollection mergeColl = db.createMergableDocumentCollection();
-			for (int nid : getNoteIDs()) {
+			for (int nid : getNids()) {
 				mergeColl.merge(nid);
 			}
-			return mergeColl.iterator();
+			return new DocumentCollectionIterator(mergeColl);
 		}
 	}
 
@@ -920,7 +920,7 @@ public class DocumentList extends BaseImpl<lotus.domino.DocumentCollection> impl
 
 	@Override
 	public void writeExternal(final ObjectOutput arg0) throws IOException {
-		int[] nids = getNoteIDs();
+		int[] nids = getNids();
 		arg0.writeBoolean(sorted_);
 		arg0.writeInt(walkPos);
 		arg0.writeInt(walkNid);

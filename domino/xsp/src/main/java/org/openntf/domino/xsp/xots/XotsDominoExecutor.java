@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import lotus.domino.Session;
 
 import org.eclipse.core.runtime.Platform;
+import org.openntf.domino.commons.utils.ThreadUtils;
 import org.openntf.domino.session.NativeSessionFactory;
 import org.openntf.domino.thread.DominoExecutor;
 import org.openntf.domino.thread.IWrappedCallable;
@@ -39,6 +40,7 @@ import com.ibm.domino.xsp.module.nsf.ModuleClassLoader;
 import com.ibm.domino.xsp.module.nsf.NSFComponentModule;
 import com.ibm.domino.xsp.module.nsf.NotesContext;
 
+@Deprecated
 public class XotsDominoExecutor extends DominoExecutor {
 	private static final Logger log_ = Logger.getLogger(XotsDominoExecutor.class.getName());
 
@@ -154,15 +156,15 @@ public class XotsDominoExecutor extends DominoExecutor {
 					Factory.initThread(ODAPlatform.getAppThreadConfig(module.getNotesApplication()));
 					try {
 						ClassLoader mcl = module.getModuleClassLoader();
-						ClassLoader oldCl = switchClassLoader(mcl);
-						Factory.setClassLoader(mcl);
+						ClassLoader oldCl = ThreadUtils.setContextClassLoader(mcl);
+
 						try {
 							Class<?> clazz = mcl.loadClass(className);
 							findConstructor(clazz, args); // try if we can find the constructor
 						} catch (ClassNotFoundException e) {
 							throw new IllegalArgumentException("Could not load class " + className + " in module " + moduleName, e);
 						} finally {
-							switchClassLoader(oldCl);
+							ThreadUtils.setContextClassLoader(oldCl);
 						}
 					} finally {
 						Factory.termThread();
@@ -217,8 +219,7 @@ public class XotsDominoExecutor extends DominoExecutor {
 				Factory.initThread(ODAPlatform.getAppThreadConfig(module.getNotesApplication()));
 				try {
 					ClassLoader mcl = module.getModuleClassLoader();
-					ClassLoader oldCl = switchClassLoader(mcl);
-					Factory.setClassLoader(mcl);
+					ClassLoader oldCl = ThreadUtils.setContextClassLoader(mcl);
 					Factory.setSessionFactory(new NativeSessionFactory(moduleName), SessionType.CURRENT);
 					DominoUtils.setBubbleExceptions(true);
 					try {
@@ -236,7 +237,7 @@ public class XotsDominoExecutor extends DominoExecutor {
 						}
 						return invokeTasklet(ctx, module);
 					} finally {
-						switchClassLoader(oldCl);
+						ThreadUtils.setContextClassLoader(oldCl);
 					}
 				} finally {
 					setWrappedTask(null);
@@ -342,7 +343,7 @@ public class XotsDominoExecutor extends DominoExecutor {
 				Factory.setSessionFactory(new XPageNamedSessionFactory(Factory.getLocalServerName(), true), SessionType.SIGNER_FULL_ACCESS);
 			}
 		}
-		Factory.setClassLoader(mcl);
+		ThreadUtils.setContextClassLoader(mcl);
 	}
 
 	// ------------------------------

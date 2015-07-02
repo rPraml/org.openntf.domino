@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.openntf.domino.AsDocMap;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.commons.AsDocMap;
+import org.openntf.domino.utils.ODAUtils;
 
 /*
  * © Copyright FOCONIS AG, 2014
@@ -99,7 +99,7 @@ public class OpenntfDominoDocument extends DominoDocument implements AsDocMap {
 			}
 
 		} catch (Exception e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 	}
 

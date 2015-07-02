@@ -2,6 +2,7 @@ package org.openntf.domino.email;
 
 import java.io.InputStream;
 
+@Deprecated
 public interface IEmailAttachment {
 
 	/**
@@ -9,6 +10,7 @@ public interface IEmailAttachment {
 	 * 
 	 * @since org.openntf.domino 4.5.0
 	 */
+	@Deprecated
 	public static enum Type {
 		DOCUMENT(0), FILE(1), STREAM(2), BYTES(3);
 

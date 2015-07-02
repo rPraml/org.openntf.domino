@@ -14,6 +14,7 @@ import org.openntf.domino.MIMEEntity;
  * 
  *         Email interface
  */
+@Deprecated
 public interface IEmail {
 
 	/**

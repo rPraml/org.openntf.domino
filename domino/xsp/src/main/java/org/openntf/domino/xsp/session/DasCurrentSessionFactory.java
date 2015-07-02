@@ -3,7 +3,7 @@ package org.openntf.domino.xsp.session;
 import lotus.domino.NotesException;
 
 import org.openntf.domino.Session;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 import com.ibm.designer.runtime.domino.bootstrap.util.StringUtil;
 import com.ibm.domino.osgi.core.context.ContextInfo;
@@ -38,7 +38,7 @@ public class DasCurrentSessionFactory extends AbstractXPageSessionFactory {
 				}
 			}
 		} catch (NotesException e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 		}
 
 	}

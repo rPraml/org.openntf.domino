@@ -11,25 +11,26 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Stack;
 import java.util.Vector;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openntf.domino.Document;
 import org.openntf.domino.Session;
-import org.openntf.domino.commons.IFormulaService;
-import org.openntf.domino.commons.ServiceLocator;
-import org.openntf.domino.commons.exception.FormulaParseException;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.utils.TypeUtils;
 
 /**
- * @author nfreeman A representation of a Formula. Has also the ability to decompile formulas
+ * @author nfreeman
+ * 
  */
+@Deprecated
 public class Formula implements org.openntf.domino.ext.Formula, Serializable {
 	private static final Logger log_ = Logger.getLogger(Formula.class.getName());
 	private static final long serialVersionUID = 1L;
 
+	@Deprecated
 	public static interface Decompiler {
 		public String decompile(byte[] compiled) throws Exception;
 
@@ -53,6 +54,7 @@ public class Formula implements org.openntf.domino.ext.Formula, Serializable {
 		}
 	}
 
+	@Deprecated
 	public static class FormulaUnableToDecompile extends RuntimeException {
 		/**
 		 * 
@@ -64,80 +66,84 @@ public class Formula implements org.openntf.domino.ext.Formula, Serializable {
 		}
 	}
 
-	//	public static class FormulaSyntaxException extends RuntimeException {
-	//		/**
-	//		 * 
-	//		 */
-	//		private static final long serialVersionUID = 1L;
-	//		private String expression_;
-	//
-	//		FormulaSyntaxException(final String expression, final FormulaParseException cause) {
-	//			super(cause);
-	//			expression_ = expression;
-	//		}
-	//
-	//		/*
-	//		 * (non-Javadoc)
-	//		 * 
-	//		 * @see java.lang.Throwable#getMessage()
-	//		 */
-	//		@Override
-	//		public String getMessage() {
-	//			if (syntaxDetails_ != null) {
-	//				return String.valueOf(syntaxDetails_.get(0));
-	//			} else {
-	//				return "Details unavailable";
-	//			}
-	//		}
-	//
-	//		/**
-	//		 * @return the expression
-	//		 */
-	//		public String getExpression() {
-	//			return expression_;
-	//		}
-	//
-	//		public String getErrorLine() {
-	//			if (syntaxDetails_ != null) {
-	//				return String.valueOf(syntaxDetails_.get(1));
-	//			} else {
-	//				return "Details unavailable";
-	//			}
-	//		}
-	//
-	//		public String getErrorColumn() {
-	//			if (syntaxDetails_ != null) {
-	//				return String.valueOf(syntaxDetails_.get(2));
-	//			} else {
-	//				return "Details unavailable";
-	//			}
-	//		}
-	//
-	//		public String getErrorOffset() {
-	//			if (syntaxDetails_ != null) {
-	//				return String.valueOf(syntaxDetails_.get(3));
-	//			} else {
-	//				return "Details unavailable";
-	//			}
-	//		}
-	//
-	//		public String getErrorLength() {
-	//			if (syntaxDetails_ != null) {
-	//				return String.valueOf(syntaxDetails_.get(4));
-	//			} else {
-	//				return "Details unavailable";
-	//			}
-	//		}
-	//
-	//		public String getErrorText() {
-	//			if (syntaxDetails_ != null) {
-	//				return String.valueOf(syntaxDetails_.get(5));
-	//			} else {
-	//				return "Details unavailable";
-	//			}
-	//		}
-	//
-	//	}
+	@Deprecated
+	public static class FormulaSyntaxException extends RuntimeException {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private Vector<?> syntaxDetails_;
+		// "errorMessage" : "errorLine" : "errorColumn" : "errorOffset" : "errorLength" : "errorText"
+		private String expression_;
+
+		FormulaSyntaxException(final String expression, final Vector<Object> syntaxDetails) {
+			super();
+			expression_ = expression;
+			syntaxDetails_ = syntaxDetails;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Throwable#getMessage()
+		 */
+		@Override
+		public String getMessage() {
+			if (syntaxDetails_ != null) {
+				return String.valueOf(syntaxDetails_.get(0));
+			} else {
+				return "Details unavailable";
+			}
+		}
+
+		/**
+		 * @return the expression
+		 */
+		public String getExpression() {
+			return expression_;
+		}
+
+		public String getErrorLine() {
+			if (syntaxDetails_ != null) {
+				return String.valueOf(syntaxDetails_.get(1));
+			} else {
+				return "Details unavailable";
+			}
+		}
+
+		public String getErrorColumn() {
+			if (syntaxDetails_ != null) {
+				return String.valueOf(syntaxDetails_.get(2));
+			} else {
+				return "Details unavailable";
+			}
+		}
+
+		public String getErrorOffset() {
+			if (syntaxDetails_ != null) {
+				return String.valueOf(syntaxDetails_.get(3));
+			} else {
+				return "Details unavailable";
+			}
+		}
+
+		public String getErrorLength() {
+			if (syntaxDetails_ != null) {
+				return String.valueOf(syntaxDetails_.get(4));
+			} else {
+				return "Details unavailable";
+			}
+		}
+
+		public String getErrorText() {
+			if (syntaxDetails_ != null) {
+				return String.valueOf(syntaxDetails_.get(5));
+			} else {
+				return "Details unavailable";
+			}
+		}
+
+	}
 
 	private transient Session parent_;
 	private String expression_;
@@ -153,9 +159,15 @@ public class Formula implements org.openntf.domino.ext.Formula, Serializable {
 		parent_ = parent;
 	}
 
-	public Formula(final String expression) {
+	public Formula(final String expression) throws FormulaSyntaxException {
 		this();
-		setExpression(expression, true);
+		try {
+			setExpression(expression, true);
+		} catch (FormulaSyntaxException fe) {
+			isValid_ = false;
+			log_.log(Level.WARNING, "Error confirming formula syntax: " + fe.getExpression() + " (" + fe.getErrorText() + ")");
+			throw fe;
+		}
 	}
 
 	@Override
@@ -191,35 +203,31 @@ public class Formula implements org.openntf.domino.ext.Formula, Serializable {
 			expression_ = expression;
 			return;
 		}
-
-		IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
-		FormulaParseException ex = null;
-		try {
-			service.parse(expression);
-			isValid_ = true;
-		} catch (FormulaParseException e) {
+		Vector<Object> vec = getSession().evaluate("@CheckFormulaSyntax({" + DominoUtils.escapeForFormulaString(expression) + "})");
+		if (vec == null) {
 			isValid_ = false;
-			ex = e;
+		} else if (vec.size() > 2) {
+			isValid_ = false;
+		} else {
+			isValid_ = true;
 		}
-
 		if (!isValid_) {
 			if (decompiler_ != null && !expression.contains("@") && !expression.contains(";")) {//NTF - good chance its compiled
 				expression = decompiler_.decompileB64(expression);
 				if (expression != null) {
-					try {
-						service.parse(expression);
+					vec = getSession().evaluate("@CheckFormulaSyntax({" + DominoUtils.escapeForFormulaString(expression) + "})");
+					if (vec == null || vec.size() > 2) {
+						isValid_ = false;
+						throw new FormulaSyntaxException(expression, vec);
+					} else {
 						System.out.println("Successfully decompiled a formula!");
 						isValid_ = true;
-					} catch (FormulaParseException e) {
-						isValid_ = false;
-						DominoUtils.handleException(e);
 					}
-
 				} else {
 					throw new FormulaUnableToDecompile(expression);
 				}
 			} else {
-				DominoUtils.handleException(ex);
+				throw new FormulaSyntaxException(expression, vec);
 			}
 		}
 		if (isValid_) {
@@ -327,6 +335,7 @@ public class Formula implements org.openntf.domino.ext.Formula, Serializable {
 		out.writeUTF(expression_);
 	}
 
+	@Deprecated
 	public static class ParserException extends RuntimeException {
 		private static final long serialVersionUID = 1L;
 		private final String expression_;
@@ -341,6 +350,7 @@ public class Formula implements org.openntf.domino.ext.Formula, Serializable {
 		}
 	}
 
+	@Deprecated
 	public static class Parser {
 		/*
 		 * NTF - Please note that this parser is pretty brutal. It's not intended to construct ASTs from Formula.

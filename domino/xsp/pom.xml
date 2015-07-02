@@ -113,6 +113,18 @@
 		
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
+			<artifactId>deprecated</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>design</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
 			<artifactId>schema</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>

@@ -2,6 +2,9 @@ package org.openntf.domino.commons;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.openntf.domino.commons.utils.BundleInfos;
 
@@ -9,17 +12,20 @@ public enum LifeCycleManager {
 	;
 	private static int startups = 0;
 
-	private static List<ILifeCycle> lazyLifeCycles = new ArrayList<ILifeCycle>();
-	private static List<IRequestLifeCycle> lazyRequestLifeCycles = new ArrayList<IRequestLifeCycle>();
 	private static List<ILifeCycle> serviceLifeCycles;
-
-	private static ThreadLocal<List<Runnable>> shutdownHooks = new ThreadLocal<List<Runnable>>() {
+	private static List<ILifeCycle> lazyLifeCycles = new CopyOnWriteArrayList<ILifeCycle>();
+	private static List<IRequestLifeCycle> lazyRequestLifeCycles = new CopyOnWriteArrayList<IRequestLifeCycle>();
+	private static Set<String> seenBundles = new ConcurrentSkipListSet<String>();
+	private static ThreadLocal<List<Runnable>> requestEndHooks = new ThreadLocal<List<Runnable>>() {
 		@Override
 		protected java.util.List<Runnable> initialValue() {
 			return new ArrayList();
 		}
 	};
 
+	/**
+	 * find all LifeCycles and starts them
+	 */
 	public static void startup() {
 		synchronized (LifeCycleManager.class) {
 			if (startups > 0) {
@@ -27,18 +33,19 @@ public enum LifeCycleManager {
 				return;
 			}
 			serviceLifeCycles = ServiceLocator.findApplicationServices(ILifeCycle.class);
+			seenBundles.clear();
 			try {
 				for (ILifeCycle service : serviceLifeCycles) {
-					track(service);
-					service.startup();
+					startup(service);
 				}
+
 				startups = 1;
 				ILifeCycle[] copy;
 				synchronized (lazyLifeCycles) {
 					copy = lazyLifeCycles.toArray(new ILifeCycle[lazyLifeCycles.size()]);
 				}
-				for (ILifeCycle lifecycle : copy) {
-					lifecycle.startup();
+				for (ILifeCycle service : copy) {
+					startup(service);
 				}
 				IO.println("LifeCycle", "All services started successfully");
 			} catch (Throwable t) {
@@ -49,14 +56,28 @@ public enum LifeCycleManager {
 		}
 	}
 
-	private static void track(final ILifeCycle service) {
+	/**
+	 * Startup the given lifecycle
+	 */
+	private static void startup(final ILifeCycle service) {
+		service.startup();
+		if (service instanceof IRequestLifeCycle) {
+			addRequestLifeCycle((IRequestLifeCycle) service);
+		}
 		BundleInfos bi = BundleInfos.getInstance(service.getClass());
-		IO.println("LifeCycle", "Using bundle '" + bi.getBundleName() + "' (Version:" + bi.getBundleVersion() + ")");
-		IO.printDbg("    GIT-Version:        " + bi.getBuildVersion());
-		// output some GIT statistics
-		IO.printDbg("    Commit-ID:          " + bi.getCommitId());
-		IO.printDbg("    Commit-ID-Describe: " + bi.getCommitIdDescribe());
-		IO.printDbg("    Commit-Timestamp:   " + bi.getCommitTime());
+		String symName = bi.getBundleSymbolicName();
+		if (symName == null) {
+			IO.printDbg("No BundleSymbolicName found for: " + service.getClass().getName());
+			return;
+		}
+		if (seenBundles.add(symName)) {
+			IO.println("LifeCycle", "Using bundle '" + bi.getBundleName() + "' (Version:" + bi.getBundleVersion() + ")");
+			IO.printDbg("    GIT-Version:        " + bi.getBuildVersion());
+			// output some GIT statistics
+			IO.printDbg("    Commit-ID:          " + bi.getCommitId());
+			IO.printDbg("    Commit-ID-Describe: " + bi.getCommitIdDescribe());
+			IO.printDbg("    Commit-Timestamp:   " + bi.getCommitTime());
+		}
 	}
 
 	public static void shutdown() {
@@ -120,7 +141,7 @@ public enum LifeCycleManager {
 	}
 
 	/**
-	 * Add a hook that will run on shutdown
+	 * Add a hook that will run on request end
 	 */
 	public static void addRequestLifeCycle(final IRequestLifeCycle hook) {
 		synchronized (lazyRequestLifeCycles) {
@@ -140,6 +161,9 @@ public enum LifeCycleManager {
 		}
 	}
 
+	/**
+	 * Must be called before each request (Formerly Factory.initThread())
+	 */
 	public static void beforeRequest(final IRequest request) {
 		IRequestLifeCycle[] copy;
 		synchronized (lazyRequestLifeCycles) {
@@ -161,15 +185,25 @@ public enum LifeCycleManager {
 		}
 	}
 
+	/**
+	 * Must be called after each request (Formerly Factory.termThread())
+	 */
 	public static void afterRequest() {
 
-		List<Runnable> hooks = shutdownHooks.get();
+		List<Runnable> hooks = requestEndHooks.get();
 		Runnable[] hookCopy = hooks.toArray(new Runnable[hooks.size()]);
 		hooks.clear();
 
 		for (Runnable hook : hookCopy) {
 			try {
 				hook.run();
+			} catch (Throwable t) {
+				t.printStackTrace();
+			}
+		}
+		for (IRequestLifeCycle lifecycle : ServiceLocator.findApplicationServices(IRequestLifeCycle.class)) {
+			try {
+				lifecycle.afterRequest();
 			} catch (Throwable t) {
 				t.printStackTrace();
 			}
@@ -186,20 +220,15 @@ public enum LifeCycleManager {
 				t.printStackTrace();
 			}
 		}
-		for (IRequestLifeCycle lifecycle : ServiceLocator.findApplicationServices(IRequestLifeCycle.class)) {
-			try {
-				lifecycle.afterRequest();
-			} catch (Throwable t) {
-				t.printStackTrace();
-			}
-		}
+
 	}
 
-	public static void addCleanupHook(final Runnable hook) {
-		shutdownHooks.get().add(hook);
+	/**
+	 * 
+	 * @param hook
+	 */
+	public static void onRequestEnd(final Runnable hook) {
+		requestEndHooks.get().add(hook);
 	}
 
-	public static void removeCleanupHook(final Runnable hook) {
-		shutdownHooks.get().remove(hook);
-	}
 }

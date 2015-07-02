@@ -15,6 +15,7 @@ import org.openntf.domino.utils.Factory.SessionType;
  * 
  *         EmailAttachment class
  */
+@Deprecated
 public class EmailAttachment implements IEmailAttachment {
 	private Type attachmentType;
 	private String path;

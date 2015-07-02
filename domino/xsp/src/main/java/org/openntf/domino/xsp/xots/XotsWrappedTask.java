@@ -1,18 +1,18 @@
 package org.openntf.domino.xsp.xots;
 
 import java.lang.reflect.Constructor;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.concurrent.Callable;
 
 import org.eclipse.osgi.baseadaptor.loader.BaseClassLoader;
+import org.openntf.domino.commons.LifeCycleManager;
+import org.openntf.domino.commons.utils.ThreadUtils;
 import org.openntf.domino.config.Configuration;
 import org.openntf.domino.config.XotsConfiguration;
 import org.openntf.domino.thread.AbstractWrappedTask;
 import org.openntf.domino.types.Null;
-import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.xots.Tasklet;
 import org.openntf.domino.xsp.ODAPlatform;
 
@@ -20,6 +20,7 @@ import com.ibm.commons.util.ThreadLock;
 import com.ibm.domino.xsp.module.nsf.NSFComponentModule;
 import com.ibm.domino.xsp.module.nsf.NotesContext;
 
+@Deprecated
 public class XotsWrappedTask extends AbstractWrappedTask {
 
 	/**
@@ -50,14 +51,14 @@ public class XotsWrappedTask extends AbstractWrappedTask {
 		try {
 			// checkme: What should we use here?
 			//Factory.initThread(ODAPlatform.getAppThreadConfig(module.getNotesApplication()));
-			Factory.initThread(sourceThreadConfig);
+			LifeCycleManager.beforeRequest(taskRequest);
 			try {
 				return invokeTasklet(ctx, codeModule);
 			} catch (Exception e) {
-				DominoUtils.handleException(e);
+				ODAUtils.handleException(e);
 				return null;
 			} finally {
-				Factory.termThread();
+				LifeCycleManager.afterRequest();
 			}
 		} finally {
 			NotesContext.termThread();
@@ -106,7 +107,7 @@ public class XotsWrappedTask extends AbstractWrappedTask {
 				readLock.acquire(); // we want to read data from the module, so lock it!
 
 			// set up the classloader
-			ClassLoader oldCl = switchClassLoader(mcl);
+			ClassLoader oldCl = ThreadUtils.setContextClassLoader(mcl);
 			try {
 				Object wrappedTask = getWrappedTask();
 				XotsDominoExecutor.initModule(ctx, mcl, wrappedTask);
@@ -131,7 +132,7 @@ public class XotsWrappedTask extends AbstractWrappedTask {
 				}
 
 			} finally {
-				switchClassLoader(oldCl);
+				ThreadUtils.setContextClassLoader(oldCl);
 			}
 		} finally {
 			if (readLock != null)
@@ -147,26 +148,6 @@ public class XotsWrappedTask extends AbstractWrappedTask {
 			((Runnable) wrappedTask).run();
 			return null;
 		}
-	}
-
-	/**
-	 * Changes the Classloader and returns the old one
-	 * 
-	 * @param codeModule
-	 * @return
-	 */
-	protected ClassLoader switchClassLoader(final ClassLoader newClassLoader) {
-		return AccessController.doPrivileged(new PrivilegedAction<ClassLoader>() {
-
-			@Override
-			public ClassLoader run() {
-				Thread thread = Thread.currentThread();
-				ClassLoader oldCl = thread.getContextClassLoader();
-				thread.setContextClassLoader(newClassLoader);
-				return oldCl;
-			}
-		});
-
 	}
 
 	/**

@@ -19,8 +19,9 @@ import org.openntf.domino.xots.Tasklet;
  * This is the interface to the ODA-Database
  * 
  * @author Roland Praml, FOCONIS AG
- * 
+ * @deprecated because it is not production ready!
  */
+@Deprecated
 public enum Configuration {
 	;
 
@@ -40,7 +41,7 @@ public enum Configuration {
 		@Override
 		public void run() {
 			executor_ = null;
-			Factory.removeShutdownHook(SHUTDOWN_HOOK);
+			// TODO LifeCycleManager.removeCleanupHook(SHUTDOWN_HOOK);
 		}
 	};
 
@@ -83,7 +84,7 @@ public enum Configuration {
 			if (Factory.isStarted()) {
 				executor_ = new DominoExecutor(2, "Config");
 				executor_.scheduleAtFixedRate(new ObjectFlusher(), 5, 15, TimeUnit.SECONDS);
-				Factory.addShutdownHook(SHUTDOWN_HOOK);
+				// TODO LifeCycleManager.addCleanupHook(SHUTDOWN_HOOK);
 			}
 		}
 		return executor_;

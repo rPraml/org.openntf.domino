@@ -3,8 +3,6 @@
  */
 package org.openntf.domino.xsp.helpers;
 
-import static org.openntf.domino.utils.DominoUtils.handleException;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +12,8 @@ import java.util.logging.Logger;
 import lotus.domino.NotesException;
 import lotus.domino.View;
 import lotus.domino.ViewEntry;
+
+import org.openntf.domino.utils.ODAUtils;
 
 import com.ibm.designer.runtime.domino.bootstrap.util.StringUtil;
 import com.ibm.xsp.model.domino.ViewNavigatorFactory;
@@ -85,7 +85,7 @@ public class OpenntfViewNavigatorEx extends NOIViewNavigatorEx9 {
 		try {
 			paramView.setAutoUpdate(false);
 		} catch (NotesException ne) {
-			handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 		//}
 		return super.calculateExactCount(paramView);
@@ -103,7 +103,7 @@ public class OpenntfViewNavigatorEx extends NOIViewNavigatorEx9 {
 		try {
 			paramView.setAutoUpdate(false);
 		} catch (NotesException ne) {
-			handleException(ne);
+			ODAUtils.handleException(ne);
 		}
 		//}
 		return super.hasMoreRows(paramView, paramInt);

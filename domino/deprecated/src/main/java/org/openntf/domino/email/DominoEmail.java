@@ -69,7 +69,7 @@ import org.openntf.domino.utils.Factory.SessionType;
  *         myEmail.setSenderName("Paul Withers"); 
  *         myEmail.send();
  */
-
+@Deprecated
 public class DominoEmail implements IEmail {
 	private List<String> to_ = new ArrayList<String>();
 	private List<String> cc_ = new ArrayList<String>();

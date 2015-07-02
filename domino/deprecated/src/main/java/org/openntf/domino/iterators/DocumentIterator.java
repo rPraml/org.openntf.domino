@@ -30,6 +30,7 @@ import org.openntf.domino.utils.DominoUtils;
 /**
  * The Class DocumentIterator.
  */
+@Deprecated
 public class DocumentIterator implements Iterator<org.openntf.domino.Document> {
 	///** The Constant log_. */
 	//private static final Logger log_ = Logger.getLogger(DocumentIterator.class.getName());

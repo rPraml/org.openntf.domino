@@ -13,7 +13,9 @@ import java.util.logging.Logger;
 import org.openntf.domino.Database;
 import org.openntf.domino.DbDirectory;
 import org.openntf.domino.Session;
+import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.design.DatabaseDesign;
+import org.openntf.domino.design.DatabaseDesignService;
 import org.openntf.domino.exceptions.UserAccessException;
 import org.openntf.domino.thread.AbstractDominoCallable;
 import org.openntf.domino.thread.AbstractDominoExecutor;
@@ -42,7 +44,7 @@ context = Tasklet.Context.PLUGIN, 			// in the context of a plugn
 schedule = { "startup", "periodic:90m" }, 	// on Startup and every 90 minutes
 onAllServers = true,						// on all servers
 threadConfig = Tasklet.ThreadConfig.STRICT  // and strict thread config. BubbleExceptions = TRUE
-)
+		)
 /**
  * A Runnable that scans for tasklet classes on a specified server
  * 
@@ -50,6 +52,7 @@ threadConfig = Tasklet.ThreadConfig.STRICT  // and strict thread config. BubbleE
  * @author Nathan T. Freeman
  * @author Roland Praml, FOCONIS AG
  */
+@Deprecated
 public class XotsNsfScanner extends AbstractDominoRunnable implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log_ = Logger.getLogger(XotsNsfScanner.class.getName());
@@ -248,7 +251,13 @@ public class XotsNsfScanner extends AbstractDominoRunnable implements Serializab
 		}
 		try {
 			Database template = db.getXPageSharedDesignTemplate();
-			DatabaseDesign design = template == null ? db.getDesign() : template.getDesign();
+			DatabaseDesignService service = ServiceLocator.findApplicationService(DatabaseDesignService.class);
+			DatabaseDesign design;
+			if (template == null) {
+				design = service.getDatabaseDesign(db);
+			} else {
+				design = service.getDatabaseDesign(template);
+			}
 			if (design.isAPIEnabled()) {
 				log_.info("ODA enabled database: " + dbApiPath);
 				return Xots.getService().submit(new XotsClassScanner(dbApiPath));

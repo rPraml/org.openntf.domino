@@ -12,7 +12,7 @@ import javax.activation.UnsupportedDataTypeException;
 import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * @author Nathan T. Freeman
@@ -134,7 +134,7 @@ public class EnumValuePickerData extends MapValuePickerData {
 				throw new UnsupportedDataTypeException("Value is not an Enum");
 			}
 		} catch (Throwable t) {
-			DominoUtils.handleException(t);
+			ODAUtils.handleException(t);
 		}
 		super.setOptions(opts);
 	}

@@ -35,8 +35,8 @@ import org.openntf.domino.Name;
 import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.ViewEntry;
-import org.openntf.domino.commons.Strings;
 import org.openntf.domino.commons.NameEnums.NamePartKey;
+import org.openntf.domino.commons.Strings;
 
 /**
  * Name handling utilities
@@ -58,6 +58,7 @@ public enum Names {
 
 	public static Pattern C_MATCH = Pattern.compile("(C=)[^/]+", Pattern.CASE_INSENSITIVE);
 
+	@Deprecated
 	public static enum LookupType {
 		Person("P"), Group("G"), Unknown("U");
 

@@ -23,6 +23,7 @@ import javax.faces.el.MethodNotFoundException;
 import com.ibm.xsp.binding.MethodBindingEx;
 import com.ibm.xsp.util.ValueBindingUtil;
 
+@Deprecated
 public class MsgMethodBinding extends MethodBindingEx {
 
 	private String msgPar;
