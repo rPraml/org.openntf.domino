@@ -5,6 +5,7 @@ import java.util.concurrent.Callable;
 
 import org.openntf.domino.AutoMime;
 import org.openntf.domino.View;
+import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.config.Configuration;
 import org.openntf.domino.config.ServerConfiguration;
 import org.openntf.domino.exceptions.BackendBridgeSanityCheckException;
@@ -14,10 +15,8 @@ import org.openntf.domino.thread.DominoExecutor;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.ThreadConfig;
 import org.openntf.domino.xots.Xots;
-import org.openntf.domino.xsp.helpers.OsgiServiceLocatorFactory;
 import org.openntf.domino.xsp.session.XPageNamedSessionFactory;
 import org.openntf.domino.xsp.xots.XotsDominoExecutor;
-import org.openntf.service.ServiceLocatorFinder;
 
 import com.ibm.commons.Platform;
 import com.ibm.commons.extension.ExtensionManager;
@@ -30,7 +29,12 @@ public enum ODAPlatform {
 	// TODO: create an OSGI-command
 	public static final boolean _debug = false;
 	public static final boolean debugAll = false;
+	public static boolean isStarted_ = false;
 	private static int xotsStopDelay;
+
+	public synchronized static boolean isStarted() {
+		return isStarted_;
+	}
 
 	/**
 	 * Start up the ODAPlatform.
@@ -49,7 +53,7 @@ public enum ODAPlatform {
 	 */
 	public static void start() {
 		// Here is all the init/term stuff done
-		ServiceLocatorFinder.setServiceLocatorFactory(new OsgiServiceLocatorFactory());
+		ServiceLocator.setInstance(new OsgiServiceLocator());
 		Factory.startup();
 		// Setup the named factories 4 XPages
 		Factory.setNamedFactories4XPages(new XPageNamedSessionFactory(false), new XPageNamedSessionFactory(true));
@@ -97,12 +101,14 @@ public enum ODAPlatform {
 	 * <code>tell http osgi oda stop</code><br>
 	 * on the server console.
 	 */
-	public static void stop() {
-		if (Xots.isStarted()) {
-			Xots.stop(xotsStopDelay);
+	public synchronized static void stop() {
+		if (isStarted()) {
+			if (Xots.isStarted()) {
+				Xots.stop(xotsStopDelay);
+			}
+			Factory.shutdown();
+			isStarted_ = false;
 		}
-		Factory.shutdown();
-
 	}
 
 	/**
@@ -133,8 +139,7 @@ public enum ODAPlatform {
 	 * add or remove methods to the View class (and maybe also to the Base class) the position must be checked again. This is done in the
 	 * this method:
 	 * <ol>
-	 * <li>
-	 * We call getViewEntryByKeyWithOptions with the "key parameters" dummyView, null, 42.</li>
+	 * <li>We call getViewEntryByKeyWithOptions with the "key parameters" dummyView, null, 42.</li>
 	 * <li>This will result in a call to dummyView.iGetEntryByKey(null, false, 42);</li>
 	 * <li>If iGetEntryByKey is called with a "null" vector and 42 as int, it will throw a "BackendBridgeSanityCheckException" (which we
 	 * expect)</li>

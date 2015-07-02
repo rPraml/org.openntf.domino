@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import org.openntf.domino.annotations.Legacy;
-import org.openntf.domino.commons.types.ExceptionDetails;
+import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.Resurrectable;
 
@@ -30,8 +30,8 @@ import org.openntf.domino.types.Resurrectable;
  * The Interface Session is the root of the Domino Objects containment hierarchy, providing access to the other Domino objects, and
  * represents the Domino environment of the current program.
  */
-public interface Session extends lotus.domino.Session, org.openntf.domino.ext.Session, Base<lotus.domino.Session>, ExceptionDetails,
-		Resurrectable, Externalizable {
+public interface Session extends lotus.domino.Session, org.openntf.domino.ext.Session, Base<lotus.domino.Session>, IExceptionDetails,
+Resurrectable, Externalizable {
 	public static enum Permissions {
 		READ_CURRENT_NSF, WRITE_CURRENT_NSF, DESIGN_CURRENT_NSF, READ_LOCAL_NSF, WRITE_LOCAL_NSF, DESIGN_LOCAL_NSF, READ_REMOTE_NSF,
 		WRITE_REMOTE_NSF, DESIGN_REMOTE_NSF, SEND_MAIL, SEND_COMMANDS, READ_DIRECTORY, WRITE_DIRECTORY, IMPORT_DXL, EXPORT_DXL;
@@ -426,10 +426,11 @@ public interface Session extends lotus.domino.Session, org.openntf.domino.ext.Se
 	public Vector<String> freeResourceSearch(final lotus.domino.DateTime arg0, final lotus.domino.DateTime arg1, final String arg2,
 			final int arg3, final int arg4, final String arg5, final int arg6, final String arg7, final String arg8, final int arg9);
 
-	/*
+	/**
 	 * (non-Javadoc)
 	 * 
 	 * @see lotus.domino.Session#freeTimeSearch(lotus.domino.DateRange, int, java.lang.Object, boolean)
+	 * @deprecated use {@link org.openntf.domino.ext.Session#freeTimeSearch(DateRange, int, java.util.Collection, boolean)}
 	 */
 	@Override
 	@Deprecated
@@ -453,6 +454,7 @@ public interface Session extends lotus.domino.Session, org.openntf.domino.ext.Se
 	 * 
 	 * @return A {@link java.lang.Vector Vector} of Databases.
 	 * @since lotus.domino 4.5.0
+	 * @deprecated use {@link org.openntf.domino.ext.Session#getAddressBookCollection()}
 	 */
 	@Override
 	@Deprecated
@@ -500,6 +502,7 @@ public interface Session extends lotus.domino.Session, org.openntf.domino.ext.Se
 	 * @return An {@link java.lang.Object Object} representing the current credentials.
 	 * @deprecated As per IBM help documentation. No replacement.
 	 * @since lotus.domino 4.5.0
+	 * @deprecated IBM help documentation indicates that this is depreciated and should not be used.
 	 */
 	@Deprecated
 	@Override
@@ -804,6 +807,7 @@ public interface Session extends lotus.domino.Session, org.openntf.domino.ext.Se
 	 * 
 	 * @return A {@link java.lang.Vector vector} of group names. Elements of of type {@link org.openntf.domino.Name}
 	 * @since lotus.domino 6.0.0
+	 * @deprecated use {@link org.openntf.domino.ext.Session#getUserGroupNameCollection()}
 	 */
 	@Override
 	@Deprecated
@@ -833,6 +837,7 @@ public interface Session extends lotus.domino.Session, org.openntf.domino.ext.Se
 	 *         user does have an alternate name, getUserNameList returns a vector of two elements containing the user name and the alternate
 	 *         user name.
 	 * @since lotus.domino 4.5.0
+	 * @deprecated use {@link org.openntf.domino.ext.Session#getUserNameCollection()}
 	 */
 	@Override
 	@Deprecated

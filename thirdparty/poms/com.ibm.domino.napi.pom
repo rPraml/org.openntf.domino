@@ -9,6 +9,14 @@
 	<artifactId>napi</artifactId>
 	<version>9.0.1</version>
 	<name>IBM Domino NAPI (repackaged by OpenNTF)</name>
+
+	<dependencies>	
+		<dependency>
+			<groupId>com.ibm.commons</groupId>
+			<artifactId>com.ibm.commons</artifactId>
+			<version>9.0.1</version>
+		</dependency>
+	</dependencies>
 	
 	<licenses>
 		<license>

@@ -17,40 +17,45 @@
 package org.openntf.formula;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+
+import org.openntf.domino.commons.IDateTime;
+import org.openntf.formula.impl.FormatterImpl;
 
 import com.ibm.icu.util.Calendar;
 
 // TODO RPr Needs a lot of comments
-public interface Formatter {
+public abstract class Formatter {
 
-	Locale getLocale();
-
-	/*----------------------------------------------------------------------------*/
-	DateTime getNewSDTInstance();
-
-	DateTime getNewInitializedSDTInstance(Date date, boolean noDate, boolean noTime);
-
-	DateTime getCopyOfSDTInstance(DateTime sdt);
+	public abstract Locale getLocale();
 
 	/*----------------------------------------------------------------------------*/
-	DateTime parseDate(String image);
+	public abstract IDateTime getNewSDTInstance();
 
-	DateTime parseDate(String image, boolean parseLenient);
+	public abstract IDateTime getNewInitializedSDTInstance(Date date, boolean noDate, boolean noTime);
 
-	Calendar parseDateToCal(String image, boolean[] noDT, boolean parseLenient);
-
-	DateTime parseDateWithFormat(String image, String format, boolean parseLenient);
-
-	Calendar parseDateToCalWithFormat(String image, String format, boolean[] noDT, boolean parseLenient);
+	public abstract IDateTime getCopyOfSDTInstance(IDateTime sdt);
 
 	/*----------------------------------------------------------------------------*/
-	Number parseNumber(String image);
+	public abstract IDateTime parseDate(String image);
 
-	Number parseNumber(String image, boolean lenient);
+	public abstract IDateTime parseDate(String image, boolean parseLenient);
+
+	public abstract Calendar parseDateToCal(String image, boolean[] noDT, boolean parseLenient);
+
+	public abstract IDateTime parseDateWithFormat(String image, String format, boolean parseLenient);
+
+	public abstract Calendar parseDateToCalWithFormat(String image, String format, boolean[] noDT, boolean parseLenient);
 
 	/*----------------------------------------------------------------------------*/
-	public class LotusDateTimeOptions {
+	public abstract Number parseNumber(String image);
+
+	public abstract Number parseNumber(String image, boolean lenient);
+
+	/*----------------------------------------------------------------------------*/
+	public static class LotusDateTimeOptions {
 		public final static int D_YMD = 0;		// D0
 		public final static int D_YMD_YOPT = 1;	// D1
 		public final static int D_MD = 2;		// D1
@@ -95,26 +100,26 @@ public interface Formatter {
 	public static final int TIMEFORMAT_SHORT = 2;
 	public static final int TIMEFORMAT_LONG = 3;
 
-	String formatDateTime(DateTime sdt);
+	public abstract String formatDateTime(IDateTime sdt);
 
-	String formatDateTime(DateTime sdt, LotusDateTimeOptions ldto);
+	public abstract String formatDateTime(IDateTime sdt, LotusDateTimeOptions ldto);
 
-	String formatCalDateTime(Calendar cal);
+	public abstract String formatCalDateTime(Calendar cal);
 
-	String formatCalDateTime(Calendar cal, int timeFormat);
+	public abstract String formatCalDateTime(Calendar cal, int timeFormat);
 
-	String formatCalDateOnly(Calendar cal);
+	public abstract String formatCalDateOnly(Calendar cal);
 
-	String formatCalTimeOnly(Calendar cal);
+	public abstract String formatCalTimeOnly(Calendar cal);
 
-	String formatCalTimeOnly(Calendar cal, int timeFormat);
+	public abstract String formatCalTimeOnly(Calendar cal, int timeFormat);
 
-	String formatDateTimeWithFormat(DateTime sdt, String format);
+	public abstract String formatDateTimeWithFormat(IDateTime sdt, String format);
 
-	String formatCalWithFormat(Calendar cal, String format);
+	public abstract String formatCalWithFormat(Calendar cal, String format);
 
 	/*----------------------------------------------------------------------------*/
-	public class LotusNumberOptions {
+	public static class LotusNumberOptions {
 		public boolean useGrouping = false;
 		public char format = 0;
 		public int fractionDigits = -1;
@@ -125,7 +130,23 @@ public interface Formatter {
 		}
 	}
 
-	String formatNumber(Number n);
+	public abstract String formatNumber(Number n);
 
-	String formatNumber(Number n, LotusNumberOptions lno);
+	public abstract String formatNumber(Number n, LotusNumberOptions lno);
+
+	/*----------------------------------------------------------------------------*/
+	private static Map<Locale, Formatter> instances = new HashMap<Locale, Formatter>();
+
+	public static synchronized Formatter getFormatter(Locale loc) {
+		if (loc == null)
+			loc = Locale.getDefault();
+		Formatter ret = instances.get(loc);
+		if (ret == null)
+			instances.put(loc, ret = new FormatterImpl(loc));
+		return ret;
+	}
+
+	public static Formatter getFormatter() {
+		return getFormatter(null);
+	} /*----------------------------------------------------------------------------*/
 }

@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openntf.formula.DateTime;
+import org.openntf.domino.commons.IDateTime;
 import org.openntf.formula.FormulaContext;
 import org.openntf.formula.Function;
 import org.openntf.formula.FunctionSet;
@@ -205,9 +205,9 @@ public class Comparators extends OperatorsAbstract {
 	// ----------- DateTimes
 	@Override
 	protected ValueHolder evaluateDateTime(final FormulaContext ctx, final ValueHolder[] params) {
-		Collection<DateTime[]> values = new ParameterCollectionObject<DateTime>(params, DateTime.class, isPermutative);
+		Collection<IDateTime[]> values = new ParameterCollectionObject<IDateTime>(params, IDateTime.class, isPermutative);
 
-		for (DateTime[] value : values) {
+		for (IDateTime[] value : values) {
 			int delta = value[0].compare(value[0], value[1]);
 			if (matcher.match(delta)) {
 				return ctx.TRUE;
@@ -217,7 +217,7 @@ public class Comparators extends OperatorsAbstract {
 	}
 
 	@Override
-	protected ValueHolder evaluateDateTime(final FormulaContext ctx, final DateTime dt1, final DateTime dt2) {
+	protected ValueHolder evaluateDateTime(final FormulaContext ctx, final IDateTime dt1, final IDateTime dt2) {
 		int delta = dt1.compare(dt1, dt2);
 		if (matcher.match(delta)) {
 			return ctx.TRUE;

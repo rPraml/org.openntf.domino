@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<!-- Refer to parent pom -->
 	<parent>
@@ -6,54 +7,59 @@
 		<artifactId>root</artifactId>
 		<version>1.5.1-SNAPSHOT</version>
 	</parent>
-	
+
 	<groupId>org.openntf</groupId>
 	<artifactId>formula</artifactId>
 	<name>OpenNTF Formula Engine</name>
-	<description>Alternative Java-based engine for executing Notes/Domino @Formula</description>	
-	
+	<description>Alternative Java-based engine for executing Notes/Domino @Formula</description>
+
 
 	<dependencies>
 		<dependency>
 			<groupId>com.ibm.icu</groupId>
-			<artifactId>base</artifactId>
-			<version>3.8.1</version>
+			<artifactId>icu4j</artifactId>
+			<version>${icu-version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
 			<artifactId>commons</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
-	
+
 	<packaging>bundle</packaging>
 	<build>
 		<plugins>
-			<plugin>  
+			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<extensions>true</extensions>
 				<configuration>
-					<singleton>true</singleton>
 					<instructions>
-
 						<Export-Package>
+							!*.test,
 							!org.openntf.domino.commons.*,
-							org.openntf.*,
-							!*.test
+							org.openntf.*
 						</Export-Package>
 
-						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
-						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
-
+						<!-- TODO Eclipse Build
 						<Import-Package>!*</Import-Package>
-						<Require-Bundle>com.ibm.icu.base;bundle-version="[3.8.0,4.0.0)"</Require-Bundle>
+						<Require-Bundle>
+							com.ibm.icu.base;bundle-version="[3.8.0,4.0.0)",
+							org.openntf.domino.formula;bundle-version=1.5.1
+						</Require-Bundle>
+						-->						
 					</instructions>
 				</configuration>
-			
 			</plugin>
+
 		</plugins>
 	</build>
 

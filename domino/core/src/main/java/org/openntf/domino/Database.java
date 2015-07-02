@@ -16,21 +16,26 @@
 package org.openntf.domino;
 
 import java.io.Externalizable;
+import java.io.Serializable;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Vector;
+import java.util.logging.Logger;
 
-import org.openntf.domino.annotations.Incomplete;
+import lotus.domino.NotesException;
+
 import org.openntf.domino.annotations.Legacy;
-import org.openntf.domino.commons.types.ExceptionDetails;
+import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.Resurrectable;
 import org.openntf.domino.types.SessionDescendant;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * The Interface Database.
  */
 public interface Database extends lotus.domino.Database, org.openntf.domino.Base<lotus.domino.Database>, org.openntf.domino.ext.Database,
-Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
+		Resurrectable, SessionDescendant, IExceptionDetails, Externalizable {
 
 	/**
 	 * Enum to allow easy access to Schema
@@ -57,72 +62,9 @@ Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
 	public static final Schema SCHEMA = new Schema();
 
 	/**
-	 * Generic database utilities
-	 * 
-	 * @deprecated RPr: As far as I know, this was only used in the DbDirectory
-	 */
-	@Deprecated
-	public enum Utils {
-		;
-		/**
-		 * Checks whether the database is a template with .ntf (Notes Template Facility) file type
-		 * 
-		 * @param db
-		 *            Database to check
-		 * @return boolean whether the database has a .ntf suffix or not
-		 * @since org.openntf.domino 4.5.0
-		 */
-		public static boolean isTemplate(final Database db) {
-			return db.getFilePath().toLowerCase().endsWith(".ntf");
-		}
-
-		/**
-		 * Checks whether the database is a database with .nsf-style (Notes Storage Facility) file type
-		 * 
-		 * @param db
-		 *            Database to check
-		 * @return boolean whether the database has a .nsf, .nsh or .nsg suffix or not
-		 * @since org.openntf.domino 4.5.0
-		 */
-		public static boolean isDatabase(final Database db) {
-			String path = db.getFilePath().toLowerCase();
-			return (path.endsWith(".nsf") || path.endsWith(".nsh") || path.endsWith(".nsg"));
-		}
-
-		/**
-		 * Checks whether replication is disabled for the specified Database
-		 * 
-		 * @param db
-		 *            Database to check
-		 * @return boolean whether {@link org.openntf.domino.Database#isReplicationDisabled()} is true
-		 * @since org.openntf.domino 4.5.0
-		 */
-		public static boolean isReplicaCandidate(final Database db) {
-			boolean result = true;
-			result = db.isReplicationDisabled();
-			return result;
-		}
-
-		/**
-		 * Not currently implemented, just returns true
-		 * 
-		 * @param db
-		 *            Database to check
-		 * @return boolean, currently always returns true
-		 * @since org.openntf.domino 4.5.0
-		 */
-		@Incomplete
-		public static boolean isTemplateCandidate(final Database db) {
-			boolean result = true;
-			//TODO do we actually want to add any future checks for this?
-			return result;
-		}
-	}
-
-	/**
 	 * Comparator to allow easy checking whether two databases have the same filepath (e.g. on different servers)
 	 * 
-	 * @Deprecated better use the DatabaseHolder for sorting
+	 * @deprecated better use the DatabaseHolder for sorting
 	 * @since org.openntf.domino 4.5.0
 	 */
 	@Deprecated
@@ -136,7 +78,7 @@ Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
 	/**
 	 * Comparator to alow easy checking whether database A was modified before/after database B
 	 * 
-	 * @Deprecated better use the DatabaseHolder for sorting
+	 * @deprecated better use the DatabaseHolder for sorting
 	 * @since org.openntf.domino 4.5.0
 	 */
 	@Deprecated
@@ -150,7 +92,7 @@ Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
 	/**
 	 * Comparator to allow easy checking whether two databases have the same title
 	 * 
-	 * @Deprecated better use the DatabaseHolder for sorting
+	 * @deprecated better use the DatabaseHolder for sorting
 	 * @since org.openntf.domino 4.5.0
 	 */
 	@Deprecated
@@ -164,7 +106,7 @@ Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
 	/**
 	 * Comparator to allow easy checking whether two databases have the same API path (server!!filepath)
 	 * 
-	 * @Deprecated better use the DatabaseHolder for sorting
+	 * @deprecated better use the DatabaseHolder for sorting
 	 * @since org.openntf.domino 4.5.0
 	 */
 	@Deprecated
@@ -594,10 +536,232 @@ Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
 		}
 	}
 
-	/*
+	/**
+	 * This class is mainly used in the DbDirectory to hold database metadata, without to reference the Database-object itself.
+	 * 
+	 * @author Roland Praml, FOCONIS AG
+	 * 
+	 */
+	public class MetaData implements Serializable {
+		@SuppressWarnings("unused")
+		private static final Logger log_ = Logger.getLogger(MetaData.class.getName());
+		private static final long serialVersionUID = 1L;
+		// These attributes will never change for a certain database object
+		private final String fileName_;
+		private final String filePath_;
+		private final String server_;
+		private final String replicaID_;
+
+		// These attributes may change during the life time of a database. So we will update these, if we have an open database
+		private String title_;
+		private Date lastModifiedDate_;
+		private String templateName_;
+		private String designTemplateName_;
+		private double size_;
+		private String categories_;
+
+		//private int fileFormat_;
+		//private double limitRevisions;
+		//private double limitUpdatedBy;
+
+		// The comparators must be serializable, so put them in separate classes
+		static class ApiPathComparator implements Comparator<Database.MetaData>, Serializable {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public int compare(final Database.MetaData o1, final Database.MetaData o2) {
+				return o1.getApiPath().compareToIgnoreCase(o2.getApiPath());
+			}
+
+		}
+
+		static class FilePathComparator implements Comparator<Database.MetaData>, Serializable {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public int compare(final Database.MetaData o1, final Database.MetaData o2) {
+				return o1.getFilePath().compareToIgnoreCase(o2.getFilePath());
+			}
+		}
+
+		static class TitleComparator implements Comparator<Database.MetaData>, Serializable {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public int compare(final Database.MetaData o1, final Database.MetaData o2) {
+				return o1.getTitle().compareToIgnoreCase(o2.getTitle());
+			}
+		}
+
+		static class LastModComparator implements Comparator<Database.MetaData>, Serializable {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public int compare(final Database.MetaData o1, final Database.MetaData o2) {
+				if (o1.getLastModifiedDate() == null)
+					return -1;
+				if (o2.getLastModifiedDate() == null)
+					return 1;
+				return o1.getLastModifiedDate().compareTo(o2.getLastModifiedDate());
+			}
+		}
+
+		/**
+		 * Comparator to allow easy checking whether two databases have the same API path (server!!filepath)
+		 * 
+		 * @since org.openntf.domino 5.0.0
+		 */
+		public final static Comparator<Database.MetaData> APIPATH_COMPARATOR = new ApiPathComparator();
+		/**
+		 * Comparator to allow easy checking whether two databases have the same filepath (e.g. on different servers)
+		 * 
+		 * @since org.openntf.domino 5.0.0
+		 */
+		public final static Comparator<Database.MetaData> FILEPATH_COMPARATOR = new FilePathComparator();
+
+		/**
+		 * Comparator to allow easy checking whether two databases have the same title
+		 * 
+		 * @since org.openntf.domino 5.0.0
+		 */
+		public final static Comparator<Database.MetaData> TITLE_COMPARATOR = new TitleComparator();
+
+		/**
+		 * Comparator to allow easy checking whether two databases have the same title
+		 * 
+		 * @deprecated as this takes a lot of performance and requires to open the database, it should not be used
+		 * @since org.openntf.domino 5.0.0
+		 */
+		@Deprecated
+		public final static Comparator<Database.MetaData> LASTMOD_COMPARATOR = new LastModComparator();
+
+		public MetaData(final lotus.domino.Database db) throws NotesException {
+
+			templateName_ = db.getTemplateName();
+			designTemplateName_ = db.getDesignTemplateName();
+			fileName_ = db.getFileName();
+			filePath_ = db.getFilePath();
+			server_ = db.getServer();
+			size_ = db.getSize();
+			title_ = db.getTitle();
+			replicaID_ = db.getReplicaID();
+			categories_ = db.getCategories();
+
+			if (db.isOpen()) {
+
+				// These things are only available, if the DB is open
+				lastModifiedDate_ = ODAUtils.toJavaDateSafe(db.getLastModified());
+				//		sizeQuota_ = db.getSizeQuota();
+				//		sizeWarning_ = db.getSizeWarning();
+				//		created_ = db.getCreated();
+				//		fileFormat_ = db.getFileFormat();
+				//		limitRevisions = db.getLimitRevisions();
+				//		limitUpdatedBy = db.getLimitUpdatedBy();
+				//		lastModifiedDate_ = db.getLastModifiedDate();
+			} else {
+				lastModifiedDate_ = null;
+			}
+
+		}
+
+		public String getTitle() {
+			return title_;
+		}
+
+		public String getApiPath() {
+			if (server_.length() > 0)
+				return server_ + "!!" + filePath_;
+			return filePath_;
+		}
+
+		public String getMetaReplicaID() {
+			if (server_.length() > 0)
+				return server_ + "!!" + replicaID_;
+			return replicaID_;
+		}
+
+		public String getFilePath() {
+			return filePath_;
+		}
+
+		public Date getLastModifiedDate() {
+			return lastModifiedDate_;
+		}
+
+		public String getServer() {
+			return server_;
+		}
+
+		public String getTemplateName() {
+			return templateName_;
+		}
+
+		public String getDesignTemplateName() {
+			return designTemplateName_;
+		}
+
+		public String getFileName() {
+			return fileName_;
+		}
+
+		public double getSize() {
+			return size_;
+		}
+
+		public String getReplicaID() {
+			return replicaID_;
+		}
+
+		public String getCategories() {
+			return categories_;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see java.lang.Object#hashCode()
+		 */
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((filePath_ == null) ? 0 : filePath_.hashCode());
+			result = prime * result + ((server_ == null) ? 0 : server_.hashCode());
+			return result;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		@Override
+		public boolean equals(final Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Database.MetaData other = (Database.MetaData) obj;
+			if (filePath_ == null) {
+				if (other.filePath_ != null)
+					return false;
+			} else if (!filePath_.equals(other.filePath_))
+				return false;
+			if (server_ == null) {
+				if (other.server_ != null)
+					return false;
+			} else if (!server_.equals(other.server_))
+				return false;
+			return true;
+		}
+
+	}
+
+	/**
 	 * (non-Javadoc)
 	 * 
 	 * @see lotus.domino.Database#getACLActivityLog()
+	 * @deprecated TODO specify reason
 	 */
 	@Override
 	@Deprecated
@@ -612,19 +776,18 @@ Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
 	@Override
 	public int compact();
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#compactWithOptions(int)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#compactWithOptions(java.util.Set)}
 	 */
 	@Override
 	@Deprecated
 	public int compactWithOptions(final int options);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#compactWithOptions(int, java.lang.String)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#compactWithOptions(java.util.Set, String)}
+	 * 
 	 */
 	@Override
 	@Deprecated
@@ -645,10 +808,9 @@ Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
 	@Override
 	public Database createCopy(final String server, final String dbFile);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#createCopy(java.lang.String, java.lang.String, int)
+	 * @deprecated TODO specify reason
 	 */
 	@Override
 	@Deprecated
@@ -696,10 +858,9 @@ Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
 	@Override
 	public Database createFromTemplate(final String server, final String dbFile, final boolean inherit, final int maxSize);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#createFTIndex(int, boolean)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#createFTIndex(java.util.Set, boolean)}
 	 */
 	@Override
 	@Deprecated
@@ -819,19 +980,19 @@ Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
 	@Override
 	public void fixup();
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#fixup(int)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#fixup(java.util.Set)}
 	 */
 	@Override
 	@Deprecated
 	public void fixup(final int options);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#FTDomainSearch(java.lang.String, int, int, int, int, int, java.lang.String)
+	 * 
+	 * @deprecated use
+	 *             {@link org.openntf.domino.ext.Database#FTDomainSearch(String, int, FTDomainSortOption, java.util.Set, int, int, String)}
 	 */
 	@Override
 	@Deprecated
@@ -900,10 +1061,9 @@ Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
 	 */
 	public DocumentCollection FTSearch(final String query, final int maxDocs, final FTSortOption sortOpt, final int otherOpt);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#FTSearchRange(java.lang.String, int, int, int, int)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#FTSearchRange(String, int, FTSortOption, java.util.Set, int)}
 	 */
 	@Override
 	@Deprecated
@@ -1214,10 +1374,9 @@ Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
 	@Override
 	public DocumentCollection getModifiedDocuments(final lotus.domino.DateTime since);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#getModifiedDocuments(lotus.domino.DateTime, int)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#getModifiedDocuments(lotus.domino.DateTime, ModifiedDocClass)}
 	 */
 	@Override
 	@Deprecated
@@ -1231,10 +1390,9 @@ Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
 	@Override
 	public String getNotesURL();
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#getOption(int)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#getOption(DBOption)}
 	 */
 	@Override
 	@Deprecated
@@ -1344,11 +1502,9 @@ Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
 	@Override
 	public String getTitle();
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#getType()
-	 * @Deprecated, better use getTypeEx
+	 * @deprecated better use {@link #getTypeEx()}
 	 */
 	@Override
 	@Deprecated
@@ -1397,10 +1553,9 @@ Resurrectable, SessionDescendant, ExceptionDetails, Externalizable {
 	@Legacy(Legacy.INTERFACES_WARNING)
 	public Vector<View> getViews();
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Database#grantAccess(java.lang.String, int)
+	 * @deprecated use {@link org.openntf.domino.ext.Database#grantAccess(String, org.openntf.domino.ACL.Level)}
 	 */
 	@Override
 	@Deprecated

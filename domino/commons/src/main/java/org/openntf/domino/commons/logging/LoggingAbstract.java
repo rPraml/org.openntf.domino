@@ -9,7 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.LogRecord;
 
-import org.openntf.domino.commons.types.ExceptionDetails;
+import org.openntf.domino.commons.exception.IExceptionDetails;
 
 /**
  * Introduces a highly configurable new logging mechanism. (Details are to be found in logconfig.properties.) If no configuration property
@@ -117,7 +117,7 @@ public abstract class LoggingAbstract {
 
 	protected abstract ConfigChangeFlag lookForCfgChange();
 
-	public abstract List<ExceptionDetails.Entry> getExceptionDetails(Throwable t);
+	public abstract List<IExceptionDetails.Entry> getExceptionDetails(Throwable t);
 
 	public abstract String[] getLastWrappedDocs();
 

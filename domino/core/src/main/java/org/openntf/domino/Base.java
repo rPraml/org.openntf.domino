@@ -26,10 +26,12 @@ import lotus.domino.NotesException;
  *            the generic type
  */
 public interface Base<D extends lotus.domino.Base> extends lotus.domino.Base, org.openntf.domino.ext.Base {
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Recycles the object
 	 * 
-	 * @see lotus.domino.Base#recycle()
+	 * @deprecated - if you really need it, you can use a cast: ((lotus.domino.Base)o).recycle()
+	 * 
+	 *             Ideas are also to introduce a method like "freeHandle" or "kickTheObjectFromMemory" :-)
 	 */
 	@Override
 	@Deprecated

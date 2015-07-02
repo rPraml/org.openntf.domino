@@ -27,7 +27,7 @@ import org.openntf.domino.types.SessionDescendant;
  * The Interface DbDirectory.
  */
 public interface DbDirectory extends Base<lotus.domino.DbDirectory>, lotus.domino.DbDirectory, org.openntf.domino.ext.DbDirectory,
-		Collection<org.openntf.domino.Database>, SessionDescendant, Resurrectable {
+Collection<org.openntf.domino.Database>, SessionDescendant, Resurrectable {
 
 	public static class Schema extends FactorySchema<DbDirectory, lotus.domino.DbDirectory, Session> {
 		@Override
@@ -63,14 +63,6 @@ public interface DbDirectory extends Base<lotus.domino.DbDirectory>, lotus.domin
 		REPLICA_CANDIDATE(DbDirectory.REPLICA_CANDIDATE),
 		/** The template candidate. */
 		TEMPLATE_CANDIDATE(DbDirectory.TEMPLATE_CANDIDATE);
-
-		/**
-		 * @Deprecated better use valueOf
-		 */
-		@Deprecated
-		public static Type getType(final int value) {
-			return valueOf(value);
-		}
 
 		/**
 		 * Return the {@link DbDirectory.Type} of a numeric value
@@ -143,10 +135,9 @@ public interface DbDirectory extends Base<lotus.domino.DbDirectory>, lotus.domin
 	@Override
 	public String getClusterName(final String server);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.DbDirectory#getFirstDatabase(int)
+	 * @deprecated use Iterator
 	 */
 	@Override
 	@Deprecated
@@ -159,6 +150,7 @@ public interface DbDirectory extends Base<lotus.domino.DbDirectory>, lotus.domin
 	 * @param type
 	 *            the type
 	 * @return the first database
+	 * @deprecated use Iterator
 	 */
 	@Override
 	@Deprecated
@@ -173,10 +165,9 @@ public interface DbDirectory extends Base<lotus.domino.DbDirectory>, lotus.domin
 	@Override
 	public String getName();
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.DbDirectory#getNextDatabase()
+	 * @deprecated use Iterator
 	 */
 	@Override
 	@Deprecated

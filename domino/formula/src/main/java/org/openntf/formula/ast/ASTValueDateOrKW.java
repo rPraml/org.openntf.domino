@@ -19,7 +19,7 @@ package org.openntf.formula.ast;
 
 import java.util.Set;
 
-import org.openntf.formula.DateTime;
+import org.openntf.domino.commons.IDateTime;
 import org.openntf.formula.FormulaContext;
 import org.openntf.formula.ValueHolder;
 import org.openntf.formula.ValueHolder.DataType;
@@ -27,7 +27,7 @@ import org.openntf.formula.parse.AtFormulaParserImpl;
 import org.openntf.formula.parse.ParseException;
 
 public class ASTValueDateOrKW extends SimpleNode {
-	DateTime dateValue = null;
+	IDateTime dateValue = null;
 	String image = null;
 
 	public ASTValueDateOrKW(final AtFormulaParserImpl p, final int id) {

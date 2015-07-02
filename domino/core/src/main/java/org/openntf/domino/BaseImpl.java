@@ -10,7 +10,7 @@ import javolution.util.FastMap;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
 import org.openntf.domino.events.IDominoListener;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * Common class for ODA extension where no lotus wrapper exists (WrapperFactory, DocumentList)
@@ -87,7 +87,7 @@ public abstract class BaseImpl<D extends lotus.domino.Base> implements Base<D> {
 					break;
 				}
 			} catch (Throwable t) {
-				DominoUtils.handleException(t);
+				ODAUtils.handleException(t);
 			}
 		}
 		return result;

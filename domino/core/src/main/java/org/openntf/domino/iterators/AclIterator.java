@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 
 import org.openntf.domino.ACL;
 import org.openntf.domino.ACLEntry;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -67,7 +67,7 @@ public class AclIterator implements Iterator<ACLEntry> {
 					nextEntry_ = acl.getNextEntry(currentEntry);
 				}
 			} catch (Throwable t) {
-				DominoUtils.handleException(t);
+				ODAUtils.handleException(t);
 			}
 		}
 		return nextEntry_;

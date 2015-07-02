@@ -4,7 +4,7 @@ package org.openntf.formula.ast;
 
 import java.util.Set;
 
-import org.openntf.formula.EvaluateException;
+import org.openntf.domino.commons.exception.EvaluateException;
 import org.openntf.formula.FormulaContext;
 import org.openntf.formula.FormulaReturnException;
 import org.openntf.formula.ValueHolder;
@@ -48,7 +48,7 @@ public class ASTAtTransform extends SimpleNode {
 					iter.add(list.getBoolean(i));
 					break;
 				default:
-					iter.add(list.getObject(i));
+					iter.addObject(list.getObject(i));
 				}
 
 				ValueHolder old = ctx.setVarLC(varName, iter);

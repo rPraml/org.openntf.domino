@@ -4,14 +4,21 @@ import java.util.Collection;
 
 import javolution.lang.Immutable;
 import javolution.util.FastTable;
-import javolution.util.internal.table.AtomicTableImpl;
-import javolution.util.internal.table.UnmodifiableTableImpl;
 import javolution.util.service.TableService;
 
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
+// FIXME: you should NOT access internal classes, as these classes are not exported
+//import javolution.util.internal.table.AtomicTableImpl;
+//import javolution.util.internal.table.UnmodifiableTableImpl;
 
+// Comments from RPr to NTF:
+// Inheriting from "FastTable" may be the wrong approach (don't know)
+// 1) If you do it, you must override all DSL-specific methods (.atomic, mapped, .reversed, .shared, .subList, .unmodifiable)
+// 2) accessing *.internal.* packages is a problem as these packages are not exported.
+// So, if there is a way to avoid this, it should be done. 
+// As a last resort, the negation of "*.internal.*" export in javolution.cores should be changed.
 public class DEdgeList extends FastTable<Edge> {
 	private static final long serialVersionUID = 1L;
 	protected final DVertex sourceVertex_;
@@ -27,12 +34,16 @@ public class DEdgeList extends FastTable<Edge> {
 
 	@Override
 	public DEdgeList atomic() {
-		return new DEdgeList(sourceVertex_, new AtomicTableImpl<Edge>(service()));
+		System.err.println("FIXME: DEdgeList.atomic() simply returns 'this'. Read comments in DEdgeList.java");
+		return this;
+		//return new DEdgeList(sourceVertex_,  new AtomicTableImpl<Edge>(service()));
 	}
 
 	@Override
 	public DEdgeList unmodifiable() {
-		return new DEdgeList(sourceVertex_, new UnmodifiableTableImpl<Edge>(service()));
+		System.err.println("FIXME: DEdgeList.atomic() simply returns 'this'. Read comments in DEdgeList.java");
+		return this;
+		//return new DEdgeList(sourceVertex_, new UnmodifiableTableImpl<Edge>(service()));
 	}
 
 	@Override

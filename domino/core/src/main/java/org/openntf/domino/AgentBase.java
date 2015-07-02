@@ -1,5 +1,6 @@
 package org.openntf.domino;
 
+import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.utils.Factory;
 
 // TODO: Auto-generated Javadoc
@@ -30,19 +31,14 @@ public class AgentBase extends lotus.domino.AgentBase {
 	 */
 	@Override
 	public void NotesMain() {
-		boolean doShutdown = false;
-		if (!Factory.isStarted()) {
-			Factory.startup();
-			doShutdown = true;
-		}
-		Factory.initThread(Factory.STRICT_THREAD_CONFIG);
+
+		LifeCycleManager.startup();
+		LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
 		try {
 			DominoMain();
 		} finally {
-			Factory.termThread();
-			if (doShutdown) {
-				Factory.shutdown();
-			}
+			LifeCycleManager.afterRequest();
+			LifeCycleManager.shutdown();
 		}
 
 	}

@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.openntf.domino.Document;
+import org.openntf.domino.commons.LifeCycleManager;
 
 import com.ibm.designer.domino.napi.NotesAPIException;
 import com.ibm.designer.domino.napi.NotesDatabase;
@@ -61,7 +62,6 @@ public enum NapiUtil {
 	 * <li>Unfortunately, there is no way out of the box to do the same for {@link NotesDocument}
 	 * </ul>
 	 * 
-	 * @throws Exception
 	 */
 	public static void init() throws Exception {
 		com.ibm.domino.napi.c.C.initLibrary(null);
@@ -71,7 +71,7 @@ public enum NapiUtil {
 		setHandleMethod = com.ibm.designer.domino.napi.NotesHandle.class.getDeclaredMethod("setHandle", int.class);
 		setHandleMethod.setAccessible(true);
 
-		Factory.addTerminateHook(RECYCLER, true);
+		LifeCycleManager.addCleanupHook(RECYCLER);
 	}
 
 	public static Runnable RECYCLER = new Runnable() {

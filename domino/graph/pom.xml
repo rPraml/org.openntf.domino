@@ -46,28 +46,25 @@
         <finalName>${project.artifactId}-${project.version}
         </finalName>
 		<plugins>
-			<plugin>  
+			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<extensions>true</extensions>
 				<configuration>
-					<singleton>true</singleton>
 					<instructions>
 						<Export-Package>
-							!*.test
+							!*.test,
+							org.openntf.domino.big.*,
+							org.openntf.domino.graph.*,
+							org.openntf.domino.graph2.*
 						</Export-Package>
-
-						<Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
-						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
-						
+						<!-- TODO Eclipse Build
 						<Require-Bundle>
 							com.tinkerpop.frames;bundle-version="[2.6.0.ODA-151-SNAPSHOT)",
  							org.openntf.domino.core;bundle-version="1.5.0";visibility:=reexport,
 						</Require-Bundle>
-
+ 						-->
 					</instructions>
 				</configuration>
-			
 			</plugin>
 		</plugins>
 	</build>

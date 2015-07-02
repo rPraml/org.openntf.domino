@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openntf.domino.commons.IFormulaContext;
+import org.openntf.domino.commons.exception.EvaluateException;
 import org.openntf.formula.ValueHolder.DataType;
 
 /**
@@ -28,7 +30,7 @@ import org.openntf.formula.ValueHolder.DataType;
  * @author Roland Praml, Foconis AG
  * 
  */
-public class FormulaContext {
+public class FormulaContext implements IFormulaContext {
 	@SuppressWarnings("unused")
 	private static final Logger log_ = Logger.getLogger(FormulaContext.class.getName());
 	protected Map<String, Object> dataMap;
@@ -59,7 +61,7 @@ public class FormulaContext {
 	 *            the parser
 	 * 
 	 */
-	public void init(final Map<String, Object> dataMap, final Formatter formatter, final FormulaParser parser) {
+	public FormulaContext(final Map<String, Object> dataMap, final Formatter formatter, final FormulaParser parser) {
 		this.dataMap = dataMap;
 		this.formatter = formatter;
 		this.parser = parser;

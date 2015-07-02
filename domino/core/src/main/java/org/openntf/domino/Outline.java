@@ -44,28 +44,25 @@ public interface Outline extends Base<lotus.domino.Outline>, lotus.domino.Outlin
 
 	public static final Schema SCHEMA = new Schema();
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Outline#addEntry(lotus.domino.OutlineEntry, lotus.domino.OutlineEntry)
+	 * @deprecated TODO why?
 	 */
 	@Override
 	@Deprecated
 	public void addEntry(final lotus.domino.OutlineEntry entry, final lotus.domino.OutlineEntry referenceEntry);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Outline#addEntry(lotus.domino.OutlineEntry, lotus.domino.OutlineEntry, boolean)
+	 * @deprecated TODO why?
 	 */
 	@Override
 	@Deprecated
 	public void addEntry(final lotus.domino.OutlineEntry entry, final lotus.domino.OutlineEntry referenceEntry, final boolean after);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Outline#addEntry(lotus.domino.OutlineEntry, lotus.domino.OutlineEntry, boolean, boolean)
+	 * @deprecated TODO why?
 	 */
 	@Override
 	@Deprecated

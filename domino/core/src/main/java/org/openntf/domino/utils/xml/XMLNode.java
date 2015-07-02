@@ -25,7 +25,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -118,7 +118,7 @@ public class XMLNode implements Serializable {
 
 			return result;
 		} catch (XPathExpressionException xee) {
-			DominoUtils.handleException(xee);
+			ODAUtils.handleException(xee);
 			return null;
 		}
 	}

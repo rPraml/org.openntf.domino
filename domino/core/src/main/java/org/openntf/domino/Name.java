@@ -60,7 +60,8 @@ import org.openntf.domino.types.SessionDescendant;
  * <li>"John B Goode" <jbg@us.acme.com> (Sales) (East)
  * </ul>
  */
-public interface Name extends Base<lotus.domino.Name>, lotus.domino.Name, org.openntf.domino.ext.Name, Encapsulated, SessionDescendant {
+public interface Name extends Base<lotus.domino.Name>, lotus.domino.Name, org.openntf.domino.ext.Name, org.openntf.domino.commons.IName,
+		Encapsulated, SessionDescendant {
 
 	public static class Schema extends FactorySchema<Name, lotus.domino.Name, Session> {
 		@Override
@@ -414,12 +415,4 @@ public interface Name extends Base<lotus.domino.Name>, lotus.domino.Name, org.op
 	@Override
 	public String toString();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see lotus.domino.Base#recycle()
-	 */
-	@Override
-	@Deprecated
-	public void recycle();
 }

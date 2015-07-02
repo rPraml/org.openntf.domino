@@ -5,6 +5,8 @@ package org.openntf.domino.ext;
 
 import java.util.Map;
 
+import org.openntf.domino.ViewEntry;
+
 /**
  * @author withersp
  * 
@@ -21,4 +23,6 @@ public interface ViewEntryCollection {
 	 * @since org.openntf.domino 3.0.0
 	 */
 	public void stampAll(final Map<String, Object> map);
+
+	public ViewEntry getEntryAt(final int n);
 }

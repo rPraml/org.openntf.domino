@@ -22,7 +22,7 @@ import java.util.Vector;
 
 import lotus.domino.XSLTResultTarget;
 
-import org.openntf.domino.commons.types.ExceptionDetails;
+import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.types.DocumentDescendant;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.Resurrectable;
@@ -32,7 +32,7 @@ import org.xml.sax.InputSource;
  * The Interface Item.
  */
 public interface Item extends Base<lotus.domino.Item>, lotus.domino.Item, org.openntf.domino.ext.Item, Resurrectable, DocumentDescendant,
-		ExceptionDetails {
+		IExceptionDetails {
 	public static enum Flags {
 		PROTECTED(16), SUMMARY(1), AUTHORS(4), READERS(8), NAMES(2), SIGNED(32), ENCRYPTED(64);
 
@@ -91,14 +91,6 @@ public interface Item extends Base<lotus.domino.Item>, lotus.domino.Item, org.op
 		USERID(lotus.domino.Item.USERID), VIEWMAPDATA(lotus.domino.Item.VIEWMAPDATA), VIEWMAPLAYOUT(lotus.domino.Item.VIEWMAPLAYOUT),
 		// Unfortunately, the XPage DominoDocument cannot handle serialized MIME beans correctly, so we will return a custom datatype of 10001 
 		MIME_BEAN(10001);
-
-		/**
-		 * @Deprecated better use valueOf
-		 */
-		@Deprecated
-		public static Type getType(final int value) {
-			return valueOf(value);
-		}
 
 		/**
 		 * Return the {@link Item.Type} of a numeric value
@@ -275,11 +267,9 @@ public interface Item extends Base<lotus.domino.Item>, lotus.domino.Item, org.op
 	@Override
 	public String getText(final int maxLen);
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see lotus.domino.Item#getType()
-	 * @Deprecated, better use getTypeEx
+	 * @deprecated use {@link #getTypeEx()}
 	 */
 	@Override
 	@Deprecated

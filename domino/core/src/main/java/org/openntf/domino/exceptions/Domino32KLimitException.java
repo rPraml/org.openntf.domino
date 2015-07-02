@@ -1,5 +1,11 @@
 package org.openntf.domino.exceptions;
 
+/**
+ * A Marker exception that is thrown if the data exceeds the 32K limit
+ * 
+ * @author Roland Praml, FOCONIS AG - and others
+ *
+ */
 public class Domino32KLimitException extends Exception {
 
 	private static final long serialVersionUID = 1L;

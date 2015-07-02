@@ -24,10 +24,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.ValueBinding;
 
 import org.openntf.domino.Document;
+import org.openntf.domino.commons.exception.EvaluateException;
 import org.openntf.domino.formula.FormulaContextNotes;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.xsp.model.DominoDocumentMapAdapter;
-import org.openntf.formula.EvaluateException;
+import org.openntf.formula.Formatter;
+import org.openntf.formula.FormulaParser;
 import org.openntf.formula.ValueHolder;
 
 import com.ibm.xsp.application.ApplicationEx;
@@ -46,6 +48,11 @@ import com.ibm.xsp.model.domino.wrapped.DominoDocument;
  * 
  */
 public class FormulaContextXsp extends FormulaContextNotes {
+
+	public FormulaContextXsp(final Map<String, Object> dataMap, final Formatter formatter, final FormulaParser parser) {
+		super(dataMap, formatter, parser);
+	}
+
 	private UIComponent component;
 	private FacesContext context;
 	private Map<String, ValueBinding> valueBindings = new HashMap<String, ValueBinding>();

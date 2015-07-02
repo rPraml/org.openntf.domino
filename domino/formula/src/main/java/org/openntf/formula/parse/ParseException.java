@@ -17,7 +17,7 @@
  */
 package org.openntf.formula.parse;
 
-import org.openntf.formula.FormulaParseException;
+import org.openntf.domino.commons.exception.FormulaParseException;
 
 /**
  * This exception is thrown when parse errors are encountered. You can explicitly create objects of this exception type by calling the

@@ -16,7 +16,7 @@
  */
 package org.openntf.formula.function;
 
-import org.openntf.formula.DateTime;
+import org.openntf.domino.commons.IDateTime;
 import org.openntf.formula.FormulaContext;
 import org.openntf.formula.ValueHolder;
 import org.openntf.formula.ValueHolder.DataType;
@@ -47,6 +47,7 @@ public abstract class OperatorsAbstract extends AtFunction {
 	/**
 	 * Evaluates the operator
 	 */
+	@Override
 	public ValueHolder evaluate(final FormulaContext ctx, final ValueHolder[] params) {
 		ValueHolder v1 = params[0]; // Fetch first element to determine operation
 		ValueHolder v2 = params[1]; // Fetch first element to determine operation
@@ -130,13 +131,14 @@ public abstract class OperatorsAbstract extends AtFunction {
 
 	protected abstract ValueHolder evaluateDateTime(final FormulaContext ctx, final ValueHolder[] params);
 
-	protected abstract ValueHolder evaluateDateTime(final FormulaContext ctx, final DateTime dt1, final DateTime dt2);
+	protected abstract ValueHolder evaluateDateTime(final FormulaContext ctx, final IDateTime dt1, final IDateTime dt2);
 
 	protected abstract ValueHolder evaluateBoolean(final FormulaContext ctx, final ValueHolder[] params);
 
 	protected abstract ValueHolder evaluateBoolean(final FormulaContext ctx, final boolean b1, final boolean b2);
 
 	/* -------------------------------------------------- */
+	@Override
 	public boolean checkParamCount(final int i) {
 		// ensured by parser
 		return true;
