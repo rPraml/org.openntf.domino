@@ -827,4 +827,9 @@ public class WrapperFactory extends BaseImpl<lotus.domino.Base> implements org.o
 		return 99;
 	}
 
+	@Override
+	public void recycleLegacy() {
+		recycle();
+	}
+
 }
