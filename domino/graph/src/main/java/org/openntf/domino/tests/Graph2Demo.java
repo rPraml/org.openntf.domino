@@ -20,9 +20,9 @@ import org.openntf.domino.graph2.impl.DConfiguration;
 import org.openntf.domino.graph2.impl.DElementStore;
 import org.openntf.domino.graph2.impl.DFramedGraphFactory;
 import org.openntf.domino.graph2.impl.DGraph;
-import org.openntf.domino.junit.TestRunnerUtil;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.utils.TestRunnerUtil;
 
 import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Vertex;

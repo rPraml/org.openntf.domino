@@ -2,7 +2,7 @@ package org.openntf.domino.xsp.session;
 
 import org.openntf.domino.Session;
 import org.openntf.domino.session.INamedSessionFactory;
-import org.openntf.domino.utils.DominoUtils;
+import org.openntf.domino.utils.ODAUtils;
 
 import com.ibm.domino.napi.c.xsp.XSPNative;
 
@@ -37,7 +37,7 @@ public class XPageNamedSessionFactory extends AbstractXPageSessionFactory implem
 			lotus.domino.Session rawSession = XSPNative.createXPageSessionExt(userName, userHandle, false, true, fullAccess_);
 			return wrapSession(rawSession, true);
 		} catch (Exception e) {
-			DominoUtils.handleException(e);
+			ODAUtils.handleException(e);
 			return null;
 		}
 	}

@@ -21,6 +21,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.openntf.domino.Document;
+import org.openntf.domino.commons.IRequest;
+import org.openntf.domino.commons.IRequestLifeCycle;
 import org.openntf.domino.commons.LifeCycleManager;
 
 import com.ibm.designer.domino.napi.NotesAPIException;
@@ -71,12 +73,12 @@ public enum NapiUtil {
 		setHandleMethod = com.ibm.designer.domino.napi.NotesHandle.class.getDeclaredMethod("setHandle", int.class);
 		setHandleMethod.setAccessible(true);
 
-		LifeCycleManager.addCleanupHook(RECYCLER);
+		LifeCycleManager.addRequestLifeCycle(napiLifeCyle);
 	}
 
-	public static Runnable RECYCLER = new Runnable() {
+	public static IRequestLifeCycle napiLifeCyle = new IRequestLifeCycle() {
 		@Override
-		public void run() {
+		public void afterRequest() {
 			NotesSession sess = napiSession_.get();
 			napiSession_.set(null);
 			if (sess != null) {
@@ -86,6 +88,11 @@ public enum NapiUtil {
 					e.printStackTrace();
 				}
 			}
+		}
+
+		@Override
+		public void beforeRequest(final IRequest request) {
+
 		}
 	};
 

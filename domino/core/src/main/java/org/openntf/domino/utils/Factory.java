@@ -17,10 +17,6 @@ package org.openntf.domino.utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.security.AccessControlException;
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
@@ -53,6 +49,7 @@ import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.exception.DataNotCompatibleException;
 import org.openntf.domino.commons.utils.BundleInfos;
 import org.openntf.domino.commons.utils.CollectionUtils;
+import org.openntf.domino.commons.utils.ThreadUtils;
 import org.openntf.domino.exceptions.UndefinedDelegateTypeException;
 import org.openntf.domino.ext.Session.Fixes;
 import org.openntf.domino.session.INamedSessionFactory;
@@ -301,7 +298,7 @@ public enum Factory {
 	private static class ThreadVariables {
 		private WrapperFactory wrapperFactory;
 
-		private ClassLoader classLoader;
+		//private ClassLoader classLoader;
 
 		/**
 		 * Support for different Locale
@@ -329,7 +326,6 @@ public enum Factory {
 		/** clear the object */
 		private void clear() {
 			wrapperFactory = null;
-			classLoader = null;
 			for (int i = 0; i < SessionType.SIZE; i++) {
 				sessionHolders[i] = null;
 				sessionFactories[i] = null;
@@ -1034,29 +1030,9 @@ public enum Factory {
 	//		currentDatabaseHolder_.set(null);
 	//	}
 
+	@Deprecated
 	public static ClassLoader getClassLoader() {
-		ThreadVariables tv = getThreadVariables();
-		if (tv.classLoader == null) {
-			ClassLoader loader = null;
-			try {
-				loader = AccessController.doPrivileged(new PrivilegedExceptionAction<ClassLoader>() {
-					@Override
-					public ClassLoader run() throws Exception {
-						return Thread.currentThread().getContextClassLoader();
-					}
-				});
-			} catch (AccessControlException e) {
-				e.printStackTrace();
-			} catch (PrivilegedActionException e) {
-				e.printStackTrace();
-			}
-			setClassLoader(loader);
-		}
-		return tv.classLoader;
-	}
-
-	public static void setClassLoader(final ClassLoader loader) {
-		getThreadVariables().classLoader = loader;
+		return ThreadUtils.getContextClassLoader();
 	}
 
 	// avoid clear methods
@@ -1174,7 +1150,7 @@ public enum Factory {
 		return napiPresent_;
 	}
 
-	public static class LifeCycle implements ILifeCycle {
+	public static class LifeCycle implements ILifeCycle, IRequestLifeCycle {
 
 		@Override
 		public void startup() {
@@ -1207,9 +1183,7 @@ public enum Factory {
 			// load after commons
 			return 10;
 		}
-	}
 
-	public static class RequestLifeCycle implements IRequestLifeCycle {
 		@Override
 		public void beforeRequest(final IRequest request) {
 			if (log_.isLoggable(Level.FINER)) {
@@ -1248,6 +1222,7 @@ public enum Factory {
 						sess.recycle();
 					}
 				}
+
 			} catch (Throwable t) {
 				log_.log(Level.SEVERE, "An error occured while terminating the factory", t);
 			} finally {

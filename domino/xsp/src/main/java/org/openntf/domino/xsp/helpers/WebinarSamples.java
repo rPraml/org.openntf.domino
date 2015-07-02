@@ -11,6 +11,8 @@ import org.openntf.domino.helpers.DocumentSyncHelper;
 /**
  * @author nfreeman Samples from OpenNTF Webinar 2013
  */
+@Deprecated
+// the ODA libary is not a good place for samples
 public class WebinarSamples {
 
 	public WebinarSamples() {

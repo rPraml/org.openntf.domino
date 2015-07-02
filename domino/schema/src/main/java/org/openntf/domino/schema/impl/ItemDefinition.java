@@ -14,13 +14,13 @@ import java.util.Set;
 import org.openntf.domino.DateTime;
 import org.openntf.domino.Document;
 import org.openntf.domino.Item;
+import org.openntf.domino.commons.utils.ThreadUtils;
 import org.openntf.domino.schema.IDocumentDefinition;
 import org.openntf.domino.schema.IDominoType;
 import org.openntf.domino.schema.IItemDefinition;
 import org.openntf.domino.schema.IItemListener;
 import org.openntf.domino.schema.IItemValidation;
 import org.openntf.domino.schema.impl.DatabaseSchema.Flags;
-import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.ODAUtils;
 
 public class ItemDefinition implements IItemDefinition, Externalizable {
@@ -120,7 +120,7 @@ public class ItemDefinition implements IItemDefinition, Externalizable {
 	public void readExternal(final ObjectInput in) throws IOException, ClassNotFoundException {
 		name_ = in.readUTF();
 		defaultLabel_ = in.readUTF();
-		Class<?> cl = Class.forName(in.readUTF(), true, Factory.getClassLoader());
+		Class<?> cl = Class.forName(in.readUTF(), true, ThreadUtils.getContextClassLoader());
 		if (cl.isAssignableFrom(IDominoType.class)) {
 			type_ = (Class<? extends IDominoType>) cl;
 		}

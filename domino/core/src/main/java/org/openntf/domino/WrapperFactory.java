@@ -6,13 +6,14 @@ package org.openntf.domino;
 import java.util.Collection;
 import java.util.Vector;
 
+import org.openntf.domino.commons.IPriority;
 import org.openntf.domino.types.FactorySchema;
 
 /**
  * @author Roland Praml, Foconis AG
  * 
  */
-public interface WrapperFactory extends Base<lotus.domino.Base> {
+public interface WrapperFactory extends Base<lotus.domino.Base>, IPriority {
 
 	/**
 	 * Wraps the lotus object in the apropriate wrapper object

@@ -67,7 +67,6 @@
 				<!--<version>2.3.7</version>-->
 				<extensions>true</extensions>
 				<configuration>
-					<manifestLocation>META-INF</manifestLocation>
 					<instructions>
 						<Export-Package>!javolution.*.internal.*,javolution.*,org.osgi.service.log</Export-Package>
 						<Private-Package>javolution.*.internal.*,javax.realtime.*</Private-Package>

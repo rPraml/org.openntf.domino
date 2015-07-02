@@ -207,6 +207,10 @@ public class BundleInfos {
 		return getManifestAttribute(BUNDLE_NAME);
 	}
 
+	public String getBundleSymbolicName() {
+		return getManifestAttribute(BUNDLE_SYMBOLIC_NAME);
+	}
+
 	public String getBundleVersion() {
 		return getManifestAttribute(BUNDLE_VERSION);
 	}

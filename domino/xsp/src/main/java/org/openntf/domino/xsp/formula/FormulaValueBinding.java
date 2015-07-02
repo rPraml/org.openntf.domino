@@ -24,7 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.PropertyNotFoundException;
 
-import org.openntf.domino.commons.IFormulaASTNode;
+import org.openntf.domino.commons.IFormula;
 import org.openntf.domino.commons.IFormulaService;
 import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.exception.EvaluateException;
@@ -47,7 +47,7 @@ import com.ibm.xsp.util.ValueBindingUtil;
 public class FormulaValueBinding extends ValueBindingEx {
 
 	private String formulaStr;
-	private transient SoftReference<IFormulaASTNode> FormulaASTNodeCache;
+	private transient SoftReference<IFormula> FormulaASTNodeCache;
 
 	/**
 	 * Constructor
@@ -176,21 +176,21 @@ public class FormulaValueBinding extends ValueBindingEx {
 	}
 
 	/**
-	 * Returns the corresponding {@link IFormulaASTNode} for the formula
+	 * Returns the corresponding {@link IFormula} for the formula
 	 * 
-	 * @return {@link IFormulaASTNode}
+	 * @return {@link IFormula}
 	 * @throws FormulaParseException
 	 *             if the formula was invalid
 	 */
-	protected IFormulaASTNode getFormulaASTNode() throws FormulaParseException {
+	protected IFormula getFormulaASTNode() throws FormulaParseException {
 		if (FormulaASTNodeCache != null) {
-			IFormulaASTNode node = FormulaASTNodeCache.get();
+			IFormula node = FormulaASTNodeCache.get();
 			if (node != null)
 				return node;
 		}
 		IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
-		IFormulaASTNode node = service.parse(formulaStr);
-		FormulaASTNodeCache = new SoftReference<IFormulaASTNode>(node);
+		IFormula node = service.parse(formulaStr);
+		FormulaASTNodeCache = new SoftReference<IFormula>(node);
 		return node;
 
 	}

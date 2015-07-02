@@ -22,6 +22,12 @@
 		</dependency>
 		
 		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>deprecated</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>com.tinkerpop.blueprints</groupId>
 			<artifactId>blueprints-core</artifactId>
 			<version>${tinkerpop-blueprints-version}</version>

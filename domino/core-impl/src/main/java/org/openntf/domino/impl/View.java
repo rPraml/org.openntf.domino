@@ -2604,7 +2604,7 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 			if (candidate != null) {
 				log_.log(Level.WARNING,
 						"The view name '" + name_ + "' is not unique in " + getAncestorDatabase() + ". View1: " + candidate.getAliases()
-						+ ", View2:" + ret.getAliases());
+								+ ", View2:" + ret.getAliases());
 				// recycle our first view by adding a wrapper (a recycle call will probably hard recycle the delegate)
 				fromLotus(ret, View.SCHEMA, getAncestorDatabase());
 				ret = candidate;
@@ -2852,10 +2852,10 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 	private static final int EXTERNALVERSIONUID = 20141205;
 
 	/**
-	 * @deprecated needed for {@link Externalizable} - do not use!
+	 * package private needed for {@link Externalizable} - do not use!
 	 */
-	@Deprecated
-	public View() {
+
+	View() {
 		super(NOTES_VIEW);
 	}
 

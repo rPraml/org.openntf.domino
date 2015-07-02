@@ -4,8 +4,6 @@ import java.util.logging.Logger;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
-import org.openntf.domino.design.DatabaseDesign;
-import org.openntf.domino.design.IconNote;
 import org.openntf.domino.thread.AbstractDominoRunnable;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
@@ -14,6 +12,7 @@ import com.ibm.xsp.application.ApplicationEx;
 import com.ibm.xsp.application.DesignerApplicationEx;
 import com.ibm.xsp.application.events.ApplicationListener2;
 
+@Deprecated
 public class XotsApplicationListener implements ApplicationListener2 {
 	@SuppressWarnings("unused")
 	private static final Logger log_ = Logger.getLogger(XotsApplicationListener.class.getName());
@@ -65,23 +64,23 @@ public class XotsApplicationListener implements ApplicationListener2 {
 		public void run() {
 			Session session = Factory.getSession(SessionType.CURRENT);
 			Database db = session.getDatabase(appName_);
-			DatabaseDesign design = db.getDesign();
-			IconNote icon = design.getIconNote();
-			if (icon != null) {
-				String[] xotsClassNames = icon.getXotsClassNames();
-				if (xotsClassNames != null && xotsClassNames.length > 0) {
-					if (TRACE) {
-						System.out.println("TRACE: Adding Xots Tasklets for database " + db.getApiPath());
-					}
-					//					try {
-					//						//	XotsService xs = XotsService.getInstance();
-					//						//	xs.getComponentModule("/" + db.getFilePath());
-					//						//	xs.loadXotsTasklets("/" + db.getFilePath(), xotsClassNames);
-					//					} catch (ServletException se) {
-					//						DominoUtils.handleException(se);
-					//					}
-				}
-			}
+			//			DatabaseDesign design = db.getDesign();
+			//			IconNote icon = design.getIconNote();
+			//			if (icon != null) {
+			//				String[] xotsClassNames = icon.getXotsClassNames();
+			//				if (xotsClassNames != null && xotsClassNames.length > 0) {
+			//					if (TRACE) {
+			//						System.out.println("TRACE: Adding Xots Tasklets for database " + db.getApiPath());
+			//					}
+			//					//					try {
+			//					//						//	XotsService xs = XotsService.getInstance();
+			//					//						//	xs.getComponentModule("/" + db.getFilePath());
+			//					//						//	xs.loadXotsTasklets("/" + db.getFilePath(), xotsClassNames);
+			//					//					} catch (ServletException se) {
+			//					//						DominoUtils.handleException(se);
+			//					//					}
+			//				}
+			//			}
 		}
 
 	}

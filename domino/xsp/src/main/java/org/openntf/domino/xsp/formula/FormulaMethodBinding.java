@@ -23,7 +23,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.EvaluationException;
 import javax.faces.el.MethodNotFoundException;
 
-import org.openntf.domino.commons.IFormulaASTNode;
+import org.openntf.domino.commons.IFormula;
 import org.openntf.domino.commons.IFormulaService;
 import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.exception.EvaluateException;
@@ -45,7 +45,7 @@ import com.ibm.xsp.util.ValueBindingUtil;
  */
 public class FormulaMethodBinding extends MethodBindingEx {
 	private String formulaStr;
-	private transient SoftReference<IFormulaASTNode> astNodeCache;
+	private transient SoftReference<IFormula> astNodeCache;
 
 	/**
 	 * Constructor
@@ -119,15 +119,15 @@ public class FormulaMethodBinding extends MethodBindingEx {
 	 * @throws FormulaParseException
 	 *             if the formula was invalid
 	 */
-	protected IFormulaASTNode getASTNode() throws FormulaParseException {
+	protected IFormula getASTNode() throws FormulaParseException {
 		if (astNodeCache != null) {
-			IFormulaASTNode node = astNodeCache.get();
+			IFormula node = astNodeCache.get();
 			if (node != null)
 				return node;
 		}
 		IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
-		IFormulaASTNode node = service.parse(formulaStr);
-		astNodeCache = new SoftReference<IFormulaASTNode>(node);
+		IFormula node = service.parse(formulaStr);
+		astNodeCache = new SoftReference<IFormula>(node);
 		return node;
 
 	}

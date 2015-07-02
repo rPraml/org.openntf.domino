@@ -14,7 +14,7 @@ public class StandardLifeCycle implements ILifeCycle, IPriority {
 
 	@Override
 	public int getPriority() {
-		return 0; // load commons classes as soon as possible
+		return 99; // load commons classes as soon as possible
 	}
 
 }

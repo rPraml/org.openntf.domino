@@ -10,7 +10,6 @@ import javolution.util.FastSet;
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
 import org.openntf.domino.commons.Hash;
-import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.thread.DominoExecutor;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
@@ -42,7 +41,7 @@ public enum Configuration {
 		@Override
 		public void run() {
 			executor_ = null;
-			LifeCycleManager.removeCleanupHook(SHUTDOWN_HOOK);
+			// TODO LifeCycleManager.removeCleanupHook(SHUTDOWN_HOOK);
 		}
 	};
 
@@ -85,7 +84,7 @@ public enum Configuration {
 			if (Factory.isStarted()) {
 				executor_ = new DominoExecutor(2, "Config");
 				executor_.scheduleAtFixedRate(new ObjectFlusher(), 5, 15, TimeUnit.SECONDS);
-				LifeCycleManager.addCleanupHook(SHUTDOWN_HOOK);
+				// TODO LifeCycleManager.addCleanupHook(SHUTDOWN_HOOK);
 			}
 		}
 		return executor_;
