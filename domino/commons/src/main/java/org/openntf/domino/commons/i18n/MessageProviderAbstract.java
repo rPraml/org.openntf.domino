@@ -14,16 +14,14 @@
  * permissions and limitations under the License.
  * 
  */
-package org.openntf.domino.i18n;
+package org.openntf.domino.commons.i18n;
 
 import java.util.List;
 import java.util.Locale;
 
-import org.openntf.domino.commons.ServiceLocator;
-import org.openntf.domino.utils.Factory;
+public abstract class MessageProviderAbstract {
 
-@Deprecated
-public class MessageProvider {
+	protected static MessageProviderAbstract _instance;
 
 	/**
 	 * returns the raw text
@@ -45,13 +43,11 @@ public class MessageProvider {
 	}
 
 	protected String getRawTextEx(final boolean retDefIfNotAvail, final String bundleName, final String key, final Locale loc) {
-		List<RawMessageProvider> provs = ServiceLocator.findApplicationServices(RawMessageProvider.class);
-		for (RawMessageProvider prov : provs) {
-			String ret = prov.getRawText(bundleName, key, loc);
-			if (ret != null)
-				return ret;
-		}
-		return retDefIfNotAvail ? getDefaultString(bundleName, key, loc) : null;
+		String ret = null;
+		for (RawMessageProviderAbstract prov : findRawMessageProviders())
+			if ((ret = prov.getRawText(bundleName, key, loc)) != null)
+				break;
+		return (ret == null && retDefIfNotAvail) ? getDefaultString(bundleName, key, loc) : ret;
 	}
 
 	public static String sGetRawText(final String bundleName, final String key, final Locale loc) {
@@ -81,7 +77,7 @@ public class MessageProvider {
 	 * @return the text
 	 */
 	public String getString(final String bundleName, final String key, final Object... args) {
-		return getCookedText(true, bundleName, key, Factory.getExternalLocale(), args);
+		return getCookedText(true, bundleName, key, getExternalLocale(), args);
 	}
 
 	public static String sGetString(final String bundleName, final String key, final Object... args) {
@@ -89,7 +85,7 @@ public class MessageProvider {
 	}
 
 	public String getStringNoDef(final String bundleName, final String key, final Object... args) {
-		return getCookedText(false, bundleName, key, Factory.getExternalLocale(), args);
+		return getCookedText(false, bundleName, key, getExternalLocale(), args);
 	}
 
 	public static String sGetStringNoDef(final String bundleName, final String key, final Object... args) {
@@ -108,7 +104,7 @@ public class MessageProvider {
 	 * @return the text
 	 */
 	public String getInternalString(final String bundleName, final String key, final Object... args) {
-		return getCookedText(true, bundleName, key, Factory.getInternalLocale(), args);
+		return getCookedText(true, bundleName, key, getInternalLocale(), args);
 	}
 
 	public static String sGetInternalString(final String bundleName, final String key, final Object... args) {
@@ -116,7 +112,7 @@ public class MessageProvider {
 	}
 
 	public String getInternalStringNoDef(final String bundleName, final String key, final Object... args) {
-		return getCookedText(false, bundleName, key, Factory.getInternalLocale(), args);
+		return getCookedText(false, bundleName, key, getInternalLocale(), args);
 	}
 
 	public static String sGetInternalStringNoDef(final String bundleName, final String key, final Object... args) {
@@ -133,24 +129,28 @@ public class MessageProvider {
 		return getRawTextEx(retDefIfNotAvail, bundleName, key, loc);
 	}
 
-	public static MessageProvider getCurrentInstance() {
-		List<MessageProvider> msgProv = ServiceLocator.findApplicationServices(MessageProvider.class);
-		if (msgProv.size() == 0)
-			throw new IllegalStateException("No MessageProvider service found");
-		return msgProv.get(0); // we take the first one.
+	public static MessageProviderAbstract getCurrentInstance() {
+		return _instance.getMessageProvider();
 	}
 
 	/**
 	 * Needed to reset a DB message cache
 	 */
 	public void resetCache() {
-		List<RawMessageProvider> provs = ServiceLocator.findApplicationServices(RawMessageProvider.class);
-		for (RawMessageProvider prov : provs)
+		for (RawMessageProviderAbstract prov : findRawMessageProviders())
 			prov.resetCache();
 	}
 
 	public static void sResetCache() {
 		getCurrentInstance().resetCache();
 	}
+
+	protected abstract MessageProviderAbstract getMessageProvider();
+
+	protected abstract List<RawMessageProviderAbstract> findRawMessageProviders();
+
+	protected abstract Locale getExternalLocale();
+
+	protected abstract Locale getInternalLocale();
 
 }

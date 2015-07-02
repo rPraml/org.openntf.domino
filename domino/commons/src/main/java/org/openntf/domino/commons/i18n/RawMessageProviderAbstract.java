@@ -1,9 +1,8 @@
-package org.openntf.domino.i18n;
+package org.openntf.domino.commons.i18n;
 
 import java.util.Locale;
 
-@Deprecated
-public abstract class RawMessageProvider implements Comparable<RawMessageProvider> {
+public abstract class RawMessageProviderAbstract implements Comparable<RawMessageProviderAbstract> {
 	public abstract String getRawText(final String bundleName, final String key, final Locale loc);
 
 	protected int getPriority() {
@@ -11,7 +10,7 @@ public abstract class RawMessageProvider implements Comparable<RawMessageProvide
 	}
 
 	@Override
-	public int compareTo(final RawMessageProvider paramT) {
+	public int compareTo(final RawMessageProviderAbstract paramT) {
 		return getPriority() - paramT.getPriority();
 	}
 

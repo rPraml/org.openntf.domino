@@ -1,4 +1,4 @@
-package org.openntf.domino.i18n;
+package org.openntf.domino.commons.i18n;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,16 +6,13 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.openntf.domino.utils.Factory;
+public abstract class RawMessageProviderResBdlAbstract extends RawMessageProviderAbstract {
 
-@Deprecated
-public class RawMessageProviderImpl extends RawMessageProvider {
-
-	/*
+	/**
 	 * In the first version, we used the standard-no-fallback-ResourceBundle.Control, given by
-	 * ResourceBundle.Control.getNoFallbackControl(ResourceBundle.Control.FORMAT_PROPERTIES).
-	 * However, when resources sit in an NSF, the method Control.needsReload returns "true" very often
-	 * (perhaps always?), and performance gets dreadful. Hence:
+	 * ResourceBundle.Control.getNoFallbackControl(ResourceBundle.Control.FORMAT_PROPERTIES). However, when resources sit in an NSF, the
+	 * method Control.needsReload returns "true" very often (perhaps always?), and performance gets dreadful. Hence we provide an own
+	 * subclass, which always says "needsReload=false".
 	 */
 	private static class MyNoFallbackControl extends ResourceBundle.Control {
 		static final ResourceBundle.Control _instance = new MyNoFallbackControl();
@@ -42,19 +39,17 @@ public class RawMessageProviderImpl extends RawMessageProvider {
 		}
 	}
 
-	protected ClassLoader provClassLoader;
-
 	@Override
 	public String getRawText(final String bundleName, final String key, final Locale loc) {
 		try {
-			ClassLoader cl = provClassLoader != null ? provClassLoader : Factory.getClassLoader();
-			ResourceBundle rb = ResourceBundle.getBundle(bundleName, loc, cl, MyNoFallbackControl._instance);
-			//					ResourceBundle.Control.getNoFallbackControl(ResourceBundle.Control.FORMAT_PROPERTIES));
+			ResourceBundle rb = ResourceBundle.getBundle(bundleName, loc, getClassLoader(), MyNoFallbackControl._instance);
 			return rb.getString(key);
 		} catch (MissingResourceException mre) {
 			return null;
 		}
 	}
+
+	protected abstract ClassLoader getClassLoader();
 
 	/**
 	 * this is the last provider

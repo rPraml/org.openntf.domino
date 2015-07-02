@@ -23,14 +23,13 @@ import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 
 import org.openntf.domino.commons.AsDocMap;
-import org.openntf.domino.i18n.MessageProvider;
+import org.openntf.domino.commons.i18n.MessageProviderAbstract;
 import org.openntf.domino.xsp.model.DominoDocumentMapAdapter;
 
 import com.ibm.xsp.component.UIViewRootEx;
 import com.ibm.xsp.extlib.util.ExtLibUtil;
 import com.ibm.xsp.model.domino.wrapped.DominoDocument;
 
-@Deprecated
 public enum MsgUtilXsp {
 	;
 
@@ -128,7 +127,7 @@ public enum MsgUtilXsp {
 		if (pmp == null)
 			throw new IllegalArgumentException("Illegal msg binding: '" + msgPar + "'");
 
-		MessageProvider prov = MessageProvider.getCurrentInstance();
+		MessageProviderAbstract prov = MessageProviderAbstract.getCurrentInstance();
 
 		Map<String, Object> dataMap = null;
 		if (pmp.iDocName != null) {

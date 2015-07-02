@@ -346,7 +346,7 @@ public class Graph2Demo implements Runnable {
 		//		ntfDoc.removeItem("_ODA_GRAPHTYPE");
 		//		ntfDoc.save();
 
-		session.recycle();
+		session.recycleLegacy();
 		System.gc();
 	}
 

@@ -1,5 +1,5 @@
 /*
- * © Copyright FOCONIS AG, 2014
+ * Â© Copyright FOCONIS AG, 2014
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); 
  * you may not use this file except in compliance with the License. 
@@ -14,19 +14,10 @@
  * permissions and limitations under the License.
  * 
  */
-package org.openntf.domino.i18n;
+package org.openntf.domino.i18n.impl;
 
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.openntf.domino.commons.AsDocMap;
-import org.openntf.domino.commons.IFormula;
-import org.openntf.domino.commons.IFormulaContext;
-import org.openntf.domino.commons.IFormulaService;
-import org.openntf.domino.commons.ServiceLocator;
 
 /**
  * Extends the MessageProviderImpl to handle formulas in text. You can use &lt;! {@literal @}Formula... !&gt; to inline formulas in your
@@ -37,7 +28,6 @@ import org.openntf.domino.commons.ServiceLocator;
  * @author Roland Praml, FOCONIS AG
  * 
  */
-@Deprecated
 public class FormulaMessageProvider extends MessageProvider {
 	private static final Logger log_ = Logger.getLogger(FormulaMessageProvider.class.getName());
 
@@ -62,41 +52,41 @@ public class FormulaMessageProvider extends MessageProvider {
 				throw new IllegalStateException("getCookedText(true, ...) returned null");
 			return null;
 		}
-		if (!msgString.contains("<!") && !msgString.contains("<#"))
-			return msgString;
-		int numParams = args.length;
-		Map<String, Object> map = null;
-		if (numParams != 0) {
-			Object o = args[numParams - 1];
-			if (o instanceof Map)
-				map = (Map<String, Object>) o;
-			else if (o instanceof AsDocMap)
-				map = ((AsDocMap) o).asDocMap();
-			if (map != null)
-				numParams--;
-		}
-		try {
-			IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
-
-			IFormula ast = service.parse(msgString, true);
-			IFormulaContext ctx = service.createContext(map, loc);
-
-			// ctx.useBooleans(false);
-			for (int i = 0; i < numParams; i++)
-				ctx.setParam(Integer.toString(i + 1), args[i]);
-			List<?> resultList = ast.solve(ctx);
-			if (resultList != null && !resultList.isEmpty()) {
-				Object o = resultList.get(0);
-				if (o instanceof String)
-					return (String) o;
-			}
-			throw new ClassCastException("Formula.solve gave invalid ResultList " + resultList);
-		} catch (Throwable t) {
-			String ret = "[&]Formula  error in TextID " + key + ": " + t.getMessage() + " (RawText=" + msgString + ")";
-			log_.log(Level.SEVERE, ret, t);
-			// t.printStackTrace();
-			return ret;
-		}
+		return msgString;
+		//		if (!msgString.contains("<!") && !msgString.contains("<#"))
+		//			return msgString;
+		//		int numParams = args.length;
+		//		Map<String, Object> map = null;
+		//		if (numParams != 0) {
+		//			Object o = args[numParams - 1];
+		//			if (o instanceof Map)
+		//				map = (Map<String, Object>) o;
+		//			else if (o instanceof AsDocMap)
+		//				map = ((AsDocMap) o).asDocMap();
+		//			if (map != null)
+		//				numParams--;
+		//		}
+		//		try {
+		//			FormulaParser parser = Formulas.getParser();
+		//			ASTNode ast = parser.parse(msgString, true);
+		//			Formatter formatter = Formulas.getFormatter(loc);
+		//			FormulaContext ctx = Formulas.createContext(map, formatter, parser);
+		//			// ctx.useBooleans(false);
+		//			for (int i = 0; i < numParams; i++)
+		//				ctx.setParam(Integer.toString(i + 1), args[i]);
+		//			List<?> resultList = ast.solve(ctx);
+		//			if (resultList != null && !resultList.isEmpty()) {
+		//				Object o = resultList.get(0);
+		//				if (o instanceof String)
+		//					return (String) o;
+		//			}
+		//			throw new ClassCastException("Formula.solve gave invalid ResultList " + resultList);
+		//		} catch (Throwable t) {
+		//			String ret = "[&]Formula  error in TextID " + key + ": " + t.getMessage() + " (RawText=" + msgString + ")";
+		//			log_.log(Level.SEVERE, ret, t);
+		//			// t.printStackTrace();
+		//			return ret;
+		//		}
 	}
 
 }

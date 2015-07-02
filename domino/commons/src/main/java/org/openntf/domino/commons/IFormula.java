@@ -31,14 +31,6 @@ import org.openntf.domino.commons.exception.EvaluateException;
 public interface IFormula {
 
 	/**
-	 * Create a dump of the AST-Tree to System.out. Useful for debugging
-	 * 
-	 * @param prefix
-	 *            for indention
-	 */
-	public void dump(final String prefix);
-
-	/**
 	 * Use this method to solve a formula
 	 */
 	public List<Object> solve(Map<String, Object> map) throws EvaluateException;
@@ -75,12 +67,6 @@ public interface IFormula {
 	 * @return set of fields
 	 */
 	public Set<String> getModifiedFields();
-
-	/**
-	 * Hint for formula (if exception occurs)
-	 * 
-	 */
-	public void setFormula(String formula);
 
 	/**
 	 * Returns the formula for the current AST-Tree
