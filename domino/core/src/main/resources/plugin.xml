@@ -13,7 +13,7 @@
          point="com.ibm.commons.Extension">
       <service
             class="org.openntf.domino.i18n.RawMessageProviderImpl"
-            type="org.openntf.domino.i18n.RawMessageProvider">
+            type="org.openntf.domino.commons.i18n.RawMessageProviderAbstract">
       </service>
 
    </extension>

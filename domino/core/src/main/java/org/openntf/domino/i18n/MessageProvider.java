@@ -19,136 +19,37 @@ package org.openntf.domino.i18n;
 import java.util.List;
 import java.util.Locale;
 
+import org.openntf.domino.commons.i18n.MessageProviderAbstract;
+import org.openntf.domino.commons.i18n.RawMessageProviderAbstract;
 import org.openntf.domino.utils.Factory;
 
-public class MessageProvider {
+public class MessageProvider extends MessageProviderAbstract {
 
-	/**
-	 * returns the raw text
-	 * 
-	 * @param bundleName
-	 *            the bundleName
-	 * @param key
-	 *            the key
-	 * @param loc
-	 *            the locale to use for lookup
-	 * @return the raw text
-	 */
-	public String getRawText(final String bundleName, final String key, final Locale loc) {
-		return getRawTextEx(true, bundleName, key, loc);
+	static {
+		_instance = new MessageProvider();
 	}
 
-	public String getRawTextNoDef(final String bundleName, final String key, final Locale loc) {
-		return getRawTextEx(false, bundleName, key, loc);
-	}
-
-	protected String getRawTextEx(final boolean retDefIfNotAvail, final String bundleName, final String key, final Locale loc) {
-		List<RawMessageProvider> provs = Factory.findApplicationServices(RawMessageProvider.class);
-		for (RawMessageProvider prov : provs) {
-			String ret = prov.getRawText(bundleName, key, loc);
-			if (ret != null)
-				return ret;
-		}
-		return retDefIfNotAvail ? getDefaultString(bundleName, key, loc) : null;
-	}
-
-	public static String sGetRawText(final String bundleName, final String key, final Locale loc) {
-		return getCurrentInstance().getRawText(bundleName, key, loc);
-	}
-
-	public static String sGetRawTextNoDef(final String bundleName, final String key, final Locale loc) {
-		return getCurrentInstance().getRawTextNoDef(bundleName, key, loc);
-	}
-
-	/**
-	 * Returns a default string, if no text is found
-	 */
-	protected String getDefaultString(final String bundleName, final String key, final Locale loc) {
-		return "[&]Invalid TextID '" + bundleName + "/" + key + "'";
-	}
-
-	/**
-	 * Returns the cooked text, based on the external locale (= browser locale)
-	 * 
-	 * @param bundleName
-	 *            the bundleName
-	 * @param key
-	 *            the key
-	 * @param args
-	 *            a list of arguments. Depends on implementation
-	 * @return the text
-	 */
-	public String getString(final String bundleName, final String key, final Object... args) {
-		return getCookedText(true, bundleName, key, Factory.getExternalLocale(), args);
-	}
-
-	public static String sGetString(final String bundleName, final String key, final Object... args) {
-		return getCurrentInstance().getString(bundleName, key, args);
-	}
-
-	public String getStringNoDef(final String bundleName, final String key, final Object... args) {
-		return getCookedText(false, bundleName, key, Factory.getExternalLocale(), args);
-	}
-
-	public static String sGetStringNoDef(final String bundleName, final String key, final Object... args) {
-		return getCurrentInstance().getStringNoDef(bundleName, key, args);
-	}
-
-	/**
-	 * Returns the cooked text, based on the internal locale (= db/os locale)
-	 * 
-	 * @param bundleName
-	 *            the bundleName
-	 * @param key
-	 *            the key
-	 * @param args
-	 *            a list of arguments. Depends on implementation
-	 * @return the text
-	 */
-	public String getInternalString(final String bundleName, final String key, final Object... args) {
-		return getCookedText(true, bundleName, key, Factory.getInternalLocale(), args);
-	}
-
-	public static String sGetInternalString(final String bundleName, final String key, final Object... args) {
-		return getCurrentInstance().getString(bundleName, key, args);
-	}
-
-	public String getInternalStringNoDef(final String bundleName, final String key, final Object... args) {
-		return getCookedText(false, bundleName, key, Factory.getInternalLocale(), args);
-	}
-
-	public static String sGetInternalStringNoDef(final String bundleName, final String key, final Object... args) {
-		return getCurrentInstance().getStringNoDef(bundleName, key, args);
-	}
-
-	/**
-	 * returns the same as getRawText. This method may be overwritten.
-	 * 
-	 * @param retDef
-	 */
-	protected String getCookedText(final boolean retDefIfNotAvail, final String bundleName, final String key, final Locale loc,
-			final Object... args) {
-		return getRawTextEx(retDefIfNotAvail, bundleName, key, loc);
-	}
-
-	public static MessageProvider getCurrentInstance() {
+	@Override
+	protected MessageProviderAbstract getMessageProvider() {
 		List<MessageProvider> msgProv = Factory.findApplicationServices(MessageProvider.class);
 		if (msgProv.size() == 0)
 			throw new IllegalStateException("No MessageProvider service found");
 		return msgProv.get(0); // we take the first one.
 	}
 
-	/**
-	 * Needed to reset a DB message cache
-	 */
-	public void resetCache() {
-		List<RawMessageProvider> provs = Factory.findApplicationServices(RawMessageProvider.class);
-		for (RawMessageProvider prov : provs)
-			prov.resetCache();
+	@Override
+	protected List<RawMessageProviderAbstract> findRawMessageProviders() {
+		return Factory.findApplicationServices(RawMessageProviderAbstract.class);
 	}
 
-	public static void sResetCache() {
-		getCurrentInstance().resetCache();
+	@Override
+	protected Locale getExternalLocale() {
+		return Factory.getExternalLocale();
+	}
+
+	@Override
+	protected Locale getInternalLocale() {
+		return Factory.getInternalLocale();
 	}
 
 }
