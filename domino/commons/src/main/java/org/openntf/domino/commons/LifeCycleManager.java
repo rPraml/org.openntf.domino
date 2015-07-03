@@ -19,7 +19,7 @@ public enum LifeCycleManager {
 	private static ThreadLocal<List<Runnable>> requestEndHooks = new ThreadLocal<List<Runnable>>() {
 		@Override
 		protected java.util.List<Runnable> initialValue() {
-			return new ArrayList();
+			return new ArrayList<Runnable>();
 		}
 	};
 
