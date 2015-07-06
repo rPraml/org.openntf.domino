@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,12 +29,14 @@ import lotus.domino.NotesException;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.IDateTime;
-import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.utils.ODAUtils;
 
+import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.util.Calendar;
 import com.ibm.icu.util.GregorianCalendar;
+import com.ibm.icu.util.TimeZone;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -913,21 +916,21 @@ org.openntf.domino.DateTime {
 	/*
 	 * A few tiny methods needed for the org.openntf.domino.formula.DateTime interface
 	 */
-	@Override
-	public int timeDifference(final IDateTime dt) {
-		if (dt instanceof lotus.domino.DateTime)
-			return timeDifference((lotus.domino.DateTime) dt);
-		return (int) timeDifferenceDouble(dt);
-	}
+	//	@Override
+	//	public int timeDifference(final IDateTime dt) {
+	//		if (dt instanceof lotus.domino.DateTime)
+	//			return timeDifference((lotus.domino.DateTime) dt);
+	//		return (int) timeDifferenceDouble(dt);
+	//	}
 
-	@Override
-	public double timeDifferenceDouble(final IDateTime dt) {
-		if (dt instanceof lotus.domino.DateTime)
-			return timeDifferenceDouble((lotus.domino.DateTime) dt);
-		Calendar thisCal = this.toJavaCal();
-		Calendar thatCal = dt.toJavaCal();
-		return (thisCal.getTimeInMillis() - thatCal.getTimeInMillis()) * 1000;
-	}
+	//	@Override
+	//	public double timeDifferenceDouble(final IDateTime dt) {
+	//		if (dt instanceof lotus.domino.DateTime)
+	//			return timeDifferenceDouble((lotus.domino.DateTime) dt);
+	//		Calendar thisCal = this.toJavaCal();
+	//		Calendar thatCal = dt.toJavaCal();
+	//		return (thisCal.getTimeInMillis() - thatCal.getTimeInMillis()) * 1000;
+	//	}
 
 	@Override
 	public int compare(final IDateTime sdt1, final IDateTime sdt2) {
@@ -938,14 +941,97 @@ org.openntf.domino.DateTime {
 		return sdt1.compare(sdt1, sdt2);
 	}
 
-	@Override
-	public void setLocalTime(final String time, final boolean parseLenient) {
-		setLocalTime(time);
-	}
+	//	@Override
+	//	public void setLocalTime(final String time, final boolean parseLenient) {
+	//		setLocalTime(time);
+	//	}
 
 	@Override
 	protected WrapperFactory getFactory() {
 		return parent.getFactory();
+	}
+
+	@Override
+	public void adjustMilli(final long n) {
+		adjustSecond((int) (n / 1000));
+
+	}
+
+	@Override
+	public long getMillis() {
+		return toJavaDate().getTime();
+	}
+
+	@Override
+	public String getDateOnly(final Locale locale) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getDateOnly(final Locale locale, final int style) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getTimeOnly(final Locale locale) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getTimeOnly(final Locale locale, final int style) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String toString(final Locale locale, final int dateStyle, final int timeStyle) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String toString(final Locale locale, final int dateStyle) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String toString(final Locale locale) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String toString(final DateFormat format) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TimeZone getIcuTimeZone() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setIcuTimeZone(final TimeZone tc) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void parse(final String time, final Locale locale, final boolean parseLenient) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void parse(final String time, final DateFormat dateFormat, final boolean parseLenient) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

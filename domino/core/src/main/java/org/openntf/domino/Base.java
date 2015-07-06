@@ -29,13 +29,16 @@ public interface Base<D extends lotus.domino.Base> extends lotus.domino.Base, or
 	/**
 	 * Recycles the object
 	 * 
-	 * @deprecated - if you really need it, you can use a cast: ((lotus.domino.Base)o).recycle()
-	 * 
-	 *             Ideas are also to introduce a method like "freeHandle" or "kickTheObjectFromMemory" :-)
+	 * @deprecated - if you really need it, you can use {@link #recycleLegacy()}
 	 */
 	@Override
 	@Deprecated
 	public void recycle() throws NotesException;
+
+	/**
+	 * Recycles the object (use this instead of recycle()) - Attention: Recycling object can produce side effects.
+	 */
+	public void recycleLegacy();
 
 	/*
 	 * (non-Javadoc)

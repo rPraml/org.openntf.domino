@@ -48,8 +48,8 @@ import org.openntf.domino.ext.Formula;
 import org.openntf.domino.types.Encapsulated;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.Resurrectable;
-import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.Factory;
+import org.openntf.domino.utils.ODAUtils;
 
 import com.ibm.commons.util.NotImplementedException;
 
@@ -65,7 +65,7 @@ import com.ibm.commons.util.NotImplementedException;
  * 
  */
 public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus.domino.Base, P extends org.openntf.domino.Base<?>>
-		implements org.openntf.domino.Base<D> {
+implements org.openntf.domino.Base<D> {
 	public static final int SOLO_NOTES_NAMES = 1000;
 	public static final int NOTES_SESSION = 1;
 	public static final int NOTES_DATABASE = 2;
@@ -538,6 +538,11 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 		Factory.countManualRecycle(delegate.getClass());
 	}
 
+	@Override
+	public void recycleLegacy() {
+		recycle();
+	}
+
 	// unwrap objects
 
 	/**
@@ -955,7 +960,7 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 	public void recycle(final Vector arg0) {
 		for (Object o : arg0) {
 			if (o instanceof org.openntf.domino.impl.Base) {
-				((org.openntf.domino.impl.Base) o).recycle();
+				((org.openntf.domino.impl.Base) o).recycleLegacy();
 			} else if (o instanceof lotus.domino.local.NotesBase) {
 				s_recycle((lotus.domino.local.NotesBase) o);
 			}

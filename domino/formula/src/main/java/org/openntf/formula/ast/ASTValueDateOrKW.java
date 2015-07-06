@@ -46,9 +46,10 @@ public class ASTValueDateOrKW extends SimpleNode {
 	public void init(final String image) throws ParseException {
 		String inner = image.substring(1, image.length() - 1); // remove first [ and last ]
 		try {
-			dateValue = parser.getFormatter().parseDate(inner);
+			// CHECKME: should we parse lenient, or can we rely, that there are valid dates specified?
+			dateValue = parser.getFormatter().parseDateTime(inner, false);
 		} catch (IllegalArgumentException e) {
-			if (inner.contains(".") || inner.contains("/") || inner.contains("-") || // this MUST be a date
+			if (inner.contains(",") || inner.contains(".") || inner.contains("/") || inner.contains("-") || // this MUST be a date
 					inner.contains("\\") || inner.contains("\"") || inner.trim().isEmpty()) {
 				throw new ParseException(parser, e.getMessage());
 			}

@@ -946,4 +946,8 @@ public class DocumentList extends BaseImpl<lotus.domino.DocumentCollection> impl
 	public void recycle(final Vector arg0) throws NotesException {
 		database.recycle(arg0);
 	}
+
+	@Override
+	public void recycleLegacy() {
+	}
 }

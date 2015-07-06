@@ -15,14 +15,11 @@ import java.util.regex.Pattern;
 
 import org.openntf.domino.commons.IDataConverter;
 import org.openntf.domino.commons.IDateTime;
-import org.openntf.domino.commons.IFormula;
-import org.openntf.domino.commons.IFormulaService;
 import org.openntf.domino.commons.IName;
 import org.openntf.domino.commons.Names;
 import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.Strings;
 import org.openntf.domino.commons.exception.DataNotCompatibleException;
-import org.openntf.domino.commons.exception.FormulaParseException;
 
 import com.ibm.icu.util.Calendar;
 
@@ -276,13 +273,13 @@ public enum TypeUtils {
 	 * is/contains a CharSequence, it will <code>toString()</code> it and tries to parse the number. NOT locale dependent!
 	 * 
 	 * <li><b>char[]:</b></li>
-	 * For CharSequences that are in source, the first character is returned (or 0 if the CharSequence has size 1). For nummeric values, a
+	 * For CharSequences that are in source, the first character is returned (or 0 if the CharSequence is empty). For nummeric values, a
 	 * typesafe cast is done. <font color=red>For multi values, it will return the first letter of each multiValue. It will never return
-	 * {@link String#toCharArray()}.<font> If you need this, request a String or String[].
+	 * {@link String#toCharArray()}.</font> If you need this, request a String or String[].
 	 * 
 	 * <li><b>boolean[]:</b></li>
 	 * Will convert numeric values != 0 to true. Will convert Strings starting with a digit 0..9 to true. Will convert the String containing
-	 * "true" (case insensitive) to true
+	 * "true" (case insensitive) to <code>true</code>. Everything else is converted to <code>false</code>
 	 * 
 	 * <li><b>List, Vector</b></li>
 	 * Returns the object as {@link Vector} or {@link ArrayList}
@@ -480,23 +477,23 @@ public enum TypeUtils {
 
 		}
 
-		// IFormula
-		if (targetType.isAssignableFrom(IFormula.class)) {
-			IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
-			String formula = Strings.toString(source);
-			try {
-				return (T) service.parse(formula);
-			} catch (FormulaParseException e) {
-				throw new DataNotCompatibleException("Cannot parse formula: " + formula, e);
-			}
-		}
+		// IFormula - which locale should be used here?
+		//		if (targetType.isAssignableFrom(IFormula.class)) {
+		//			IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
+		//			String formula = Strings.toString(source);
+		//			try {
+		//				return (T) service.parse(formula);
+		//			} catch (FormulaParseException e) {
+		//				throw new DataNotCompatibleException("Cannot parse formula: " + formula, e);
+		//			}
+		//		}
 
 		// Date
 		if (targetType.isAssignableFrom(Date.class)) {
 			return (T) toDate(source);
 		}
 		// icu-calendar
-		if (targetType.isAssignableFrom(Date.class)) {
+		if (targetType.isAssignableFrom(Calendar.class)) {
 			return (T) toCalendar(source);
 		}
 		// Try to invoke default constructor
@@ -510,10 +507,11 @@ public enum TypeUtils {
 		}
 
 		// and then fallback to IDataConverter
+		// TODO RPr: this is not yet finished!
 		for (IDataConverter dc : ServiceLocator.findApplicationServices(IDataConverter.class)) {
-			T ret = dc.convertTo(source, targetType);
-			if (ret != null)
-				return ret;
+			if (targetType.isAssignableFrom(dc.getType())) {
+				return (T) dc.convertTo(source);
+			}
 		}
 
 		throw new DataNotCompatibleException("Cannot convert a " + sourceType.getName() + " to " + targetType.getName());
@@ -530,8 +528,12 @@ public enum TypeUtils {
 				return ((IDateTime) source).toJavaDate();
 			}
 
-			if (source instanceof Calendar) {
+			if (source instanceof com.ibm.icu.util.Calendar) {
 				return ((com.ibm.icu.util.Calendar) source).getTime();
+			}
+
+			if (source instanceof java.util.Calendar) {
+				return ((java.util.Calendar) source).getTime();
 			}
 
 			if (source instanceof CharSequence) {
@@ -542,10 +544,12 @@ public enum TypeUtils {
 				return new Date(toLong(source));
 			}
 			// at last: ask the service
-			for (IDataConverter dc : ServiceLocator.findApplicationServices(IDataConverter.class)) {
-				Date ret = dc.convertTo(source, Date.class);
-				if (ret != null)
-					return ret;
+			// and then fallback to IDataConverter
+			// TODO RPr: this is not yet finished!
+			for (IDataConverter<?> dc : ServiceLocator.findApplicationServices(IDataConverter.class)) {
+				if (Date.class.isAssignableFrom(dc.getType())) {
+					return (Date) dc.convertTo(source);
+				}
 			}
 			throw new DataNotCompatibleException("Cannot convert a " + source.getClass().getName() + " to java.util.Date");
 		} catch (Exception e) {
@@ -583,43 +587,11 @@ public enum TypeUtils {
 				return cal;
 			}
 			// at last: ask the service
-			for (IDataConverter dc : ServiceLocator.findApplicationServices(IDataConverter.class)) {
-				Calendar ret = dc.convertTo(source, Calendar.class);
-				if (ret != null)
-					return ret;
-			}
-			throw new DataNotCompatibleException("Cannot convert a " + source.getClass().getName() + " to java.util.Date");
-		} catch (Exception e) {
-			throw new DataNotCompatibleException("Cannot convert " + source + " to java.util.Date", e);
-		}
-	}
-
-	public static Date toIcuCalendar(final Object source) {
-		try {
-			if (source instanceof IDateTime) {
-				return ((IDateTime) source).toJavaDate();
-			}
-
-			if (source instanceof java.util.Calendar) {
-				return ((java.util.Calendar) source).getTime();
-			}
-
-			if (source instanceof com.ibm.icu.util.Calendar) {
-				return ((com.ibm.icu.util.Calendar) source).getTime();
-			}
-
-			if (source instanceof CharSequence) {
-				return ((com.ibm.icu.text.DateFormat) source).parse(Strings.toString(source));
-			}
-
-			if (source instanceof Number) {
-				return new Date(toLong(source));
-			}
-			// at last: ask the service
-			for (IDataConverter dc : ServiceLocator.findApplicationServices(IDataConverter.class)) {
-				Date ret = dc.convertTo(source, Date.class);
-				if (ret != null)
-					return ret;
+			// TODO RPr: this is not yet finished!
+			for (IDataConverter<?> dc : ServiceLocator.findApplicationServices(IDataConverter.class)) {
+				if (Calendar.class.isAssignableFrom(dc.getType())) {
+					return (Calendar) dc.convertTo(source);
+				}
 			}
 			throw new DataNotCompatibleException("Cannot convert a " + source.getClass().getName() + " to java.util.Date");
 		} catch (Exception e) {
@@ -1232,10 +1204,10 @@ public enum TypeUtils {
 
 		}
 		if (value instanceof Number) {
-			if (value instanceof Double) {
-				return SafeCast.doubleToFloat(((Number) value).doubleValue());
-			} else {
+			if (value instanceof Byte || value instanceof Short || value instanceof Integer || value instanceof Long) {
 				return SafeCast.longToFloat(((Number) value).longValue());
+			} else {
+				return SafeCast.doubleToFloat(((Number) value).doubleValue());
 			}
 		}
 
@@ -1330,10 +1302,10 @@ public enum TypeUtils {
 
 		}
 		if (value instanceof Number) {
-			if (value instanceof Float) {
-				return ((Number) value).doubleValue();
-			} else {
+			if (value instanceof Byte || value instanceof Short || value instanceof Integer || value instanceof Long) {
 				return SafeCast.longToDouble(((Number) value).longValue());
+			} else {
+				return ((Number) value).doubleValue();
 			}
 		}
 

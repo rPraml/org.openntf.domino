@@ -428,10 +428,5 @@ public interface Session {
 	 */
 	public void setNoRecycle(boolean noRecycle);
 
-	/**
-	 * Recycling a session is allowed (needed to be compatible with @deprecated = error)
-	 */
-	public void recycle();
-
 	public void clearIdentity();
 }

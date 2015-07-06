@@ -19,6 +19,7 @@ package org.openntf.formula.ast;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -184,10 +185,10 @@ public abstract class SimpleNode implements Node {
 	}
 
 	@Override
-	public List<Object> solve(final Map<String, Object> map) throws EvaluateException {
+	public List<Object> solve(final Locale locale, final Map<String, Object> map) throws EvaluateException {
 		// TODO Auto-generated method stub
 		IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
-		IFormulaContext ctx = service.createContext(map);
+		IFormulaContext ctx = service.createContext(locale, map);
 		return solve(ctx);
 	}
 

@@ -18,6 +18,12 @@ package org.openntf.domino.commons;
 
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Locale;
+
+import com.ibm.icu.text.DateFormat;
+import com.ibm.icu.text.SimpleDateFormat;
+import com.ibm.icu.util.Calendar;
+import com.ibm.icu.util.TimeZone;
 
 /**
  * This is the DateTime interface that is used in formulas. It is very similar to the org.opennft.domino.DateTime interface but this has no
@@ -25,59 +31,224 @@ import java.util.Date;
  */
 public interface IDateTime extends Comparator<IDateTime> {
 
-	public abstract void adjustDay(final int n);
+	/**
+	 * The IDateTime prototype. Always clone!
+	 */
+	public static IDateTime PROTOTYPE = ServiceLocator.findApplicationService(IDateTime.class);
 
-	public abstract void adjustHour(final int n);
+	/**
+	 * Formatter are not threadSafe, so we use a ThreadLocal
+	 */
+	public static enum ISO {
+		;
+		// We neither set english nor german dates as default.
+		// we use something that is machine readable 
+		// There is one rule: Never store a Date in a string, so you should NOT use "toString()" to present a date to the user
+		private static final String _DATE_PATTERN = "YYYY-MM-dd";
+		private static final String _TIME_PATTERN = "HH:mm:ss.SSS";
+		private static final String _DATE_TIME_PATTERN = _DATE_PATTERN + "'T'" + _TIME_PATTERN + "Z";
+		private static final ThreadLocal<DateFormat[]> _INSTANCE = new ThreadLocal<DateFormat[]>() {
+			@Override
+			protected DateFormat[] initialValue() {
+				DateFormat[] dfmts = new DateFormat[3];
+				dfmts[0] = new SimpleDateFormat(_DATE_TIME_PATTERN);
+				dfmts[1] = new SimpleDateFormat(_DATE_PATTERN);
+				dfmts[2] = new SimpleDateFormat(_TIME_PATTERN);
+				return dfmts;
+			};
+		};
 
-	public abstract void adjustMinute(final int n);
+		public static DateFormat dateTimeFormat() {
+			return _INSTANCE.get()[0];
 
-	public abstract void adjustMonth(final int n);
+		}
 
-	public abstract void adjustSecond(final int n);
+		public static DateFormat dateFormat() {
+			return _INSTANCE.get()[1];
+		}
 
-	public abstract void adjustYear(final int n);
+		public static DateFormat timeFormat() {
+			return _INSTANCE.get()[2];
+		}
 
-	public abstract void convertToZone(final int zone, final boolean isDST);
+	};
 
-	public abstract String getDateOnly();
+	/**
+	 * Increments/decrements a IDateTime by the number of years you specify.
+	 */
+	public void adjustYear(final int n);
 
-	public abstract String getLocalTime();
+	/**
+	 * Increments/decrements a IDateTime by the number of month you specify.
+	 */
+	public void adjustMonth(final int n);
 
-	public abstract String getTimeOnly();
+	/**
+	 * Increments/decrements a IDateTime by the number of days you specify.
+	 */
+	public void adjustDay(final int n);
 
-	public abstract int getTimeZone();
+	/**
+	 * Increments/decrements a IDateTime by the number of hours you specify.
+	 */
+	public void adjustHour(final int n);
 
-	public abstract String getZoneTime();
+	/**
+	 * Increments/decrements a IDateTime by the number of minutes you specify.
+	 */
+	public void adjustMinute(final int n);
 
-	public abstract boolean isAnyDate();
+	/**
+	 * Increments/decrements a IDateTime by the number of seconds you specify.
+	 */
+	public void adjustSecond(final int n);
 
-	public abstract boolean isAnyTime();
+	/**
+	 * Increments/decrements a IDateTime by the number of milliseconds you specify.
+	 */
+	public void adjustMilli(final long n);
 
-	public abstract boolean isDST();
+	/**
+	 * Returns the Milliseconds since 1970-01-01
+	 * 
+	 * @return
+	 */
+	public long getMillis();
 
-	public abstract void setAnyDate();
+	// Converting date to string without specifying a locale is always a bad idea
+	/**
+	 * Returns a "Date Only" representation, formatted for the given locale and style {@link DateFormat#MEDIUM}
+	 */
+	public String getDateOnly(Locale locale);
 
-	public abstract void setAnyTime();
+	/**
+	 * Returns a "Date Only" representation, formatted for the given locale and the given style (see {@link DateFormat})
+	 */
+	public String getDateOnly(Locale locale, int style);
 
-	public abstract void setLocalDate(final int year, final int month, final int day);
+	/**
+	 * Returns a "Date Only" representation, formatted for the given locale and style {@link DateFormat#MEDIUM}
+	 */
+	public String getTimeOnly(Locale locale);
 
-	public abstract void setLocalTime(final java.util.Calendar calendar);
+	/**
+	 * Returns a "Date Only" representation, formatted for the given locale and the given style (see {@link DateFormat})
+	 */
+	public String getTimeOnly(Locale locale, int style);
 
-	public abstract void setLocalTime(final Date date);
+	/**
+	 * Returns the String representation for the given locale and the given styles (see {@link DateFormat})
+	 */
+	public String toString(Locale locale, int dateStyle, int timeStyle);
 
-	public abstract void setLocalTime(final int hour, final int minute, final int second, final int hundredth);
+	/**
+	 * Returns the String representation for the given locale and the given styles (see {@link DateFormat})
+	 */
+	public String toString(Locale locale, int dateStyle);
 
-	public abstract void setLocalTime(final String time);
+	/**
+	 * Returns the String representation for the given locale and {@link DateFormat#MEDIUM}
+	 */
+	public String toString(Locale locale);
 
-	public abstract void setLocalTime(String time, boolean parseLenient);
+	/**
+	 * Returns the String in the given format
+	 */
+	public String toString(DateFormat format);
 
-	public abstract void setNow();
+	/**
+	 * Converts the IDateTime to string by using the Default system locale. You should avoid using this method.
+	 * 
+	 * @deprecated use one of the other toString methods that accepts a {@link Locale} or {@link DateFormat}
+	 */
+	@Override
+	@Deprecated
+	public String toString();
 
-	public abstract int timeDifference(final IDateTime dt);
+	// int for timeZone is also a bad idea - the whole TimeZone support seems to be very old in Domino 
+	//public int getTimeZone();
 
-	public abstract double timeDifferenceDouble(final IDateTime dt);
+	// public void convertToZone(final int zone, final boolean isDST);
 
-	public abstract Date toJavaDate();
+	// public String getZoneTime();
 
-	public abstract com.ibm.icu.util.Calendar toJavaCal();
+	public TimeZone getIcuTimeZone();
+
+	public void setIcuTimeZone(TimeZone tc);
+
+	/**
+	 * Returns <code>true</code> if IDateTime does not contain a Date-component (=time-only)
+	 */
+	public boolean isAnyDate();
+
+	/**
+	 * Returns <code>true</code> if IDateTime does not contain a Time-component (=date-only)
+	 */
+	public boolean isAnyTime();
+
+	/**
+	 * removes the Date component from the IDateTime
+	 */
+	public void setAnyDate();
+
+	/**
+	 * removes the Time component from the IDateTime
+	 */
+	public void setAnyTime();
+
+	/**
+	 * Sets the local date
+	 */
+	public void setLocalDate(final int year, final int month, final int day);
+
+	/**
+	 * Sets the local time.
+	 */
+	public void setLocalTime(final int hour, final int minute, final int second, final int hundredth);
+
+	/**
+	 * Sets the local date and time
+	 */
+	public void setLocalTime(final Date date);
+
+	/**
+	 * Sets the local date and time
+	 */
+	public void setLocalTime(final java.util.Calendar calendar);
+
+	/**
+	 * Sets the local date and time
+	 */
+	public void setLocalTime(final com.ibm.icu.util.Calendar calendar);
+
+	/**
+	 * parses the time for the given locale
+	 */
+	public void parse(final String time, Locale locale, boolean parseLenient);
+
+	/**
+	 * parses the time for the given DateFormat
+	 */
+	public void parse(final String time, DateFormat dateFormat, boolean parseLenient);
+
+	/**
+	 * Sets the local date and time
+	 */
+	public void setNow();
+
+	/**
+	 * Returns the Java {@link Date}
+	 */
+	public Date toJavaDate();
+
+	/**
+	 * Returns the ICU {@link Calendar}
+	 */
+	public com.ibm.icu.util.Calendar toJavaCal();
+
+	/**
+	 * Clones the IDateTime instance
+	 */
+	public IDateTime clone();
+
 }

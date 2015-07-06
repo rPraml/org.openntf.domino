@@ -30,6 +30,20 @@ import org.openntf.formula.ValueHolder;
 public interface Node extends IFormula {
 
 	/**
+	 * Create a dump of the AST-Tree to System.out. Useful for debugging
+	 * 
+	 * @param prefix
+	 *            for indention
+	 */
+	public void dump(final String prefix);
+
+	/**
+	 * Hint for formula (if exception occurs)
+	 * 
+	 */
+	public void setFormula(String formula);
+
+	/**
 	 * This method is called after the node has been made the current node. It indicates that child nodes can now be added to it.
 	 */
 	public void jjtOpen();
@@ -61,5 +75,6 @@ public interface Node extends IFormula {
 	public int jjtGetNumChildren();
 
 	public abstract ValueHolder evaluate(FormulaContext ctx) throws FormulaReturnException;
+
 }
 /* JavaCC - OriginalChecksum=54dec3b6b2c592c5fbe2fc5be72328d2 (do not edit this line) */
