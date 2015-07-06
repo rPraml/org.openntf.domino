@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
@@ -34,7 +33,6 @@ import lotus.domino.NotesThread;
 
 import org.openntf.domino.AutoMime;
 import org.openntf.domino.Base;
-import org.openntf.domino.Database;
 import org.openntf.domino.DocumentCollection;
 import org.openntf.domino.Session;
 import org.openntf.domino.Session.RunContext;
@@ -163,7 +161,7 @@ public enum Factory {
 		}
 	}
 
-	public static class ThreadConfig implements IRequest {
+	public static class ThreadConfig {
 		public final Fixes[] fixes;
 		public final AutoMime autoMime;
 		public final boolean bubbleExceptions;
@@ -301,11 +299,6 @@ public enum Factory {
 
 		//private ClassLoader classLoader;
 
-		/**
-		 * Support for different Locale
-		 */
-		private Locale userLocale;
-
 		/** the factories can create a new session */
 		public ISessionFactory[] sessionFactories = new ISessionFactory[SessionType.SIZE];
 
@@ -318,11 +311,11 @@ public enum Factory {
 		/** These sessions will be recycled at the end of that thread. Key = UserName of session */
 		public Map<String, Session> ownSessions = new HashMap<String, Session>();
 
-		private ThreadConfig threadConfig;
-
-		public ThreadVariables(final IRequest tc) {
-			threadConfig = (ThreadConfig) tc;
-		}
+		//		private ThreadConfig threadConfig;
+		//
+		//		public ThreadVariables(final IRequest tc) {
+		//			threadConfig = (ThreadConfig) tc;
+		//		}
 
 		/** clear the object */
 		private void clear() {
@@ -331,7 +324,6 @@ public enum Factory {
 				sessionHolders[i] = null;
 				sessionFactories[i] = null;
 			}
-			userLocale = null;
 			namedSessionFactory = null;
 			namedSessionFullAccessFactory = null;
 
@@ -361,10 +353,7 @@ public enum Factory {
 	}
 
 	public static ThreadConfig getThreadConfig() {
-		ThreadVariables tv = threadVariables_.get();
-		if (tv == null)
-			return PERMISSIVE_THREAD_CONFIG;
-		return tv.threadConfig;
+		return LifeCycleManager.getCurrentRequest().get(ThreadConfig.class);
 	}
 
 	private static Map<String, String> ENVIRONMENT;
@@ -1061,23 +1050,23 @@ public enum Factory {
 	//		DominoUtils.setBubbleExceptions(null);
 	//	}
 
-	/**
-	 * Begin with a clear environment. Initialize this thread
-	 * 
-	 */
-	@Deprecated
-	public static void initThread(final ThreadConfig tc) { // RPr: Method was deliberately renamed
-		LifeCycleManager.beforeRequest(tc);
-	}
-
-	/**
-	 * terminate the current thread.
-	 */
-	@Deprecated
-	public static void termThread() { // RPr: Method was deliberately renamed
-		LifeCycleManager.afterRequest();
-
-	}
+	//	/**
+	//	 * Begin with a clear environment. Initialize this thread
+	//	 * 
+	//	 */
+	//	@Deprecated
+	//	public static void initThread(final ThreadConfig tc) { // RPr: Method was deliberately renamed
+	//		LifeCycleManager.beforeRequest(tc);
+	//	}
+	//
+	//	/**
+	//	 * terminate the current thread.
+	//	 */
+	//	@Deprecated
+	//	public static void termThread() { // RPr: Method was deliberately renamed
+	//		LifeCycleManager.afterRequest();
+	//
+	//	}
 
 	private static File getConfigFileFallback() {
 		String progpath = System.getProperty("notes.binary");
@@ -1197,7 +1186,7 @@ public enum Factory {
 			//		System.out.println("TEMP DEBUG: Factory thread initializing.");
 			//		Throwable t = new Throwable();
 			//		t.printStackTrace();
-			threadVariables_.set(new ThreadVariables(request));
+			threadVariables_.set(request.get(ThreadVariables.class));
 
 		}
 
@@ -1350,53 +1339,45 @@ public enum Factory {
 		return threadVariables_.get() != null;
 	}
 
-	public static void setUserLocale(final Locale loc) {
-		getThreadVariables().userLocale = loc;
-	}
-
-	public static Locale getUserLocale() {
-		return getThreadVariables().userLocale;
-	}
-
-	/**
-	 * Returns the internal locale. The Locale is retrieved by this way:
-	 * <ul>
-	 * <li>If a currentDatabase is set, the DB is queried for its locale</li>
-	 * <li>If there is no database.locale, the system default locale is returned</li>
-	 * </ul>
-	 * This locale should be used, if you write log entries in a server log for example.
-	 * 
-	 * @return the currentDatabase-locale or default-locale
-	 */
-	public static Locale getInternalLocale() {
-		Locale ret = null;
-		// are we in context of an NotesSession? Try to figure out the current database.
-		Session sess = getSession_unchecked(SessionType.CURRENT);
-		Database db = (sess == null) ? null : sess.getCurrentDatabase();
-		if (db != null)
-			ret = db.getLocale();
-		if (ret == null)
-			ret = Locale.getDefault();
-		return ret;
-	}
-
-	/**
-	 * Returns the external locale. The Locale is retrieved by this way:
-	 * <ul>
-	 * <li>Return the external locale (= the browser's locale in most cases) if available</li>
-	 * <li>If a currentDatabase is set, the DB is queried for its locale</li>
-	 * <li>If there is no database.locale, the system default locale is returned</li>
-	 * </ul>
-	 * This locale should be used, if you generate messages for the current (browser)user.
-	 * 
-	 * @return the external-locale, currentDatabase-locale or default-locale
-	 */
-	public static Locale getExternalLocale() {
-		Locale ret = getUserLocale();
-		if (ret == null)
-			ret = getInternalLocale();
-		return ret;
-	}
+	//	/**
+	//	 * Returns the internal locale. The Locale is retrieved by this way:
+	//	 * <ul>
+	//	 * <li>If a currentDatabase is set, the DB is queried for its locale</li>
+	//	 * <li>If there is no database.locale, the system default locale is returned</li>
+	//	 * </ul>
+	//	 * This locale should be used, if you write log entries in a server log for example.
+	//	 * 
+	//	 * @return the currentDatabase-locale or default-locale
+	//	 */
+	//	public static Locale getInternalLocale() {
+	//		Locale ret = null;
+	//		// are we in context of an NotesSession? Try to figure out the current database.
+	//		Session sess = getSession_unchecked(SessionType.CURRENT);
+	//		Database db = (sess == null) ? null : sess.getCurrentDatabase();
+	//		if (db != null)
+	//			ret = db.getLocale();
+	//		if (ret == null)
+	//			ret = Locale.getDefault();
+	//		return ret;
+	//	}
+	//
+	//	/**
+	//	 * Returns the external locale. The Locale is retrieved by this way:
+	//	 * <ul>
+	//	 * <li>Return the external locale (= the browser's locale in most cases) if available</li>
+	//	 * <li>If a currentDatabase is set, the DB is queried for its locale</li>
+	//	 * <li>If there is no database.locale, the system default locale is returned</li>
+	//	 * </ul>
+	//	 * This locale should be used, if you generate messages for the current (browser)user.
+	//	 * 
+	//	 * @return the external-locale, currentDatabase-locale or default-locale
+	//	 */
+	//	public static Locale getExternalLocale() {
+	//		Locale ret = getUserLocale();
+	//		if (ret == null)
+	//			ret = getInternalLocale();
+	//		return ret;
+	//	}
 
 	/**
 	 * Debug method to get statistics

@@ -6,7 +6,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.openntf.domino.commons.IDateTime;
-import org.openntf.formula.impl.DateTimeImpl;
 
 import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.text.NumberFormat;
@@ -77,7 +76,7 @@ public class Formatter {
 	 * Parses the string and returns a {@link IDateTime}. It uses the locale of the Formatter
 	 */
 	public IDateTime parseDateTime(final String text, final boolean parseLenient) {
-		IDateTime ret = new DateTimeImpl();
+		IDateTime ret = IDateTime.PROTOTYPE.clone();
 		ret.parse(text, locale, parseLenient);
 		return ret;
 	}

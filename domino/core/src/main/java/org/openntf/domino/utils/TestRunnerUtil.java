@@ -2,10 +2,12 @@ package org.openntf.domino.utils;
 
 import java.util.Collection;
 
+import org.openntf.domino.commons.IRequest;
 import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.session.ISessionFactory;
 import org.openntf.domino.session.NativeSessionFactory;
 import org.openntf.domino.session.TrustedSessionFactory;
+import org.openntf.domino.thread.DominoRequest;
 import org.openntf.domino.thread.DominoThread;
 import org.openntf.domino.utils.Factory.SessionType;
 
@@ -18,7 +20,8 @@ public enum TestRunnerUtil {
 	public static void runAsDominoThread(final Runnable r, final ISessionFactory sf) {
 		LifeCycleManager.startup();
 		lotus.domino.NotesThread.sinitThread();
-		LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
+		IRequest request = new DominoRequest(Factory.STRICT_THREAD_CONFIG, "&runnable=" + r.getClass().getName());
+		LifeCycleManager.beforeRequest(request);
 		Factory.setSessionFactory(sf, SessionType.CURRENT);
 
 		Thread t = new DominoThread(r, "TestRunner");
@@ -37,7 +40,8 @@ public enum TestRunnerUtil {
 	public static void runAsDominoThread(final Runnable r, final ISessionFactory sf, final int instances) {
 		LifeCycleManager.startup();
 		lotus.domino.NotesThread.sinitThread();
-		LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
+		IRequest request = new DominoRequest(Factory.STRICT_THREAD_CONFIG, "&runnable=" + r.getClass().getName());
+		LifeCycleManager.beforeRequest(request);
 		Factory.setSessionFactory(sf, SessionType.CURRENT);
 
 		Thread[] t = new Thread[instances];
@@ -64,7 +68,8 @@ public enum TestRunnerUtil {
 	public static void runAsDominoThread(final Class<? extends Runnable>[] runClasses, final ISessionFactory sf, final int instances) {
 		LifeCycleManager.startup();
 		lotus.domino.NotesThread.sinitThread();
-		LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
+		IRequest request = new DominoRequest(Factory.STRICT_THREAD_CONFIG, "&runnables=" + runClasses.length);
+		LifeCycleManager.beforeRequest(request);
 		Factory.setSessionFactory(sf, SessionType.CURRENT);
 		Thread[] t = new Thread[instances * runClasses.length];
 
@@ -100,7 +105,8 @@ public enum TestRunnerUtil {
 			final int instances) {
 		LifeCycleManager.startup();
 		lotus.domino.NotesThread.sinitThread();
-		LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
+		lotus.domino.NotesThread.sinitThread();
+		IRequest request = new DominoRequest(Factory.STRICT_THREAD_CONFIG, "&runnables=" + runClasses.size());
 		Factory.setSessionFactory(sf, SessionType.CURRENT);
 		Thread[] t = new Thread[instances * runClasses.size()];
 
@@ -133,7 +139,8 @@ public enum TestRunnerUtil {
 	public static void runAsDominoThread(final Class<? extends Runnable> r, final ISessionFactory sf, final int instances) {
 		LifeCycleManager.startup();
 		lotus.domino.NotesThread.sinitThread();
-		LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
+		IRequest request = new DominoRequest(Factory.STRICT_THREAD_CONFIG, "&runnable=" + r.getName());
+		LifeCycleManager.beforeRequest(request);
 		Factory.setSessionFactory(sf, SessionType.CURRENT);
 
 		Thread[] t = new Thread[instances];

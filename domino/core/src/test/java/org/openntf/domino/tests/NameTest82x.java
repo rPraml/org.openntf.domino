@@ -3,11 +3,8 @@ package org.openntf.domino.tests;
 import java.io.PrintStream;
 import java.lang.reflect.Method;
 
-import lotus.domino.NotesThread;
-
 import org.openntf.domino.Session;
 import org.openntf.domino.commons.IName;
-import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.commons.Names;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
@@ -16,9 +13,9 @@ import org.openntf.domino.utils.Factory.SessionType;
 public class NameTest82x {
 
 	private static String[] _getMeths = new String[] { "Addr821", "Addr822LocalPart", "Addr822Phrase", //
-		"Addr822Comment1", "Addr822Comment2", "Addr822Comment3", "Canonical", "Abbreviated", //
-		"Common", "Surname", "Given", "Country", "OrgUnit1", "OrgUnit2", "ADMD", "PRMD", //
-		"Organization", "Initials", "Keyword" };
+			"Addr822Comment1", "Addr822Comment2", "Addr822Comment3", "Canonical", "Abbreviated", //
+			"Common", "Surname", "Given", "Country", "OrgUnit1", "OrgUnit2", "ADMD", "PRMD", //
+			"Organization", "Initials", "Keyword" };
 
 	private PrintStream _ps;
 
@@ -63,7 +60,7 @@ public class NameTest82x {
 	}
 
 	//	@Test
-	public void testRFC82x() throws Exception {
+	public void run() throws Exception {
 		_ps = System.out;
 		_ps = new PrintStream("c:/stein/misc/work/nametest.txt");
 		testName("Jukka Määttä <jkorpela@cc.hut.fi> (Jukka) (Korpela)");
@@ -133,17 +130,19 @@ public class NameTest82x {
 		//		testName("cn=John Smith/O=Comp/ou2=xxx/ou3=dev/ou4=dd/ou1=hr");
 	}
 
-	public static void main(final String[] args) throws Exception {
-		NotesThread.sinitThread();
-		try {
-			LifeCycleManager.startup();
-			LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
-			new NameTest82x().testRFC82x();
-			LifeCycleManager.afterRequest();
-			LifeCycleManager.shutdown();
-		} finally {
-			NotesThread.stermThread();
-		}
-	}
+	//	public static void main(final String[] args) throws Exception {
+	//		NotesThread.sinitThread();
+	//		try {
+	//
+	//			LifeCycleManager.startup();
+	//
+	//			LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
+	//			new NameTest82x().testRFC82x();
+	//			LifeCycleManager.afterRequest();
+	//			LifeCycleManager.shutdown();
+	//		} finally {
+	//			NotesThread.stermThread();
+	//		}
+	//	}
 
 }

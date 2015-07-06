@@ -19,9 +19,11 @@ public enum LifeCycleManager {
 	private static ThreadLocal<List<Runnable>> requestEndHooks = new ThreadLocal<List<Runnable>>() {
 		@Override
 		protected java.util.List<Runnable> initialValue() {
-			return new ArrayList();
+			return new ArrayList<Runnable>();
 		}
 	};
+
+	private static ThreadLocal<IRequest> currentRequest = new ThreadLocal<IRequest>();
 
 	/**
 	 * find all LifeCycles and starts them
@@ -165,6 +167,8 @@ public enum LifeCycleManager {
 	 * Must be called before each request (Formerly Factory.initThread())
 	 */
 	public static void beforeRequest(final IRequest request) {
+		currentRequest.set(request);
+		;
 		IRequestLifeCycle[] copy;
 		synchronized (lazyRequestLifeCycles) {
 			copy = lazyRequestLifeCycles.toArray(new IRequestLifeCycle[lazyLifeCycles.size()]);
@@ -220,7 +224,11 @@ public enum LifeCycleManager {
 				t.printStackTrace();
 			}
 		}
+		currentRequest.set(null);
+	}
 
+	public static IRequest getCurrentRequest() {
+		return currentRequest.get();
 	}
 
 	/**

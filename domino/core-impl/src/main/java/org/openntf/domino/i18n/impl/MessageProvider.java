@@ -19,10 +19,12 @@ package org.openntf.domino.i18n.impl;
 import java.util.List;
 import java.util.Locale;
 
+import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.i18n.MessageProviderAbstract;
 import org.openntf.domino.commons.i18n.RawMessageProviderAbstract;
 import org.openntf.domino.utils.Factory;
+import org.openntf.domino.utils.Factory.SessionType;
 
 public class MessageProvider extends MessageProviderAbstract {
 
@@ -45,12 +47,13 @@ public class MessageProvider extends MessageProviderAbstract {
 
 	@Override
 	protected Locale getExternalLocale() {
-		return Factory.getExternalLocale();
+		return LifeCycleManager.getCurrentRequest().getLocale();
 	}
 
 	@Override
 	protected Locale getInternalLocale() {
-		return Factory.getInternalLocale();
+		// TODO Check
+		return Factory.getSession(SessionType.CURRENT).getCurrentDatabase().getLocale();
 	}
 
 }
