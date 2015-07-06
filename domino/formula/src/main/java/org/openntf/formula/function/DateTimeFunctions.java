@@ -21,13 +21,13 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import org.openntf.domino.commons.IDateTime;
-import org.openntf.formula.Formatter;
 import org.openntf.formula.FormulaContext;
 import org.openntf.formula.Function;
 import org.openntf.formula.FunctionFactory;
 import org.openntf.formula.FunctionSet;
 import org.openntf.formula.ValueHolder;
 import org.openntf.formula.annotation.ParamCount;
+import org.openntf.formula.impl.DateTimeImpl;
 
 import com.ibm.icu.util.Calendar;
 
@@ -65,16 +65,10 @@ public enum DateTimeFunctions {
 		return todayTomorrYester(ctx, "YESTERDAY");
 	}
 
-	/*----------------------------------------------------------------------------*/
-	private static ValueHolder todayTomorrYester(final FormulaContext ctx, final String which) {
-		return ValueHolder.valueOf(ctx.getFormatter().parseDate(which));
-	}
-
-	/*----------------------------------------------------------------------------*/
 	@ParamCount({ 0, 2 })
 	public static ValueHolder atNow(final FormulaContext ctx, final ValueHolder params[]) {
 		if (params == null || params.length == 0) {
-			IDateTime sdt = getSDTDefaultLocale(ctx);
+			IDateTime sdt = new DateTimeImpl();
 			sdt.setNow();
 			return ValueHolder.valueOf(sdt);
 		}
@@ -82,14 +76,21 @@ public enum DateTimeFunctions {
 	}
 
 	/*----------------------------------------------------------------------------*/
-	private static IDateTime getSDTDefaultLocale(final FormulaContext ctx) {
-		return ctx.getFormatter().getNewSDTInstance();
+	private static ValueHolder todayTomorrYester(final FormulaContext ctx, final String which) {
+		return ValueHolder.valueOf(ctx.getFormatter().parseDateTime(which, false));
 	}
 
 	/*----------------------------------------------------------------------------*/
-	private static IDateTime getSDTCopy(final FormulaContext ctx, final IDateTime sdt) {
-		return ctx.getFormatter().getCopyOfSDTInstance(sdt);
-	}
+
+	//	/*----------------------------------------------------------------------------*/
+	//	private static IDateTime getSDTDefaultLocale(final FormulaContext ctx) {
+	//		return ctx.getFormatter().getNewSDTInstance();
+	//	}
+	//
+	//	/*----------------------------------------------------------------------------*/
+	//	private static IDateTime getSDTCopy(final FormulaContext ctx, final IDateTime sdt) {
+	//		return ctx.getFormatter().getCopyOfSDTInstance(sdt);
+	//	}
 
 	/*----------------------------------------------------------------------------*/
 	/*
@@ -147,7 +148,7 @@ public enum DateTimeFunctions {
 		if (params.length == 2)
 			throw new IllegalArgumentException("Expected: 1, 3, or 6 parameters");
 		if (params.length >= 3) {
-			IDateTime sdt = getSDTDefaultLocale(ctx);
+			IDateTime sdt = new DateTimeImpl();
 			sdt.setLocalDate(params[0].getInt(0), params[1].getInt(0), params[2].getInt(0));
 			// 4 or 5 parameters are accepted by Lotus, but parameters 4 and 5 are ignored
 			if (params.length == 6)
@@ -159,7 +160,7 @@ public enum DateTimeFunctions {
 		ValueHolder vh = params[0];	//Remains: length=1, which works completely different
 		ValueHolder ret = ValueHolder.createValueHolder(IDateTime.class, vh.size);
 		for (int i = 0; i < vh.size; i++)
-			ret.add(getSDTCopy(ctx, vh.getDateTime(i)));
+			ret.add(vh.getDateTime(i).clone());
 		return ret;
 	}
 
@@ -170,7 +171,7 @@ public enum DateTimeFunctions {
 			throw new IllegalArgumentException("Expected: 1, 3, or 6 parameters");
 		// 4 or 5 parameters are accepted by Lotus, but they are ignored
 		if (params.length >= 3 && params.length <= 5) {		// I was surprised.
-			IDateTime sdt = getSDTDefaultLocale(ctx);
+			IDateTime sdt = new DateTimeImpl();
 			sdt.setAnyDate();
 			sdt.setAnyTime();
 			return ValueHolder.valueOf(sdt);
@@ -180,7 +181,7 @@ public enum DateTimeFunctions {
 		ValueHolder vh = params[0];	//Remains: length=1, which works completely different
 		ValueHolder ret = ValueHolder.createValueHolder(IDateTime.class, vh.size);
 		for (int i = 0; i < vh.size; i++) {
-			IDateTime sdt = getSDTCopy(ctx, vh.getDateTime(i));
+			IDateTime sdt = vh.getDateTime(i).clone();
 			sdt.setAnyDate();
 			ret.add(sdt);
 		}
@@ -200,7 +201,7 @@ public enum DateTimeFunctions {
 			IDateTime time = times.getDateTime(i);
 			Calendar calDate = date.toJavaCal();
 			Calendar calTime = time.toJavaCal();
-			IDateTime sdt = getSDTDefaultLocale(ctx);
+			IDateTime sdt = new DateTimeImpl();
 			if (date.isAnyDate())
 				sdt.setAnyDate();
 			else
@@ -265,7 +266,7 @@ public enum DateTimeFunctions {
 				if (sdt.isAnyDate())
 					continue;
 				if (!sdt.isAnyTime()) {
-					sdt = getSDTCopy(ctx, sdt);
+					sdt = sdt.clone();
 					sdt.setAnyTime();
 				}
 				excludeDates.add(sdt);
@@ -289,10 +290,10 @@ public enum DateTimeFunctions {
 	/*----------------------------------------------------------------------------*/
 	private static int calcBusDays(final FormulaContext ctx, IDateTime sdtFrom, IDateTime sdtTo, final boolean[] excludeDays,
 			final TreeSet<IDateTime> excludeDates) {
-		sdtFrom = getSDTCopy(ctx, sdtFrom);
+		sdtFrom = sdtFrom.clone();
 		sdtFrom.setAnyTime();
 		if (!sdtTo.isAnyTime()) {
-			sdtTo = getSDTCopy(ctx, sdtTo);
+			sdtTo = sdtTo.clone();
 			sdtTo.setAnyTime();
 		}
 		if (sdtFrom.compare(sdtFrom, sdtTo) > 0)
@@ -324,7 +325,7 @@ public enum DateTimeFunctions {
 		int adjustSeconds = params[6].getInt(0);
 		ValueHolder ret = ValueHolder.createValueHolder(IDateTime.class, toAdjust.size);
 		for (int i = 0; i < toAdjust.size; i++) {
-			IDateTime sdt = getSDTCopy(ctx, toAdjust.getDateTime(i));
+			IDateTime sdt = toAdjust.getDateTime(i).clone();
 			if (!sdt.isAnyDate()) {
 				if (adjustYears != 0)
 					sdt.adjustYear(adjustYears);
@@ -351,9 +352,9 @@ public enum DateTimeFunctions {
 	 * @ListLocales, @SetLocale, @PTest (for testing with a different Locale)
 	 */
 	/*----------------------------------------------------------------------------*/
-	private static IDateTime getSDTLocalSetLocale() {
-		return Formatter.getFormatter(iLocale).getNewSDTInstance();
-	}
+	//	private static IDateTime getSDTLocalSetLocale() {
+	//		return Formatter.getFormatter(iLocale).getNewSDTInstance();
+	//	}
 
 	/*----------------------------------------------------------------------------*/
 	/*private*/static Locale iLocale = null;
@@ -390,20 +391,20 @@ public enum DateTimeFunctions {
 		return toSet != null ? ctx.TRUE : ctx.FALSE;
 	}
 
-	/*----------------------------------------------------------------------------*/
-	@ParamCount(1)
-	public static String atDTTest(final String s) {
-		IDateTime sdt = getSDTLocalSetLocale();
-		sdt.setLocalTime(s);
-		return sdt.getLocalTime();
-	}
-
-	/*----------------------------------------------------------------------------*/
-	@ParamCount(1)
-	public static String atNTest(final String s) {
-		Formatter formatter = Formatter.getFormatter(iLocale);
-		Number n = formatter.parseNumber(s, true);
-		return formatter.formatNumber(n);
-	}
-	/*----------------------------------------------------------------------------*/
+	//	/*----------------------------------------------------------------------------*/
+	//	@ParamCount(1)
+	//	public static String atDTTest(final String s) {
+	//		IDateTime sdt = getSDTLocalSetLocale();
+	//		sdt.parse()
+	//		return sdt.getLocalTime();
+	//	}
+	//
+	//	/*----------------------------------------------------------------------------*/
+	//	@ParamCount(1)
+	//	public static String atNTest(final String s) {
+	//		Formatter formatter = Formatter.getFormatter(iLocale);
+	//		Number n = formatter.parseNumber(s, true);
+	//		return formatter.formatNumber(n);
+	//	}
+	//	/*----------------------------------------------------------------------------*/
 }

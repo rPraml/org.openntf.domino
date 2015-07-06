@@ -64,7 +64,8 @@ public class Operators extends OperatorsAbstract {
 			throw new UnsupportedOperationException("'" + image + "' is not supported for STRING");
 		}
 
-		public IDateTime compute(final IDateTime d1, final IDateTime d2) {
+		// can be an object or other IDateTime
+		public Object compute(final IDateTime d1, final IDateTime d2) {
 			throw new UnsupportedOperationException("'" + image + "' is not supported for DATETIME");
 		}
 
@@ -108,6 +109,21 @@ public class Operators extends OperatorsAbstract {
 				public String compute(final String v1, final String v2) {
 					return v1.concat(v2);
 				}
+
+				@Override
+				public Object compute(final IDateTime d1, final IDateTime d2) {
+					IDateTime ret = null;
+					if (d2.isAnyDate()) {
+						ret = d1.clone();
+						ret.adjustMilli(d2.getMillis());
+					} else if (d2.isAnyDate()) {
+						ret = d2.clone();
+						ret.adjustMilli(d1.getMillis());
+					} else {
+						throw new UnsupportedOperationException("Cannot " + d1 + " + " + d2 + ", because neither of them is any time.");
+					}
+					return ret;
+				}
 			};
 
 			Computer sub = new Computer("-") {
@@ -125,6 +141,18 @@ public class Operators extends OperatorsAbstract {
 				public double compute(final double v1, final double v2) {
 					return v1 - v2;
 				}
+
+				@Override
+				public Object compute(final IDateTime d1, final IDateTime d2) {
+					if (d1.isAnyDate() || d2.isAnyDate()) {
+						IDateTime ret = d1.clone();
+						ret.adjustMilli(-d2.getMillis());
+						return ret;
+					} else {
+						return (d1.getMillis() - d2.getMillis());
+					}
+				}
+
 			};
 
 			Computer mul = new Computer("*") {
@@ -253,10 +281,14 @@ public class Operators extends OperatorsAbstract {
 	@Override
 	protected ValueHolder evaluateDateTime(final FormulaContext ctx, final ValueHolder[] params) {
 		Collection<IDateTime[]> values = new ParameterCollectionObject<IDateTime>(params, IDateTime.class, isPermutative);
-		ValueHolder ret = ValueHolder.createValueHolder(IDateTime.class, values.size());
+		ValueHolder ret = null;
 
 		for (IDateTime[] value : values) {
-			ret.add(computer.compute(value[0], value[1]));
+			Object result = computer.compute(value[0], value[1]);
+			if (ret == null) {
+				ret = ValueHolder.createValueHolder(result.getClass(), values.size());
+			}
+			ret.addObject(result);
 		}
 		return ret;
 	}

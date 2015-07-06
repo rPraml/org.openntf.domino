@@ -69,9 +69,27 @@ public class DominoLifeCycle extends StandardLifeCycle implements IRequestLifeCy
 	 * <li>null as parameter is less problematic than a Vector that was forced in a String variable</li>
 	 * <li>Throwing an exception does not generate a return value that will be forced in a ViewEntry</li>
 	 * </ul>
+	 * 
+	 * <font size="4">Attention, in Java >= 1.7.129, the workaround does not work around any more.</font>
+	 * <p>
+	 * See also <a href="http://www.oracle.com/technetwork/java/javase/compatibility-417013.html">here</a>
+	 * <p/>
+	 * In JDK 7, build 129, the following reflective operations in java.lang.Class changed the fixed order in which they return the methods
+	 * and constructors of a class:
+	 * <ul>
+	 * <li>getMethods</li>
+	 * <li>getDeclaredMethods</li>
+	 * <li>getDeclaredConstructors</li> *
+	 * </ul>
+	 * * * This means the workaround with View.iGetEntryByKey (Method that must be on the correct place) and *
+	 * DominoUtils.getViewEntryByKeyWithOptions will definitvely break in this and ongoing java-versions *
 	 */
 	public boolean verifyIGetEntryByKey() {
-		@SuppressWarnings("deprecation")
+		if (!System.getProperty("java.version").startsWith("1.6.")) {
+			IO.println("Check of BackendBridge.getViewEntryByKeyWithOptions skipped, because Java-Version != 1.6.x");
+			return true;
+		}
+
 		View dummyView = new org.openntf.domino.impl.View();
 		try {
 			BackendBridge.getViewEntryByKeyWithOptions(dummyView, null, 42);

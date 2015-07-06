@@ -18,6 +18,7 @@ package org.openntf.domino.xsp.formula;
 
 import java.lang.ref.SoftReference;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
@@ -96,7 +97,7 @@ public class FormulaValueBinding extends ValueBindingEx {
 		List<Object> ret = null;
 		try {
 			IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
-			FormulaContextXsp fctx = (FormulaContextXsp) service.createContext(dataMap);
+			FormulaContextXsp fctx = (FormulaContextXsp) service.createContext(Locale.getDefault(), dataMap);
 			fctx.init(this.getComponent(), ctx);
 			ret = getFormulaASTNode().solve(fctx);
 		} catch (EvaluateException e) {
@@ -189,7 +190,7 @@ public class FormulaValueBinding extends ValueBindingEx {
 				return node;
 		}
 		IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
-		IFormula node = service.parse(formulaStr);
+		IFormula node = service.parse(formulaStr, Locale.getDefault());
 		FormulaASTNodeCache = new SoftReference<IFormula>(node);
 		return node;
 

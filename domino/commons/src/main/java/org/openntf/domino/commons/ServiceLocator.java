@@ -34,8 +34,6 @@ public abstract class ServiceLocator {
 
 					}
 				});
-			} else {
-				IO.println("More than one service found for " + serviceClazz + " but does not implement IPriority.");
 			}
 		}
 		return fret;
@@ -45,6 +43,10 @@ public abstract class ServiceLocator {
 		List<T> list = findApplicationServices(serviceClazz);
 		if (list == null || list.isEmpty())
 			return null;
+		if (list.size() > 1 && !IPriority.class.isAssignableFrom(serviceClazz)) {
+			IO.println("More than one service found for " + serviceClazz
+					+ " but does not implement IPriority. So it is not deterministic what to return");
+		}
 		return list.get(0);
 
 	}

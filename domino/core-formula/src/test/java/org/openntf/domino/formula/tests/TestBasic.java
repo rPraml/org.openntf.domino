@@ -2,6 +2,8 @@ package org.openntf.domino.formula.tests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Locale;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openntf.domino.commons.IFormulaService;
@@ -17,7 +19,7 @@ public class TestBasic {
 
 	@Test
 	public void testEnvironment() throws FormulaParseException, EvaluateException {
-		assertEquals("TestValue 1", service.evaluate("@Environment({$TestEnv1})").get(0));
+		assertEquals("TestValue 1", service.evaluate("@Environment({$TestEnv1})", Locale.US, Locale.US).get(0));
 	}
 
 }

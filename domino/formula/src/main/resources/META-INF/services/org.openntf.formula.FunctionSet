@@ -13,4 +13,4 @@ org.openntf.formula.function.DateTimeFunctions$Functions
 org.openntf.formula.function.TextFunctions$Functions
 
 #
-org.openntf.formula.function.FocFunctions$Functions
+org.openntf.formula.function.ParameterFunctions$Functions
