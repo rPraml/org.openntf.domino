@@ -43,6 +43,10 @@ import org.openntf.formula.ValueHolder.DataType;
 import org.openntf.formula.annotation.DiffersFromLotus;
 import org.openntf.formula.annotation.OpenNTF;
 import org.openntf.formula.annotation.ParamCount;
+import org.openntf.formula.impl.DateTimeImpl;
+
+import com.ibm.icu.text.DateFormat;
+import com.ibm.icu.text.SimpleDateFormat;
 
 public enum TextFunctions {
 	;
@@ -691,7 +695,7 @@ public enum TextFunctions {
 		String val = null;
 		for (int i = 0; i < vh.size; i++) {
 			val = vh.getString(i);
-			ret.add(formatter.parseDate(val, true));
+			ret.add(formatter.parseDateTime(val, true));
 		}
 		return ret;
 	}
@@ -1073,7 +1077,7 @@ public enum TextFunctions {
 	 */
 	/*----------------------------------------------------------------------------*/
 	@DiffersFromLotus({ "Options [ACCENT(IN)SENSITIVE] and [PITCH(IN)SENSITIVE] aren't yet supported",
-	"String compare is done via String.compareTo" })
+			"String compare is done via String.compareTo" })
 	@ParamCount({ 2, 3 })
 	public static ValueHolder atCompare(final ValueHolder[] params) {
 		boolean caseSensitive = true;
@@ -1106,11 +1110,11 @@ public enum TextFunctions {
 				cmp = (s2 == null) ? 0 : -1;
 			else
 				cmp = caseSensitive ? s1.compareTo(s2) : s1.compareToIgnoreCase(s2);
-				if (cmp < 0)
-					cmp = -1;
-				else if (cmp > 0)
-					cmp = 1;
-				ret.add(cmp);
+			if (cmp < 0)
+				cmp = -1;
+			else if (cmp > 0)
+				cmp = 1;
+			ret.add(cmp);
 		}
 		return (ret);
 	}
@@ -1316,8 +1320,12 @@ public enum TextFunctions {
 		String format = params[1].getString(0);
 		ValueHolder vh = params[0];
 		ValueHolder ret = ValueHolder.createValueHolder(IDateTime.class, vh.size);
-		for (int i = 0; i < vh.size; i++)
-			ret.add(ctx.getFormatter().parseDateWithFormat(vh.getString(i), format, parseLenient));
+
+		DateFormat dateFormat = new SimpleDateFormat(format);
+		for (int i = 0; i < vh.size; i++) {
+			IDateTime dt = new DateTimeImpl();
+			dt.parse(vh.getString(i), dateFormat, parseLenient);
+		}
 		return ret;
 	}
 
@@ -1325,7 +1333,8 @@ public enum TextFunctions {
 	@OpenNTF
 	@ParamCount(2)
 	public static String atTextFromDateTimeF(final FormulaContext ctx, final IDateTime sdt, final String format) {
-		return ctx.getFormatter().formatDateTimeWithFormat(sdt, format);
+		DateFormat fmt = new SimpleDateFormat(format);
+		return sdt.toString(fmt);
 	}
 
 	/*----------------------------------------------------------------------------*/

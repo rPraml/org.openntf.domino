@@ -17,6 +17,7 @@
 package org.openntf.domino.commons;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public interface IFormula {
 	/**
 	 * Use this method to solve a formula
 	 */
-	public List<Object> solve(Map<String, Object> map) throws EvaluateException;
+	public List<Object> solve(Locale locale, Map<String, Object> map) throws EvaluateException;
 
 	/**
 	 * Use this method to solve a formula

@@ -15,14 +15,11 @@ import java.util.regex.Pattern;
 
 import org.openntf.domino.commons.IDataConverter;
 import org.openntf.domino.commons.IDateTime;
-import org.openntf.domino.commons.IFormula;
-import org.openntf.domino.commons.IFormulaService;
 import org.openntf.domino.commons.IName;
 import org.openntf.domino.commons.Names;
 import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.Strings;
 import org.openntf.domino.commons.exception.DataNotCompatibleException;
-import org.openntf.domino.commons.exception.FormulaParseException;
 
 import com.ibm.icu.util.Calendar;
 
@@ -480,16 +477,16 @@ public enum TypeUtils {
 
 		}
 
-		// IFormula
-		if (targetType.isAssignableFrom(IFormula.class)) {
-			IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
-			String formula = Strings.toString(source);
-			try {
-				return (T) service.parse(formula);
-			} catch (FormulaParseException e) {
-				throw new DataNotCompatibleException("Cannot parse formula: " + formula, e);
-			}
-		}
+		// IFormula - which locale should be used here?
+		//		if (targetType.isAssignableFrom(IFormula.class)) {
+		//			IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
+		//			String formula = Strings.toString(source);
+		//			try {
+		//				return (T) service.parse(formula);
+		//			} catch (FormulaParseException e) {
+		//				throw new DataNotCompatibleException("Cannot parse formula: " + formula, e);
+		//			}
+		//		}
 
 		// Date
 		if (targetType.isAssignableFrom(Date.class)) {

@@ -175,7 +175,7 @@ public class OperatorsBool extends OperatorsAbstract {
 
 	@Override
 	protected ValueHolder evaluateDateTime(final FormulaContext ctx, final IDateTime dt1, final IDateTime dt2) {
-		throw new UnsupportedOperationException("'" + getImage() + "' is not supported for STRING");
+		throw new UnsupportedOperationException("'" + getImage() + "' is not supported for DATETIME");
 	}
 
 	// ----------- Numbers

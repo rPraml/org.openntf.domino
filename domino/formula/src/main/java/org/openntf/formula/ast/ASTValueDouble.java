@@ -29,7 +29,7 @@ public class ASTValueDouble extends SimpleNode {
 	}
 
 	public void parseDouble(final String image, final char decSep) {
-		double d = parser.getFormatter().parseNumber(image).doubleValue();
+		double d = parser.getFormatter().parseNumber(image, false).doubleValue();
 		value = ValueHolder.valueOf(d);
 	}
 

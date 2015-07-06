@@ -29,8 +29,9 @@ public class ASTValueInt extends SimpleNode {
 	}
 
 	public void parseInt(final String image) {
-		Number n = parser.getFormatter().parseNumber(image);
+		Number n = parser.getFormatter().parseNumber(image, false);
 		if (n instanceof Integer)
+			// TODO: Shouldn't we extend Formula to "long" and use SafeCasts
 			value = ValueHolder.valueOf(n.intValue());
 		else
 			value = ValueHolder.valueOf(n.doubleValue());
