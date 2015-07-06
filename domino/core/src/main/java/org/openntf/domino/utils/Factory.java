@@ -59,7 +59,6 @@ import org.openntf.domino.session.SessionFullAccessFactory;
 import org.openntf.domino.session.TrustedSessionFactory;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.SessionDescendant;
-import org.openntf.domino.utils.Factory.SessionType;
 
 /**
  * The Enum Factory. Does the Mapping lotusObject <=> OpenNTF-Object
@@ -338,7 +337,12 @@ public enum Factory {
 	/**
 	 * Holder for variables that are different per thread
 	 */
-	private static ThreadLocal<ThreadVariables> threadVariables_ = new ThreadLocal<ThreadVariables>();
+	private static ThreadLocal<ThreadVariables> threadVariables_ = new ThreadLocal<ThreadVariables>() {
+		@Override
+		protected ThreadVariables initialValue() {
+			return new ThreadVariables();
+		};
+	};
 
 	//private static List<Runnable> globalTerminateHooks = new ArrayList<Runnable>();
 
@@ -346,14 +350,14 @@ public enum Factory {
 	private static boolean napiPresent_;
 
 	private static ThreadVariables getThreadVariables() {
-		ThreadVariables tv = threadVariables_.get();
-		if (tv == null)
-			throw new IllegalStateException(Factory.class.getName() + " is not initialized for this thread!");
-		return tv;
+		return threadVariables_.get();
 	}
 
 	public static ThreadConfig getThreadConfig() {
-		return LifeCycleManager.getCurrentRequest().get(ThreadConfig.class);
+		ThreadConfig tc = LifeCycleManager.getCurrentRequest().get(ThreadConfig.class);
+		if (tc == null)
+			throw new IllegalStateException(Factory.class.getName() + " is not initialized for this thread!");
+		return tc;
 	}
 
 	private static Map<String, String> ENVIRONMENT;
@@ -599,8 +603,7 @@ public enum Factory {
 	 * @return The active WrapperFactory
 	 */
 	public static WrapperFactory getWrapperFactory_unchecked() {
-		ThreadVariables tv = threadVariables_.get();
-		return tv == null ? null : threadVariables_.get().wrapperFactory;
+		return threadVariables_.get().wrapperFactory;
 	}
 
 	// RPr: A setter is normally not needed. The wrapperFactory should be configure with an application service!
@@ -931,8 +934,7 @@ public enum Factory {
 	 * @return the session
 	 */
 	public static org.openntf.domino.Session getSession_unchecked(final SessionType type) {
-		ThreadVariables tv = threadVariables_.get();
-		return tv == null ? null : tv.sessionHolders[type.index];
+		return threadVariables_.get().sessionHolders[type.index];
 	}
 
 	/**
@@ -1176,18 +1178,7 @@ public enum Factory {
 
 		@Override
 		public void beforeRequest(final IRequest request) {
-			if (log_.isLoggable(Level.FINER)) {
-				log_.log(Level.FINER, "Factory.initThread()", new Throwable());
-			}
-			if (threadVariables_.get() != null) {
-				log_.log(Level.SEVERE, "WARNING - Thread " + Thread.currentThread().getName()
-						+ " was not correctly terminated or initialized twice", new Throwable());
-			}
-			//		System.out.println("TEMP DEBUG: Factory thread initializing.");
-			//		Throwable t = new Throwable();
-			//		t.printStackTrace();
-			threadVariables_.set(request.get(ThreadVariables.class));
-
+			getThreadVariables().clear();
 		}
 
 		@Override
@@ -1195,12 +1186,7 @@ public enum Factory {
 			if (log_.isLoggable(Level.FINER)) {
 				log_.log(Level.FINER, "Factory.termThread()", new Throwable());
 			}
-			ThreadVariables tv = threadVariables_.get();
-			if (tv == null) {
-				log_.log(Level.SEVERE, "WARNING - Thread " + Thread.currentThread().getName()
-						+ " was not correctly initalized or terminated twice", new Throwable());
-				return;
-			}
+			ThreadVariables tv = getThreadVariables();
 
 			try {
 				if (tv.wrapperFactory != null) {
@@ -1217,7 +1203,6 @@ public enum Factory {
 				log_.log(Level.SEVERE, "An error occured while terminating the factory", t);
 			} finally {
 				tv.clear();
-				threadVariables_.set(null);
 				System.gc();
 			}
 			if (counters != null) {
