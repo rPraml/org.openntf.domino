@@ -3,23 +3,22 @@ package org.openntf.domino.commons.logging;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.LogRecord;
 
-import org.openntf.domino.commons.exception.IExceptionDetails;
+import org.openntf.domino.commons.ILoggingService;
+import org.openntf.domino.commons.IO;
 
 /**
  * Introduces a highly configurable new logging mechanism. (Details are to be found in logconfig.properties.) If no configuration property
- * file is found, logging is statically initialized as before (as a fallback solution ). If the configuration is changed, logging will
- * update itself within 1 minute.
+ * file is found, logging is statically initialized as before (as a fallback solution). If the configuration is changed, logging will update
+ * itself within 1 minute.
  * 
  * @author Steinsiek
  * 
  */
-public abstract class LoggingAbstract {
+public abstract class LoggingAbstract implements ILoggingService {
 
 	private static ThreadLocal<SimpleDateFormat> sdfISO = new ThreadLocal<SimpleDateFormat>() {
 		@Override
@@ -32,23 +31,22 @@ public abstract class LoggingAbstract {
 		return sdfISO.get().format(value);
 	}
 
-	protected static LoggingAbstract _theLogger;
-
-	protected LoggingAbstract() {
-	}
-
-	public static LoggingAbstract getInstance() {
-		return _theLogger;
-	}
-
 	private LogConfig _activeConfig = null;
 	private Timer _supervisor = null;
 	private static final long _supervisorInterval = 60000;	// 1 minute
 
-	public void startUp() throws IOException {
+	public LoggingAbstract() {
 		if (!activateCfgFromProperties()) {
 			System.err.println("Logging: Couldn't initialize from logging properties; activating fallback ...");
-			startUpFallback();
+			try {
+				startUpFallback();
+			} catch (IOException e) {
+				IO.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+				IO.println("Fallback for Logging couldn't be activated!");
+				IO.println("(See stack trace below.)");
+				IO.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+				e.printStackTrace();
+			}
 			return;
 		}
 		System.out.println("Logging: LogConfig successfully initialized from logging properties");
@@ -57,7 +55,7 @@ public abstract class LoggingAbstract {
 		_supervisor.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				LoggingAbstract.getInstance().lookForCfgChange();
+				ILoggingService.INSTANCE.lookForCfgChange();
 			}
 		}, _supervisorInterval, _supervisorInterval);
 	}
@@ -111,27 +109,9 @@ public abstract class LoggingAbstract {
 
 	protected abstract void startUpFallback() throws IOException;
 
-	protected static enum ConfigChangeFlag {
-		CFG_UNCHANGED, CFG_UPDATED, CFG_ERROR;
-	}
-
-	protected abstract ConfigChangeFlag lookForCfgChange();
-
-	public abstract List<IExceptionDetails.Entry> getExceptionDetails(Throwable t);
-
-	public abstract String[] getLastWrappedDocs();
-
-	public abstract boolean mayContainAdditionalInfo(LogRecord logRec);
-
-	public abstract String replacePatternPlaceHolders(String where);
-
-	public abstract LogFormulaCondHandlerIF getFormulaCondHandler(String formulaCond) throws Exception;
-
-	public abstract String[] getCurrentUserAndDB(Throwable exception, boolean userRequired, boolean dbRequired) throws Exception;
-
 	static boolean _verbose = false;	// For testing
 
-	public static void setVerbose(final boolean how) {
-		_verbose = how;
+	public static void setVerbose(final boolean verbose) {
+		_verbose = verbose;
 	}
 }

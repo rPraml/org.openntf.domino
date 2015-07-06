@@ -8,10 +8,14 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.openntf.domino.commons.IFormula;
+import org.openntf.domino.commons.IFormulaService;
 
 public class LogConfig {
 
@@ -82,7 +86,7 @@ public class LogConfig {
 			String[] _logHandlerNames;
 			L_LogHandler[] _logHandlerObjs;
 			String _formulaCondition;
-			LogFormulaCondHandlerIF _condHandler;
+			IFormula _condHandler;
 			boolean _condContUserName;
 			boolean _condContDBPath;
 			String _validUntilStr;
@@ -111,7 +115,7 @@ public class LogConfig {
 					return false;
 				if (_formulaCondition != null) {
 					try {
-						_condHandler = LoggingAbstract.getInstance().getFormulaCondHandler(_formulaCondition);
+						_condHandler = IFormulaService.INSTANCE.parse(_formulaCondition, Locale.ENGLISH);
 					} catch (Exception e) {
 						System.err.println("LogConfig: Error while generating Formula Parser for: " + _formulaCondition);
 						e.printStackTrace();

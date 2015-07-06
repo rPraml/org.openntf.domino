@@ -26,7 +26,6 @@ import org.openntf.domino.commons.AsDocMap;
 import org.openntf.domino.commons.IFormula;
 import org.openntf.domino.commons.IFormulaContext;
 import org.openntf.domino.commons.IFormulaService;
-import org.openntf.domino.commons.ServiceLocator;
 
 /**
  * Extends <code>MessageProviderAbstract</code> to handle formulas in text. You can use &lt;! {@literal @}Formula... !&gt; to inline
@@ -70,11 +69,11 @@ public abstract class FormulaMessageProviderAbstract extends MessageProviderAbst
 				numParams--;
 		}
 		try {
-			IFormulaService formulaService = ServiceLocator.findApplicationService(IFormulaService.class);
+			IFormulaService formulaService = IFormulaService.INSTANCE;
 			if (formulaService == null)
 				throw new IllegalStateException("No formula service found");
-			IFormula formula = formulaService.parse(msgString, true);
-			IFormulaContext ctx = formulaService.createContext(map, loc);
+			IFormula formula = formulaService.parse(msgString, loc, true);
+			IFormulaContext ctx = formulaService.createContext(loc, map);
 			for (int i = 0; i < numParams; i++)
 				ctx.setParam(Integer.toString(i + 1), args[i]);
 			List<?> resultList = formula.solve(ctx);
