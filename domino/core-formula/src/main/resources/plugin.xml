@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.formula.DominoFormulaService"  type="org.openntf.domino.commons.IFormulaService"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.formula.FormulaLifeCycle"  type="org.openntf.domino.commons.ILifeCycle"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.formula.DocFunctions$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.formula.NativeEvaluateFunctions$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.formula.DominoFunctions$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.formula.NotSupported$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+</plugin>

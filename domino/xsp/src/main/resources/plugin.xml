@@ -1,6 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.xsp.script.OpenDomJavaScriptExtension"  type="com.ibm.designer.runtime.extensions.JavaScriptProvider"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.xsp.XspLibrary"  type="com.ibm.xsp.Library"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.xsp.OpenntfDominoXspContributor"  type="com.ibm.xsp.library.Contributor"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.xsp.formula.FormulaContextXsp"  type="org.openntf.formula.FormulaContext"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.xsp.formula.XspFunctions$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.formula.function.Operators$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.formula.function.OperatorsBool$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.formula.function.Negators$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.formula.function.Comparators$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.formula.function.Constants$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.formula.function.MathFunctions$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.formula.function.DateTimeFunctions$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.formula.function.TextFunctions$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.formula.DocFunctions$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.formula.NativeEvaluateFunctions$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.formula.DominoFunctions$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.formula.NotSupported$Functions"  type="org.openntf.formula.FunctionSet"/>
+</extension>
 <!-- <extension
            id="org.openntf.domino.xsp.Servlet"
            point="org.eclipse.equinox.http.registry.servlets">
@@ -10,54 +61,4 @@
               load-on-startup="true">
         </servlet>
      </extension> -->
-   <extension
-         point="com.ibm.commons.Extension">
-      <service
-            class="org.openntf.domino.xsp.XspLibrary"
-            type="com.ibm.xsp.Library">
-      </service>
-   </extension>
-   
-   <!-- RPr: In my oppinion, the ViewNavigator works correctly as all fixes are done in the backend classes now-->
-   <extension
-         point="com.ibm.commons.Extension">
-      <service
-            class="org.openntf.domino.xsp.helpers.OpenntfViewNavigatorFactoryFactory"
-            type="com.ibm.xsp.model.domino.ViewNavigatorFactory">
-      </service>
-   </extension>
-   
-    <extension point="com.ibm.commons.Extension">
-         <service type="com.ibm.designer.runtime.extensions.JavaScriptProvider" class="org.openntf.domino.xsp.script.OpenDomJavaScriptExtension" />
-   </extension>
-   
-   <!-- needed to start automatically and initialize some core things -->
-   <extension point="com.ibm.commons.Extension">
-         <service type="com.ibm.xsp.adapter.serviceFactory" class="org.openntf.domino.xsp.adapter.OpenntfServiceFactory" />
-   </extension>
-   <!-- needed to register some additional factories -->
-   <extension point="com.ibm.commons.Extension">
-         <service type="com.ibm.xsp.library.Contributor" class="org.openntf.domino.xsp.OpenntfDominoXspContributor" />
-   </extension>
-
-
-   <extension
-         point="com.ibm.commons.Extension">
-      <service
-            class="org.openntf.domino.xsp.script.WrapperOpenDomino"
-            type="org.openntf.domino.xsp.script.WrapperRegistry">
-      </service>
-   </extension>
-   
-	<extension point="com.ibm.commons.Extension">
-		<service class="org.openntf.domino.xsp.xots.XotsApplicationListener" type="com.ibm.xsp.core.events.ApplicationListener"/>
-	</extension>
- <extension
-       point="com.ibm.commons.Extension">
-    <service
-          class="org.openntf.domino.xsp.xots.XotsNsfScanner"
-          type="org.openntf.domino.xots.tasklet">
-    </service>
- </extension>
-  
 </plugin>
