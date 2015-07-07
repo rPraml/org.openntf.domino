@@ -28,12 +28,17 @@ public class TestSafeCast {
 	}
 
 	@Test
+	// (expected = NumberFormatException.class)
 	public void testNumber() {
 		Number n = INumber.getInst(11213);
 		int i = TypeUtils.objectToClass(n, Integer.class);
 		long l = TypeUtils.objectToClass(n, Long.class);
 		assertTrue(l == n.longValue());
 		assertFalse(i == n.intValue());
+		i = Integer.parseInt("٩٩٣٣");
+		System.out.println("٩٩٣٣=" + i);
+		i = Integer.parseInt("٩٩٣٣103٩٣");
+		System.out.println("٩٩٣٣103٩٣=" + i);
 	}
 
 	/*==============================================================================================================*/
