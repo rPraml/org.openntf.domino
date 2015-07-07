@@ -77,9 +77,7 @@ public class Formatter {
 	 * Format is accepted
 	 */
 	public IDateTime parseDateTime(final String text, final boolean parseLenient) {
-		IDateTime ret = IDateTime.PROTOTYPE.clone();
-		ret.parse(text, locale, parseLenient);
-		return ret;
+		return IDateTime.$.parse(text, locale, parseLenient);
 	}
 
 	/**

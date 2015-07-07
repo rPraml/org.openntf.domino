@@ -11,12 +11,12 @@ public class TestNames {
 
 	@Before
 	public void setup() {
-		IName.PROTOTYPE.setLocalServerName("CN=dummy/O=ci-test");
+		IName.$.setLocalServerName("CN=dummy/O=ci-test");
 	}
 
 	@Test
 	public void testParse() {
-		IName name = IName.PROTOTYPE.create("CN=Roland Praml/OU=01/OU=int/O=FOCONIS");
+		IName name = IName.$.create("CN=Roland Praml/OU=01/OU=int/O=FOCONIS");
 		assertEquals("Roland Praml", name.getCommon());
 		assertEquals("int", name.getOrgUnit1());
 		assertEquals("01", name.getOrgUnit2());

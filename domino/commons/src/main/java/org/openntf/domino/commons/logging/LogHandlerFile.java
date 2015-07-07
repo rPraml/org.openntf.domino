@@ -67,7 +67,7 @@ public class LogHandlerFile extends FileHandler implements LogHandlerUpdateIF {
 					break;
 				}
 				if (propKey.equals("Pattern")) {
-					ret.pattern = ILoggingService.INSTANCE.replacePatternPlaceHolders(propValue);
+					ret.pattern = ILoggingService.$.getInstance().replacePatternPlaceHolders(propValue);
 					if (ret.pattern.length() < 3)
 						ind = -1;
 					break;

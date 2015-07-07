@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 import org.openntf.domino.commons.IDataConverter;
 import org.openntf.domino.commons.IDateTime;
 import org.openntf.domino.commons.IName;
-import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.Strings;
 import org.openntf.domino.commons.exception.DataNotCompatibleException;
 
@@ -462,7 +461,7 @@ public enum TypeUtils {
 		}
 		// Name
 		if (targetType.isAssignableFrom(IName.class)) {
-			return (T) IName.PROTOTYPE.create(Strings.toString(source));
+			return (T) IName.$.create(Strings.toString(source));
 		}
 
 		// Class
@@ -478,7 +477,7 @@ public enum TypeUtils {
 
 		// IFormula - which locale should be used here?
 		//		if (targetType.isAssignableFrom(IFormula.class)) {
-		//			IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
+		//			IFormulaService service = IFormulaService.$.getInstance()
 		//			String formula = Strings.toString(source);
 		//			try {
 		//				return (T) service.parse(formula);
@@ -507,7 +506,7 @@ public enum TypeUtils {
 
 		// and then fallback to IDataConverter
 		// TODO RPr: this is not yet finished!
-		for (IDataConverter dc : ServiceLocator.findApplicationServices(IDataConverter.class)) {
+		for (IDataConverter dc : IDataConverter.$.getInstances()) {
 			if (targetType.isAssignableFrom(dc.getType())) {
 				return (T) dc.convertTo(source);
 			}
@@ -545,7 +544,7 @@ public enum TypeUtils {
 			// at last: ask the service
 			// and then fallback to IDataConverter
 			// TODO RPr: this is not yet finished!
-			for (IDataConverter<?> dc : ServiceLocator.findApplicationServices(IDataConverter.class)) {
+			for (IDataConverter<?> dc : IDataConverter.$.getInstances()) {
 				if (Date.class.isAssignableFrom(dc.getType())) {
 					return (Date) dc.convertTo(source);
 				}
@@ -587,7 +586,7 @@ public enum TypeUtils {
 			}
 			// at last: ask the service
 			// TODO RPr: this is not yet finished!
-			for (IDataConverter<?> dc : ServiceLocator.findApplicationServices(IDataConverter.class)) {
+			for (IDataConverter<?> dc : IDataConverter.$.getInstances()) {
 				if (Calendar.class.isAssignableFrom(dc.getType())) {
 					return (Calendar) dc.convertTo(source);
 				}
@@ -804,7 +803,7 @@ public enum TypeUtils {
 				return SafeCast.longToByte(((Number) value).longValue());
 			}
 		}
-		//		for (IDataConverter dc : ServiceLocator.findApplicationServices(IDataConverter.class)) {
+		//		for (IDataConverter dc : IDataConverter.$.getInstance())) {
 		//			T ret = dc.toByte(o);
 		//			if (ret != null)
 		//				return ret;

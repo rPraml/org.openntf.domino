@@ -60,7 +60,6 @@ import org.openntf.domino.session.TrustedSessionFactory;
 import org.openntf.domino.thread.DominoRequest;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.SessionDescendant;
-import org.openntf.domino.utils.Factory.SessionType;
 
 /**
  * The Enum Factory. Does the Mapping lotusObject <=> OpenNTF-Object
@@ -1232,7 +1231,7 @@ public enum Factory {
 		File iniFile;
 		try {
 			localServerName = session.getUserName();
-			IName.PROTOTYPE.setLocalServerName(localServerName);
+			IName.$.setLocalServerName(localServerName);
 			iniFile = new File(session.evaluate("@ConfigFile").get(0).toString());
 		} catch (NotesException e) {
 			Factory.println("WARNING", "@ConfigFile returned " + e.getMessage() + " Using fallback to locate notes.ini");

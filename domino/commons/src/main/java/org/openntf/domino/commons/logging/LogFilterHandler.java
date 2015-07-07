@@ -166,9 +166,9 @@ public class LogFilterHandler extends Handler {
 			}
 		if (_handlerUpdateSet == null)
 			_handlerUpdateSet = new HashSet<L_HandlerUpdateEntry>();
-			_handlerUpdateSet.add(new L_HandlerUpdateEntry(oldHandlerUIF, handlerEnt, oldHex, handlerCfgEnt._handlerConfig,
-					oldHandlerCfgEnt._handlerConfig, useDefaultFormatter, formatter));
-			return true;
+		_handlerUpdateSet.add(new L_HandlerUpdateEntry(oldHandlerUIF, handlerEnt, oldHex, handlerCfgEnt._handlerConfig,
+				oldHandlerCfgEnt._handlerConfig, useDefaultFormatter, formatter));
+		return true;
 	}
 
 	void activateYourself(final LogFilterHandler[] oldLFHs) {
@@ -344,7 +344,7 @@ public class LogFilterHandler extends Handler {
 		if (!userRequired && !dbRequired)
 			return true;
 		try {
-			String[] userDB = ILoggingService.INSTANCE.getCurrentUserAndDB(exception, userRequired, dbRequired);
+			String[] userDB = ILoggingService.$.getInstance().getCurrentUserAndDB(exception, userRequired, dbRequired);
 			if (userRequired)
 				contextMap.put(LogConfig.cUserName, userDB[0]);
 			if (dbRequired)

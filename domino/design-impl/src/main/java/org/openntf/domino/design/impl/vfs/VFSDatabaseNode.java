@@ -26,9 +26,10 @@ import java.util.logging.Logger;
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
 import org.openntf.domino.commons.ServiceLocator;
-import org.openntf.domino.design.DatabaseDesignService;
+import org.openntf.domino.design.DatabaseDesign;
 import org.openntf.domino.design.DesignBase;
 import org.openntf.domino.design.DesignCollection;
+import org.openntf.domino.design.impl.DatabaseDesignService;
 import org.openntf.domino.design.sync.OnDiskDesign;
 import org.openntf.domino.design.vfs.VFSNode;
 import org.openntf.domino.utils.Factory.SessionType;
@@ -51,6 +52,7 @@ public class VFSDatabaseNode extends VFSAbstractNode<DesignBase> implements org.
 		this.metaData = md;
 	}
 
+	@Override
 	public Database getDatabase() {
 		Session session = SessionType.CURRENT.get();
 		return session.getDatabase(metaData.getApiPath());
@@ -117,9 +119,8 @@ public class VFSDatabaseNode extends VFSAbstractNode<DesignBase> implements org.
 
 	@Override
 	protected void init() {
-		DatabaseDesignService service = ServiceLocator.findApplicationService(DatabaseDesignService.class);
-		service.getDatabaseDesign(getDatabase()).flush();
-		DesignCollection<DesignBase> coll = service.getDatabaseDesign(getDatabase()).getDesignElements();
+		DatabaseDesign.$.get(getDatabase()).flush();
+		DesignCollection<DesignBase> coll = DatabaseDesign.$.get(getDatabase()).getDesignElements();
 		for (DesignBase el : coll) {
 			String fileName = OnDiskDesign.getOnDiskPath(el);
 			String[] components = fileName.split("/");

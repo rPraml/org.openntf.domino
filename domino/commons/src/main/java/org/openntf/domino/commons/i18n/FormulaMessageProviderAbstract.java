@@ -69,7 +69,7 @@ public abstract class FormulaMessageProviderAbstract extends MessageProviderAbst
 				numParams--;
 		}
 		try {
-			IFormulaService formulaService = IFormulaService.INSTANCE;
+			IFormulaService formulaService = IFormulaService.$.getInstance();
 			if (formulaService == null)
 				throw new IllegalStateException("No formula service found");
 			IFormula formula = formulaService.parse(msgString, loc, true);

@@ -84,7 +84,7 @@ import com.ibm.icu.util.Calendar;
  */
 
 public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.domino.Session, WrapperFactory> implements
-org.openntf.domino.Session {
+		org.openntf.domino.Session {
 	/** The Constant log_. */
 	private static final Logger log_ = Logger.getLogger(Session.class.getName());
 
@@ -515,10 +515,10 @@ org.openntf.domino.Session {
 	public Vector<Object> evaluate(final String formula, final lotus.domino.Document doc) {
 		try {
 			// TODO RPr: Make an option to enable/disable formula engine
-			if (IFormulaService.INSTANCE != null && doc instanceof Map) {
+			if (IFormulaService.$.isAvailable() && doc instanceof Map) {
 				Locale parseLoc = Locale.getDefault();
 				Locale solveLoc = Locale.getDefault(); // TODO RPr change this to the locale of the HTTP request!
-				List<Object> ret = IFormulaService.INSTANCE.evaluate(formula, parseLoc, solveLoc, (Map<String, Object>) doc);
+				List<Object> ret = IFormulaService.$.evaluate(formula, parseLoc, solveLoc, (Map<String, Object>) doc);
 				return new Vector(ret);
 			}
 

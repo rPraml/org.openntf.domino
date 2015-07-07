@@ -174,7 +174,7 @@ public class ItemDefinition implements IItemDefinition, Externalizable {
 			} else if (checkType.equals(String.class)) {
 				defaultValue = "";
 			} else if (checkType.equals(IDateTime.class)) {
-				IDateTime dt = IDateTime.PROTOTYPE.clone();
+				IDateTime dt = IDateTime.$.create();
 				dt.setAnyDate();
 				dt.setAnyTime();
 				defaultValue = dt;

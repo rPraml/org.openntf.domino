@@ -37,7 +37,7 @@ public enum Names {
 	 */
 	@Deprecated
 	public static IName parse(final String name) {
-		return IName.PROTOTYPE.create(name);
+		return IName.$.create(name);
 	}
 
 	/**

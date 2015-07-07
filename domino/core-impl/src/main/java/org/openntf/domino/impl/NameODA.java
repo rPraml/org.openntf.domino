@@ -45,7 +45,7 @@ import org.openntf.domino.utils.ODAUtils;
  * 
  */
 public class NameODA extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.domino.Name, Session> implements org.openntf.domino.Name,
-Comparable<org.openntf.domino.commons.IName>, Cloneable {
+		Comparable<org.openntf.domino.commons.IName>, Cloneable {
 	@SuppressWarnings("unused")
 	private static final Logger log_ = Logger.getLogger(NameODA.class.getName());
 
@@ -66,7 +66,7 @@ Comparable<org.openntf.domino.commons.IName>, Cloneable {
 	protected NameODA(final Session sess, final String name, final String lang) {
 		super(null, sess, NOTES_NAME);
 		_language = Strings.null2Empty(lang);
-		_parserDelegate = IName.PROTOTYPE.create(name);
+		_parserDelegate = IName.$.create(name);
 	}
 
 	// Called from WrapperFactory.wrapLotusObject
@@ -74,7 +74,7 @@ Comparable<org.openntf.domino.commons.IName>, Cloneable {
 		super(delegate, parent, NOTES_NAME);
 		try {
 			_language = delegate.getLanguage();
-			_parserDelegate = IName.PROTOTYPE.create(delegate.getCanonical());
+			_parserDelegate = IName.$.create(delegate.getCanonical());
 		} catch (NotesException ne) {
 			ODAUtils.handleException(ne);
 		} finally {
@@ -192,7 +192,7 @@ Comparable<org.openntf.domino.commons.IName>, Cloneable {
 			throw new InvalidClassException("Cannot read data version " + version);
 		String canonical = in.readUTF();
 		_language = in.readUTF();
-		_parserDelegate = IName.PROTOTYPE.create(canonical);
+		_parserDelegate = IName.$.create(canonical);
 	}
 
 	@Override
