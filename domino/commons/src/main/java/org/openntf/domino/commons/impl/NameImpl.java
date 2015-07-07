@@ -39,7 +39,18 @@ public class NameImpl implements IName, Comparable<IName> {
 
 	private static NameImpl _serverName = null;
 
-	public NameImpl(final String name) {
+	public NameImpl() {
+		// defautl constructor for Service
+	}
+
+	@Override
+	public IName create(final CharSequence name) {
+		if (name == null)
+			return null;
+		return new NameImpl(name.toString());
+	}
+
+	private NameImpl(final String name) {
 		parse(name);
 	}
 
@@ -79,7 +90,7 @@ public class NameImpl implements IName, Comparable<IName> {
 	private String[] _hierParts = new String[_hpSize];
 
 	private static final String[] _hierPartPrefices = { "A=", "CN=", "C=", "Q=", "G=", "I=", "O=", //
-		"OU1=", "OU2=", "OU3=", "OU4=", "P=", "S=", "OU=" };
+			"OU1=", "OU2=", "OU3=", "OU4=", "P=", "S=", "OU=" };
 
 	private String _routingHint;	// For addresses like CN=John Smith/OU=HR/O=Shell/C=US@SHELL@Esso
 	// In this case, the hint will be "SHELL@Esso"
@@ -134,7 +145,7 @@ public class NameImpl implements IName, Comparable<IName> {
 	public String getAbbreviated() {
 		if (_abbreviated == null)
 			_abbreviated = (_nameFormat == NameFormat.HIERARCHICAL) ? buildX400Path(false, false) : _sourceString;
-			return _abbreviated;
+		return _abbreviated;
 	}
 
 	@Override
@@ -176,8 +187,8 @@ public class NameImpl implements IName, Comparable<IName> {
 	public String getCanonical() {
 		if (_canonical == null)
 			_canonical = _nameFormat.isHierarchical() && !_nameFormat.isError() ? buildX400Path(true, true) : // 
-					Strings.null2Empty(_sourceString);
-			return _canonical;
+				Strings.null2Empty(_sourceString);
+		return _canonical;
 	}
 
 	@Override
@@ -738,7 +749,8 @@ public class NameImpl implements IName, Comparable<IName> {
 		}
 	}
 
-	public static synchronized void setLocalServerName(final String localServerName) {
+	@Override
+	public synchronized void setLocalServerName(final String localServerName) {
 		if (localServerName == null || _serverName != null)
 			return;
 		_serverName = new NameImpl(localServerName);

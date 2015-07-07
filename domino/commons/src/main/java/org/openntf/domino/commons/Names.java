@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openntf.domino.commons.NameEnums.NamePartKey;
-import org.openntf.domino.commons.impl.NameImpl;
 import org.openntf.domino.commons.utils.CollectionUtils;
 
 /**
@@ -36,15 +35,9 @@ public enum Names {
 	/**
 	 * Creates a new INameParser object based on the given name
 	 */
+	@Deprecated
 	public static IName parse(final String name) {
-		return new NameImpl(name);
-	}
-
-	/**
-	 * Sets the local server name (i.e. default name)
-	 */
-	public static void setLocalServerName(final String localServerName) {
-		NameImpl.setLocalServerName(localServerName);
+		return IName.PROTOTYPE.create(name);
 	}
 
 	/**
@@ -200,6 +193,7 @@ public enum Names {
 		return getNamePart(source, NamePartKey.Common);
 	}
 
+	@Deprecated
 	public static IName parse(final CharSequence name) {
 		String s = name == null ? null : name.toString();
 		return parse(s);

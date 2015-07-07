@@ -21,6 +21,9 @@ import java.util.Date;
 import java.util.Vector;
 
 import org.openntf.domino.annotations.Legacy;
+import org.openntf.domino.commons.IDateTime;
+import org.openntf.domino.commons.IFormulaService;
+import org.openntf.domino.commons.IName;
 import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.Resurrectable;
@@ -31,7 +34,7 @@ import org.openntf.domino.types.Resurrectable;
  * represents the Domino environment of the current program.
  */
 public interface Session extends lotus.domino.Session, org.openntf.domino.ext.Session, Base<lotus.domino.Session>, IExceptionDetails,
-Resurrectable, Externalizable {
+		Resurrectable, Externalizable {
 	public static enum Permissions {
 		READ_CURRENT_NSF, WRITE_CURRENT_NSF, DESIGN_CURRENT_NSF, READ_LOCAL_NSF, WRITE_LOCAL_NSF, DESIGN_LOCAL_NSF, READ_REMOTE_NSF,
 		WRITE_REMOTE_NSF, DESIGN_REMOTE_NSF, SEND_MAIL, SEND_COMMANDS, READ_DIRECTORY, WRITE_DIRECTORY, IMPORT_DXL, EXPORT_DXL;
@@ -124,8 +127,10 @@ Resurrectable, Externalizable {
 	 * 
 	 * @return The newly created {@link DateRange} object.
 	 * @since lotus.domino 4.5.0
+	 * @deprecated Avoid using DateRanges, because they are broken in teh lotus.domino-API
 	 */
 	@Override
+	@Deprecated
 	public DateRange createDateRange();
 
 	/**
@@ -138,7 +143,9 @@ Resurrectable, Externalizable {
 	 * 
 	 * @return The newly created {@link DateRange} object.
 	 * @since lotus.domino 4.5.0
+	 * @deprecated Avoid using DateRanges, because they are broken in teh lotus.domino-API
 	 */
+	@Deprecated
 	@Override
 	public DateRange createDateRange(final Date startTime, final Date endTime);
 
@@ -151,8 +158,10 @@ Resurrectable, Externalizable {
 	 *            The ending date-time of the range. Cannot be <code>null</code>.
 	 * 
 	 * @return The newly created {@link DateRange} object.
+	 * @deprecated Avoid using DateRanges, because they are broken in teh lotus.domino-API
 	 * @since lotus.domino 4.5.0
 	 */
+	@Deprecated
 	@Override
 	public DateRange createDateRange(final lotus.domino.DateTime startTime, final lotus.domino.DateTime endTime);
 
@@ -161,10 +170,11 @@ Resurrectable, Externalizable {
 	 * 
 	 * @param date
 	 *            The date, time, and time zone you want the object to represent using a {@link java.util.Calendar} object.
-	 * 
+	 * @deprecated use {@link IDateTime#PROTOTYPE.clone()} instead
 	 * @return The newly created {@link DateTime} object.
 	 * @since lotus.domino 4.5.0
 	 */
+	@Deprecated
 	@Override
 	public DateTime createDateTime(final Calendar date);
 
@@ -173,11 +183,12 @@ Resurrectable, Externalizable {
 	 * 
 	 * @param date
 	 *            The date, time you want the object to represent using a {@link java.util.Date} object.
-	 * 
+	 * @deprecated use {@link IDateTime#PROTOTYPE.clone()} instead
 	 * @return The newly created {@link DateTime} object.
 	 * @since lotus.domino 4.5.0
 	 */
 	@Override
+	@Deprecated
 	public DateTime createDateTime(final Date date);
 
 	// there's no recycle burden?
@@ -187,10 +198,11 @@ Resurrectable, Externalizable {
 	 * 
 	 * @param date
 	 *            The date, time you want the object to represent using a string. @see org.openntf.domino.DateTime for formats.
-	 * 
+	 * @deprecated use {@link IDateTime#PROTOTYPE.clone()} instead
 	 * @return The newly created {@link DateTime} object.
 	 * @since lotus.domino 4.5.0
 	 */
+	@Deprecated
 	@Override
 	public DateTime createDateTime(final String date);
 
@@ -209,10 +221,11 @@ Resurrectable, Externalizable {
 	 *            the mInutes
 	 * @param s
 	 *            the seconds
-	 * 
+	 * @deprecated better use {@link IDateTime#PROTOTYPE.clone()} instead
 	 * @return The newly created {@link DateTime} object.
 	 * @since org.openntf.domino 2014-03-11
 	 */
+	@Deprecated
 	public DateTime createDateTime(int y, int m, int d, int h, int i, int s);
 
 	/**
@@ -253,10 +266,11 @@ Resurrectable, Externalizable {
 	 * @param name
 	 *            A user or server name. If the name is not in the format of an abbreviated or canonical hierarchical name, it is treated as
 	 *            a flat name.
-	 * 
+	 * @deprecated use {@link IName#PROTOTYPE} instead
 	 * @return The newly created {@link Name} object.
 	 * @since lotus.domino 4.5.0
 	 */
+	@Deprecated
 	@Override
 	public Name createName(final String name);
 
@@ -278,9 +292,11 @@ Resurrectable, Externalizable {
 	 *            </ul>
 	 * 
 	 * @return The newly created {@link Name} object.
+	 * @deprecated use {@link IName#PROTOTYPE}.create() instead TODO there is no lang support yet
 	 * @since lotus.domino 4.5.0
 	 */
 	@Override
+	@Deprecated
 	public Name createName(final String name, final String lang);
 
 	/**
@@ -359,9 +375,19 @@ Resurrectable, Externalizable {
 	 *            The formula to be evaluated.
 	 * 
 	 * @return The result of the evaluation. A scalar result is returned in firstElement.
+	 * @deprecated as it uses the current system locale, which is a problem if you evaluate formulas that contains decimal separators not
+	 *             matching to the current locale. Also the Locale of the current request should be honored. Use
+	 *             {@link IFormulaService#evaluate(String, java.util.Locale, java.util.Locale)} instead. A correct usage would be
+	 * 
+	 *             <pre>
+	 *             String computeTax = "balance * 1.19";
+	 *             Locale formulaLoc = Locale.US; 
+	 *             result = IFormulaService#INSTANCE.evaluate(computeTax, formulaLoc, LifeCycleManager.getCurrentRequest().getLocale())
+	 * </pre>
 	 * @since lotus.domino 4.5.0
 	 */
 	@Override
+	@Deprecated
 	public Vector<Object> evaluate(final String formula);
 
 	/**
@@ -403,11 +429,12 @@ Resurrectable, Externalizable {
 	 *            The formula to be evaluated.
 	 * @param doc
 	 *            The document to evaluate against.
-	 * 
+	 * @deprecated see {@link #evaluate(String)}
 	 * @return The result of the evaluation. A scalar result is returned in firstElement.
 	 * @since lotus.domino 4.5.0
 	 */
 	@Override
+	@Deprecated
 	public Vector<Object> evaluate(final String formula, final lotus.domino.Document doc);
 
 	/* (non-Javadoc)
@@ -848,6 +875,7 @@ Resurrectable, Externalizable {
 	 * The name, in the form of a NotesName object, of the user or server that created the session.
 	 * 
 	 * @return The {@link Name} object of the session creator.
+	 * 
 	 * @since lotus.domino 4.5.0
 	 */
 	@Override

@@ -76,12 +76,14 @@ public interface ACLEntry extends Base<lotus.domino.ACLEntry>, lotus.domino.ACLE
 	@Override
 	public String getName();
 
-	/*
+	/**
 	 * (non-Javadoc)
 	 * 
 	 * @see lotus.domino.ACLEntry#getNameObject()
+	 * @deprecated use {@link org.openntf.domino.ext.ACLEntry#getIName() } instead
 	 */
 	@Override
+	@Deprecated
 	public Name getNameObject();
 
 	/*

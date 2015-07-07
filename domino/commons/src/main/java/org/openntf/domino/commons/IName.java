@@ -14,6 +14,11 @@ import org.openntf.domino.commons.NameEnums.NamePartKey;
 public interface IName {
 
 	/**
+	 * The IName prototype. Always clone!
+	 */
+	public static IName PROTOTYPE = ServiceLocator.findApplicationService(IName.class);
+
+	/**
 	 * Gets the RFC821 or RFC822 internet address
 	 * 
 	 * * A name that conforms to RFC 821 or RFC 822 is interpreted as an Internet address. Examples of Internet addresses are as follows:
@@ -93,6 +98,11 @@ public interface IName {
 	public String getPRMD();
 
 	public String getSurname();
+
+	// Factory Method
+	public IName create(final CharSequence name);
+
+	public void setLocalServerName(String string);
 
 	//	/**
 	//	 * Checks if the given name is member of the given collection.

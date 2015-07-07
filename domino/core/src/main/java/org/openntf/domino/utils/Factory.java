@@ -38,11 +38,11 @@ import org.openntf.domino.Session;
 import org.openntf.domino.Session.RunContext;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.ILifeCycle;
+import org.openntf.domino.commons.IName;
 import org.openntf.domino.commons.IO;
 import org.openntf.domino.commons.IRequest;
 import org.openntf.domino.commons.IRequestLifeCycle;
 import org.openntf.domino.commons.LifeCycleManager;
-import org.openntf.domino.commons.Names;
 import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.exception.DataNotCompatibleException;
 import org.openntf.domino.commons.utils.BundleInfos;
@@ -57,8 +57,10 @@ import org.openntf.domino.session.NativeSessionFactory;
 import org.openntf.domino.session.PasswordSessionFactory;
 import org.openntf.domino.session.SessionFullAccessFactory;
 import org.openntf.domino.session.TrustedSessionFactory;
+import org.openntf.domino.thread.DominoRequest;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.SessionDescendant;
+import org.openntf.domino.utils.Factory.SessionType;
 
 /**
  * The Enum Factory. Does the Mapping lotusObject <=> OpenNTF-Object
@@ -1052,23 +1054,24 @@ public enum Factory {
 	//		DominoUtils.setBubbleExceptions(null);
 	//	}
 
-	//	/**
-	//	 * Begin with a clear environment. Initialize this thread
-	//	 * 
-	//	 */
-	//	@Deprecated
-	//	public static void initThread(final ThreadConfig tc) { // RPr: Method was deliberately renamed
-	//		LifeCycleManager.beforeRequest(tc);
-	//	}
-	//
-	//	/**
-	//	 * terminate the current thread.
-	//	 */
-	//	@Deprecated
-	//	public static void termThread() { // RPr: Method was deliberately renamed
-	//		LifeCycleManager.afterRequest();
-	//
-	//	}
+	/**
+	 * Begin with a clear environment. Initialize this thread
+	 * 
+	 */
+	@Deprecated
+	public static void initThread(final ThreadConfig tc) { // RPr: Method was deliberately renamed
+		IRequest request = new DominoRequest(tc, "&DEPRECATED=true");
+		LifeCycleManager.beforeRequest(request);
+	}
+
+	/**
+	 * terminate the current thread.
+	 */
+	@Deprecated
+	public static void termThread() { // RPr: Method was deliberately renamed
+		LifeCycleManager.afterRequest();
+
+	}
 
 	private static File getConfigFileFallback() {
 		String progpath = System.getProperty("notes.binary");
@@ -1229,7 +1232,7 @@ public enum Factory {
 		File iniFile;
 		try {
 			localServerName = session.getUserName();
-			Names.setLocalServerName(localServerName);
+			IName.PROTOTYPE.setLocalServerName(localServerName);
 			iniFile = new File(session.evaluate("@ConfigFile").get(0).toString());
 		} catch (NotesException e) {
 			Factory.println("WARNING", "@ConfigFile returned " + e.getMessage() + " Using fallback to locate notes.ini");
