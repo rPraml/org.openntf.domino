@@ -600,26 +600,6 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.openntf.domino.View#createViewNavFrom(java.lang.Object)
-	 */
-	@Override
-	public ViewNavigator createViewNavFrom(final Object entry) {
-		List<lotus.domino.Base> recycleThis = new ArrayList<lotus.domino.Base>();
-		try {
-			Object lotusObj = toDominoFriendly(entry, getAncestorSession(), recycleThis);
-			getDelegate().setAutoUpdate(false);
-			return fromLotus(getDelegate().createViewNavFrom(lotusObj), ViewNavigator.SCHEMA, this);
-		} catch (NotesException e) {
-			ODAUtils.handleException(e);
-		} finally {
-			s_recycle(recycleThis);
-		}
-		return null;
-	}
-
 	/**
 	 * This method is neccessary to get some Backend-functions working.<br>
 	 * <font color=red>Attention: The <b>name</b> of the function seems not to be important, but the <b>position</b>!</font> It seems that
@@ -653,7 +633,27 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 			e.printStackTrace();
 		}
 		return null;
+	
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.openntf.domino.View#createViewNavFrom(java.lang.Object)
+	 */
+	@Override
+	public ViewNavigator createViewNavFrom(final Object entry) {
+		List<lotus.domino.Base> recycleThis = new ArrayList<lotus.domino.Base>();
+		try {
+			Object lotusObj = toDominoFriendly(entry, getAncestorSession(), recycleThis);
+			getDelegate().setAutoUpdate(false);
+			return fromLotus(getDelegate().createViewNavFrom(lotusObj), ViewNavigator.SCHEMA, this);
+		} catch (NotesException e) {
+			ODAUtils.handleException(e);
+		} finally {
+			s_recycle(recycleThis);
+		}
+		return null;
 	}
 
 	/*
