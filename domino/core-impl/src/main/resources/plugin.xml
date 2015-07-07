@@ -7,4 +7,7 @@
 <extension point="com.ibm.commons.Extension">
   <service class="org.openntf.domino.impl.DominoLifeCycle"  type="org.openntf.domino.commons.ILifeCycle"/>
 </extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.logging.impl.Logging"  type="org.openntf.domino.commons.ILoggingService"/>
+</extension>
 </plugin>

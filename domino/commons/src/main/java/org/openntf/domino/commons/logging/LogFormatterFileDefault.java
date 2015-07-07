@@ -7,6 +7,8 @@ import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
+import org.openntf.domino.commons.ILoggingService;
+
 public class LogFormatterFileDefault extends Formatter {
 
 	public static LogFormatterFileDefault getInstance() {
@@ -44,7 +46,7 @@ public class LogFormatterFileDefault extends Formatter {
 		else if (levelSevere)
 			sb.append("***NO STACK TRACE***");
 		sb.append('\n');
-		if (LoggingAbstract.getInstance().mayContainAdditionalInfo(logRec)) {
+		if (ILoggingService.INSTANCE.mayContainAdditionalInfo(logRec)) {
 			LogRecordAdditionalInfo lrai = new LogRecordAdditionalInfo(logRec);
 			lrai.writeToLog(sb);
 		}
