@@ -11,6 +11,7 @@ import lotus.domino.NotesThread;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.IRequest;
 import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.session.NamedSessionFactory;
 import org.openntf.domino.session.NativeSessionFactory;
@@ -84,7 +85,8 @@ public class DominoJUnitRunner extends AbstractJUnitRunner {
 		try {
 			String runAs = getRunAs(method);
 			String db = getDatabase(method);
-			LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
+			IRequest request = new JUnitRequest(Factory.STRICT_THREAD_CONFIG, method.getName(), runAs);
+			LifeCycleManager.beforeRequest(request);
 			if (runAs == null) {
 				Factory.setSessionFactory(new NativeSessionFactory(db), SessionType.CURRENT);
 				Factory.setSessionFactory(new SessionFullAccessFactory(db), SessionType.CURRENT_FULL_ACCESS);

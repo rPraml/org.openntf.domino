@@ -15,12 +15,14 @@
  */
 package org.openntf.domino.thread;
 
+import java.util.Locale;
 import java.util.logging.Logger;
 
 import lotus.domino.NotesThread;
 
 import org.openntf.domino.commons.ILifeCycle;
 import org.openntf.domino.commons.IO;
+import org.openntf.domino.commons.IRequest;
 import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.session.ISessionFactory;
 import org.openntf.domino.utils.Factory;
@@ -35,7 +37,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 	private transient Runnable runnable_;
 	protected int nativeId_;
 	private final ISessionFactory sessionFactory_;
-
+	private final Locale locale_;
 	private Factory.ThreadConfig sourceThreadConfig = Factory.getThreadConfig();
 
 	/**
@@ -43,6 +45,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 	 */
 	public DominoThread() {
 		sessionFactory_ = Factory.getSessionFactory(SessionType.CURRENT);
+		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
 	}
 
 	/**
@@ -54,6 +57,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 	public DominoThread(final String threadName) {
 		super(threadName);
 		sessionFactory_ = Factory.getSessionFactory(SessionType.CURRENT);
+		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
 	}
 
 	/**
@@ -66,6 +70,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 		super();
 		runnable_ = runnable;
 		sessionFactory_ = Factory.getSessionFactory(SessionType.CURRENT);
+		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
 	}
 
 	/**
@@ -80,6 +85,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 		super(threadName);
 		runnable_ = runnable;
 		sessionFactory_ = Factory.getSessionFactory(SessionType.CURRENT);
+		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
 	}
 
 	/**
@@ -96,6 +102,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 		super(threadName);
 		runnable_ = runnable;
 		sessionFactory_ = sessionFactory;
+		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
 	}
 
 	/**
@@ -109,6 +116,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 	public DominoThread(final String threadName, final ISessionFactory sessionFactory) {
 		super(threadName);
 		sessionFactory_ = sessionFactory;
+		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
 	}
 
 	/**
@@ -124,6 +132,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 	public DominoThread(final ISessionFactory sessionFactory) {
 		super();
 		sessionFactory_ = sessionFactory;
+		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
 	}
 
 	/**
@@ -140,6 +149,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 		super();
 		runnable_ = runnable;
 		sessionFactory_ = sessionFactory;
+		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
 	}
 
 	public Runnable getRunnable() {
@@ -168,7 +178,9 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 		super.initThread();
 		nativeId_ = this.getNativeThreadID();
 		log_.fine("DEBUG: Initializing a " + toString());
-		LifeCycleManager.beforeRequest(sourceThreadConfig);
+		IRequest request = new DominoRequest(Factory.STRICT_THREAD_CONFIG, "&dominoThread="
+				+ (runnable_ == null ? this : runnable_).getClass().getName());
+		LifeCycleManager.beforeRequest(request);
 		Factory.setSessionFactory(sessionFactory_, SessionType.CURRENT);
 		LifeCycleManager.addLifeCycle(this);
 	}
@@ -208,7 +220,8 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 	public static void runApp(final Runnable app, final ISessionFactory sf) {
 		LifeCycleManager.startup();
 		lotus.domino.NotesThread.sinitThread(); // we must keep one thread open
-		LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
+		IRequest request = new DominoRequest(Factory.STRICT_THREAD_CONFIG, "&app=" + app.getClass().getName());
+		LifeCycleManager.beforeRequest(request);
 		Factory.setSessionFactory(sf, SessionType.CURRENT);
 
 		try {

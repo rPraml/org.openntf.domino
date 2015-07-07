@@ -7,10 +7,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextFactory;
 import javax.faces.lifecycle.Lifecycle;
 
+import org.openntf.domino.commons.IRequest;
 import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.xsp.ODAPlatform;
+import org.openntf.domino.xsp.XspRequest;
 import org.openntf.domino.xsp.session.XPageCurrentSessionFactory;
 import org.openntf.domino.xsp.session.XPageSignerSessionFactory;
 
@@ -71,15 +73,11 @@ public class ODAFacesContextFactory extends FacesContextFactory {
 			throws FacesException {
 		FacesContext ctx = _delegate.getFacesContext(context, request, response, lifecycle);
 
-		LifeCycleManager.beforeRequest(ODAPlatform.getAppThreadConfig(null));
+		IRequest iRequest = new XspRequest(ODAPlatform.getAppThreadConfig(null), (FacesContextEx) ctx);
+		LifeCycleManager.beforeRequest(iRequest);
 		Factory.setSessionFactory(new XPageCurrentSessionFactory(), SessionType.CURRENT);
 		Factory.setSessionFactory(new XPageSignerSessionFactory(false), SessionType.SIGNER);
 		Factory.setSessionFactory(new XPageSignerSessionFactory(true), SessionType.SIGNER_FULL_ACCESS);
-
-		// TODO RPr: This is probably the wrong locale. See ViewHandler.calculateLocale
-		Factory.setUserLocale(ctx.getExternalContext().getRequestLocale());
-
-		//		NotesContext ntx = NotesContext.getCurrent();
 
 		if (ODAPlatform.isAppGodMode(null)) {
 			ODAFacesContext localContext = new ODAFacesContext(ctx);

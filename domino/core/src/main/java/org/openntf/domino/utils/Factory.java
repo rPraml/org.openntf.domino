@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
@@ -34,7 +33,6 @@ import lotus.domino.NotesThread;
 
 import org.openntf.domino.AutoMime;
 import org.openntf.domino.Base;
-import org.openntf.domino.Database;
 import org.openntf.domino.DocumentCollection;
 import org.openntf.domino.Session;
 import org.openntf.domino.Session.RunContext;
@@ -61,7 +59,6 @@ import org.openntf.domino.session.SessionFullAccessFactory;
 import org.openntf.domino.session.TrustedSessionFactory;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.SessionDescendant;
-import org.openntf.domino.utils.Factory.SessionType;
 
 /**
  * The Enum Factory. Does the Mapping lotusObject <=> OpenNTF-Object
@@ -163,7 +160,7 @@ public enum Factory {
 		}
 	}
 
-	public static class ThreadConfig implements IRequest {
+	public static class ThreadConfig {
 		public final Fixes[] fixes;
 		public final AutoMime autoMime;
 		public final boolean bubbleExceptions;
@@ -301,11 +298,6 @@ public enum Factory {
 
 		//private ClassLoader classLoader;
 
-		/**
-		 * Support for different Locale
-		 */
-		private Locale userLocale;
-
 		/** the factories can create a new session */
 		public ISessionFactory[] sessionFactories = new ISessionFactory[SessionType.SIZE];
 
@@ -318,11 +310,11 @@ public enum Factory {
 		/** These sessions will be recycled at the end of that thread. Key = UserName of session */
 		public Map<String, Session> ownSessions = new HashMap<String, Session>();
 
-		private ThreadConfig threadConfig;
-
-		public ThreadVariables(final IRequest tc) {
-			threadConfig = (ThreadConfig) tc;
-		}
+		//		private ThreadConfig threadConfig;
+		//
+		//		public ThreadVariables(final IRequest tc) {
+		//			threadConfig = (ThreadConfig) tc;
+		//		}
 
 		/** clear the object */
 		private void clear() {
@@ -331,7 +323,6 @@ public enum Factory {
 				sessionHolders[i] = null;
 				sessionFactories[i] = null;
 			}
-			userLocale = null;
 			namedSessionFactory = null;
 			namedSessionFullAccessFactory = null;
 
@@ -346,7 +337,12 @@ public enum Factory {
 	/**
 	 * Holder for variables that are different per thread
 	 */
-	private static ThreadLocal<ThreadVariables> threadVariables_ = new ThreadLocal<ThreadVariables>();
+	private static ThreadLocal<ThreadVariables> threadVariables_ = new ThreadLocal<ThreadVariables>() {
+		@Override
+		protected ThreadVariables initialValue() {
+			return new ThreadVariables();
+		};
+	};
 
 	//private static List<Runnable> globalTerminateHooks = new ArrayList<Runnable>();
 
@@ -354,17 +350,14 @@ public enum Factory {
 	private static boolean napiPresent_;
 
 	private static ThreadVariables getThreadVariables() {
-		ThreadVariables tv = threadVariables_.get();
-		if (tv == null)
-			throw new IllegalStateException(Factory.class.getName() + " is not initialized for this thread!");
-		return tv;
+		return threadVariables_.get();
 	}
 
 	public static ThreadConfig getThreadConfig() {
-		ThreadVariables tv = threadVariables_.get();
-		if (tv == null)
-			return PERMISSIVE_THREAD_CONFIG;
-		return tv.threadConfig;
+		ThreadConfig tc = LifeCycleManager.getCurrentRequest().get(ThreadConfig.class);
+		if (tc == null)
+			throw new IllegalStateException(Factory.class.getName() + " is not initialized for this thread!");
+		return tc;
 	}
 
 	private static Map<String, String> ENVIRONMENT;
@@ -610,8 +603,7 @@ public enum Factory {
 	 * @return The active WrapperFactory
 	 */
 	public static WrapperFactory getWrapperFactory_unchecked() {
-		ThreadVariables tv = threadVariables_.get();
-		return tv == null ? null : threadVariables_.get().wrapperFactory;
+		return threadVariables_.get().wrapperFactory;
 	}
 
 	// RPr: A setter is normally not needed. The wrapperFactory should be configure with an application service!
@@ -942,8 +934,7 @@ public enum Factory {
 	 * @return the session
 	 */
 	public static org.openntf.domino.Session getSession_unchecked(final SessionType type) {
-		ThreadVariables tv = threadVariables_.get();
-		return tv == null ? null : tv.sessionHolders[type.index];
+		return threadVariables_.get().sessionHolders[type.index];
 	}
 
 	/**
@@ -1061,23 +1052,23 @@ public enum Factory {
 	//		DominoUtils.setBubbleExceptions(null);
 	//	}
 
-	/**
-	 * Begin with a clear environment. Initialize this thread
-	 * 
-	 */
-	@Deprecated
-	public static void initThread(final ThreadConfig tc) { // RPr: Method was deliberately renamed
-		LifeCycleManager.beforeRequest(tc);
-	}
-
-	/**
-	 * terminate the current thread.
-	 */
-	@Deprecated
-	public static void termThread() { // RPr: Method was deliberately renamed
-		LifeCycleManager.afterRequest();
-
-	}
+	//	/**
+	//	 * Begin with a clear environment. Initialize this thread
+	//	 * 
+	//	 */
+	//	@Deprecated
+	//	public static void initThread(final ThreadConfig tc) { // RPr: Method was deliberately renamed
+	//		LifeCycleManager.beforeRequest(tc);
+	//	}
+	//
+	//	/**
+	//	 * terminate the current thread.
+	//	 */
+	//	@Deprecated
+	//	public static void termThread() { // RPr: Method was deliberately renamed
+	//		LifeCycleManager.afterRequest();
+	//
+	//	}
 
 	private static File getConfigFileFallback() {
 		String progpath = System.getProperty("notes.binary");
@@ -1187,18 +1178,7 @@ public enum Factory {
 
 		@Override
 		public void beforeRequest(final IRequest request) {
-			if (log_.isLoggable(Level.FINER)) {
-				log_.log(Level.FINER, "Factory.initThread()", new Throwable());
-			}
-			if (threadVariables_.get() != null) {
-				log_.log(Level.SEVERE, "WARNING - Thread " + Thread.currentThread().getName()
-						+ " was not correctly terminated or initialized twice", new Throwable());
-			}
-			//		System.out.println("TEMP DEBUG: Factory thread initializing.");
-			//		Throwable t = new Throwable();
-			//		t.printStackTrace();
-			threadVariables_.set(new ThreadVariables(request));
-
+			getThreadVariables().clear();
 		}
 
 		@Override
@@ -1206,12 +1186,7 @@ public enum Factory {
 			if (log_.isLoggable(Level.FINER)) {
 				log_.log(Level.FINER, "Factory.termThread()", new Throwable());
 			}
-			ThreadVariables tv = threadVariables_.get();
-			if (tv == null) {
-				log_.log(Level.SEVERE, "WARNING - Thread " + Thread.currentThread().getName()
-						+ " was not correctly initalized or terminated twice", new Throwable());
-				return;
-			}
+			ThreadVariables tv = getThreadVariables();
 
 			try {
 				if (tv.wrapperFactory != null) {
@@ -1228,7 +1203,6 @@ public enum Factory {
 				log_.log(Level.SEVERE, "An error occured while terminating the factory", t);
 			} finally {
 				tv.clear();
-				threadVariables_.set(null);
 				System.gc();
 			}
 			if (counters != null) {
@@ -1350,53 +1324,45 @@ public enum Factory {
 		return threadVariables_.get() != null;
 	}
 
-	public static void setUserLocale(final Locale loc) {
-		getThreadVariables().userLocale = loc;
-	}
-
-	public static Locale getUserLocale() {
-		return getThreadVariables().userLocale;
-	}
-
-	/**
-	 * Returns the internal locale. The Locale is retrieved by this way:
-	 * <ul>
-	 * <li>If a currentDatabase is set, the DB is queried for its locale</li>
-	 * <li>If there is no database.locale, the system default locale is returned</li>
-	 * </ul>
-	 * This locale should be used, if you write log entries in a server log for example.
-	 * 
-	 * @return the currentDatabase-locale or default-locale
-	 */
-	public static Locale getInternalLocale() {
-		Locale ret = null;
-		// are we in context of an NotesSession? Try to figure out the current database.
-		Session sess = getSession_unchecked(SessionType.CURRENT);
-		Database db = (sess == null) ? null : sess.getCurrentDatabase();
-		if (db != null)
-			ret = db.getLocale();
-		if (ret == null)
-			ret = Locale.getDefault();
-		return ret;
-	}
-
-	/**
-	 * Returns the external locale. The Locale is retrieved by this way:
-	 * <ul>
-	 * <li>Return the external locale (= the browser's locale in most cases) if available</li>
-	 * <li>If a currentDatabase is set, the DB is queried for its locale</li>
-	 * <li>If there is no database.locale, the system default locale is returned</li>
-	 * </ul>
-	 * This locale should be used, if you generate messages for the current (browser)user.
-	 * 
-	 * @return the external-locale, currentDatabase-locale or default-locale
-	 */
-	public static Locale getExternalLocale() {
-		Locale ret = getUserLocale();
-		if (ret == null)
-			ret = getInternalLocale();
-		return ret;
-	}
+	//	/**
+	//	 * Returns the internal locale. The Locale is retrieved by this way:
+	//	 * <ul>
+	//	 * <li>If a currentDatabase is set, the DB is queried for its locale</li>
+	//	 * <li>If there is no database.locale, the system default locale is returned</li>
+	//	 * </ul>
+	//	 * This locale should be used, if you write log entries in a server log for example.
+	//	 * 
+	//	 * @return the currentDatabase-locale or default-locale
+	//	 */
+	//	public static Locale getInternalLocale() {
+	//		Locale ret = null;
+	//		// are we in context of an NotesSession? Try to figure out the current database.
+	//		Session sess = getSession_unchecked(SessionType.CURRENT);
+	//		Database db = (sess == null) ? null : sess.getCurrentDatabase();
+	//		if (db != null)
+	//			ret = db.getLocale();
+	//		if (ret == null)
+	//			ret = Locale.getDefault();
+	//		return ret;
+	//	}
+	//
+	//	/**
+	//	 * Returns the external locale. The Locale is retrieved by this way:
+	//	 * <ul>
+	//	 * <li>Return the external locale (= the browser's locale in most cases) if available</li>
+	//	 * <li>If a currentDatabase is set, the DB is queried for its locale</li>
+	//	 * <li>If there is no database.locale, the system default locale is returned</li>
+	//	 * </ul>
+	//	 * This locale should be used, if you generate messages for the current (browser)user.
+	//	 * 
+	//	 * @return the external-locale, currentDatabase-locale or default-locale
+	//	 */
+	//	public static Locale getExternalLocale() {
+	//		Locale ret = getUserLocale();
+	//		if (ret == null)
+	//			ret = getInternalLocale();
+	//		return ret;
+	//	}
 
 	/**
 	 * Debug method to get statistics
