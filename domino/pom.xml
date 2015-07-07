@@ -69,14 +69,14 @@
 				<module>design-impl</module>				
 				
 				<!-- modules / not needed by FOCONIS -->
-	<!-- 
 				<module>deprecated</module>				
 				<module>schema</module>
 				<module>graph</module>
 				<module>xsp</module>
 				<module>rest</module>
+				
 				<module>updatesite</module>
-	 -->
+				<!--	-->		
 			</modules>
 		</profile>
 

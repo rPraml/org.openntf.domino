@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 import org.openntf.domino.commons.IDataConverter;
 import org.openntf.domino.commons.IDateTime;
 import org.openntf.domino.commons.IName;
-import org.openntf.domino.commons.Names;
 import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.Strings;
 import org.openntf.domino.commons.exception.DataNotCompatibleException;
@@ -463,7 +462,7 @@ public enum TypeUtils {
 		}
 		// Name
 		if (targetType.isAssignableFrom(IName.class)) {
-			return (T) Names.parse(Strings.toString(source));
+			return (T) IName.PROTOTYPE.create(Strings.toString(source));
 		}
 
 		// Class

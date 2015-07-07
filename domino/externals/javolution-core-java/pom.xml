@@ -73,6 +73,7 @@
 						
 						<Bundle-Activator>javolution.osgi.internal.JavolutionActivator</Bundle-Activator>
 						<Import-Package>!*</Import-Package>
+						<Bundle-ActivationPolicy>exclude</Bundle-ActivationPolicy>
 						<!--
 						<Export-Service>javolution.xml.stream.XMLInputFactory,
 							javolution.xml.stream.XMLOutputFactory</Export-Service>

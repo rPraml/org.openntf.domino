@@ -31,20 +31,21 @@ import org.openntf.domino.commons.IName;
 import org.openntf.domino.commons.NameEnums.NameError;
 import org.openntf.domino.commons.NameEnums.NameFormat;
 import org.openntf.domino.commons.NameEnums.NamePartKey;
-import org.openntf.domino.commons.Names;
 import org.openntf.domino.commons.Strings;
-import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.utils.ODAUtils;
 
 /**
  * The class NameODA - alternative implementation for Name
  * 
+ * Name should not be used, use IName instead
+ * 
  * @author Praml, Steinsiek
+ * 
  */
-
 public class NameODA extends BaseNonThreadSafe<org.openntf.domino.Name, lotus.domino.Name, Session> implements org.openntf.domino.Name,
-Comparable<org.openntf.domino.Name>, Cloneable {
+Comparable<org.openntf.domino.commons.IName>, Cloneable {
 	@SuppressWarnings("unused")
 	private static final Logger log_ = Logger.getLogger(NameODA.class.getName());
 
@@ -65,7 +66,7 @@ Comparable<org.openntf.domino.Name>, Cloneable {
 	protected NameODA(final Session sess, final String name, final String lang) {
 		super(null, sess, NOTES_NAME);
 		_language = Strings.null2Empty(lang);
-		_parserDelegate = Names.parse(name);
+		_parserDelegate = IName.PROTOTYPE.create(name);
 	}
 
 	// Called from WrapperFactory.wrapLotusObject
@@ -73,7 +74,7 @@ Comparable<org.openntf.domino.Name>, Cloneable {
 		super(delegate, parent, NOTES_NAME);
 		try {
 			_language = delegate.getLanguage();
-			_parserDelegate = Names.parse(delegate.getCanonical());
+			_parserDelegate = IName.PROTOTYPE.create(delegate.getCanonical());
 		} catch (NotesException ne) {
 			ODAUtils.handleException(ne);
 		} finally {
@@ -171,7 +172,7 @@ Comparable<org.openntf.domino.Name>, Cloneable {
 	}
 
 	@Override
-	public int compareTo(final org.openntf.domino.Name other) {
+	public int compareTo(final org.openntf.domino.commons.IName other) {
 		if (other == null)
 			return 1;
 		return getCanonical().compareTo(other.getCanonical());
@@ -191,7 +192,7 @@ Comparable<org.openntf.domino.Name>, Cloneable {
 			throw new InvalidClassException("Cannot read data version " + version);
 		String canonical = in.readUTF();
 		_language = in.readUTF();
-		_parserDelegate = Names.parse(canonical);
+		_parserDelegate = IName.PROTOTYPE.create(canonical);
 	}
 
 	@Override
@@ -338,6 +339,16 @@ Comparable<org.openntf.domino.Name>, Cloneable {
 	@Override
 	public String getNamePart(final NamePartKey key) {
 		return (key == NamePartKey.Language) ? _language : _parserDelegate.getNamePart(key);
+	}
+
+	@Override
+	public IName create(final CharSequence name) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public void setLocalServerName(final String string) {
+		throw new UnsupportedOperationException();
 	}
 
 }

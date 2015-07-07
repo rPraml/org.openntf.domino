@@ -4,11 +4,13 @@ import java.lang.reflect.Constructor;
 import java.util.concurrent.Callable;
 
 import org.eclipse.osgi.baseadaptor.loader.BaseClassLoader;
+import org.openntf.domino.commons.IRequest;
 import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.commons.utils.ThreadUtils;
 import org.openntf.domino.config.Configuration;
 import org.openntf.domino.config.XotsConfiguration;
 import org.openntf.domino.thread.AbstractWrappedTask;
+import org.openntf.domino.thread.DominoRequest;
 import org.openntf.domino.types.Null;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
@@ -51,7 +53,8 @@ public class XotsWrappedTask extends AbstractWrappedTask {
 		try {
 			// checkme: What should we use here?
 			//Factory.initThread(ODAPlatform.getAppThreadConfig(module.getNotesApplication()));
-			LifeCycleManager.beforeRequest(taskRequest);
+			IRequest request = new DominoRequest(threadConfig, "&tasklet=" + getWrappedTask().getClass().getName(), locale);
+			LifeCycleManager.beforeRequest(request);
 			try {
 				return invokeTasklet(ctx, codeModule);
 			} catch (Exception e) {

@@ -127,6 +127,8 @@ public class DateTimeImpl implements IDateTime, Externalizable, Cloneable {
 	public String getDateOnly(final Locale locale, final int style) {
 		if (_noDate)
 			return "";
+		if (locale == null)
+			return format(ISO.dateFormat());
 		return format(DateFormat.getDateInstance(style, locale));
 	}
 
@@ -140,6 +142,8 @@ public class DateTimeImpl implements IDateTime, Externalizable, Cloneable {
 		if (_noTime)
 			return "";
 		// TDOO will not work for times > 23:59
+		if (locale == null)
+			return format(ISO.timeFormat());
 		return format(DateFormat.getTimeInstance(style, locale));
 	}
 
@@ -154,6 +158,8 @@ public class DateTimeImpl implements IDateTime, Externalizable, Cloneable {
 			return getTimeOnly(locale, timeStyle);
 		if (_noTime)
 			return getDateOnly(locale, dateStyle);
+		if (locale == null)
+			return format(ISO.dateTimeFormat());
 		return format(DateFormat.getDateTimeInstance(dateStyle, timeStyle, locale));
 
 	}

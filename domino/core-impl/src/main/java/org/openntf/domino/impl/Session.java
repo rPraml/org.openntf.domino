@@ -60,7 +60,6 @@ import org.openntf.domino.Stream;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Legacy;
 import org.openntf.domino.commons.IFormulaService;
-import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
@@ -85,7 +84,7 @@ import com.ibm.icu.util.Calendar;
  */
 
 public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.domino.Session, WrapperFactory> implements
-		org.openntf.domino.Session {
+org.openntf.domino.Session {
 	/** The Constant log_. */
 	private static final Logger log_ = Logger.getLogger(Session.class.getName());
 
@@ -318,6 +317,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 	 * @see org.openntf.domino.Session#createDateTime(java.util.Date)
 	 */
 	@Override
+	@Deprecated
 	public DateTime createDateTime(final Date date) {
 		DateTime ret = getFactory().create(DateTime.SCHEMA, this, null);
 		ret.setLocalTime(date);
@@ -330,6 +330,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 	 * @see org.openntf.domino.Session#createDateTime(int, int, int, int, int, int)
 	 */
 	@Override
+	@Deprecated
 	public DateTime createDateTime(final int y, final int m, final int d, final int h, final int i, final int s) {
 		Calendar cal = Calendar.getInstance();
 		cal.set(y, m - 1, d, h, i, s);
@@ -562,6 +563,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 	 * @see org.openntf.domino.Session#evaluate(java.lang.String)
 	 */
 	@Override
+	@Deprecated
 	@Legacy({ Legacy.INTERFACES_WARNING, Legacy.GENERICS_WARNING })
 	public Vector<Object> evaluate(final String formula) {
 		return evaluate(formula, null);

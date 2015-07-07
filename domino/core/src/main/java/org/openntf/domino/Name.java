@@ -15,6 +15,7 @@
  */
 package org.openntf.domino;
 
+import org.openntf.domino.annotations.Legacy;
 import org.openntf.domino.types.Encapsulated;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.SessionDescendant;
@@ -59,9 +60,12 @@ import org.openntf.domino.types.SessionDescendant;
  * <li>"John B Goode" <jbg@us.acme.com>
  * <li>"John B Goode" <jbg@us.acme.com> (Sales) (East)
  * </ul>
+ * 
+ * use IName whenever it is possible
  */
+@Legacy("Use IName instead")
 public interface Name extends Base<lotus.domino.Name>, lotus.domino.Name, org.openntf.domino.ext.Name, org.openntf.domino.commons.IName,
-		Encapsulated, SessionDescendant {
+Encapsulated, SessionDescendant {
 
 	public static class Schema extends FactorySchema<Name, lotus.domino.Name, Session> {
 		@Override

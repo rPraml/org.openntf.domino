@@ -17,6 +17,7 @@ package org.openntf.domino;
 
 import java.util.Date;
 
+import org.openntf.domino.annotations.Legacy;
 import org.openntf.domino.commons.IDateTime;
 import org.openntf.domino.types.Encapsulated;
 import org.openntf.domino.types.FactorySchema;
@@ -24,7 +25,9 @@ import org.openntf.domino.types.SessionDescendant;
 
 /**
  * The Interface DateTime.
+ * 
  */
+@Legacy("Use IDateTime instead")
 public interface DateTime extends Base<lotus.domino.DateTime>, lotus.domino.DateTime, IDateTime, org.openntf.domino.ext.DateTime,
 		Encapsulated, SessionDescendant, Cloneable {
 

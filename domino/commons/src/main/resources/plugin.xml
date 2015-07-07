@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?eclipse version="3.4"?>
 <plugin>
-   <extension
-         point="com.ibm.commons.Extension">
-      <service
-            class="org.openntf.domino.commons.i18n.RawMessageProviderResourceBundle"
-            type="org.openntf.domino.commons.i18n.RawMessageProviderAbstract">
-      </service>
-
-   </extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.commons.impl.CommonsLifeCycle"  type="org.openntf.domino.commons.ILifeCycle"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.commons.impl.NameImpl"  type="org.openntf.domino.commons.IName"/>
+</extension>
 </plugin>

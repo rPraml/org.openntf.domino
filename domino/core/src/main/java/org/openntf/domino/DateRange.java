@@ -15,15 +15,18 @@
  */
 package org.openntf.domino;
 
+import org.openntf.domino.annotations.Legacy;
 import org.openntf.domino.types.Encapsulated;
 import org.openntf.domino.types.FactorySchema;
 import org.openntf.domino.types.SessionDescendant;
 
 /**
  * The Interface DateRange.
+ * 
  */
+@Legacy({ Legacy.DATETIME_WARNING, "DateRanges don't work like expected!" })
 public interface DateRange extends Base<lotus.domino.DateRange>, lotus.domino.DateRange, org.openntf.domino.ext.DateRange, Encapsulated,
-		SessionDescendant {
+SessionDescendant {
 
 	public static class Schema extends FactorySchema<DateRange, lotus.domino.DateRange, Session> {
 		@Override

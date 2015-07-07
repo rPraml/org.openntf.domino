@@ -73,7 +73,8 @@ public class Formatter {
 	}
 
 	/**
-	 * Parses the string and returns a {@link IDateTime}. It uses the locale of the Formatter
+	 * Parses the string and returns a {@link IDateTime}. It uses the locale of the Formatter. If locale is <code>null</code>, only ISO
+	 * Format is accepted
 	 */
 	public IDateTime parseDateTime(final String text, final boolean parseLenient) {
 		IDateTime ret = IDateTime.PROTOTYPE.clone();
@@ -90,6 +91,14 @@ public class Formatter {
 			String toParse = image;
 			if (toParse.length() > 1 && toParse.charAt(0) == '+')
 				toParse = toParse.substring(1);
+			if (locale == null) {
+				try {
+					return Integer.parseInt(toParse);
+				} catch (NumberFormatException e) {
+					return Double.parseDouble(toParse);
+				}
+			}
+
 			NumberFormat nf = NumberFormat.getNumberInstance(locale);
 			ParsePosition p = new ParsePosition(0);
 			Number ret = nf.parse(toParse, p);

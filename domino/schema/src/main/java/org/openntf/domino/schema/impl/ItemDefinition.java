@@ -7,13 +7,12 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.openntf.domino.DateTime;
 import org.openntf.domino.Document;
 import org.openntf.domino.Item;
+import org.openntf.domino.commons.IDateTime;
 import org.openntf.domino.commons.utils.ThreadUtils;
 import org.openntf.domino.schema.IDocumentDefinition;
 import org.openntf.domino.schema.IDominoType;
@@ -174,8 +173,8 @@ public class ItemDefinition implements IItemDefinition, Externalizable {
 				defaultValue = 0;
 			} else if (checkType.equals(String.class)) {
 				defaultValue = "";
-			} else if (checkType.equals(DateTime.class)) {
-				DateTime dt = doc.getAncestorSession().createDateTime(new Date());
+			} else if (checkType.equals(IDateTime.class)) {
+				IDateTime dt = IDateTime.PROTOTYPE.clone();
 				dt.setAnyDate();
 				dt.setAnyTime();
 				defaultValue = dt;

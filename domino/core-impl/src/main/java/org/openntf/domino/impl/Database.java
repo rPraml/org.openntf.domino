@@ -1578,7 +1578,8 @@ org.openntf.domino.Database {
 			if (since == null) {
 				since = new Date(0);
 			}
-			lotus.domino.DateTime tempDT = getAncestorSession().createDateTime(since);
+			// HINT: Downcast is here, because ODA.session.createDateTime is deprecated
+			lotus.domino.DateTime tempDT = ((lotus.domino.Session) getAncestorSession()).createDateTime(since);
 			lotus.domino.DateTime dt = toLotus(tempDT);
 			if (!getDelegate().isOpen()) {
 				getDelegate().open();

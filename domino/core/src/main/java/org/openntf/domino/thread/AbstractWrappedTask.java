@@ -198,7 +198,7 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 	protected Object callOrRun() throws Exception {
 
 		NotesThread.sinitThread();
-		IRequest request = new DominoRequest(Factory.STRICT_THREAD_CONFIG, "&tasklet=" + wrappedTask.getClass().getName(), locale);
+		IRequest request = new DominoRequest(threadConfig, "&tasklet=" + wrappedTask.getClass().getName(), locale);
 		LifeCycleManager.beforeRequest(request);
 
 		try {

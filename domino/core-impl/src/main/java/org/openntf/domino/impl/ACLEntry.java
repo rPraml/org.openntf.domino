@@ -23,9 +23,9 @@ import lotus.domino.NotesException;
 
 import org.openntf.domino.ACL;
 import org.openntf.domino.Database;
-import org.openntf.domino.Name;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.IName;
 import org.openntf.domino.utils.ODAUtils;
 
 // TODO: Auto-generated Javadoc
@@ -33,7 +33,7 @@ import org.openntf.domino.utils.ODAUtils;
  * The Class ACLEntry.
  */
 public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lotus.domino.ACLEntry, org.openntf.domino.ACL> implements
-		org.openntf.domino.ACLEntry {
+org.openntf.domino.ACLEntry {
 
 	/**
 	 * Instantiates a new ACL entry.
@@ -111,9 +111,25 @@ public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lot
 	 * @see org.openntf.domino.ACLEntry#getNameObject()
 	 */
 	@Override
-	public Name getNameObject() {
+	@Deprecated
+	public org.openntf.domino.Name getNameObject() {
 		try {
-			return fromLotus(getDelegate().getNameObject(), Name.SCHEMA, getAncestorSession());
+			return fromLotus(getDelegate().getNameObject(), org.openntf.domino.Name.SCHEMA, getAncestorSession());
+		} catch (NotesException e) {
+			ODAUtils.handleException(e);
+		}
+		return null;
+	}
+
+	@Override
+	public IName getINameObject() {
+		try {
+			lotus.domino.Name lotusName = getDelegate().getNameObject();
+			if (lotusName == null)
+				return null;
+			IName ret = IName.PROTOTYPE.create(lotusName.getCanonical());
+			lotusName.recycle();
+			return ret;
 		} catch (NotesException e) {
 			ODAUtils.handleException(e);
 		}

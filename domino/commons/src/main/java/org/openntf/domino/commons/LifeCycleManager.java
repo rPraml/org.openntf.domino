@@ -168,7 +168,7 @@ public enum LifeCycleManager {
 	 */
 	public static void beforeRequest(final IRequest request) {
 		currentRequest.set(request);
-		;
+
 		IRequestLifeCycle[] copy;
 		synchronized (lazyRequestLifeCycles) {
 			copy = lazyRequestLifeCycles.toArray(new IRequestLifeCycle[lazyLifeCycles.size()]);

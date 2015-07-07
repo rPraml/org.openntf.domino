@@ -153,12 +153,14 @@ public class XspOpenLogItem extends BaseOpenLogItem {
 		}
 	}
 
+	@Override
 	public void reinitialiseSettings() {
 		logEmail_ = null;
 		logDbName_ = null;
 		displayError_ = null;
 		displayErrorGeneric_ = null;
 		olDebugLevel = getDefaultDebugLevel();
+		super.reinitialiseSettings();
 	}
 
 	/**
