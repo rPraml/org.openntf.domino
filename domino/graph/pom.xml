@@ -63,14 +63,15 @@
 							org.openntf.domino.graph.*,
 							org.openntf.domino.graph2.*
 						</Export-Package>
-						<!-- TODO Eclipse Build
 						<Bundle-Activator>org.openntf.domino.graph.Activator</Bundle-Activator>
 						
 						<Require-Bundle>
 							org.javolution.javolution-core-java;bundle-version="6.1.0",
  							com.tinkerpop.frames;bundle-version="2.6.0",
- 							org.openntf.domino.core;bundle-version="1.5.1"
+ 							org.openntf.domino.core;bundle-version="1.5.1",
+ 							org.openntf.domino.deprecated;bundle-version="1.5.1"
 						</Require-Bundle>
+						<!-- TODO Eclipse Build
  						-->
 					</instructions>
 				</configuration>
