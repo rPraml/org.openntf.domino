@@ -70,7 +70,7 @@ public abstract class MessageProviderAbstract {
 	 * found, <code>getDefaultString</code> is returned.
 	 */
 	public String getString(final String bundleName, final String key, final Object... args) {
-		return getCookedText(true, bundleName, key, getExtIntLocaleProvider().getExternalLocale(), args);
+		return getCookedText(true, bundleName, key, getExternalLocale(), args);
 	}
 
 	/**
@@ -78,7 +78,7 @@ public abstract class MessageProviderAbstract {
 	 * found, <code>null</code> is returned.
 	 */
 	public String getStringNoDef(final String bundleName, final String key, final Object... args) {
-		return getCookedText(false, bundleName, key, getExtIntLocaleProvider().getExternalLocale(), args);
+		return getCookedText(false, bundleName, key, getExternalLocale(), args);
 	}
 
 	/** Convenience static method for <code>getString</code> */
@@ -96,7 +96,7 @@ public abstract class MessageProviderAbstract {
 	 * found, <code>getDefaultString</code> is returned.
 	 */
 	public String getInternalString(final String bundleName, final String key, final Object... args) {
-		return getCookedText(true, bundleName, key, getExtIntLocaleProvider().getInternalLocale(), args);
+		return getCookedText(true, bundleName, key, getInternalLocale(), args);
 	}
 
 	/**
@@ -104,7 +104,7 @@ public abstract class MessageProviderAbstract {
 	 * found, <code>null</code> is returned.
 	 */
 	public String getInternalStringNoDef(final String bundleName, final String key, final Object... args) {
-		return getCookedText(false, bundleName, key, getExtIntLocaleProvider().getInternalLocale(), args);
+		return getCookedText(false, bundleName, key, getInternalLocale(), args);
 	}
 
 	/** Convenience static method for <code>getInternalString</code> */
@@ -147,6 +147,8 @@ public abstract class MessageProviderAbstract {
 		getCurrentInstance().resetCache();
 	}
 
-	protected abstract IExtIntLocaleProvider getExtIntLocaleProvider();
+	protected abstract Locale getExternalLocale();
+
+	protected abstract Locale getInternalLocale();
 
 }

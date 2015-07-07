@@ -18,26 +18,32 @@ package org.openntf.domino.i18n.impl;
 
 import java.util.Locale;
 
+import org.openntf.domino.Database;
+import org.openntf.domino.Session;
+import org.openntf.domino.commons.IRequest;
+import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.commons.i18n.FormulaMessageProviderAbstract;
-import org.openntf.domino.commons.i18n.IExtIntLocaleProvider;
 import org.openntf.domino.utils.Factory;
+import org.openntf.domino.utils.Factory.SessionType;
 
 /** Implements the trivial getLocale methods in openntf environment */
-public class FormulaMessageProvider extends FormulaMessageProviderAbstract implements IExtIntLocaleProvider {
-
-	@Override
-	protected IExtIntLocaleProvider getExtIntLocaleProvider() {
-		return this;
-	}
+public class FormulaMessageProvider extends FormulaMessageProviderAbstract {
 
 	@Override
 	public Locale getExternalLocale() {
-		return Factory.getExternalLocale();
+		IRequest req = LifeCycleManager.getCurrentRequest();
+		return req == null ? Locale.getDefault() : req.getLocale();
 	}
 
 	@Override
 	public Locale getInternalLocale() {
-		return Factory.getInternalLocale();
+		Locale ret = null;
+		Session sess = Factory.getSession(SessionType.CURRENT);
+		if (sess != null) {
+			Database db = sess.getCurrentDatabase();
+			if (db != null)
+				ret = db.getLocale();
+		}
+		return ret == null ? Locale.getDefault() : ret;
 	}
-
 }
