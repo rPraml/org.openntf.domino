@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.openntf.domino.commons.utils.SafeCast.doubleToByte;
 import static org.openntf.domino.commons.utils.SafeCast.doubleToChar;
+import static org.openntf.domino.commons.utils.SafeCast.doubleToFloat;
 import static org.openntf.domino.commons.utils.SafeCast.doubleToInt;
 import static org.openntf.domino.commons.utils.SafeCast.doubleToLong;
 import static org.openntf.domino.commons.utils.SafeCast.doubleToShort;
@@ -306,6 +307,29 @@ public class TestSafeCast {
 	@Test(expected = DataNotCompatibleException.class)
 	public void testDoubleToLongOv2() {
 		doubleToLong(-10000000000000000000D);
+	}
+
+	@Test
+	public void testDoubleToFloat() {
+		//assertEquals(Float.MIN_VALUE, doubleToFloat(Float.MIN_VALUE), 0.0001D);
+		assertEquals(-10.0F, doubleToFloat(-10D), 0.0001D);
+		assertEquals(-0.9F, doubleToFloat(-0.9D), 0.0001D);
+		assertEquals(0F, doubleToFloat(0.0D), 0.0001D);
+		assertEquals(0.5F, doubleToFloat(0.5D), 0.0001D);
+		assertEquals(0.9F, doubleToFloat(0.9D), 0.0001D);
+		assertEquals(1.0F, doubleToFloat(1.0D), 0.0001D);
+		assertEquals(1.5D, doubleToFloat(1.5D), 0.0001D);
+		assertEquals(Float.MAX_VALUE, doubleToFloat(Float.MAX_VALUE), 0.0001D);
+	}
+
+	@Test(expected = DataNotCompatibleException.class)
+	public void testDoubleToFloatOv1() {
+		doubleToFloat(3.4028236E38);
+	}
+
+	@Test(expected = DataNotCompatibleException.class)
+	public void testDoubleToFloatOv2() {
+		doubleToFloat(-3.4028236E38);
 	}
 
 }

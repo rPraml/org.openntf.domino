@@ -114,4 +114,11 @@ public enum SafeCast {
 		return x;
 	}
 
+	public static float doubleToFloat(final double d) {
+		if (d < -Float.MAX_VALUE || Float.MAX_VALUE < d) {
+			throw new DataNotCompatibleException("The value '" + d + "' does not fit in a float");
+		}
+		return (float) d;
+	}
+
 }
