@@ -23,6 +23,9 @@ load-on-startup="true">
 <service class="org.openntf.domino.xsp.formula.FormulaContextXsp" type="org.openntf.formula.FormulaContext"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
+<service class="org.openntf.domino.xsp.adapter.OpenntfServiceFactory" type="com.ibm.xsp.adapter.serviceFactory"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
 <service class="org.openntf.domino.xsp.xots.XotsNsfScanner" type="org.openntf.domino.xots.tasklet"/>
 </extension>
 <extension point="com.ibm.commons.Extension">

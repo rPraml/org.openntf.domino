@@ -1,0 +1,3 @@
+# Needed to start automatically and initialize some core things. This is no PoJo-Service!-->
+
+org.openntf.domino.xsp.adapter.OpenntfServiceFactory
