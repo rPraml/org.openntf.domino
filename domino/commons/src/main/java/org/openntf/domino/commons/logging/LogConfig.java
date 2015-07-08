@@ -115,7 +115,7 @@ public class LogConfig {
 					return false;
 				if (_formulaCondition != null) {
 					try {
-						_condHandler = IFormulaService.INSTANCE.parse(_formulaCondition, Locale.ENGLISH);
+						_condHandler = IFormulaService.$.parse(_formulaCondition, Locale.ENGLISH);
 					} catch (Exception e) {
 						System.err.println("LogConfig: Error while generating Formula Parser for: " + _formulaCondition);
 						e.printStackTrace();

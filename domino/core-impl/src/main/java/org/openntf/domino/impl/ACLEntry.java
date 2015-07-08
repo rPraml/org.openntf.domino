@@ -33,7 +33,7 @@ import org.openntf.domino.utils.ODAUtils;
  * The Class ACLEntry.
  */
 public class ACLEntry extends BaseNonThreadSafe<org.openntf.domino.ACLEntry, lotus.domino.ACLEntry, org.openntf.domino.ACL> implements
-org.openntf.domino.ACLEntry {
+		org.openntf.domino.ACLEntry {
 
 	/**
 	 * Instantiates a new ACL entry.
@@ -127,7 +127,7 @@ org.openntf.domino.ACLEntry {
 			lotus.domino.Name lotusName = getDelegate().getNameObject();
 			if (lotusName == null)
 				return null;
-			IName ret = IName.PROTOTYPE.create(lotusName.getCanonical());
+			IName ret = IName.$.create(lotusName.getCanonical());
 			lotusName.recycle();
 			return ret;
 		} catch (NotesException e) {

@@ -2,6 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
 <extension point="com.ibm.commons.Extension">
-  <service class=""  type="org.openntf.domino.design.impl.DesignLifeCycle"/>
+  <service class="org.openntf.domino.design.impl.DesignLifeCycle"  type="org.openntf.domino.commons.ILifeCycle"/>
 </extension>
 </plugin>

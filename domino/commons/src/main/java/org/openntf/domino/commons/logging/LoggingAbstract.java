@@ -55,7 +55,7 @@ public abstract class LoggingAbstract implements ILoggingService {
 		_supervisor.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				ILoggingService.INSTANCE.lookForCfgChange();
+				ILoggingService.$.getInstance().lookForCfgChange();
 			}
 		}, _supervisorInterval, _supervisorInterval);
 	}

@@ -7,8 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openntf.domino.DbDirectory;
 import org.openntf.domino.Session;
-import org.openntf.domino.commons.ServiceLocator;
-import org.openntf.domino.design.DatabaseDesignService;
 import org.openntf.domino.design.vfs.VFSNode;
 import org.openntf.domino.junit.DominoJUnitRunner;
 import org.openntf.domino.utils.Factory.SessionType;
@@ -27,9 +25,7 @@ public class DbDirectoryTest {
 
 		DbDirectory dbDir = session.getDbDirectory("");
 
-		DatabaseDesignService service = ServiceLocator.findApplicationService(DatabaseDesignService.class);
-
-		VFSNode dbTree = service.getVFS(dbDir);//.cd("Test/empty3.nsf/");
+		VFSNode dbTree = VFSNode.$.get(dbDir);//.cd("Test/empty3.nsf/");
 		File out = new File("c:/dev/out");
 		dumpNode(dbTree, out, "");
 

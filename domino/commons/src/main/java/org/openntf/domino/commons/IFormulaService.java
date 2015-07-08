@@ -9,7 +9,37 @@ import org.openntf.domino.commons.exception.FormulaParseException;
 
 public interface IFormulaService {
 
-	IFormulaService INSTANCE = ServiceLocator.findApplicationService(IFormulaService.class);
+	public enum $ {
+		;
+		private static IFormulaService INSTANCE = ServiceLocator.findApplicationService(IFormulaService.class);
+
+		public static IFormulaService getInstance() {
+			return INSTANCE;
+		}
+
+		public static IFormula parse(final String formula, final Locale formulaLocale) throws FormulaParseException {
+			return INSTANCE.parse(formula, formulaLocale);
+		}
+
+		public static IFormula parse(final String formula, final Locale formulaLocale, final boolean useInlineFormulas)
+				throws FormulaParseException {
+			return INSTANCE.parse(formula, formulaLocale, useInlineFormulas);
+		}
+
+		public static List<Object> evaluate(final String formula, final Locale formulaLocale, final Locale solveLocale,
+				final Map<String, Object> data) throws FormulaParseException, EvaluateException {
+			return INSTANCE.evaluate(formula, formulaLocale, solveLocale, data);
+		}
+
+		public static List<Object> evaluate(final String formula, final Locale formulaLocale, final Locale solveLocale)
+				throws FormulaParseException, EvaluateException {
+			return INSTANCE.evaluate(formula, formulaLocale, solveLocale);
+		}
+
+		public static boolean isAvailable() {
+			return INSTANCE != null;
+		}
+	}
 
 	/**
 	 * Evaluates the given formula

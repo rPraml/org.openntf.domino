@@ -7,7 +7,17 @@ import org.openntf.domino.commons.exception.IExceptionDetails;
 
 public interface ILoggingService {
 
-	public final ILoggingService INSTANCE = ServiceLocator.findApplicationService(ILoggingService.class);
+	/**
+	 * Factory to create a new instance. In Java 1.8 we can use a static method in the Interface
+	 */
+	public enum $ {
+		;
+		private static final ILoggingService INSTANCE = ServiceLocator.findApplicationService(ILoggingService.class);
+
+		public static ILoggingService getInstance() {
+			return INSTANCE;
+		}
+	}
 
 	public static enum ConfigChangeFlag {
 		CFG_UNCHANGED, CFG_UPDATED, CFG_ERROR;

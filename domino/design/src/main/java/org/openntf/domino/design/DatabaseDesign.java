@@ -18,11 +18,23 @@ package org.openntf.domino.design;
 
 import java.util.SortedSet;
 
+import org.openntf.domino.Database;
+import org.openntf.domino.commons.ServiceLocator;
+
 /**
  * @author jgallagher
  * 
  */
 public interface DatabaseDesign extends org.openntf.domino.types.DatabaseDescendant {
+
+	public enum $ {
+		;
+		private static IDatabaseDesignService INSTANCE = ServiceLocator.findApplicationService(IDatabaseDesignService.class);
+
+		public static DatabaseDesign get(final Database database) {
+			return INSTANCE.getDatabaseDesign(database);
+		}
+	}
 
 	/**
 	 * @param create
@@ -128,8 +140,9 @@ public interface DatabaseDesign extends org.openntf.domino.types.DatabaseDescend
 
 	/**
 	 * Returns all design elements matching to the according formula. The type of the design element is autodetected.<br>
-	 * <b><font color=red>WARNING.</font></b> This method is slow on big databases. <br/> Better use {@link #getDesignElements()} if you do
-	 * not need Private Forms/Views (for private Forms/Views you can also use db.getForm())
+	 * <b><font color=red>WARNING.</font></b> This method is slow on big databases. <br/>
+	 * Better use {@link #getDesignElements()} if you do not need Private Forms/Views (for private Forms/Views you can also use
+	 * db.getForm())
 	 * 
 	 * @param formula
 	 *            the formula
@@ -139,8 +152,8 @@ public interface DatabaseDesign extends org.openntf.domino.types.DatabaseDescend
 
 	/**
 	 * Returns all design elements matching to the according formula and type.<br>
-	 * <b><font color=red>WARNING.</font></b> This method is slow on big databases. <br/> Better use {@link #getDesignElements(Class)} or
-	 * {@link #getDesignElements(Class, String)} db.getForm())
+	 * <b><font color=red>WARNING.</font></b> This method is slow on big databases. <br/>
+	 * Better use {@link #getDesignElements(Class)} or {@link #getDesignElements(Class, String)} db.getForm())
 	 * 
 	 * @param type
 	 *            the type

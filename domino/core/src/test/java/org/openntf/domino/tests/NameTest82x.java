@@ -12,9 +12,9 @@ import org.openntf.domino.utils.Factory.SessionType;
 public class NameTest82x {
 
 	private static String[] _getMeths = new String[] { "Addr821", "Addr822LocalPart", "Addr822Phrase", //
-		"Addr822Comment1", "Addr822Comment2", "Addr822Comment3", "Canonical", "Abbreviated", //
-		"Common", "Surname", "Given", "Country", "OrgUnit1", "OrgUnit2", "ADMD", "PRMD", //
-		"Organization", "Initials", "Keyword" };
+			"Addr822Comment1", "Addr822Comment2", "Addr822Comment3", "Canonical", "Abbreviated", //
+			"Common", "Surname", "Given", "Country", "OrgUnit1", "OrgUnit2", "ADMD", "PRMD", //
+			"Organization", "Initials", "Keyword" };
 
 	private PrintStream _ps;
 
@@ -53,7 +53,7 @@ public class NameTest82x {
 		Session sess = Factory.getSession(SessionType.CURRENT);
 		lotus.domino.Session lotusSess = sess.getFactory().toLotus(sess);
 		org.openntf.domino.Name odaName = sess.createName(what);
-		IName odaNameIndep = IName.PROTOTYPE.create(what);
+		IName odaNameIndep = IName.$.create(what);
 		lotus.domino.Name lotusName = lotusSess.createName(what);
 		testOutputNames(what, lotusName, odaName, odaNameIndep);
 		return odaName;

@@ -46,7 +46,7 @@ public class LogFormatterFileDefault extends Formatter {
 		else if (levelSevere)
 			sb.append("***NO STACK TRACE***");
 		sb.append('\n');
-		if (ILoggingService.INSTANCE.mayContainAdditionalInfo(logRec)) {
+		if (ILoggingService.$.getInstance().mayContainAdditionalInfo(logRec)) {
 			LogRecordAdditionalInfo lrai = new LogRecordAdditionalInfo(logRec);
 			lrai.writeToLog(sb);
 		}

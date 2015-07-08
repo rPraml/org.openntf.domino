@@ -11,6 +11,9 @@
   <service class="org.openntf.domino.xsp.OpenntfDominoXspContributor"  type="com.ibm.xsp.library.Contributor"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
+  <service class="org.openntf.domino.xsp.helpers.OpenntfViewNavigatorFactoryFactory"  type="com.ibm.xsp.model.domino.ViewNavigatorFactory"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
   <service class="org.openntf.domino.xsp.formula.FormulaContextXsp"  type="org.openntf.formula.FormulaContext"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
@@ -61,4 +64,31 @@
               load-on-startup="true">
         </servlet>
      </extension> -->
+   
+   
+   
+   <!-- needed to start automatically and initialize some core things. This is no PoJo-Service!-->
+   <extension point="com.ibm.commons.Extension">
+         <service type="com.ibm.xsp.adapter.serviceFactory" class="org.openntf.domino.xsp.adapter.OpenntfServiceFactory" />
+   </extension>
+
+
+   <extension
+         point="com.ibm.commons.Extension">
+      <service
+            class="org.openntf.domino.xsp.script.WrapperOpenDomino"
+            type="org.openntf.domino.xsp.script.WrapperRegistry">
+      </service>
+   </extension>
+   
+	<extension point="com.ibm.commons.Extension">
+		<service class="org.openntf.domino.xsp.xots.XotsApplicationListener" type="com.ibm.xsp.core.events.ApplicationListener"/>
+	</extension>
+ <extension
+       point="com.ibm.commons.Extension">
+    <service
+          class="org.openntf.domino.xsp.xots.XotsNsfScanner"
+          type="org.openntf.domino.xots.tasklet">
+    </service>
+ </extension>
 </plugin>

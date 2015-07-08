@@ -16,6 +16,7 @@
  */
 package org.openntf.domino.commons;
 
+import java.util.List;
 import java.util.ServiceLoader;
 
 /**
@@ -27,6 +28,15 @@ import java.util.ServiceLoader;
  * @author Roland Praml, FOCONIS AG
  */
 public interface IDataConverter<T> {
+
+	public enum $ {
+		;
+		@SuppressWarnings("rawtypes")
+		public static List<IDataConverter> getInstances() {
+			return ServiceLocator.findApplicationServices(IDataConverter.class);
+		}
+	}
+
 	T convertTo(Object o);
 
 	Class<? extends T> getType();

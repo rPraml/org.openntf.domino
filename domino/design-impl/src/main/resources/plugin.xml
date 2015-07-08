@@ -5,6 +5,6 @@
   <service class="org.openntf.domino.design.impl.DesignLifeCycle"  type="org.openntf.domino.commons.ILifeCycle"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
-  <service class="org.openntf.domino.design.impl.DatabaseDesignService"  type="org.openntf.domino.design.DatabaseDesignService"/>
+  <service class="org.openntf.domino.design.impl.DatabaseDesignService"  type="org.openntf.domino.design.IDatabaseDesignService"/>
 </extension>
 </plugin>

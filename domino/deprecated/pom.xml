@@ -21,7 +21,9 @@
 					<instructions>
 
 						<Export-Package>
-							org.openntf.domino.impl.*
+							org.openntf.arpa.*,
+							org.openntf.calendars.*,
+							org.openntf.domino.*
 						</Export-Package>
 					</instructions>
 				</configuration>

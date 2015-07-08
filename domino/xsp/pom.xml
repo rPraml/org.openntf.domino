@@ -16,8 +16,12 @@
 				<artifactId>maven-bundle-plugin</artifactId>
 				<configuration>
 					<instructions>
+						<Export-Package>
+							!*.test
+						</Export-Package>
 						<Import-Package></Import-Package>
 
+						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
 						<Bundle-Activator>org.openntf.domino.xsp.Activator</Bundle-Activator>
 
 						<!-- Unfortunately, we cannot rely on the BND-ImportPackage mechanism, 
@@ -37,10 +41,15 @@
 							com.ibm.designer.lib.jsf,
 							org.openntf.domino.commons;bundle-version="1.5.0";visibility:=reexport,
 							org.openntf.domino.core;bundle-version="1.5.0";visibility:=reexport,
+							org.openntf.domino.core-formula;bundle-version="1.5.0";visibility:=reexport,
+							org.openntf.domino.core-impl;bundle-version="1.5.0";visibility:=reexport,
+							org.openntf.domino.design;bundle-version="1.5.0";visibility:=reexport,
+							org.openntf.domino.design-impl;bundle-version="1.5.0";visibility:=reexport,
+							org.openntf.domino.deprecated;bundle-version="1.5.0";visibility:=reexport,
 							org.openntf.formula;bundle-version="1.5.0";visibility:=reexport,
-							<!-- provide new rest and graph API -->
+							<!-- provide new rest and graph API
 							org.openntf.domino.rest;bundle-version="1.5.0";visibility:=reexport,
-							org.openntf.domino.graph;bundle-version="1.5.0";visibility:=reexport,
+							org.openntf.domino.graph;bundle-version="1.5.0";visibility:=reexport, -->
 							<!-- TODO: org.openntf.junit.xsp is not part of this API! -->
 							org.openntf.junit.xsp;bundle-version="1.1.0";resolution:=optional,
 							 
@@ -119,7 +128,7 @@
 		
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
-			<artifactId>design</artifactId>
+			<artifactId>design-impl</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
 		

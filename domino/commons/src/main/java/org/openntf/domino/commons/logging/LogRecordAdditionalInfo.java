@@ -12,8 +12,8 @@ public class LogRecordAdditionalInfo {
 	private String[] lastWrappedDocs;
 
 	public LogRecordAdditionalInfo(final LogRecord logRec) {
-		exceptionDetails = ILoggingService.INSTANCE.getExceptionDetails(logRec.getThrown());
-		lastWrappedDocs = ILoggingService.INSTANCE.getLastWrappedDocs();
+		exceptionDetails = ILoggingService.$.getInstance().getExceptionDetails(logRec.getThrown());
+		lastWrappedDocs = ILoggingService.$.getInstance().getLastWrappedDocs();
 	}
 
 	public List<IExceptionDetails.Entry> getExceptionDetails() {

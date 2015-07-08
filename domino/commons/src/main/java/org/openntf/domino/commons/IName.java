@@ -14,9 +14,25 @@ import org.openntf.domino.commons.NameEnums.NamePartKey;
 public interface IName {
 
 	/**
+	 * Factory to create a new instance. In Java 1.8 we can use a static method in the Interface
+	 */
+	public enum $ {
+		;
+		private static IName PROTOTYPE = ServiceLocator.findApplicationService(IName.class);
+
+		public static IName create(final CharSequence name) {
+			return PROTOTYPE.create(name);
+		}
+
+		public static void setLocalServerName(final String string) {
+			PROTOTYPE.setLocalServerName(string);
+		}
+
+	}
+
+	/**
 	 * The IName prototype. Always clone!
 	 */
-	public static IName PROTOTYPE = ServiceLocator.findApplicationService(IName.class);
 
 	/**
 	 * Gets the RFC821 or RFC822 internet address

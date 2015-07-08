@@ -38,7 +38,7 @@ public class LogFormatterConsoleDefault extends Formatter {
 		sb.append(" - ");
 		sb.append(logRec.getMessage());
 		sb.append('\n');
-		if (ILoggingService.INSTANCE.mayContainAdditionalInfo(logRec)) {
+		if (ILoggingService.$.getInstance().mayContainAdditionalInfo(logRec)) {
 			LogRecordAdditionalInfo lrai = new LogRecordAdditionalInfo(logRec);
 			lrai.writeToLog(sb);
 		}
