@@ -15,6 +15,7 @@
  */
 package org.openntf.domino.impl;
 
+import java.util.Locale;
 import java.util.Vector;
 
 import lotus.domino.NotesException;
@@ -24,6 +25,9 @@ import org.openntf.domino.Document;
 import org.openntf.domino.Session;
 import org.openntf.domino.View;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.IFormula;
+import org.openntf.domino.commons.IFormulaService;
+import org.openntf.domino.commons.exception.FormulaParseException;
 import org.openntf.domino.ext.Session.Fixes;
 import org.openntf.domino.utils.ODAUtils;
 
@@ -31,8 +35,8 @@ import org.openntf.domino.utils.ODAUtils;
 /**
  * The Class ViewColumn.
  */
-public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn, lotus.domino.ViewColumn, View> implements
-		org.openntf.domino.ViewColumn {
+public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn, lotus.domino.ViewColumn, View>
+		implements org.openntf.domino.ViewColumn {
 
 	/**
 	 * Instantiates a new outline.
@@ -1671,6 +1675,11 @@ public class ViewColumn extends BaseNonThreadSafe<org.openntf.domino.ViewColumn,
 	@Override
 	protected WrapperFactory getFactory() {
 		return parent.getAncestorSession().getFactory();
+	}
+
+	@Override
+	public IFormula getParsedFormula() throws FormulaParseException {
+		return IFormulaService.$.parse(getFormula(), Locale.getDefault());
 	}
 
 }

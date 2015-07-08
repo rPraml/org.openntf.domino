@@ -28,6 +28,7 @@ import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -48,6 +49,9 @@ import org.openntf.domino.ViewEntry;
 import org.openntf.domino.ViewEntryCollection;
 import org.openntf.domino.ViewNavigator;
 import org.openntf.domino.WrapperFactory;
+import org.openntf.domino.commons.LifeCycleManager;
+import org.openntf.domino.commons.exception.EvaluateException;
+import org.openntf.domino.commons.exception.FormulaParseException;
 import org.openntf.domino.exceptions.BackendBridgeSanityCheckException;
 import org.openntf.domino.utils.ODAUtils;
 
@@ -55,7 +59,7 @@ import org.openntf.domino.utils.ODAUtils;
 /**
  * The Class View.
  */
-public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.View, Database> implements org.openntf.domino.View {
+public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.View, Database>implements org.openntf.domino.View {
 	private static final Logger log_ = Logger.getLogger(View.class.getName());
 	private transient List<DominoColumnInfo> columnInfo_;
 	private transient Map<String, org.openntf.domino.ViewColumn> columnMap_;
@@ -68,6 +72,7 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 	private String name_;
 
 	private static Method iGetEntryByKeyMethod;
+
 	static {
 		try {
 			AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
@@ -606,8 +611,7 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 	 * the backendbridge calls the n-th. method in this class. (didn't figure out, how n was computed. Method is at
 	 * lotus.domino.local.View.class.getDeclaredMethods()[68], but 68 has no correlation to thisClass.getDeclaredMethods )<br/>
 	 * 
-	 * To find the correct position, trace a call of<br>
-	 * <code>DominoUtils.getViewEntryByKeyWithOptions(view, "key", 2243)</code><br>
+	 * To find the correct position, trace a call of<br> <code>DominoUtils.getViewEntryByKeyWithOptions(view, "key", 2243)</code><br>
 	 * and hit "step into" until you are in one of the methods of this file. Move <b>this</b> method to the position you found with the
 	 * debugger.
 	 * 
@@ -633,7 +637,7 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 			e.printStackTrace();
 		}
 		return null;
-	
+
 	}
 
 	/*
@@ -1201,8 +1205,8 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 			try {
 				return fromLotusAsVector(getDelegate().getColumns(), org.openntf.domino.ViewColumn.SCHEMA, this);
 			} catch (NullPointerException e) {
-				throw new RuntimeException("Unable to get columns for a view called " + getName() + " in database "
-						+ getAncestorDatabase().getApiPath(), e);
+				throw new RuntimeException(
+						"Unable to get columns for a view called " + getName() + " in database " + getAncestorDatabase().getApiPath(), e);
 			}
 		} catch (NotesException e) {
 			ODAUtils.handleException(e);
@@ -1778,7 +1782,7 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 	@Override
 	public boolean isConflict() {
 		if (!isCalendar())
-			return false;	//NTF conflict checking only applies to calendar views
+			return false;//NTF conflict checking only applies to calendar views
 		try {
 			return getDelegate().isConflict();
 		} catch (NotesException e) {
@@ -2237,7 +2241,7 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 	public void setAliases(final String alias) {
 		try {
 			getDelegate().setAliases(alias);
-			initialize(getDelegate()); // name and alias may be affected
+			initialize(getDelegate());// name and alias may be affected
 		} catch (NotesException e) {
 			ODAUtils.handleException(e);
 		}
@@ -2253,7 +2257,7 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 	public void setAliases(final Vector aliases) {
 		try {
 			getDelegate().setAliases(aliases);
-			initialize(getDelegate()); // name and alias may be affected
+			initialize(getDelegate());// name and alias may be affected
 		} catch (NotesException e) {
 			ODAUtils.handleException(e);
 		}
@@ -2325,7 +2329,7 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 	public void setName(final String name) {
 		try {
 			getDelegate().setName(name);
-			initialize(getDelegate()); // name and alias may be affected
+			initialize(getDelegate());// name and alias may be affected
 		} catch (NotesException e) {
 			ODAUtils.handleException(e);
 		}
@@ -2539,8 +2543,22 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 
 			if (columnValuesIndex_ == 65535) {
 				// resolve the constant values (with the openntf session, to get proper dateTime values!)
-				Vector<?> v = column.getAncestorSession().evaluate(column.getFormula());
-				constantValue_ = v.get(0);
+				Object o = null;
+				Locale solveLocale = LifeCycleManager.getCurrentRequest().getLocale();
+				try {
+					// TODO Check if value is a multi-Value!
+					List<Object> v = column.getParsedFormula().solve(solveLocale, null);
+					if (v.size() == 1) {
+						o = v.get(0);
+					} else {
+						o = v;
+					}
+				} catch (EvaluateException e) {
+					ODAUtils.handleException(e);
+				} catch (FormulaParseException e) {
+					ODAUtils.handleException(e);
+				}
+				constantValue_ = o;
 			} else {
 				constantValue_ = null;
 			}
@@ -2602,9 +2620,8 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 				}
 			}
 			if (candidate != null) {
-				log_.log(Level.WARNING,
-						"The view name '" + name_ + "' is not unique in " + getAncestorDatabase() + ". View1: " + candidate.getAliases()
-								+ ", View2:" + ret.getAliases());
+				log_.log(Level.WARNING, "The view name '" + name_ + "' is not unique in " + getAncestorDatabase() + ". View1: "
+						+ candidate.getAliases() + ", View2:" + ret.getAliases());
 				// recycle our first view by adding a wrapper (a recycle call will probably hard recycle the delegate)
 				fromLotus(ret, View.SCHEMA, getAncestorDatabase());
 				ret = candidate;
@@ -2615,7 +2632,7 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 	}
 
 	@Override
-	protected void resurrect() { // should only happen if the delegate has been destroyed somehow.
+	protected void resurrect() {// should only happen if the delegate has been destroyed somehow.
 		try {
 
 			lotus.domino.View view = recreateView();
@@ -2862,7 +2879,7 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 	@Override
 	public void writeExternal(final ObjectOutput out) throws IOException {
 		super.writeExternal(out);
-		out.writeInt(EXTERNALVERSIONUID); // data version
+		out.writeInt(EXTERNALVERSIONUID);// data version
 
 		out.writeObject(name_);
 		out.writeObject(universalId_);

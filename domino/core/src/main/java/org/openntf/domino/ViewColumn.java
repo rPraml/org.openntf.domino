@@ -22,8 +22,8 @@ import org.openntf.domino.types.FactorySchema;
 /**
  * The Interface ViewColumn.
  */
-public interface ViewColumn extends Base<lotus.domino.ViewColumn>, lotus.domino.ViewColumn, org.openntf.domino.ext.ViewColumn, Design,
-		DatabaseDescendant {
+public interface ViewColumn
+		extends Base<lotus.domino.ViewColumn>, lotus.domino.ViewColumn, org.openntf.domino.ext.ViewColumn, Design, DatabaseDescendant {
 
 	public static class Schema extends FactorySchema<ViewColumn, lotus.domino.ViewColumn, View> {
 		@Override

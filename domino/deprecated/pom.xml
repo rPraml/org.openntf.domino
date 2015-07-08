@@ -19,12 +19,33 @@
 				<artifactId>maven-bundle-plugin</artifactId>
 				<configuration>
 					<instructions>
-
+						<!--  These exports will make trouble, because we have split-packages -->
 						<Export-Package>
 							org.openntf.arpa.*,
 							org.openntf.calendars.*,
-							org.openntf.domino.*
+							org.openntf.domino,
+							org.openntf.domino.config.*,
+							org.openntf.domino.email.*,
+							org.openntf.domino.exceptions.*,
+							org.openntf.domino.helpers.*,
+							org.openntf.domino.iterators.*,
+							org.openntf.domino.utils.*,
+							org.openntf.domino.xots.*
 						</Export-Package>
+						
+						<Import-Package></Import-Package>
+
+						<Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+
+						<!-- Unfortunately, we cannot rely on the BND-ImportPackage mechanism, 
+							because reexport is not possible, and otherwise, the packages are not available 
+							in NSF-Java-Code -->
+						<Require-Bundle>
+							org.javolution.javolution-core-java;bundle-version="6.1.0",
+							org.openntf.domino.commons;bundle-version="1.5.0",
+							org.openntf.domino.core;bundle-version="1.5.0"
+							<!-- TODO: I'm sure this list is incomplete -->
+						</Require-Bundle>
 					</instructions>
 				</configuration>
 			</plugin>

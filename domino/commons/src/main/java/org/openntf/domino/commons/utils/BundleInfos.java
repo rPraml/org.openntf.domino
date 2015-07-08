@@ -208,7 +208,15 @@ public class BundleInfos {
 	}
 
 	public String getBundleSymbolicName() {
-		return getManifestAttribute(BUNDLE_SYMBOLIC_NAME);
+		String bsn = getManifestAttribute(BUNDLE_SYMBOLIC_NAME);
+		if (bsn == null) {
+			return "unknown.bundle";
+		}
+		int p = bsn.indexOf(';');
+		if (p < 0)
+			return bsn;
+		return bsn.substring(0, p);
+
 	}
 
 	public String getBundleVersion() {
