@@ -38,7 +38,7 @@ public interface VFSNode extends Comparable<VFSNode> {
 		;
 		private static IDatabaseDesignService INSTANCE = ServiceLocator.findApplicationService(IDatabaseDesignService.class);
 
-		public static VFSNode get(final DbDirectory dbDirectory) {
+		public static VFSRootNode get(final DbDirectory dbDirectory) {
 			return INSTANCE.getVFS(dbDirectory);
 		}
 	}
