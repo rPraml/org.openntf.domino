@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.4"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plugin>
 <extension point="com.ibm.commons.Extension">
-  <service class="org.openntf.domino.commons.impl.CommonsLifeCycle"  type="org.openntf.domino.commons.ILifeCycle"/>
+<service class="org.openntf.domino.commons.impl.NameImpl" type="org.openntf.domino.commons.IName"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
-  <service class="org.openntf.domino.commons.impl.NameImpl"  type="org.openntf.domino.commons.IName"/>
+<service class="org.openntf.domino.commons.impl.CommonsLifeCycle" type="org.openntf.domino.commons.ILifeCycle"/>
 </extension>
 </plugin>

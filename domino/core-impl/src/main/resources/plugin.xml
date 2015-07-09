@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.4"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plugin>
 <extension point="com.ibm.commons.Extension">
-  <service class="org.openntf.domino.impl.WrapperFactory"  type="org.openntf.domino.WrapperFactory"/>
+<service class="org.openntf.domino.logging.impl.Logging" type="org.openntf.domino.commons.ILoggingService"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
-  <service class="org.openntf.domino.impl.DominoLifeCycle"  type="org.openntf.domino.commons.ILifeCycle"/>
+<service class="org.openntf.domino.impl.DominoLifeCycle" type="org.openntf.domino.commons.ILifeCycle"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
-  <service class="org.openntf.domino.logging.impl.Logging"  type="org.openntf.domino.commons.ILoggingService"/>
+<service class="org.openntf.domino.impl.WrapperFactory" type="org.openntf.domino.WrapperFactory"/>
 </extension>
 </plugin>
