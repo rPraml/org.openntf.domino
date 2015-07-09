@@ -32,6 +32,15 @@
         <url>git@github.com:rPraml/org.openntf.domino.git</url>
 		<tag>HEAD</tag>
  	</scm>
+		<!-- 
+		TODO RPr: This is my local server - so we must change this,
+		if patched reficio-plugin is officially available -->
+	<pluginRepositories>
+		   <pluginRepository>
+			   <id>reficio</id>
+			   <url>http://pram.homeip.net/maven/</url>
+		   </pluginRepository>
+	</pluginRepositories>
 	
 	<profiles>
 		<profile>
@@ -271,6 +280,29 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>de.foconis.maven</groupId>
+				<artifactId>sync-pluginxml-maven-plugin</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+				<executions>
+                    <execution>
+                        <goals>
+                            <goal>syncpluginxml</goal>
+                         </goals>
+                    </execution>
+                </executions>
+				<!-- 
+				<executions>
+					<execution>
+						<id>ensure-java-1.6-class-library</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>syncpluginxml</goal>
+						</goals>
+					</execution>
+				</executions>
+				 -->
 			</plugin>
 			<!-- javadoc configuration <plugin> <groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId> <version>2.9</version> <executions>

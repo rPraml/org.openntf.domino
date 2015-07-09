@@ -17,9 +17,11 @@
 </extension>
 <extension point="com.ibm.commons.Extension">
 <service class="org.openntf.formula.function.Constants$Functions" type="org.openntf.formula.FunctionSet"/>
+<!--Here, all constants are declared-->
 </extension>
 <extension point="com.ibm.commons.Extension">
 <service class="org.openntf.formula.function.Operators$Functions" type="org.openntf.formula.FunctionSet"/>
+<!--These are the basic functions to provied boolean and arithmetc operations-->
 </extension>
 <extension point="com.ibm.commons.Extension">
 <service class="org.openntf.formula.function.Negators$Functions" type="org.openntf.formula.FunctionSet"/>

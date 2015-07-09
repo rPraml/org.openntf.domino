@@ -21,9 +21,11 @@ load-on-startup="true">
 </extension>
 <extension point="com.ibm.commons.Extension">
 <service class="org.openntf.domino.xsp.formula.FormulaContextXsp" type="org.openntf.formula.FormulaContext"/>
+<!--Comment-->
 </extension>
 <extension point="com.ibm.commons.Extension">
 <service class="org.openntf.domino.xsp.adapter.OpenntfServiceFactory" type="com.ibm.xsp.adapter.serviceFactory"/>
+<!--Needed to start automatically and initialize some core things. This is no PoJo-Service!-->
 </extension>
 <extension point="com.ibm.commons.Extension">
 <service class="org.openntf.domino.xsp.xots.XotsNsfScanner" type="org.openntf.domino.xots.tasklet"/>
@@ -45,9 +47,11 @@ load-on-startup="true">
 </extension>
 <extension point="com.ibm.commons.Extension">
 <service class="org.openntf.domino.formula.DocFunctions$Functions" type="org.openntf.formula.FunctionSet"/>
+<!--domino functions-->
 </extension>
 <extension point="com.ibm.commons.Extension">
 <service class="org.openntf.formula.function.Constants$Functions" type="org.openntf.formula.FunctionSet"/>
+<!--Here, all constants are declared-->
 </extension>
 <extension point="com.ibm.commons.Extension">
 <service class="org.openntf.domino.xsp.formula.XspFunctions$Functions" type="org.openntf.formula.FunctionSet"/>
@@ -60,6 +64,9 @@ load-on-startup="true">
 </extension>
 <extension point="com.ibm.commons.Extension">
 <service class="org.openntf.formula.function.Operators$Functions" type="org.openntf.formula.FunctionSet"/>
+<!--TODO RPr: Why do we need to specify all classes
+ANSWER: 	The reason is that the ServiceLoader does not work properly in OSGi environment
+These are the basic functions to provied boolean and arithmetc operations-->
 </extension>
 <extension point="com.ibm.commons.Extension">
 <service class="org.openntf.formula.function.Negators$Functions" type="org.openntf.formula.FunctionSet"/>
