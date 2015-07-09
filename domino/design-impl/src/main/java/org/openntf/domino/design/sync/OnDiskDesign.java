@@ -67,6 +67,11 @@ public class OnDiskDesign extends OnDiskAbstract<DesignBase> {
 			name_ = ext;
 		}
 
+		if (name_.indexOf(" [-") != -1) {
+			name_ = name_.replace(" [-nw]", "");
+			name_ = name_.replace(" [-n]", "");
+			name_ = name_.replace(" [-w]", "");
+		}
 	}
 
 	public String getName() {
@@ -85,11 +90,28 @@ public class OnDiskDesign extends OnDiskAbstract<DesignBase> {
 	public static String getOnDiskName(final DesignBase design) {
 		DesignMapping mapping = design.getMapping();
 		String odpExt = mapping.getOnDiskFileExtension();
+		String ret;
+		String variant = "";
 
-		String ret = design instanceof DesignBaseNamed ? ((DesignBaseNamed) design).getName() : design.getUniversalID();
+		if (design instanceof DesignBaseNamed) {
+			ret = ((DesignBaseNamed) design).getName();
+			if (design.isHideFromWeb() || design.isHideFromNotes()) {
+				variant = " [-";
+				if (design.isHideFromNotes()) {
+					variant += "n";
+				}
+				if (design.isHideFromWeb()) {
+					variant += "w";
+				}
+				variant += "]";
+			}
+		} else {
+			ret = design.getUniversalID();
+		}
+
 		if (odpExt == null) {
 			// no name specified - so encode the current name
-			ret = OnDiskUtil.encodeResourceName(ret);
+			ret = OnDiskUtil.encodeResourceName(ret) + variant;
 		} else if (odpExt.equals("*")) {
 			return ret; // * means no encoding/translation
 		} else if (!odpExt.startsWith(".")) {
@@ -97,8 +119,13 @@ public class OnDiskDesign extends OnDiskAbstract<DesignBase> {
 		} else {
 			ret = OnDiskUtil.encodeResourceName(ret);
 
-			if (!ret.endsWith(odpExt))
-				ret = ret + odpExt;
+			if (!ret.endsWith(odpExt)) {
+				ret = ret + variant + odpExt;
+			} else {
+				if (variant.length() > 0) {
+					ret = ret.substring(0, ret.length() - odpExt.length()) + variant + odpExt;
+				}
+			}
 		}
 		return ret;
 	}

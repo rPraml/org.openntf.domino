@@ -317,8 +317,8 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 	 */
 	@Override
 	protected String getFlags() {
-		if (getDxlFormat(true) != DxlFormat.RAWNOTE)
-			throw new IllegalStateException("Flags are available only in DxlFormat.RAWNOTE");
+		if (getDxlFormat(false) == DxlFormat.DXL)
+			throw new IllegalStateException("Flags are not readable in DxlFormat.DXL");
 		return getItemValueString(FLAGS_ITEM);
 	}
 
@@ -337,8 +337,8 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 	 */
 	@Override
 	protected String getFlagsExt() {
-		if (getDxlFormat(true) != DxlFormat.RAWNOTE)
-			throw new IllegalStateException("Flags are available only in DxlFormat.RAWNOTE");
+		if (getDxlFormat(false) == DxlFormat.DXL)
+			throw new IllegalStateException("Flags are not readable in DxlFormat.DXL");
 		return getItemValueString(FLAGS_EXT_ITEM);
 	}
 
