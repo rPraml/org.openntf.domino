@@ -60,7 +60,6 @@ import org.openntf.domino.Stream;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Legacy;
 import org.openntf.domino.commons.IFormulaService;
-import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
@@ -318,6 +317,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 	 * @see org.openntf.domino.Session#createDateTime(java.util.Date)
 	 */
 	@Override
+	@Deprecated
 	public DateTime createDateTime(final Date date) {
 		DateTime ret = getFactory().create(DateTime.SCHEMA, this, null);
 		ret.setLocalTime(date);
@@ -330,6 +330,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 	 * @see org.openntf.domino.Session#createDateTime(int, int, int, int, int, int)
 	 */
 	@Override
+	@Deprecated
 	public DateTime createDateTime(final int y, final int m, final int d, final int h, final int i, final int s) {
 		Calendar cal = Calendar.getInstance();
 		cal.set(y, m - 1, d, h, i, s);
@@ -514,10 +515,10 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 	public Vector<Object> evaluate(final String formula, final lotus.domino.Document doc) {
 		try {
 			// TODO RPr: Make an option to enable/disable formula engine
-			if (IFormulaService.INSTANCE != null && doc instanceof Map) {
+			if (IFormulaService.$.isAvailable() && doc instanceof Map) {
 				Locale parseLoc = Locale.getDefault();
 				Locale solveLoc = Locale.getDefault(); // TODO RPr change this to the locale of the HTTP request!
-				List<Object> ret = IFormulaService.INSTANCE.evaluate(formula, parseLoc, solveLoc, (Map<String, Object>) doc);
+				List<Object> ret = IFormulaService.$.evaluate(formula, parseLoc, solveLoc, (Map<String, Object>) doc);
 				return new Vector(ret);
 			}
 
@@ -562,6 +563,7 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 	 * @see org.openntf.domino.Session#evaluate(java.lang.String)
 	 */
 	@Override
+	@Deprecated
 	@Legacy({ Legacy.INTERFACES_WARNING, Legacy.GENERICS_WARNING })
 	public Vector<Object> evaluate(final String formula) {
 		return evaluate(formula, null);

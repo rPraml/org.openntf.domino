@@ -7,6 +7,8 @@ import java.util.logging.FileHandler;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
+import org.openntf.domino.commons.ILoggingService;
+
 public class LogHandlerFile extends FileHandler implements LogHandlerUpdateIF {
 
 	private static class LHFConfig implements LogHandlerConfigIF {
@@ -65,7 +67,7 @@ public class LogHandlerFile extends FileHandler implements LogHandlerUpdateIF {
 					break;
 				}
 				if (propKey.equals("Pattern")) {
-					ret.pattern = LoggingAbstract.getInstance().replacePatternPlaceHolders(propValue);
+					ret.pattern = ILoggingService.$.getInstance().replacePatternPlaceHolders(propValue);
 					if (ret.pattern.length() < 3)
 						ind = -1;
 					break;

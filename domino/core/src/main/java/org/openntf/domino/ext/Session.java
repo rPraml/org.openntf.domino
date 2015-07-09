@@ -9,8 +9,6 @@ import java.util.Date;
 import org.openntf.domino.AutoMime;
 import org.openntf.domino.ColorObject;
 import org.openntf.domino.Database;
-import org.openntf.domino.DateRange;
-import org.openntf.domino.DateTime;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
@@ -128,10 +126,13 @@ public interface Session {
 	 *            Collection<String> names to search for
 	 * @param firstFit
 	 *            boolean if only the first fit should be returned
-	 * @return Collection<DateRange> of start/end instances for which all participants are free. Null if there are no matches
+	 * @return Collection<org.openntf.domino.DateRange> of start/end instances for which all participants are free. Null if there are no
+	 *         matches
+	 * @deprecated Avoid using DateRanges, because they are broken in teh lotus.domino-API
 	 * @since org.openntf.domino 1.0.0
 	 */
-	public Collection<DateRange> freeTimeSearch(final org.openntf.domino.DateRange window, final int duration,
+	@Deprecated
+	public Collection<org.openntf.domino.DateRange> freeTimeSearch(final org.openntf.domino.DateRange window, final int duration,
 			final Collection<String> names, final boolean firstFit);
 
 	/**
@@ -145,11 +146,14 @@ public interface Session {
 	 *            String a single name to search for
 	 * @param firstFit
 	 *            boolean if only the first fit should be returned
-	 * @return Collection<DateRange> of start/end instances for which the required person is free. Null if there are no matches
+	 * @return Collection<org.openntf.domino.DateRange> of start/end instances for which the required person is free. Null if there are no
+	 *         matches
+	 * @deprecated Avoid using DateRanges, because they are broken in teh lotus.domino-API
 	 * @since org.openntf.domino 1.0.0
 	 */
-	public Collection<DateRange> freeTimeSearch(final org.openntf.domino.DateRange window, final int duration, final String names,
-			final boolean firstFit);
+	@Deprecated
+	public Collection<org.openntf.domino.DateRange> freeTimeSearch(final org.openntf.domino.DateRange window, final int duration,
+			final String names, final boolean firstFit);
 
 	/**
 	 * A collection of Domino Directories and Personal Address Books, including directory catalogs, known to the current session.
@@ -200,10 +204,12 @@ public interface Session {
 	 * @param date
 	 *            The date, time, and time zone you want the object to represent using a {@link com.ibm.icu.util.Calendar} object.
 	 * 
-	 * @return The newly created {@link DateTime} object.
+	 * @return The newly created {@link org.openntf.domino.DateTime} object.
+	 * 
 	 * @since lotus.domino 4.5.0
 	 */
-	public DateTime createDateTime(Calendar date);
+	@Deprecated
+	public org.openntf.domino.DateTime createDateTime(Calendar date);
 
 	/**
 	 * Tells whether the current session object represents an anonymous user.

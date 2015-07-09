@@ -3,6 +3,8 @@ package org.openntf.domino.commons.logging;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Formatter;
@@ -11,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+
+import org.openntf.domino.commons.ILoggingService;
 
 public class LogFilterHandler extends Handler {
 
@@ -162,9 +166,9 @@ public class LogFilterHandler extends Handler {
 			}
 		if (_handlerUpdateSet == null)
 			_handlerUpdateSet = new HashSet<L_HandlerUpdateEntry>();
-			_handlerUpdateSet.add(new L_HandlerUpdateEntry(oldHandlerUIF, handlerEnt, oldHex, handlerCfgEnt._handlerConfig,
-					oldHandlerCfgEnt._handlerConfig, useDefaultFormatter, formatter));
-			return true;
+		_handlerUpdateSet.add(new L_HandlerUpdateEntry(oldHandlerUIF, handlerEnt, oldHex, handlerCfgEnt._handlerConfig,
+				oldHandlerCfgEnt._handlerConfig, useDefaultFormatter, formatter));
+		return true;
 	}
 
 	void activateYourself(final LogFilterHandler[] oldLFHs) {
@@ -308,7 +312,9 @@ public class LogFilterHandler extends Handler {
 				if (!extendContextByUserDB(fce, contextMap, logRec.getThrown()))
 					return contextMap;
 			try {
-				if (!fce._condHandler.checkAgainstContext(contextMap))
+				List<Object> res = fce._condHandler.solve(Locale.ENGLISH, contextMap);
+				Object o = (res == null || res.size() != 1) ? null : res.get(0);
+				if (!(o instanceof Boolean) || !((Boolean) o))
 					return contextMap;
 			} catch (Exception e) {
 				System.err.println("LogFilterHandler: Exception during condition check:");
@@ -338,7 +344,7 @@ public class LogFilterHandler extends Handler {
 		if (!userRequired && !dbRequired)
 			return true;
 		try {
-			String[] userDB = LoggingAbstract.getInstance().getCurrentUserAndDB(exception, userRequired, dbRequired);
+			String[] userDB = ILoggingService.$.getInstance().getCurrentUserAndDB(exception, userRequired, dbRequired);
 			if (userRequired)
 				contextMap.put(LogConfig.cUserName, userDB[0]);
 			if (dbRequired)

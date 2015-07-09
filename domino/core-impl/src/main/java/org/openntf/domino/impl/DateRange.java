@@ -26,48 +26,43 @@ import lotus.domino.NotesException;
 import org.openntf.domino.DateTime;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
-import org.openntf.domino.utils.ODAUtils;
+import org.openntf.domino.annotations.Legacy;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.utils.ODAUtils;
 
 import com.ibm.icu.util.Calendar;
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class DateRange.
- */
-
-/*
+ * 
  * Regarding DateRange-s, the behaviour of Notes' Java API is very odd (at least with Notes 9.0.1):
  * 
- * 1) replaceItemValue works correctly for a value of type DateRange (as it should)
- * 2) replaceItemValue throws a NotesException (Unknown or unsupported object type in Vector)
- *    if value is a Vector containing DateRange-s (even if the Vector has size 1)
- * 3) getItemValueDateTimeArray, applied to an item with a single DateRange value, yields a
- *    Vector of size 1 (as it should), but elementAt(0) is null
- * 4) Analogously, getItemValueDateTimeArray, applied to a multiple DateRange item (generated
- *    e.g. via LotusScript), yields a Vector of size n with all elements null
- * 5) Finally, getItemValue, applied to a (single or multiple) DateRange item, returns a Vector of size 2*n
- *    containing start and end dates (as DateTime-s) of the DateRange(s).
- *    
- * On the other hand, in LotusScript everything works well: ReplaceItemValue lets you add an array
- * of NotesDateRange-s, GetItemValueDateTimeArray returns a correct array of NotesDateRange-s and so on.
- *  
+ * 1) replaceItemValue works correctly for a value of type DateRange (as it should) 2) replaceItemValue throws a NotesException (Unknown or
+ * unsupported object type in Vector) if value is a Vector containing DateRange-s (even if the Vector has size 1) 3)
+ * getItemValueDateTimeArray, applied to an item with a single DateRange value, yields a Vector of size 1 (as it should), but elementAt(0)
+ * is null 4) Analogously, getItemValueDateTimeArray, applied to a multiple DateRange item (generated e.g. via LotusScript), yields a Vector
+ * of size n with all elements null 5) Finally, getItemValue, applied to a (single or multiple) DateRange item, returns a Vector of size 2*n
+ * containing start and end dates (as DateTime-s) of the DateRange(s).
+ * 
+ * On the other hand, in LotusScript everything works well: ReplaceItemValue lets you add an array of NotesDateRange-s,
+ * GetItemValueDateTimeArray returns a correct array of NotesDateRange-s and so on.
+ * 
  * Hence, for dealing with DateRange-s, openNTF Domino has 3 possibilities:
- *  
- * 1) Every DateRange is wrapped, regardless of whether it's a single value or a Vector of DateRange-s.
- *    Then everything works perfectly, but obviously, there's a considerable overhead.
- * 2) Or we let openNTF Domino behave like Notes (especially accept only single DateRange-s), with a workaround
- *    to make getItemValueDateTimeArray work correctly for DateRange-s. - Of course, wrapping of Vector-s
- *    containing "many" DateRange-s must then be deactivated.
- * 3) A mix of 1 and 2: Native Notes Java API is used, whenever it's a single DateRange (comprising the case of
- *    a Vector containing exactly one DateRange), whereas multiple DateRange-s are always wrapped.
- *    
+ * 
+ * 1) Every DateRange is wrapped, regardless of whether it's a single value or a Vector of DateRange-s. Then everything works perfectly, but
+ * obviously, there's a considerable overhead. 2) Or we let openNTF Domino behave like Notes (especially accept only single DateRange-s),
+ * with a workaround to make getItemValueDateTimeArray work correctly for DateRange-s. - Of course, wrapping of Vector-s containing "many"
+ * DateRange-s must then be deactivated. 3) A mix of 1 and 2: Native Notes Java API is used, whenever it's a single DateRange (comprising
+ * the case of a Vector containing exactly one DateRange), whereas multiple DateRange-s are always wrapped.
+ * 
  * At the moment, the second variant is implemented (without deactivation of wrapping).
+ * 
  */
-
+@Legacy("DateRanges are broken in lotus.domino-API, do not use them")
 public class DateRange extends BaseNonThreadSafe<org.openntf.domino.DateRange, lotus.domino.DateRange, Session> implements
-		org.openntf.domino.DateRange, lotus.domino.DateRange, Cloneable {
+org.openntf.domino.DateRange, lotus.domino.DateRange, Cloneable {
 
 	//	private java.util.Date startDate_;
 	//	private java.util.Date endDate_;
@@ -178,11 +173,15 @@ public class DateRange extends BaseNonThreadSafe<org.openntf.domino.DateRange, l
 	}
 
 	public void setEndDate(final java.util.Date date) {
-		endDateTime_ = getAncestorSession().createDateTime(date);
+		// TODO can we switch to IDate here?
+		endDateTime_ = getFactory().create(DateTime.SCHEMA, getAncestorSession(), null);
+		endDateTime_.setLocalTime(date);
 	}
 
 	public void setStartDate(final java.util.Date date) {
-		startDateTime_ = getAncestorSession().createDateTime(date);
+		// TODO can we switch to IDate here?
+		endDateTime_ = getFactory().create(DateTime.SCHEMA, getAncestorSession(), null);
+		endDateTime_.setLocalTime(date);
 	}
 
 	/*

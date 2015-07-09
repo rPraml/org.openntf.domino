@@ -41,6 +41,7 @@ import lotus.domino.NotesException;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.IDateTime;
+import org.openntf.domino.commons.IName;
 import org.openntf.domino.events.EnumEvent;
 import org.openntf.domino.events.IDominoEvent;
 import org.openntf.domino.events.IDominoListener;
@@ -753,6 +754,7 @@ implements org.openntf.domino.Base<D> {
 					if (fdt.isAnyTime())
 						dt.setAnyTime();
 				} else {
+					// TODO Check this, check also if we have to support ICU Calendar
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					java.util.Calendar intermediate = (java.util.Calendar) value;
 					dt = lsess.createDateTime(sdf.format(intermediate.getTime()) + " " + intermediate.getTimeZone().getID());
@@ -766,6 +768,8 @@ implements org.openntf.domino.Base<D> {
 				return null;
 			}
 			// return toLotus(Factory.getSession(context).createDateTime((java.util.Date) value));
+		} else if (value instanceof IName) {
+			return ((IName) value).getCanonical();
 		} else if (value instanceof CharSequence) {
 			return value.toString();
 			//		} else if (value instanceof CaseInsensitiveString) {	// CaseInsensitiveString is a CharSequence
@@ -777,6 +781,7 @@ implements org.openntf.domino.Base<D> {
 		} else if (value instanceof Enum<?>) {
 			return ((Enum<?>) value).getDeclaringClass().getName() + " " + ((Enum<?>) value).name();
 		} else if (value instanceof Formula) {
+			// TODO Check this stuff! => Converter?
 			return ((Formula) value).getExpression();
 		}
 

@@ -12,6 +12,11 @@ import org.openntf.domino.commons.i18n.RawMessageProviderCacheAbstract;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 
+/**
+ * Reads raw message texts from a Notes lookup view, and these texts are cached by the superclass.
+ * 
+ * @author Steinsiek
+ */
 public class RawMessageProviderDBImpl extends RawMessageProviderCacheAbstract {
 
 	private String _dbServer;
@@ -22,6 +27,7 @@ public class RawMessageProviderDBImpl extends RawMessageProviderCacheAbstract {
 	private int _colLang;
 	private int _colText;
 
+	/** Constructor: The necessary parameters for inspecting the lookup view mentioned above are passed. */
 	protected RawMessageProviderDBImpl(final Database db, final String lookupView, final int colBundle, final int colKey,
 			final int colLang, final int colText) {
 		_dbServer = db.getServer();

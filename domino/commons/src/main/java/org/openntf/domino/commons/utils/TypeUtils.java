@@ -16,8 +16,6 @@ import java.util.regex.Pattern;
 import org.openntf.domino.commons.IDataConverter;
 import org.openntf.domino.commons.IDateTime;
 import org.openntf.domino.commons.IName;
-import org.openntf.domino.commons.Names;
-import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.Strings;
 import org.openntf.domino.commons.exception.DataNotCompatibleException;
 
@@ -253,41 +251,34 @@ public enum TypeUtils {
 	 * <li><b>assignable from source:</b></li> source will be returned, because source is an instance of targetType and no conversion is
 	 * neccessary.
 	 * 
-	 * <li><b>CharSequence[] or String[]:</b></li>
-	 * Will perform a {@link Strings#toStrings(Object)}. In the case that source is a Iterable or Array, it will toString() every element
-	 * and returns an array with the same size. If source is not a multi-value type, it will return a String array of size 1, that contains
-	 * the toString representation of source.
+	 * <li><b>CharSequence[] or String[]:</b></li> Will perform a {@link Strings#toStrings(Object)}. In the case that source is a Iterable
+	 * or Array, it will toString() every element and returns an array with the same size. If source is not a multi-value type, it will
+	 * return a String array of size 1, that contains the toString representation of source.
 	 * 
-	 * <li><b>CharSequence or String:</b></li>
-	 * Will perform a {@link Strings#toString(Object)}. Multi-Value types are concanated and separated with ", ". All other types are just
-	 * toString()'d.
+	 * <li><b>CharSequence or String:</b></li> Will perform a {@link Strings#toString(Object)}. Multi-Value types are concanated and
+	 * separated with ", ". All other types are just toString()'d.
 	 * 
-	 * <li><b>Enum:</b></li>
-	 * Source is converted to string and then a lookup is done for every enum constant.
+	 * <li><b>Enum:</b></li> Source is converted to string and then a lookup is done for every enum constant.
 	 * 
-	 * <li><b>Enum[]:</b></li>
-	 * Same as enum, but returns an array. If Source is a multi-value, the array has the same size, othewise the array has the size 1
+	 * <li><b>Enum[]:</b></li> Same as enum, but returns an array. If Source is a multi-value, the array has the same size, othewise the
+	 * array has the size 1
 	 * 
-	 * <li><b>byte[], short[], int[], long[], float[], double[]:</b></li>
-	 * Will try to extract the numeric value of <code>source</code> and performs a typesafe cast to the given datatype. If source
-	 * is/contains a CharSequence, it will <code>toString()</code> it and tries to parse the number. NOT locale dependent!
+	 * <li><b>byte[], short[], int[], long[], float[], double[]:</b></li> Will try to extract the numeric value of <code>source</code> and
+	 * performs a typesafe cast to the given datatype. If source is/contains a CharSequence, it will <code>toString()</code> it and tries to
+	 * parse the number. NOT locale dependent!
 	 * 
-	 * <li><b>char[]:</b></li>
-	 * For CharSequences that are in source, the first character is returned (or 0 if the CharSequence is empty). For nummeric values, a
-	 * typesafe cast is done. <font color=red>For multi values, it will return the first letter of each multiValue. It will never return
-	 * {@link String#toCharArray()}.</font> If you need this, request a String or String[].
+	 * <li><b>char[]:</b></li> For CharSequences that are in source, the first character is returned (or 0 if the CharSequence is empty).
+	 * For nummeric values, a typesafe cast is done. <font color=red>For multi values, it will return the first letter of each multiValue.
+	 * It will never return {@link String#toCharArray()}.</font> If you need this, request a String or String[].
 	 * 
-	 * <li><b>boolean[]:</b></li>
-	 * Will convert numeric values != 0 to true. Will convert Strings starting with a digit 0..9 to true. Will convert the String containing
-	 * "true" (case insensitive) to <code>true</code>. Everything else is converted to <code>false</code>
+	 * <li><b>boolean[]:</b></li> Will convert numeric values != 0 to true. Will convert Strings starting with a digit 0..9 to true. Will
+	 * convert the String containing "true" (case insensitive) to <code>true</code>. Everything else is converted to <code>false</code>
 	 * 
-	 * <li><b>List, Vector</b></li>
-	 * Returns the object as {@link Vector} or {@link ArrayList}
+	 * <li><b>List, Vector</b></li> Returns the object as {@link Vector} or {@link ArrayList}
 	 * 
-	 * <li><b>Iterable</b></li>
-	 * If the <code>Collection</code> or <code>Iterable</code> interface is passed, a ArrayList is created. For <code>Set</code> a HashSet
-	 * is used. For all other classes, either the constructors &lt;init&gt;() or &lt;init&gt;(int) are called. This depends if the initial
-	 * size can be predicted.
+	 * <li><b>Iterable</b></li> If the <code>Collection</code> or <code>Iterable</code> interface is passed, a ArrayList is created. For
+	 * <code>Set</code> a HashSet is used. For all other classes, either the constructors &lt;init&gt;() or &lt;init&gt;(int) are called.
+	 * This depends if the initial size can be predicted.
 	 * 
 	 * </ul>
 	 * <p>
@@ -295,17 +286,13 @@ public enum TypeUtils {
 	 * </p>
 	 * 
 	 * <ul>
-	 * <li><b>Pattern</b></li>
-	 * toString()s source and compiles it as {@link Pattern}
+	 * <li><b>Pattern</b></li> toString()s source and compiles it as {@link Pattern}
 	 * 
-	 * <li><b>IName</b></li>
-	 * toString()s source and parses it as {@link IName}
+	 * <li><b>IName</b></li> toString()s source and parses it as {@link IName}
 	 * 
-	 * <li><b>Class</b></li>
-	 * toString()s source and tries to create a new Class
+	 * <li><b>Class</b></li> toString()s source and tries to create a new Class
 	 * 
-	 * <li><b>Date, Calendar</b></li>
-	 * tries to treat nummeric values as timestamps and Strings as Date-String
+	 * <li><b>Date, Calendar</b></li> tries to treat nummeric values as timestamps and Strings as Date-String
 	 * 
 	 * </ul>
 	 * 
@@ -463,7 +450,7 @@ public enum TypeUtils {
 		}
 		// Name
 		if (targetType.isAssignableFrom(IName.class)) {
-			return (T) Names.parse(Strings.toString(source));
+			return (T) IName.$.create(Strings.toString(source));
 		}
 
 		// Class
@@ -479,7 +466,7 @@ public enum TypeUtils {
 
 		// IFormula - which locale should be used here?
 		//		if (targetType.isAssignableFrom(IFormula.class)) {
-		//			IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
+		//			IFormulaService service = IFormulaService.$.getInstance()
 		//			String formula = Strings.toString(source);
 		//			try {
 		//				return (T) service.parse(formula);
@@ -508,7 +495,7 @@ public enum TypeUtils {
 
 		// and then fallback to IDataConverter
 		// TODO RPr: this is not yet finished!
-		for (IDataConverter dc : ServiceLocator.findApplicationServices(IDataConverter.class)) {
+		for (IDataConverter dc : IDataConverter.$.getInstances()) {
 			if (targetType.isAssignableFrom(dc.getType())) {
 				return (T) dc.convertTo(source);
 			}
@@ -546,7 +533,7 @@ public enum TypeUtils {
 			// at last: ask the service
 			// and then fallback to IDataConverter
 			// TODO RPr: this is not yet finished!
-			for (IDataConverter<?> dc : ServiceLocator.findApplicationServices(IDataConverter.class)) {
+			for (IDataConverter<?> dc : IDataConverter.$.getInstances()) {
 				if (Date.class.isAssignableFrom(dc.getType())) {
 					return (Date) dc.convertTo(source);
 				}
@@ -588,7 +575,7 @@ public enum TypeUtils {
 			}
 			// at last: ask the service
 			// TODO RPr: this is not yet finished!
-			for (IDataConverter<?> dc : ServiceLocator.findApplicationServices(IDataConverter.class)) {
+			for (IDataConverter<?> dc : IDataConverter.$.getInstances()) {
 				if (Calendar.class.isAssignableFrom(dc.getType())) {
 					return (Calendar) dc.convertTo(source);
 				}
@@ -723,7 +710,7 @@ public enum TypeUtils {
 		//		if (bestMatch != null && Number.class.isAssignableFrom(givenArg))
 		//			return bestMatch;
 		//
-		//		System.out.println("No ctor");
+
 		return null;
 	}
 
@@ -805,7 +792,7 @@ public enum TypeUtils {
 				return SafeCast.longToByte(((Number) value).longValue());
 			}
 		}
-		//		for (IDataConverter dc : ServiceLocator.findApplicationServices(IDataConverter.class)) {
+		//		for (IDataConverter dc : IDataConverter.$.getInstance())) {
 		//			T ret = dc.toByte(o);
 		//			if (ret != null)
 		//				return ret;

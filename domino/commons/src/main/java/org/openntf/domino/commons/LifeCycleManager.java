@@ -19,9 +19,11 @@ public enum LifeCycleManager {
 	private static ThreadLocal<List<Runnable>> requestEndHooks = new ThreadLocal<List<Runnable>>() {
 		@Override
 		protected java.util.List<Runnable> initialValue() {
-			return new ArrayList();
+			return new ArrayList<Runnable>();
 		}
 	};
+
+	private static ThreadLocal<IRequest> currentRequest = new ThreadLocal<IRequest>();
 
 	/**
 	 * find all LifeCycles and starts them
@@ -60,7 +62,7 @@ public enum LifeCycleManager {
 	 * Startup the given lifecycle
 	 */
 	private static void startup(final ILifeCycle service) {
-		service.startup();
+
 		if (service instanceof IRequestLifeCycle) {
 			addRequestLifeCycle((IRequestLifeCycle) service);
 		}
@@ -71,13 +73,16 @@ public enum LifeCycleManager {
 			return;
 		}
 		if (seenBundles.add(symName)) {
-			IO.println("LifeCycle", "Using bundle '" + bi.getBundleName() + "' (Version:" + bi.getBundleVersion() + ")");
-			IO.printDbg("    GIT-Version:        " + bi.getBuildVersion());
-			// output some GIT statistics
-			IO.printDbg("    Commit-ID:          " + bi.getCommitId());
-			IO.printDbg("    Commit-ID-Describe: " + bi.getCommitIdDescribe());
-			IO.printDbg("    Commit-Timestamp:   " + bi.getCommitTime());
+			IO.println("LifeCycle",
+					"Bundle: " + bi.getBundleSymbolicName() + "-" + bi.getBundleVersion() + " (Git-Info: " + bi.getCommitIdDescribe() + ")");
+			//			IO.printDbg("    GIT-Version:        " + bi.getBuildVersion());
+			//			// output some GIT statistics
+			//			IO.printDbg("    Commit-ID:          " + bi.getCommitId());
+			//			IO.printDbg("    Commit-ID-Describe: " + bi.getCommitIdDescribe());
+			//			IO.printDbg("    Commit-Timestamp:   " + bi.getCommitTime());
 		}
+		IO.println("LifeCycle", "Service: " + service.getClass().getName());
+		service.startup();
 	}
 
 	public static void shutdown() {
@@ -165,6 +170,8 @@ public enum LifeCycleManager {
 	 * Must be called before each request (Formerly Factory.initThread())
 	 */
 	public static void beforeRequest(final IRequest request) {
+		currentRequest.set(request);
+
 		IRequestLifeCycle[] copy;
 		synchronized (lazyRequestLifeCycles) {
 			copy = lazyRequestLifeCycles.toArray(new IRequestLifeCycle[lazyLifeCycles.size()]);
@@ -220,7 +227,11 @@ public enum LifeCycleManager {
 				t.printStackTrace();
 			}
 		}
+		currentRequest.set(null);
+	}
 
+	public static IRequest getCurrentRequest() {
+		return currentRequest.get();
 	}
 
 	/**

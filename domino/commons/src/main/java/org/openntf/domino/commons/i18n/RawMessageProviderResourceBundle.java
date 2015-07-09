@@ -6,7 +6,12 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public abstract class RawMessageProviderResBdlAbstract extends RawMessageProviderAbstract {
+import org.openntf.domino.commons.utils.ThreadUtils;
+
+/**
+ * Class for providing raw message texts living in a resource bundle.
+ */
+public class RawMessageProviderResourceBundle extends RawMessageProviderAbstract {
 
 	/**
 	 * In the first version, we used the standard-no-fallback-ResourceBundle.Control, given by
@@ -39,23 +44,21 @@ public abstract class RawMessageProviderResBdlAbstract extends RawMessageProvide
 		}
 	}
 
+	/** Fetches a the required message text from a resource bundle (cf. {@link ResourceBundle}). */
 	@Override
 	public String getRawText(final String bundleName, final String key, final Locale loc) {
 		try {
-			ResourceBundle rb = ResourceBundle.getBundle(bundleName, loc, getClassLoader(), MyNoFallbackControl._instance);
+			ResourceBundle rb = ResourceBundle.getBundle(bundleName, loc, ThreadUtils.getContextClassLoader(),
+					MyNoFallbackControl._instance);
 			return rb.getString(key);
 		} catch (MissingResourceException mre) {
 			return null;
 		}
 	}
 
-	protected abstract ClassLoader getClassLoader();
-
-	/**
-	 * this is the last provider
-	 */
+	/** Provider gets a high priority, so it will be the last to be asked */
 	@Override
-	protected int getPriority() {
+	public int getPriority() {
 		return 99;
 	}
 }

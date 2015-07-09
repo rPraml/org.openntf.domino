@@ -32,9 +32,54 @@ import com.ibm.icu.util.TimeZone;
 public interface IDateTime extends Comparator<IDateTime> {
 
 	/**
-	 * The IDateTime prototype. Always clone!
+	 * Factory to create a new instance. In Java 1.8 we can use a static method in the Interface
 	 */
-	public static IDateTime PROTOTYPE = ServiceLocator.findApplicationService(IDateTime.class);
+	public enum $ {
+		;
+		private static IDateTime PROTOTYPE = ServiceLocator.findApplicationService(IDateTime.class);
+
+		public static IDateTime create() {
+			return PROTOTYPE.clone();
+		}
+
+		public static IDateTime parse(final String text, final Locale locale, final boolean parseLenient) {
+			IDateTime ret = create();
+			ret.parse(text, locale, parseLenient);
+			return ret;
+		}
+
+		public static IDateTime create(final Date date) {
+			IDateTime ret = create();
+			ret.setLocalTime(date);
+			return ret;
+		}
+
+		public static IDateTime create(final java.util.Calendar date) {
+			IDateTime ret = create();
+			ret.setLocalTime(date);
+			return ret;
+		}
+
+		public static IDateTime create(final Calendar date) {
+			IDateTime ret = create();
+			ret.setLocalTime(date);
+			return ret;
+		}
+
+		public static IDateTime create(final int year, final int month, final int day) {
+			IDateTime ret = create();
+			ret.setLocalDate(year, month, day);
+			return ret;
+		}
+
+		public static IDateTime create(final int year, final int month, final int day, final int hour, final int minute, final int second,
+				final int hundredth) {
+			IDateTime ret = create();
+			ret.setLocalDate(year, month, day);
+			ret.setLocalTime(hour, minute, second, hundredth);
+			return ret;
+		}
+	}
 
 	/**
 	 * Formatter are not threadSafe, so we use a ThreadLocal

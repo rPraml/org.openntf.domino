@@ -15,7 +15,7 @@ import org.openntf.domino.junit.DominoJUnitRunner;
 @RunWith(DominoJUnitRunner.class)
 public class TestBasic {
 
-	IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
+	IFormulaService service = IFormulaService.$.getInstance();
 
 	@Test
 	public void testEnvironment() throws FormulaParseException, EvaluateException {

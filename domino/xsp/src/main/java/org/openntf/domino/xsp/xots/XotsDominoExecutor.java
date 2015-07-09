@@ -18,14 +18,18 @@ import javax.servlet.ServletException;
 import lotus.domino.Session;
 
 import org.eclipse.core.runtime.Platform;
+import org.openntf.domino.commons.IRequest;
+import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.commons.utils.ThreadUtils;
 import org.openntf.domino.session.NativeSessionFactory;
 import org.openntf.domino.thread.DominoExecutor;
+import org.openntf.domino.thread.DominoRequest;
 import org.openntf.domino.thread.IWrappedCallable;
 import org.openntf.domino.thread.IWrappedRunnable;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.utils.Factory.ThreadConfig;
 import org.openntf.domino.xots.Tasklet;
 import org.openntf.domino.xots.Tasklet.Context;
 import org.openntf.domino.xsp.ODAPlatform;
@@ -153,7 +157,10 @@ public class XotsDominoExecutor extends DominoExecutor {
 				NotesContext ctx = new NotesContext(module);
 				NotesContext.initThread(ctx);
 				try {
-					Factory.initThread(ODAPlatform.getAppThreadConfig(module.getNotesApplication()));
+					// TODO is this the correct request?
+					IRequest request = new DominoRequest(threadConfig, "&class=" + moduleName, locale);
+					LifeCycleManager.beforeRequest(request);
+
 					try {
 						ClassLoader mcl = module.getModuleClassLoader();
 						ClassLoader oldCl = ThreadUtils.setContextClassLoader(mcl);
@@ -167,7 +174,7 @@ public class XotsDominoExecutor extends DominoExecutor {
 							ThreadUtils.setContextClassLoader(oldCl);
 						}
 					} finally {
-						Factory.termThread();
+						LifeCycleManager.afterRequest();
 					}
 				} finally {
 					NotesContext.termThread();
@@ -216,7 +223,9 @@ public class XotsDominoExecutor extends DominoExecutor {
 				//				}
 
 				//				try {
-				Factory.initThread(ODAPlatform.getAppThreadConfig(module.getNotesApplication()));
+				ThreadConfig tc = ODAPlatform.getAppThreadConfig(module.getNotesApplication());
+				IRequest request = new DominoRequest(tc, "&class=" + moduleName, locale);
+				LifeCycleManager.beforeRequest(request);
 				try {
 					ClassLoader mcl = module.getModuleClassLoader();
 					ClassLoader oldCl = ThreadUtils.setContextClassLoader(mcl);
@@ -241,7 +250,7 @@ public class XotsDominoExecutor extends DominoExecutor {
 					}
 				} finally {
 					setWrappedTask(null);
-					Factory.termThread();
+					LifeCycleManager.afterRequest();
 				}
 				//				} finally {
 				//					if (readLock != null)

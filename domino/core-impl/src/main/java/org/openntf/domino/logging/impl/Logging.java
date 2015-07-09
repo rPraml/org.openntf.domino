@@ -15,7 +15,6 @@ import org.openntf.domino.Database;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.exception.IExceptionDetails;
-import org.openntf.domino.commons.logging.LogFormulaCondHandlerIF;
 import org.openntf.domino.commons.logging.LoggingAbstract;
 import org.openntf.domino.exceptions.OpenNTFNotesException;
 import org.openntf.domino.utils.Factory;
@@ -28,15 +27,6 @@ import org.openntf.domino.utils.Factory.SessionType;
  * 
  */
 public class Logging extends LoggingAbstract {
-
-	public static LoggingAbstract getInstance() {
-		if (LoggingAbstract._theLogger == null)
-			LoggingAbstract._theLogger = new Logging();
-		return LoggingAbstract._theLogger;
-	}
-
-	private Logging() {
-	}
 
 	private static String _logConfigPropFile = null;
 
@@ -136,7 +126,7 @@ public class Logging extends LoggingAbstract {
 	}
 
 	@Override
-	protected ConfigChangeFlag lookForCfgChange() {
+	public ConfigChangeFlag lookForCfgChange() {
 		long oldFileLh = _propFileLh;
 		long oldFileCRC = _propFileCRC;
 		if (!getCfgPropFileNumbers())
@@ -202,10 +192,5 @@ public class Logging extends LoggingAbstract {
 				userDB[0] = detail.getMessage();
 			else if (Database.class.isAssignableFrom(detail.getSource()))
 				userDB[1] = detail.getMessage();
-	}
-
-	@Override
-	public LogFormulaCondHandlerIF getFormulaCondHandler(final String formulaCond) throws Exception {
-		return LogFormulaCondHandler.getInstance(formulaCond);
 	}
 }

@@ -14,6 +14,27 @@ import org.openntf.domino.commons.NameEnums.NamePartKey;
 public interface IName {
 
 	/**
+	 * Factory to create a new instance. In Java 1.8 we can use a static method in the Interface
+	 */
+	public enum $ {
+		;
+		private static IName PROTOTYPE = ServiceLocator.findApplicationService(IName.class);
+
+		public static IName create(final CharSequence name) {
+			return PROTOTYPE.create(name);
+		}
+
+		public static void setLocalServerName(final String string) {
+			PROTOTYPE.setLocalServerName(string);
+		}
+
+	}
+
+	/**
+	 * The IName prototype. Always clone!
+	 */
+
+	/**
 	 * Gets the RFC821 or RFC822 internet address
 	 * 
 	 * * A name that conforms to RFC 821 or RFC 822 is interpreted as an Internet address. Examples of Internet addresses are as follows:
@@ -93,6 +114,11 @@ public interface IName {
 	public String getPRMD();
 
 	public String getSurname();
+
+	// Factory Method
+	public IName create(final CharSequence name);
+
+	public void setLocalServerName(String string);
 
 	//	/**
 	//	 * Checks if the given name is member of the given collection.

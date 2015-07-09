@@ -1,5 +1,6 @@
 package org.openntf.domino.thread;
 
+import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.Callable;
@@ -11,6 +12,7 @@ import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.session.ISessionFactory;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.utils.Factory.ThreadConfig;
 import org.openntf.domino.xots.Tasklet;
 
 /**
@@ -25,7 +27,8 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 	protected Tasklet.Scope scope;
 	protected Tasklet.Context context;
 	protected ISessionFactory sessionFactory;
-	protected IRequest taskRequest;
+	protected ThreadConfig threadConfig;
+	protected Locale locale;
 
 	/**
 	 * Determines the sessionType under which the current runnable should run. The first non-null value of the following list is returned
@@ -62,7 +65,7 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 			sessionFactory = dominoRunnable.getSessionFactory();
 			scope = dominoRunnable.getScope();
 			context = dominoRunnable.getContext();
-			taskRequest = dominoRunnable.getThreadConfig();
+			threadConfig = dominoRunnable.getThreadConfig();
 		}
 		Tasklet annot = task.getClass().getAnnotation(Tasklet.class);
 
@@ -125,22 +128,27 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 			if (scope == null) {
 				scope = Tasklet.Scope.NONE;
 			}
-			if (taskRequest == null) {
+			if (threadConfig == null) {
 				switch (annot.threadConfig()) {
 				case CLONE:
-					taskRequest = Factory.getThreadConfig();
+					threadConfig = Factory.getThreadConfig();
 					break;
 				case PERMISSIVE:
-					taskRequest = Factory.PERMISSIVE_THREAD_CONFIG;
+					threadConfig = Factory.PERMISSIVE_THREAD_CONFIG;
 					break;
 				case STRICT:
-					taskRequest = Factory.STRICT_THREAD_CONFIG;
+					threadConfig = Factory.STRICT_THREAD_CONFIG;
 					break;
 				}
 			}
 		}
-		if (taskRequest == null)
-			taskRequest = Factory.getThreadConfig();
+		if (threadConfig == null)
+			threadConfig = Factory.getThreadConfig();
+		if (LifeCycleManager.getCurrentRequest() == null) {
+			locale = Locale.getDefault();
+		} else {
+			locale = LifeCycleManager.getCurrentRequest().getLocale();
+		}
 	}
 
 	/**
@@ -193,7 +201,9 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 	protected Object callOrRun() throws Exception {
 
 		NotesThread.sinitThread();
-		LifeCycleManager.beforeRequest(taskRequest);
+		IRequest request = new DominoRequest(threadConfig, "&tasklet=" + wrappedTask.getClass().getName(), locale);
+		LifeCycleManager.beforeRequest(request);
+
 		try {
 			return invokeWrappedTask();
 		} finally {

@@ -25,9 +25,7 @@
 						<Export-Package>
 							!*.test,
 							!org.openntf.domino.commons.*,
-							org.openntf.domino.*,
-							org.openntf.arpa,
-							org.openntf.calendars
+							org.openntf.domino.*
 						</Export-Package>
 
 						<!-- junit is optional. (if it is not present you cannot run unittests on server) -->
@@ -46,7 +44,7 @@
 							com.ibm.notes.java.api;bundle-version="[8.5.3,10.0.0)",
 							com.ibm.domino.napi;bundle-version="[9.0.1,10.0.0)";visibility=reexport,
 							com.ibm.commons;bundle-version="[9.0.0,10.0.0)",
-							org.javolution.core-java;bundle-version="[6.1.0,7.0.0)",
+							org.javolution.javolution-core-java;bundle-version="[6.1.0,7.0.0)",
 							org.openntf.formula;bundle-version="1.5.0";visibility=reexport
  						</Require-Bundle>
  						-->

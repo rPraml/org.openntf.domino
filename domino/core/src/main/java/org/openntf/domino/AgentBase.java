@@ -1,6 +1,11 @@
 package org.openntf.domino;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+import org.openntf.domino.commons.IRequest;
 import org.openntf.domino.commons.LifeCycleManager;
+import org.openntf.domino.thread.DominoRequest;
 import org.openntf.domino.utils.Factory;
 
 // TODO: Auto-generated Javadoc
@@ -33,7 +38,13 @@ public class AgentBase extends lotus.domino.AgentBase {
 	public void NotesMain() {
 
 		LifeCycleManager.startup();
-		LifeCycleManager.beforeRequest(Factory.STRICT_THREAD_CONFIG);
+		IRequest request;
+		try {
+			request = new DominoRequest(Factory.STRICT_THREAD_CONFIG, "&agent=" + URLEncoder.encode(getName(), "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}
+		LifeCycleManager.beforeRequest(request);
 		try {
 			DominoMain();
 		} finally {

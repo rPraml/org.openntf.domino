@@ -180,7 +180,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+			</plugin>
             <!-- RPr: disabled 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

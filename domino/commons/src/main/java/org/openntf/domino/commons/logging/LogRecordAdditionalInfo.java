@@ -3,6 +3,7 @@ package org.openntf.domino.commons.logging;
 import java.util.List;
 import java.util.logging.LogRecord;
 
+import org.openntf.domino.commons.ILoggingService;
 import org.openntf.domino.commons.exception.IExceptionDetails;
 
 public class LogRecordAdditionalInfo {
@@ -11,8 +12,8 @@ public class LogRecordAdditionalInfo {
 	private String[] lastWrappedDocs;
 
 	public LogRecordAdditionalInfo(final LogRecord logRec) {
-		exceptionDetails = LoggingAbstract.getInstance().getExceptionDetails(logRec.getThrown());
-		lastWrappedDocs = LoggingAbstract.getInstance().getLastWrappedDocs();
+		exceptionDetails = ILoggingService.$.getInstance().getExceptionDetails(logRec.getThrown());
+		lastWrappedDocs = ILoggingService.$.getInstance().getLastWrappedDocs();
 	}
 
 	public List<IExceptionDetails.Entry> getExceptionDetails() {

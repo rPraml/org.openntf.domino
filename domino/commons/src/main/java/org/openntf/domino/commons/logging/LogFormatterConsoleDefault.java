@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
+import org.openntf.domino.commons.ILoggingService;
+
 public class LogFormatterConsoleDefault extends Formatter {
 
 	public static LogFormatterConsoleDefault getInstance() {
@@ -36,7 +38,7 @@ public class LogFormatterConsoleDefault extends Formatter {
 		sb.append(" - ");
 		sb.append(logRec.getMessage());
 		sb.append('\n');
-		if (LoggingAbstract.getInstance().mayContainAdditionalInfo(logRec)) {
+		if (ILoggingService.$.getInstance().mayContainAdditionalInfo(logRec)) {
 			LogRecordAdditionalInfo lrai = new LogRecordAdditionalInfo(logRec);
 			lrai.writeToLog(sb);
 		}

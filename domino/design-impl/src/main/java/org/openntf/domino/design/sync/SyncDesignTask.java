@@ -27,10 +27,8 @@ import java.util.logging.Level;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
-import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.commons.Strings;
 import org.openntf.domino.design.DatabaseDesign;
-import org.openntf.domino.design.DatabaseDesignService;
 import org.openntf.domino.design.DesignBase;
 import org.openntf.domino.design.DesignBaseNamed;
 import org.openntf.domino.design.DesignCollection;
@@ -253,9 +251,7 @@ public class SyncDesignTask extends SyncTask<DesignBase, OnDiskDesign> implement
 
 	@Override
 	protected void processDbToDisk() {
-		// now read the NSF design
-		DatabaseDesignService service = ServiceLocator.findApplicationService(DatabaseDesignService.class);
-		DatabaseDesign design = service.getDatabaseDesign(getDb());
+		DatabaseDesign design = DatabaseDesign.$.get(getDb());
 		DesignCollection<DesignBase> elems = design.getDesignElements(); //(" !@Contains($Flags;{X}) & !@Begins($TITLE;{WEB-INF/classes}) ");
 		log(Level.INFO, "NSF contains " + elems.getCount() + " elements. DISK contains " + dirMap.size() + " elements");
 

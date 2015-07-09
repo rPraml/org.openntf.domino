@@ -1,76 +1,41 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.4"?>
-<plugin>
-   <extension
-         point="com.ibm.commons.Extension">
-      <service
-            class="org.openntf.formula.FormulaService"
-            type="org.openntf.domino.commons.IFormulaService">
-      </service>
-   </extension>
-   <extension
-         point="com.ibm.commons.Extension">
-      <service
-            class="org.openntf.formula.function.Operators$Functions"
-            type="org.openntf.formula.FunctionSet">
-      </service>
-   </extension>
-   <extension
-         point="com.ibm.commons.Extension">
-      <service
-	        class="org.openntf.formula.function.OperatorsBool$Functions"
-            type="org.openntf.formula.FunctionSet">
-      </service>
-   </extension>
-   <extension
-         point="com.ibm.commons.Extension">
-      <service
-	        class="org.openntf.formula.function.Negators$Functions"
-            type="org.openntf.formula.FunctionSet">
-      </service>
-   </extension>
-   <extension
-         point="com.ibm.commons.Extension">
-      <service
-	        class="org.openntf.formula.function.Comparators$Functions"
-            type="org.openntf.formula.FunctionSet">
-      </service>
-   </extension>
-   <extension
-         point="com.ibm.commons.Extension">
-      <service
-	        class="org.openntf.formula.function.Constants$Functions"
-            type="org.openntf.formula.FunctionSet">
-      </service>
-   </extension>
-   <extension
-         point="com.ibm.commons.Extension">
-      <service
-	        class="org.openntf.formula.function.MathFunctions$Functions"
-            type="org.openntf.formula.FunctionSet">
-      </service>
-   </extension>
-   <extension
-         point="com.ibm.commons.Extension">
-      <service
-	        class="org.openntf.formula.function.DateTimeFunctions$Functions"
-            type="org.openntf.formula.FunctionSet">
-      </service>
-   </extension>
-   <extension
-         point="com.ibm.commons.Extension">
-      <service
-	        class="org.openntf.formula.function.TextFunctions$Functions"
-            type="org.openntf.formula.FunctionSet">
-      </service>
-   </extension>
-
-   <extension
-         point="com.ibm.commons.Extension">
-      <service
-      class="org.openntf.formula.function.FocFunctions$Functions"
-            type="org.openntf.formula.FunctionSet">
-      </service>
-   </extension>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.4"?><plugin>
+<extension point="com.ibm.commons.Extension">
+<service class="org.openntf.formula.FormulaService" type="org.openntf.domino.commons.IFormulaService"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+<service class="org.openntf.formula.impl.DateTimeImpl" type="org.openntf.domino.commons.IDateTime"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+<service class="org.openntf.formula.FormulaService" type="org.openntf.domino.commons.ILifeCycle"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+<service class="org.openntf.formula.function.MathFunctions$Functions" type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+<service class="org.openntf.formula.function.OperatorsBool$Functions" type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+<service class="org.openntf.formula.function.Constants$Functions" type="org.openntf.formula.FunctionSet"/>
+<!--Here, all constants are declared-->
+</extension>
+<extension point="com.ibm.commons.Extension">
+<service class="org.openntf.formula.function.Operators$Functions" type="org.openntf.formula.FunctionSet"/>
+<!--These are the basic functions to provied boolean and arithmetc operations-->
+</extension>
+<extension point="com.ibm.commons.Extension">
+<service class="org.openntf.formula.function.Negators$Functions" type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+<service class="org.openntf.formula.function.DateTimeFunctions$Functions" type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+<service class="org.openntf.formula.function.Comparators$Functions" type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+<service class="org.openntf.formula.function.ParameterFunctions$Functions" type="org.openntf.formula.FunctionSet"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+<service class="org.openntf.formula.function.TextFunctions$Functions" type="org.openntf.formula.FunctionSet"/>
+</extension>
 </plugin>
-

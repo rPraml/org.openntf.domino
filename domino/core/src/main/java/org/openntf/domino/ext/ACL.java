@@ -42,4 +42,5 @@ public interface ACL {
 	 * @since org.openntf.domino 1.0.0
 	 */
 	public void setInternetLevel(final Level level);
+
 }

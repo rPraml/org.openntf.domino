@@ -6,10 +6,7 @@ import org.openntf.domino.design.DatabaseDesign;
 import org.openntf.domino.design.impl.vfs.VFSRootDirectoryNode;
 import org.openntf.domino.design.vfs.VFSRootNode;
 
-public class DatabaseDesignService implements org.openntf.domino.design.DatabaseDesignService {
-	public DatabaseDesignService() {
-		System.out.println("======================= HERE WE ARE !!!!!!!!!!!!!!!");
-	}
+public class DatabaseDesignService implements org.openntf.domino.design.IDatabaseDesignService {
 
 	@Override
 	public DatabaseDesign getDatabaseDesign(final Database database) {

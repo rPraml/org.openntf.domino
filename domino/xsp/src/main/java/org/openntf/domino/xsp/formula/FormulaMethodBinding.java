@@ -17,7 +17,6 @@
 package org.openntf.domino.xsp.formula;
 
 import java.lang.ref.SoftReference;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
@@ -26,7 +25,7 @@ import javax.faces.el.MethodNotFoundException;
 
 import org.openntf.domino.commons.IFormula;
 import org.openntf.domino.commons.IFormulaService;
-import org.openntf.domino.commons.ServiceLocator;
+import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.commons.exception.EvaluateException;
 import org.openntf.domino.commons.exception.FormulaParseException;
 import org.openntf.domino.xsp.model.DominoDocumentMapAdapter;
@@ -97,8 +96,8 @@ public class FormulaMethodBinding extends MethodBindingEx {
 			dataMap = new DominoDocumentMapAdapter(dominoDoc);
 		}
 		try {
-			IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
-			FormulaContextXsp fctx = (FormulaContextXsp) service.createContext(Locale.US, dataMap);
+			IFormulaService service = IFormulaService.$.getInstance();
+			FormulaContextXsp fctx = (FormulaContextXsp) service.createContext(LifeCycleManager.getCurrentRequest().getLocale(), dataMap);
 			fctx.init(this.getComponent(), ctx);
 			return getASTNode().solve(fctx);
 		} catch (EvaluateException e) {
@@ -126,8 +125,7 @@ public class FormulaMethodBinding extends MethodBindingEx {
 			if (node != null)
 				return node;
 		}
-		IFormulaService service = ServiceLocator.findApplicationService(IFormulaService.class);
-		IFormula node = service.parse(formulaStr, Locale.getDefault());
+		IFormula node = IFormulaService.$.parse(formulaStr, null); // no locale! this means english numbers & iso-dates
 		astNodeCache = new SoftReference<IFormula>(node);
 		return node;
 

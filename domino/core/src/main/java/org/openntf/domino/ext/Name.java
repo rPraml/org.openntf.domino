@@ -47,6 +47,12 @@ public interface Name {
 	 */
 	public String getRFC82xInternetAddress();
 
+	/**
+	 * A name is immutable, so cloning makes no sense
+	 * 
+	 * @return
+	 */
+	@Deprecated
 	public org.openntf.domino.Name clone();
 
 	public String getIDprefix();

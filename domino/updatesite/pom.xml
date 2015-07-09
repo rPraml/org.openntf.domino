@@ -11,15 +11,7 @@
 	<packaging>pom</packaging>
 
 	
-	<!-- 
-		TODO RPr: This is my local server - so we must change this,
-		if patched reficio-plugin is officially available -->
-	<pluginRepositories>
-		   <pluginRepository>
-			   <id>reficio</id>
-			   <url>http://pram.homeip.net/maven/</url>
-		   </pluginRepository>
-	</pluginRepositories>
+
 	
 	<dependencies>
 		<!-- You must enter dependencies here, otherwise, updatesite will not bundle the correct artifact -->

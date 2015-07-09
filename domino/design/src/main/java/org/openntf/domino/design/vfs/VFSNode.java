@@ -21,7 +21,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
 
+import org.openntf.domino.DbDirectory;
+import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.design.DxlConverter;
+import org.openntf.domino.design.IDatabaseDesignService;
 
 /**
  * A VirtualFileSystem Node. This Datastructure is used by the FOCONIS WebDAV Servlet, which exposes the whole Server Database Design.
@@ -30,6 +33,15 @@ import org.openntf.domino.design.DxlConverter;
  *
  */
 public interface VFSNode extends Comparable<VFSNode> {
+
+	public enum $ {
+		;
+		private static IDatabaseDesignService INSTANCE = ServiceLocator.findApplicationService(IDatabaseDesignService.class);
+
+		public static VFSRootNode get(final DbDirectory dbDirectory) {
+			return INSTANCE.getVFS(dbDirectory);
+		}
+	}
 
 	/*
 	 * (non-Javadoc)

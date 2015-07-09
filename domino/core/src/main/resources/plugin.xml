@@ -1,24 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?eclipse version="3.4"?>
-<plugin>
-
-<!--
-    <extension
-         point="com.ibm.commons.Extension">
-      <service
-            class="org.openntf.domino.i18n.FormulaMessageProvider"
-            type="org.openntf.domino.i18n.MessageProvider">
-      </service>
-   </extension>
-   <extension
-         point="com.ibm.commons.Extension">
-      <service
-            class="org.openntf.domino.i18n.RawMessageProviderImpl"
-            type="org.openntf.domino.commons.i18n.RawMessageProviderAbstract">
-      </service>
-
-   </extension>
-  -->
-  
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse version="3.4"?><plugin>
+<extension point="com.ibm.commons.Extension">
+<service class="org.openntf.domino.utils.Factory$LifeCycle" type="org.openntf.domino.commons.ILifeCycle"/>
+</extension>
 </plugin>

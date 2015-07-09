@@ -4,6 +4,7 @@
 package org.openntf.domino.ext;
 
 import org.openntf.domino.ACL;
+import org.openntf.domino.commons.IName;
 
 /**
  * @author withersp
@@ -31,5 +32,10 @@ public interface ACLEntry {
 	 * @since org.openntf.domino 1.0.0
 	 */
 	public void setLevel(final ACL.Level level);
+
+	/**
+	 * Same as {@link org.openntf.domino.ACLEntry#getNameObject()} but returns an IName
+	 */
+	public IName getINameObject();
 
 }
