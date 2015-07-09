@@ -95,7 +95,6 @@ public class BundleInfos {
 		String className = clazz.getName().replace(".", "/") + ".class";
 		try {
 			String classPath = clazz.getClassLoader().getResource(className).toString();
-
 			String manifestPath = classPath.replace(className, "META-INF/MANIFEST.MF");
 			Manifest manifest;
 			InputStream stream;

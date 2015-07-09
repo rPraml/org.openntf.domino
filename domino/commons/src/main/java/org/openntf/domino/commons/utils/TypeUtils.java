@@ -23,10 +23,22 @@ import com.ibm.icu.util.Calendar;
 
 /**
  * TypeUtils does a lot of conversions. central method is {@link #objectToClass(Object, Class)} Convert scalars/scalars
- * <table border=1> <tr> <th>to \ from</th> <th>byte</th> <th>short</th> <th>int</th> <th>long</th> <th>float</th> <th>double</th>
- * <th>CharSequence</th> <th>byte</th> <th>byte</th> <th>byte</th>
+ * <table border=1>
+ * <tr>
+ * <th>to \ from</th>
+ * <th>byte</th>
+ * <th>short</th>
+ * <th>int</th>
+ * <th>long</th>
+ * <th>float</th>
+ * <th>double</th>
+ * <th>CharSequence</th>
+ * <th>byte</th>
+ * <th>byte</th>
+ * <th>byte</th>
  * 
- * </tr> </table>
+ * </tr>
+ * </table>
  * 
  * 
  * @author Roland Praml, FOCONIS AG
@@ -256,9 +268,8 @@ public enum TypeUtils {
 	 * parse the number. NOT locale dependent!
 	 * 
 	 * <li><b>char[]:</b></li> For CharSequences that are in source, the first character is returned (or 0 if the CharSequence is empty).
-	 * For nummeric values, a typesafe cast is done.
-	 * <font color=red>For multi values, it will return the first letter of each multiValue. It will never return
-	 * {@link String#toCharArray()}.</font> If you need this, request a String or String[].
+	 * For nummeric values, a typesafe cast is done. <font color=red>For multi values, it will return the first letter of each multiValue.
+	 * It will never return {@link String#toCharArray()}.</font> If you need this, request a String or String[].
 	 * 
 	 * <li><b>boolean[]:</b></li> Will convert numeric values != 0 to true. Will convert Strings starting with a digit 0..9 to true. Will
 	 * convert the String containing "true" (case insensitive) to <code>true</code>. Everything else is converted to <code>false</code>
@@ -699,7 +710,7 @@ public enum TypeUtils {
 		//		if (bestMatch != null && Number.class.isAssignableFrom(givenArg))
 		//			return bestMatch;
 		//
-		//		System.out.println("No ctor");
+
 		return null;
 	}
 

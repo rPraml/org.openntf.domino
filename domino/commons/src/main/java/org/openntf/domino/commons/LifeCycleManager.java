@@ -73,14 +73,15 @@ public enum LifeCycleManager {
 			return;
 		}
 		if (seenBundles.add(symName)) {
-			IO.println("LifeCycle", "Starting bundle " + bi.getBundleSymbolicName() + "-" + bi.getBundleVersion() + " (Git-Info: "
-					+ bi.getCommitIdDescribe() + ")");
+			IO.println("LifeCycle",
+					"Bundle: " + bi.getBundleSymbolicName() + "-" + bi.getBundleVersion() + " (Git-Info: " + bi.getCommitIdDescribe() + ")");
 			//			IO.printDbg("    GIT-Version:        " + bi.getBuildVersion());
 			//			// output some GIT statistics
 			//			IO.printDbg("    Commit-ID:          " + bi.getCommitId());
 			//			IO.printDbg("    Commit-ID-Describe: " + bi.getCommitIdDescribe());
 			//			IO.printDbg("    Commit-Timestamp:   " + bi.getCommitTime());
 		}
+		IO.println("LifeCycle", "Service: " + service.getClass().getName());
 		service.startup();
 	}
 
