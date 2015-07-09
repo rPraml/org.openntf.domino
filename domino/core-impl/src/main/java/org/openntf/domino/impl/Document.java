@@ -36,6 +36,11 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javolution.util.FastMap;
+import javolution.util.FastSet;
+import javolution.util.FastSortedMap;
+import javolution.util.function.Equalities;
+
 import lotus.domino.NotesException;
 
 import org.openntf.domino.AutoMime;
@@ -93,17 +98,12 @@ import com.ibm.designer.domino.napi.NotesConstants;
 import com.ibm.designer.domino.napi.NotesNote;
 import com.ibm.domino.napi.c.BackendBridge;
 
-import javolution.util.FastMap;
-import javolution.util.FastSet;
-import javolution.util.FastSortedMap;
-import javolution.util.function.Equalities;
-
 // TODO: Auto-generated Javadoc
 /**
  * The Class Document.
  */
-public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lotus.domino.Document, Database>
-		implements org.openntf.domino.Document {
+public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lotus.domino.Document, Database> implements
+org.openntf.domino.Document {
 	private static final Logger log_ = Logger.getLogger(Document.class.getName());
 
 	/**
@@ -726,9 +726,8 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 						}
 					}
 				} catch (NotesException e) {
-					log_.log(Level.INFO,
-							"Attempted to close a MIMEEntity called " + entityItemName + " even though we can't find an item by that name.",
-							e);
+					log_.log(Level.INFO, "Attempted to close a MIMEEntity called " + entityItemName
+							+ " even though we can't find an item by that name.", e);
 
 				}
 			} else {
@@ -757,8 +756,8 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 								((org.openntf.domino.impl.MIMEEntity) currEntity).closeMIMEEntity();
 						}
 					} else {
-						log_.log(Level.FINE,
-								"A request was made to close MIMEEntity " + entityItemName + " but that entity isn't currently open");
+						log_.log(Level.FINE, "A request was made to close MIMEEntity " + entityItemName
+								+ " but that entity isn't currently open");
 					}
 				}
 			}
@@ -1357,7 +1356,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 		// if (T.equals(java.util.Collection.class) && getItemValueString("form").equalsIgnoreCase("container")) {
 		// System.out.println("Requesting a value of type " + T.getName() + " in name " + name);
 		// }
-	
+
 		//try {
 		Object itemValue = null;
 		MIMEEntity entity = this.getMIMEEntity(name);
@@ -1393,7 +1392,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 			}
 		}
 		throw new DataNotCompatibleException("Cannot return " + itemValue.getClass() + ", because " + T + " was requested.");
-	
+
 	}*/
 
 	/*
@@ -1452,8 +1451,8 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 			try {
 				vals = getDelegate().getItemValue(name);
 			} catch (NotesException ne) {
-				log_.log(Level.WARNING, "Unable to get value for item " + name + " in Document " + getAncestorDatabase().getFilePath() + " "
-						+ noteid_ + ": " + ne.text);
+				log_.log(Level.WARNING, "Unable to get value for item " + name + " in Document " + getAncestorDatabase().getFilePath()
+						+ " " + noteid_ + ": " + ne.text);
 				ODAUtils.handleException(ne, this, "Item=" + name);
 				return null;
 			}
@@ -2721,12 +2720,12 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 						MIMEBean.saveState(state, this, itemName, true, headers);
 
 					} else {
-						throw new IllegalArgumentException(
-								value.getClass() + " is not of type Serializable, DocumentCollection, NoteCollection or StateHolder");
+						throw new IllegalArgumentException(value.getClass()
+								+ " is not of type Serializable, DocumentCollection, NoteCollection or StateHolder");
 					}
 				} catch (ClassNotFoundException cnfe) {
-					throw new IllegalArgumentException(
-							value.getClass() + " is not of type Serializable, DocumentCollection or NoteCollection");
+					throw new IllegalArgumentException(value.getClass()
+							+ " is not of type Serializable, DocumentCollection or NoteCollection");
 				}
 			}
 
@@ -2768,8 +2767,7 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 				return this.replaceItemValueCustomData(itemName, "mime-bean", itemName, true);// TODO: What about dataTypeName?
 			} else {
 				beginEdit();
-				Item result = fromLotus(getDelegate().replaceItemValueCustomDataBytes(itemName, dataTypeName, byteArray), Item.SCHEMA,
-						this);
+				Item result = fromLotus(getDelegate().replaceItemValueCustomDataBytes(itemName, dataTypeName, byteArray), Item.SCHEMA, this);
 				markDirty(itemName, true);
 				return result;
 			}
@@ -2827,11 +2825,9 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 				} else if (this.getAutoMime() == AutoMime.WRAP_ALL) {
 					// Compatibility mode
 					result = replaceItemValueCustomData(itemName, "mime-bean", value, returnItem);
-					log_.log(Level.INFO,
-							"Writing " + value == null ? "null"
-									: value.getClass() + " causes a " + ex2
-											+ " as AutoMime.WRAP_ALL is enabled, the value will be wrapped in a MIME bean."
-											+ " Consider using 'put' or something similar in your code.");
+					log_.log(Level.INFO, "Writing " + value == null ? "null" : value.getClass() + " causes a " + ex2
+							+ " as AutoMime.WRAP_ALL is enabled, the value will be wrapped in a MIME bean."
+							+ " Consider using 'put' or something similar in your code.");
 				} else {
 					throw ex2;
 				}
@@ -3277,8 +3273,8 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 						String newunid = ODAUtils.toUnid(new Date().getTime());
 						String message = "Unable to save a document with id " + getUniversalID()
 								+ " because that id already exists. Saving a " + this.getFormName()
-								+ (this.hasItem("$$Key") ? " (" + getItemValueString("$$Key") + ")" : "") + " to a different unid instead: "
-								+ newunid;
+								+ (this.hasItem("$$Key") ? " (" + getItemValueString("$$Key") + ")" : "")
+								+ " to a different unid instead: " + newunid;
 						setUniversalID(newunid);
 						try {
 							getDelegate().save(force, makeResponse, markRead);
@@ -3301,8 +3297,8 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 			} else {
 				// System.out.println("Before Update listener blocked save.");
 				if (log_.isLoggable(Level.FINE)) {
-					log_.log(Level.FINE,
-							"Document " + getNoteID() + " was not saved because the DatabaseListener for update returned false.");
+					log_.log(Level.FINE, "Document " + getNoteID()
+							+ " was not saved because the DatabaseListener for update returned false.");
 				}
 				result = false;
 			}
@@ -3508,8 +3504,8 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 				if (del != null) {// this is surprising. Why didn't we already get it?
 					log_.log(Level.WARNING,
 							"Document " + unid + " already existed in the database with noteid " + del.getNoteID()
-									+ " and we're trying to set a doc with noteid " + getNoteID() + " to that. The existing document is a "
-									+ del.getItemValueString("form") + " and the new document is a " + getItemValueString("form"));
+							+ " and we're trying to set a doc with noteid " + getNoteID() + " to that. The existing document is a "
+							+ del.getItemValueString("form") + " and the new document is a " + getItemValueString("form"));
 					if (isDirty()) {// we've already made other changes that we should tuck away...
 						log_.log(Level.WARNING,
 								"Attempting to stash changes to this document to apply to other document of the same UNID. This is pretty dangerous...");
@@ -3740,11 +3736,9 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 							try {
 								d = db.getDocumentByUNID(unid_);
 							} catch (NotesException ne) {
-								log_.log(Level.WARNING,
-										"Attempted to resurrect non-new document unid " + String.valueOf(unid_)
-												+ ", but the document was not found in " + getParentDatabase().getServer() + "!!"
-												+ getParentDatabase().getFilePath() + " because of: " + ne.text,
-										ne);
+								log_.log(Level.WARNING, "Attempted to resurrect non-new document unid " + String.valueOf(unid_)
+										+ ", but the document was not found in " + getParentDatabase().getServer() + "!!"
+										+ getParentDatabase().getFilePath() + " because of: " + ne.text, ne);
 							}
 						}
 					} else {
@@ -3755,8 +3749,8 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 				//getFactory().recacheLotusObject(d, this, parent_);
 				if (shouldResurrect_) {
 					if (log_.isLoggable(Level.FINER)) {
-						log_.log(Level.FINER,
-								"Document " + noteid_ + " in database path " + getParentDatabase().getFilePath() + " was rollbacked.");
+						log_.log(Level.FINER, "Document " + noteid_ + " in database path " + getParentDatabase().getFilePath()
+								+ " was rollbacked.");
 					}
 				} else {
 					if (log_.isLoggable(Level.FINE)) {
@@ -3792,10 +3786,9 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 					try {
 						d = db.getDocumentByUNID(unid_);
 					} catch (NotesException ne) {
-						log_.log(Level.WARNING,
-								"Attempted to resurrect non-new document unid " + String.valueOf(unid_)
-										+ ", but the document was not found in " + getParentDatabase().getServer() + "!!"
-										+ getParentDatabase().getFilePath() + " because of: " + ne.text);
+						log_.log(Level.WARNING, "Attempted to resurrect non-new document unid " + String.valueOf(unid_)
+								+ ", but the document was not found in " + getParentDatabase().getServer() + "!!"
+								+ getParentDatabase().getFilePath() + " because of: " + ne.text);
 					}
 				}
 				setDelegate(d, true);
@@ -3806,12 +3799,15 @@ public class Document extends BaseNonThreadSafe<org.openntf.domino.Document, lot
 					if (log_.isLoggable(Level.FINER)) {
 						Throwable t = new Throwable();
 						StackTraceElement[] elements = t.getStackTrace();
-						log_.log(Level.FINER, elements[0].getClassName() + "." + elements[0].getMethodName() + " ( line "
-								+ elements[0].getLineNumber() + ")");
-						log_.log(Level.FINER, elements[1].getClassName() + "." + elements[1].getMethodName() + " ( line "
-								+ elements[1].getLineNumber() + ")");
-						log_.log(Level.FINER, elements[2].getClassName() + "." + elements[2].getMethodName() + " ( line "
-								+ elements[2].getLineNumber() + ")");
+						log_.log(Level.FINER,
+								elements[0].getClassName() + "." + elements[0].getMethodName() + " ( line " + elements[0].getLineNumber()
+								+ ")");
+						log_.log(Level.FINER,
+								elements[1].getClassName() + "." + elements[1].getMethodName() + " ( line " + elements[1].getLineNumber()
+								+ ")");
+						log_.log(Level.FINER,
+								elements[2].getClassName() + "." + elements[2].getMethodName() + " ( line " + elements[2].getLineNumber()
+								+ ")");
 					}
 					log_.log(Level.FINE,
 							"If you recently rollbacked a transaction and this document was included in the rollback, this outcome is normal.");
