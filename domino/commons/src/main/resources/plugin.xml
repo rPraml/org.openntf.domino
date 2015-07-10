@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<plugin>
+<plugin modifiedby="de.foconis.maven.syncpx.SyncPluginXMLMojo">
 <extension point="com.ibm.commons.Extension">
-<service class="org.openntf.domino.commons.impl.NameImpl" type="org.openntf.domino.commons.IName"/>
+    <service type="org.openntf.domino.commons.ILifeCycle"
+            class="org.openntf.domino.commons.impl.CommonsLifeCycle"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
-<service class="org.openntf.domino.commons.impl.CommonsLifeCycle" type="org.openntf.domino.commons.ILifeCycle"/>
+    <service type="org.openntf.domino.commons.IName"
+            class="org.openntf.domino.commons.impl.NameImpl"/>
 </extension>
 </plugin>

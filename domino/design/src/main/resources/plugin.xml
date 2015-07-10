@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?eclipse version="3.4"?><plugin>
+<?eclipse version="3.4"?><plugin modifiedby="de.foconis.maven.syncpx.SyncPluginXMLMojo">
 <extension point="com.ibm.commons.Extension">
-<service class="org.openntf.domino.design.impl.DesignLifeCycle" type="org.openntf.domino.commons.ILifeCycle"/>
+    <service type="org.openntf.domino.commons.ILifeCycle"
+            class="org.openntf.domino.design.impl.DesignLifeCycle"/>
 </extension>
 </plugin>

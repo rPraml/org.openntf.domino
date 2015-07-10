@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<plugin>
+<plugin modifiedby="de.foconis.maven.syncpx.SyncPluginXMLMojo">
 <extension point="com.ibm.commons.Extension">
-<service class="org.openntf.domino.logging.impl.Logging" type="org.openntf.domino.commons.ILoggingService"/>
+    <service type="org.openntf.domino.WrapperFactory"
+            class="org.openntf.domino.impl.WrapperFactory"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
-<service class="org.openntf.domino.impl.DominoLifeCycle" type="org.openntf.domino.commons.ILifeCycle"/>
+    <service type="org.openntf.domino.commons.ILifeCycle"
+            class="org.openntf.domino.impl.DominoLifeCycle"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
-<service class="org.openntf.domino.impl.WrapperFactory" type="org.openntf.domino.WrapperFactory"/>
+    <service type="org.openntf.domino.commons.ILoggingService"
+            class="org.openntf.domino.logging.impl.Logging"/>
 </extension>
 </plugin>

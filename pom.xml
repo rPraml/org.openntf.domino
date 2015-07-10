@@ -292,17 +292,12 @@
                          </goals>
                     </execution>
                 </executions>
-				<!-- 
-				<executions>
-					<execution>
-						<id>ensure-java-1.6-class-library</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>syncpluginxml</goal>
-						</goals>
-					</execution>
-				</executions>
-				 -->
+                <configuration>
+                	<!--  If true, some debug info is printed out -->
+                	<_verbose>false</_verbose>
+	                <!-- The plugin's actions are logged in that file, if the file exists -->
+                	<_loggFile>c:/tmp/syncpluginxml.log</_loggFile>
+                </configuration>
 			</plugin>
 			<!-- javadoc configuration <plugin> <groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId> <version>2.9</version> <executions>
