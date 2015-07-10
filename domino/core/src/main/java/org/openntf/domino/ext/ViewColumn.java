@@ -3,6 +3,9 @@
  */
 package org.openntf.domino.ext;
 
+import org.openntf.domino.commons.IFormula;
+import org.openntf.domino.commons.exception.FormulaParseException;
+
 /**
  * @author withersp
  * 
@@ -28,4 +31,12 @@ public interface ViewColumn {
 	 * @since org.openntf.domino 5.0.0
 	 */
 	public int getColumnValuesIndex(boolean correctValue);
+
+	/**
+	 * Returns the parsed formula Node
+	 * 
+	 * @return
+	 * @throws FormulaParseException
+	 */
+	public IFormula getParsedFormula() throws FormulaParseException;
 }

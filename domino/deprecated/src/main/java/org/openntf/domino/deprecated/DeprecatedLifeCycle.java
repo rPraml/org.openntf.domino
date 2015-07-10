@@ -1,4 +1,4 @@
-package org.openntf.domino;
+package org.openntf.domino.deprecated;
 
 import org.openntf.domino.commons.StandardLifeCycle;
 

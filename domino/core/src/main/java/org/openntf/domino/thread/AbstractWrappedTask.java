@@ -144,8 +144,11 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 		}
 		if (threadConfig == null)
 			threadConfig = Factory.getThreadConfig();
-
-		locale = LifeCycleManager.getCurrentRequest().getLocale();
+		if (LifeCycleManager.getCurrentRequest() == null) {
+			locale = Locale.getDefault();
+		} else {
+			locale = LifeCycleManager.getCurrentRequest().getLocale();
+		}
 	}
 
 	/**

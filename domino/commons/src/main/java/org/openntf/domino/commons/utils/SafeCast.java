@@ -5,6 +5,12 @@ import org.openntf.domino.commons.exception.DataNotCompatibleException;
 public enum SafeCast {
 	;
 
+	/**
+	 * The valid range of byte = [-128..127]
+	 * 
+	 * @param l
+	 * @return
+	 */
 	public static byte longToByte(final long l) {
 		byte x = (byte) l;
 		if (x != l) {
@@ -13,6 +19,9 @@ public enum SafeCast {
 		return x;
 	}
 
+	/**
+	 * The valid range of char = [0..2^16[ = [0..65535]
+	 */
 	public static char longToChar(final long l) {
 		char x = (char) l;
 		if (x != l) {
@@ -21,6 +30,9 @@ public enum SafeCast {
 		return x;
 	}
 
+	/**
+	 * The valid range of short = [-2^15..2^15[ = [-32768..32767]
+	 */
 	public static short longToShort(final long l) {
 		short x = (short) l;
 		if (x != l) {
@@ -29,6 +41,9 @@ public enum SafeCast {
 		return x;
 	}
 
+	/**
+	 * The valid range of int is = [-2^31..2^31[ = [-2'147'483'648..2'147'483'647]
+	 */
 	public static int longToInt(final long l) {
 		int x = (int) l;
 		if (x != l) {
@@ -37,6 +52,9 @@ public enum SafeCast {
 		return x;
 	}
 
+	/**
+	 * The valid range of l = [-2^24..2^24] = [-16'777'216..16'777'216]
+	 */
 	public static float longToFloat(final long l) {
 		float x = l;
 		if (Math.abs((long) x - l) >= 1.0) {
@@ -45,6 +63,9 @@ public enum SafeCast {
 		return x;
 	}
 
+	/**
+	 * The valid range of l = [-2^53..2^53] = [-9'007'199'254'740'992..9'007'199'254'740'992]
+	 */
 	public static double longToDouble(final long l) {
 		double x = l;
 		if (Math.abs((long) x - l) >= 1.0) {
@@ -94,10 +115,10 @@ public enum SafeCast {
 	}
 
 	public static float doubleToFloat(final double d) {
-		float x = (float) d;
-		if (Math.abs(x - d) >= 1.0) {
-			throw new DataNotCompatibleException("The value '" + d + "' does not fit in a float or gets too inaccurate");
+		if (d < -Float.MAX_VALUE || Float.MAX_VALUE < d) {
+			throw new DataNotCompatibleException("The value '" + d + "' does not fit in a float");
 		}
-		return x;
+		return (float) d;
 	}
+
 }
