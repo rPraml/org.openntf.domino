@@ -22,7 +22,6 @@ import java.io.OutputStream;
 import java.util.Collection;
 
 import org.openntf.domino.DbDirectory;
-import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.design.DxlConverter;
 import org.openntf.domino.design.IDatabaseDesignService;
 
@@ -36,10 +35,8 @@ public interface VFSNode extends Comparable<VFSNode> {
 
 	public enum $ {
 		;
-		private static IDatabaseDesignService INSTANCE = ServiceLocator.findApplicationService(IDatabaseDesignService.class);
-
 		public static VFSRootNode get(final DbDirectory dbDirectory) {
-			return INSTANCE.getVFS(dbDirectory);
+			return IDatabaseDesignService.$.getInstance().getVFS(dbDirectory);
 		}
 	}
 
