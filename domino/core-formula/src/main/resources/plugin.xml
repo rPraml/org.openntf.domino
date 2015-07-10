@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?eclipse version="3.4"?><plugin>
+<?eclipse version="3.4"?><plugin modifiedby="de.foconis.maven.syncpx.SyncPluginXMLMojo">
 <extension point="com.ibm.commons.Extension">
-<service class="org.openntf.domino.formula.DominoFormulaService" type="org.openntf.domino.commons.IFormulaService"/>
+    <service type="org.openntf.domino.commons.IFormulaService"
+            class="org.openntf.domino.formula.DominoFormulaService"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
-<service class="org.openntf.domino.formula.FormulaLifeCycle" type="org.openntf.domino.commons.ILifeCycle"/>
+    <service type="org.openntf.domino.commons.ILifeCycle"
+            class="org.openntf.domino.formula.FormulaLifeCycle"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
-<service class="org.openntf.domino.formula.DominoFunctions$Functions" type="org.openntf.formula.FunctionSet"/>
+    <service type="org.openntf.formula.FunctionSet"
+            class="org.openntf.domino.formula.DocFunctions$Functions"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
-<service class="org.openntf.domino.formula.DocFunctions$Functions" type="org.openntf.formula.FunctionSet"/>
+    <service type="org.openntf.formula.FunctionSet"
+            class="org.openntf.domino.formula.DominoFunctions$Functions"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
-<service class="org.openntf.domino.formula.NativeEvaluateFunctions$Functions" type="org.openntf.formula.FunctionSet"/>
+    <service type="org.openntf.formula.FunctionSet"
+            class="org.openntf.domino.formula.NativeEvaluateFunctions$Functions"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
-<service class="org.openntf.domino.formula.NotSupported$Functions" type="org.openntf.formula.FunctionSet"/>
+    <service type="org.openntf.formula.FunctionSet"
+            class="org.openntf.domino.formula.NotSupported$Functions"/>
 </extension>
 </plugin>

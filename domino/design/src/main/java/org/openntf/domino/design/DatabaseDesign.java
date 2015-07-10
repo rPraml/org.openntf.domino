@@ -19,7 +19,6 @@ package org.openntf.domino.design;
 import java.util.SortedSet;
 
 import org.openntf.domino.Database;
-import org.openntf.domino.commons.ServiceLocator;
 
 /**
  * @author jgallagher
@@ -29,10 +28,8 @@ public interface DatabaseDesign extends org.openntf.domino.types.DatabaseDescend
 
 	public enum $ {
 		;
-		private static IDatabaseDesignService INSTANCE = ServiceLocator.findApplicationService(IDatabaseDesignService.class);
-
 		public static DatabaseDesign get(final Database database) {
-			return INSTANCE.getDatabaseDesign(database);
+			return IDatabaseDesignService.$.getInstance().getDatabaseDesign(database);
 		}
 	}
 
