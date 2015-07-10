@@ -29,7 +29,7 @@ import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.design.DatabaseDesign;
 import org.openntf.domino.design.DesignBase;
 import org.openntf.domino.design.DesignCollection;
-import org.openntf.domino.design.impl.DatabaseDesignService;
+import org.openntf.domino.design.IDatabaseDesignService;
 import org.openntf.domino.design.sync.OnDiskDesign;
 import org.openntf.domino.design.vfs.VFSNode;
 import org.openntf.domino.utils.Factory.SessionType;
@@ -143,7 +143,7 @@ public class VFSDatabaseNode extends VFSAbstractNode<DesignBase> implements org.
 
 	@Override
 	public void refresh() {
-		DatabaseDesignService service = ServiceLocator.findApplicationService(DatabaseDesignService.class);
+		IDatabaseDesignService service = ServiceLocator.findApplicationService(IDatabaseDesignService.class);
 		service.getDatabaseDesign(getDatabase()).flush();
 		clear();
 	}

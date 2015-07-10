@@ -2,6 +2,6 @@
 <?eclipse version="3.4"?><plugin modifiedby="de.foconis.maven.syncpx.SyncPluginXMLMojo">
 <extension point="com.ibm.commons.Extension">
     <service type="org.openntf.domino.commons.ILifeCycle"
-            class="org.openntf.domino.DeprecatedLifeCycle"/>
+            class="org.openntf.domino.deprecated.DeprecatedLifeCycle"/>
 </extension>
 </plugin>
