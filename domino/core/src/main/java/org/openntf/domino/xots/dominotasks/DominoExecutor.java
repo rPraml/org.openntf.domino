@@ -1,21 +1,6 @@
 /**
  * 
  */
-package org.openntf.domino.thread;
-
-import java.util.concurrent.Callable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.openntf.domino.annotations.Incomplete;
-
-/**
- * A ThreadPoolExecutor for Domino runnables. It sets up a shutdown hook for proper termination. There should be maximum one instance of
- * DominoExecutor, otherwise concurrency won't work
- * 
- * @author Nathan T. Freeman
- */
-@Incomplete
 package org.openntf.domino.xots.dominotasks;
 
 import java.util.concurrent.Callable;
@@ -30,6 +15,12 @@ import org.openntf.domino.xots.tasks.Scheduler;
 import org.openntf.domino.xots.tasks.impl.PeriodicScheduler;
 import org.openntf.domino.xots.tasks.impl.XotsExecutor;
 
+/**
+ * A ThreadPoolExecutor for Domino runnables. It sets up a shutdown hook for proper termination. There should be maximum one instance of
+ * DominoExecutor, otherwise concurrency won't work
+ * 
+ * @author Nathan T. Freeman
+ */
 public class DominoExecutor extends XotsExecutor {
 
 	private static final Logger log_ = Logger.getLogger(DominoExecutor.class.getName());
@@ -118,4 +109,3 @@ public class DominoExecutor extends XotsExecutor {
 		return queue(new XotsFutureTask(wrap(moduleName, className, ctorArgs), new PeriodicScheduler(0, 0L, TimeUnit.NANOSECONDS)));
 	}
 }
-

@@ -8,7 +8,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.xots.tasks.AbstractWrappedTask;
 import org.openntf.domino.xots.tasks.AbstractXotsExecutor;
 import org.openntf.domino.xots.tasks.IWrappedCallable;
@@ -50,12 +49,13 @@ public class XotsExecutor extends AbstractXotsExecutor {
 
 		@Override
 		protected Object callOrRun() throws Exception {
-			LifeCycleManager.beforeRequest(taskRequest);
-			try {
-				return invokeWrappedTask();
-			} finally {
-				LifeCycleManager.afterRequest();
-			}
+			throw new UnsupportedOperationException("not yet implemented"); // TODO RPr implement this
+			//LifeCycleManager.beforeRequest(taskRequest);
+			//			try {
+			//				return invokeWrappedTask();
+			//			} finally {
+			//				LifeCycleManager.afterRequest();
+			//			}
 		}
 
 		@SuppressWarnings("unchecked")
@@ -108,12 +108,13 @@ public class XotsExecutor extends AbstractXotsExecutor {
 
 		@Override
 		protected Object callOrRun() throws Exception {
-			LifeCycleManager.beforeRequest(taskRequest);
-			try {
-				return invokeWrappedTask();
-			} finally {
-				LifeCycleManager.afterRequest();
-			}
+			throw new UnsupportedOperationException("not yet implemented"); // TODO RPr implement this
+			//			LifeCycleManager.beforeRequest(taskRequest);
+			//			try {
+			//				return invokeWrappedTask();
+			//			} finally {
+			//				LifeCycleManager.afterRequest();
+			//			}
 		}
 
 		@Override

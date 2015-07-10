@@ -14,6 +14,7 @@ import org.openntf.domino.types.Null;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.utils.ODAUtils;
+import org.openntf.domino.xots.Tasklet;
 import org.openntf.domino.xots.dominotasks.AbstractWrappedDominoTask;
 import org.openntf.domino.xsp.ODAPlatform;
 
@@ -159,6 +160,7 @@ public class XotsWrappedTask extends AbstractWrappedDominoTask {
 	 * @param args
 	 * @return
 	 */
+	@Override
 	protected Constructor<?> findConstructor(final Class<?> clazz, final Object[] args) {
 		// sanity check if this is a public tasklet
 		Tasklet annot = clazz.getAnnotation(Tasklet.class);

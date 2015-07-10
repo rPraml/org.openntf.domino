@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.util.Observable;
 import java.util.Observer;
 
-import org.openntf.domino.commons.IRequest;
 import org.openntf.domino.xots.Tasklet;
 
 /**
@@ -19,7 +18,6 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 
 	protected Tasklet.Scope scope;
 	protected Tasklet.Context context;
-	protected IRequest taskRequest;
 
 	/**
 	 * Sets the wrapped Task.
