@@ -4,9 +4,9 @@ import java.util.logging.Logger;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
-import org.openntf.domino.thread.AbstractDominoRunnable;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.xots.dominotasks.AbstractDominoRunnable;
 
 import com.ibm.xsp.application.ApplicationEx;
 import com.ibm.xsp.application.DesignerApplicationEx;

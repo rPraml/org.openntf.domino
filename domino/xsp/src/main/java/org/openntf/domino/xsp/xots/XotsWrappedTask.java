@@ -8,12 +8,12 @@ import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.commons.utils.ThreadUtils;
 import org.openntf.domino.config.Configuration;
 import org.openntf.domino.config.XotsConfiguration;
-import org.openntf.domino.thread.AbstractWrappedTask;
 import org.openntf.domino.types.Null;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.utils.ODAUtils;
 import org.openntf.domino.xots.Tasklet;
+import org.openntf.domino.xots.dominotasks.AbstractWrappedDominoTask;
 import org.openntf.domino.xsp.ODAPlatform;
 
 import com.ibm.commons.util.ThreadLock;
@@ -21,7 +21,7 @@ import com.ibm.domino.xsp.module.nsf.NSFComponentModule;
 import com.ibm.domino.xsp.module.nsf.NotesContext;
 
 @Deprecated
-public class XotsWrappedTask extends AbstractWrappedTask {
+public class XotsWrappedTask extends AbstractWrappedDominoTask {
 
 	/**
 	 * Common code for the wrappers

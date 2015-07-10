@@ -20,14 +20,14 @@ import lotus.domino.Session;
 import org.eclipse.core.runtime.Platform;
 import org.openntf.domino.commons.utils.ThreadUtils;
 import org.openntf.domino.session.NativeSessionFactory;
-import org.openntf.domino.thread.DominoExecutor;
-import org.openntf.domino.thread.IWrappedCallable;
-import org.openntf.domino.thread.IWrappedRunnable;
 import org.openntf.domino.utils.DominoUtils;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.xots.Tasklet;
 import org.openntf.domino.xots.Tasklet.Context;
+import org.openntf.domino.xots.dominotasks.DominoExecutor;
+import org.openntf.domino.xots.tasks.IWrappedCallable;
+import org.openntf.domino.xots.tasks.IWrappedRunnable;
 import org.openntf.domino.xsp.ODAPlatform;
 import org.openntf.domino.xsp.session.InvalidSessionFactory;
 import org.openntf.domino.xsp.session.XPageNamedSessionFactory;
@@ -401,7 +401,7 @@ public class XotsDominoExecutor extends DominoExecutor {
 		}
 	}
 
-	@Override
+	//@Override
 	protected IWrappedCallable<?> wrap(final String moduleName, final String className, final Object... ctorArgs) {
 		if (moduleName.startsWith("bundle:")) {
 			return new XotsBundleTasklet(moduleName.substring(7), className, ctorArgs);

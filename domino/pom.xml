@@ -67,7 +67,8 @@
 				<module>core-junit</module>
 				<module>design</module>
 				<module>design-impl</module>				
-				
+				<module>xots</module>
+
 				<!-- modules / not needed by FOCONIS -->
 				<module>deprecated</module>				
 				<module>schema</module>

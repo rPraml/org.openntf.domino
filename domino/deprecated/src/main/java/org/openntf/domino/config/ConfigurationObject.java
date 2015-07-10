@@ -11,8 +11,8 @@ import javolution.util.FastSet;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
-import org.openntf.domino.thread.DominoExecutor;
 import org.openntf.domino.xots.Tasklet;
+import org.openntf.domino.xots.dominotasks.DominoExecutor;
 
 /**
  * 

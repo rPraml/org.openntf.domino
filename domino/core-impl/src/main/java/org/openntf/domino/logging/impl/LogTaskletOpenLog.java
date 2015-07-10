@@ -1,8 +1,8 @@
 package org.openntf.domino.logging.impl;
 
-import org.openntf.domino.thread.AbstractDominoRunnable;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.xots.dominotasks.AbstractDominoRunnable;
 
 @SuppressWarnings("serial")
 public class LogTaskletOpenLog extends AbstractDominoRunnable {
