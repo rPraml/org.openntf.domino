@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.openntf.domino</groupId>
+		<artifactId>root</artifactId>
+		<version>1.5.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>xots</artifactId>
+	<name>OpenNTF Domino XOTS API</name>
+	<description>ODA-XOTS - OpenNTF Scheduling Framework (former XPages OSGi Tasklet Service)</description>
+
+	<packaging>bundle</packaging>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+						<Export-Package>
+							!*.test,
+							org.openntf.domino.xots.*
+						</Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		
+		<dependency>
+			<groupId>com.ibm.icu</groupId>
+			<artifactId>icu4j</artifactId>
+			<version>${icu-version}</version>
+		</dependency>
+
+	
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>commons</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.javolution</groupId>
+			<artifactId>javolution-core-java</artifactId>
+			<version>6.1.0-ODA-151-SNAPSHOT</version>
+		</dependency>
+		
+	</dependencies>
+
+	<organization>
+		<name>OpenNTF</name>
+		<url>http://www.openntf.org</url>
+	</organization>
+</project>
