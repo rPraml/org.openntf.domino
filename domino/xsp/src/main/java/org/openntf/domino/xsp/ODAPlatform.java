@@ -11,10 +11,10 @@ import org.openntf.domino.config.Configuration;
 import org.openntf.domino.config.ServerConfiguration;
 import org.openntf.domino.ext.Session.Fixes;
 import org.openntf.domino.session.INamedSessionFactory;
-import org.openntf.domino.thread.DominoExecutor;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.ThreadConfig;
 import org.openntf.domino.xots.Xots;
+import org.openntf.domino.xots.tasks.impl.XotsExecutor;
 import org.openntf.domino.xsp.session.XPageNamedSessionFactory;
 import org.openntf.domino.xsp.xots.XotsDominoExecutor;
 
@@ -61,7 +61,7 @@ public enum ODAPlatform {
 		// We must read the value here, because in the ShutDown, it is not possible to navigate through views and the code will fail.
 		xotsStopDelay = cfg.getXotsStopDelay();
 		if (xotsTasks > 0) {
-			DominoExecutor executor = new XotsDominoExecutor(xotsTasks);
+			XotsExecutor executor = new XotsDominoExecutor(xotsTasks);
 			Xots.start(executor);
 			if (!"false".equals(System.getProperty("oda.tasklet.autostart"))) {
 				startTasklets();

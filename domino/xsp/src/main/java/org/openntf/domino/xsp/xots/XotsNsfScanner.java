@@ -15,16 +15,16 @@ import org.openntf.domino.DbDirectory;
 import org.openntf.domino.Session;
 import org.openntf.domino.design.DatabaseDesign;
 import org.openntf.domino.exceptions.UserAccessException;
-import org.openntf.domino.thread.AbstractDominoCallable;
-import org.openntf.domino.thread.AbstractDominoExecutor;
-import org.openntf.domino.thread.AbstractDominoRunnable;
-import org.openntf.domino.thread.IWrappedTask;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.xots.ScheduleData;
 import org.openntf.domino.xots.Tasklet;
 import org.openntf.domino.xots.Xots;
 import org.openntf.domino.xots.XotsUtil;
+import org.openntf.domino.xots.dominotasks.AbstractDominoCallable;
+import org.openntf.domino.xots.dominotasks.AbstractDominoRunnable;
+import org.openntf.domino.xots.tasks.AbstractXotsExecutor.XotsFutureTask;
+import org.openntf.domino.xots.tasks.IWrappedTask;
 
 import com.ibm.designer.domino.napi.NotesAPIException;
 import com.ibm.designer.domino.napi.NotesSession;
@@ -115,7 +115,7 @@ public class XotsNsfScanner extends AbstractDominoRunnable implements Serializab
 				try {
 					List<ScheduleData> fRet = future.get();
 					if (fRet != null) {
-						AbstractDominoExecutor.DominoFutureTask<?> adft = (AbstractDominoExecutor.DominoFutureTask<?>) future;
+						XotsFutureTask<?> adft = (XotsFutureTask<?>) future;
 						IWrappedTask iwt = adft.getWrappedTask();
 						XotsClassScanner xcs = (XotsClassScanner) iwt.getWrappedTask();
 						setLastScan(xcs.apiPath);

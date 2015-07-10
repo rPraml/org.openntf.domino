@@ -8,11 +8,13 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.openntf.domino.Database;
+import org.openntf.domino.commons.ServiceLocator;
 import org.openntf.domino.design.AnyFileResource;
 import org.openntf.domino.design.DatabaseDesign;
-import org.openntf.domino.thread.AbstractDominoRunnable;
+import org.openntf.domino.design.DatabaseDesignService;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.xots.dominotasks.AbstractDominoRunnable;
 
 public class JSR223Tasklet extends AbstractDominoRunnable {
 	private static final long serialVersionUID = 1L;
@@ -25,7 +27,8 @@ public class JSR223Tasklet extends AbstractDominoRunnable {
 		int extIndex = scriptName.lastIndexOf('.');
 		scriptExt_ = scriptName.substring(extIndex + 1);
 
-		DatabaseDesign design = DatabaseDesign.$.get(database);
+		DatabaseDesignService service = ServiceLocator.findApplicationService(DatabaseDesignService.class);
+		DatabaseDesign design = service.getDatabaseDesign(database);
 		AnyFileResource script = design.getDesignElement(AnyFileResource.class, scriptName);
 		script_ = new String(script.getFileData());
 		databasePath_ = database.getApiPath();

@@ -27,8 +27,8 @@ import java.util.logging.Logger;
 
 import org.eclipse.osgi.framework.console.CommandInterpreter;
 import org.eclipse.osgi.framework.console.CommandProvider;
-import org.openntf.domino.thread.AbstractDominoExecutor.DominoFutureTask;
 import org.openntf.domino.xots.Xots;
+import org.openntf.domino.xots.tasks.AbstractXotsExecutor.XotsFutureTask;
 import org.openntf.domino.xsp.xots.XotsNsfScanner;
 
 import com.ibm.commons.util.StringUtil;
@@ -194,8 +194,8 @@ public class OsgiCommandProvider implements CommandProvider {
 	private void xotsTasks(final CommandInterpreter ci) {
 		ci.println("ID\tSTATE\tNEXT EXEC TIME");
 
-		List<DominoFutureTask<?>> tasks = Xots.getTasks(null);
-		for (DominoFutureTask<?> task : tasks) {
+		List<XotsFutureTask<?>> tasks = Xots.getTasks(null);
+		for (XotsFutureTask<?> task : tasks) {
 			ci.println(task.getId() + "\t" + // ID
 					task.getState() + "\t" + // State
 					convertTimeUnit(task.getNextExecutionTimeInMillis()));

@@ -10,10 +10,10 @@ import javolution.util.FastSet;
 import org.openntf.domino.Database;
 import org.openntf.domino.Session;
 import org.openntf.domino.commons.Hash;
-import org.openntf.domino.thread.DominoExecutor;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.xots.Tasklet;
+import org.openntf.domino.xots.dominotasks.DominoExecutor;
 
 /**
  * This is the interface to the ODA-Database
