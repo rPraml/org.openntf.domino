@@ -5,15 +5,15 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 
-import org.openntf.domino.thread.TaskletWorker;
-import org.openntf.domino.thread.WorkerExecutor;
 import org.openntf.domino.xots.Xots;
+import org.openntf.domino.xots.tasks.TaskletWorker;
+import org.openntf.domino.xots.tasks.WorkerExecutor;
 import org.openntf.domino.xsp.xots.XotsDominoExecutor.XotsModuleTasklet;
 
 import com.ibm.domino.xsp.module.nsf.NotesContext;
 
 @Deprecated
-public class TaskletWorkerExecutor<T> extends XotsModuleTasklet implements WorkerExecutor<T> {
+public class XspTaskletWorkerExecutor<T> extends XotsModuleTasklet implements WorkerExecutor<T> {
 	BlockingQueue<T> q = new LinkedBlockingQueue<T>();
 	private static final int NOT_RUNNING = 0;
 	private static final int RUNNING = 1;
@@ -49,7 +49,7 @@ public class TaskletWorkerExecutor<T> extends XotsModuleTasklet implements Worke
 					return;
 				if (i == NOT_RUNNING) {
 					if (compareAndSetState(i, RUNNING)) {
-						Xots.getService().submit(TaskletWorkerExecutor.this);
+						Xots.getService().submit(XspTaskletWorkerExecutor.this);
 						return;
 					}
 				}
@@ -61,11 +61,11 @@ public class TaskletWorkerExecutor<T> extends XotsModuleTasklet implements Worke
 	private T currentElement;
 	private Sync inner = new Sync();
 
-	public TaskletWorkerExecutor(final String moduleName, final String className, final Object... args) {
+	public XspTaskletWorkerExecutor(final String moduleName, final String className, final Object... args) {
 		super(moduleName, className, args);
 	}
 
-	public TaskletWorkerExecutor(final Class<? extends TaskletWorker<T>> clazz, final Object... args) {
+	public XspTaskletWorkerExecutor(final Class<? extends TaskletWorker<T>> clazz, final Object... args) {
 		super(NotesContext.getCurrent().getModule().getDatabasePath(), clazz.getName(), args);
 	}
 
@@ -99,4 +99,5 @@ public class TaskletWorkerExecutor<T> extends XotsModuleTasklet implements Worke
 		}
 		return null;
 	}
+
 }

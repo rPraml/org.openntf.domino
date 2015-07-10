@@ -1,4 +1,4 @@
-package org.openntf.domino.thread;
+package org.openntf.domino.xots.tasks;
 
 import java.util.Calendar;
 

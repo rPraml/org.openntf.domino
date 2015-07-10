@@ -1,14 +1,12 @@
 /**
  * 
  */
-package org.openntf.domino.thread;
+package org.openntf.domino.xots.tasks;
 
 import java.io.Serializable;
 import java.util.Observable;
 import java.util.logging.Logger;
 
-import org.openntf.domino.session.ISessionFactory;
-import org.openntf.domino.utils.Factory;
 import org.openntf.domino.xots.Tasklet;
 
 /**
@@ -16,18 +14,12 @@ import org.openntf.domino.xots.Tasklet;
  * 
  * 
  */
-public abstract class AbstractDominoRunnable extends Observable implements Tasklet.Interface, Runnable, Serializable {
+public abstract class AbstractXotsRunnable extends Observable implements Tasklet.Interface, Runnable, Serializable {
 	@SuppressWarnings("unused")
-	private static final Logger log_ = Logger.getLogger(AbstractDominoRunnable.class.getName());
+	private static final Logger log_ = Logger.getLogger(AbstractXotsRunnable.class.getName());
 	private static final long serialVersionUID = 1L;
 
 	private volatile boolean shouldStop_ = false;
-	private ISessionFactory sessionFactory_;
-
-	@Override
-	public ISessionFactory getSessionFactory() {
-		return sessionFactory_;
-	}
 
 	@Override
 	public Tasklet.Context getContext() {
@@ -63,8 +55,4 @@ public abstract class AbstractDominoRunnable extends Observable implements Taskl
 		shouldStop_ = true;
 	}
 
-	@Override
-	public Factory.ThreadConfig getThreadConfig() {
-		return null;
-	}
 }

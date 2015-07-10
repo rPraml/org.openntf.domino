@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openntf.domino.thread;
+package org.openntf.domino.xots.tasks;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.ExecutionException;
@@ -32,21 +31,19 @@ import java.util.logging.Logger;
 
 import javolution.util.FastMap;
 
-import org.openntf.domino.annotations.Incomplete;
 import org.openntf.domino.commons.ILifeCycle;
 import org.openntf.domino.commons.IO;
 import org.openntf.domino.commons.LifeCycleManager;
-import org.openntf.domino.events.IDominoListener;
+import org.openntf.domino.xots.tasks.impl.PeriodicScheduler;
 
 /**
- * A ThreadPoolExecutor for Domino runnables. It sets up a shutdown hook for proper termination.
+ * A ThreadPoolExecutor for Xots runnables. It sets up a shutdown hook for proper termination.
  * 
  * 
- * The <code>DominoExecutor.schedule</code> schedules a Runnable or a Callable for execution. The Runnable/Callable is wrapped in a
+ * The <code>XotsExecutor.schedule</code> schedules a Runnable or a Callable for execution. The Runnable/Callable is wrapped in a
  * {@link WrappedRunnable} (i.e. {@link WrappedCallable}) which is responsible for proper Thread setUp/tearDown.<br>
  * 
- * The Wrapped Runnable is wrapped again in a {@link DominoFutureTask} which observes the Runnable and keeps track of some status
- * information.<br>
+ * The Wrapped Runnable is wrapped again in a {@link XotsFutureTask} which observes the Runnable and keeps track of some status information.<br>
  * 
  * 
  * <b>This class should not be used directly. Use XotsDaemon.getInstance() instead</b>
@@ -54,8 +51,7 @@ import org.openntf.domino.events.IDominoListener;
  * @author Nathan T. Freeman
  * @author Roland Praml
  */
-@Incomplete
-public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor implements XotsExecutorService, ILifeCycle {
+public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor implements XotsExecutorService, ILifeCycle {
 	public enum TaskState {
 		/** The Task is Queued and will be executed next */
 
@@ -73,13 +69,10 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 		ERROR
 	}
 
-	private static final Logger log_ = Logger.getLogger(AbstractDominoExecutor.class.getName());
+	private static final Logger log_ = Logger.getLogger(AbstractXotsExecutor.class.getName());
 
 	/** This list contains ALL tasks */
-	protected Map<Long, DominoFutureTask<?>> tasks = new FastMap<Long, DominoFutureTask<?>>().atomic();
-
-	@SuppressWarnings("unused")
-	private Set<IDominoListener> listeners_;
+	protected Map<Long, XotsFutureTask<?>> tasks = new FastMap<Long, XotsFutureTask<?>>().atomic();
 
 	private static final AtomicLong sequencer = new AtomicLong(0L);
 
@@ -104,10 +97,10 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 	}
 
 	/**
-	 * Creates a new {@link AbstractDominoExecutor}. Specify the
+	 * Creates a new {@link AbstractXotsExecutor}. Specify the
 	 * 
 	 */
-	public AbstractDominoExecutor(final int corePoolSize, final String executorName) {
+	public AbstractXotsExecutor(final int corePoolSize, final String executorName) {
 		super(corePoolSize, createThreadFactory());
 		executorName_ = executorName;
 		LifeCycleManager.addLifeCycle(this);
@@ -119,7 +112,7 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 	 * 
 	 * @author Roland Praml, FOCONIS AG
 	 */
-	public class DominoFutureTask<T> extends FutureTask<T> implements Delayed, RunnableScheduledFuture<T>, Observer {
+	public class XotsFutureTask<T> extends FutureTask<T> implements Delayed, RunnableScheduledFuture<T>, Observer {
 
 		// the period. Values > 0: fixed rate. Values < 0: fixed delay
 		private IWrappedTask wrappedTask;
@@ -161,7 +154,7 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 			return sequenceNumber;
 		}
 
-		public DominoFutureTask(final IWrappedCallable<T> callable, final Scheduler scheduler) {
+		public XotsFutureTask(final IWrappedCallable<T> callable, final Scheduler scheduler) {
 			super(callable);
 			this.wrappedTask = callable;
 			this.scheduler = scheduler;
@@ -169,7 +162,7 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 			callable.addObserver(this);
 		}
 
-		public DominoFutureTask(final IWrappedRunnable runnable, final T result, final Scheduler scheduler) {
+		public XotsFutureTask(final IWrappedRunnable runnable, final T result, final Scheduler scheduler) {
 			super(runnable, result);
 			this.wrappedTask = runnable;
 			this.scheduler = scheduler;
@@ -256,8 +249,8 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 		@Override
 		public int compareTo(final Delayed other) {
 			long delta = 0;
-			if (other instanceof DominoFutureTask<?>) {
-				delta = getNextExecutionTimeInMillis() - ((DominoFutureTask<?>) other).getNextExecutionTimeInMillis();
+			if (other instanceof XotsFutureTask<?>) {
+				delta = getNextExecutionTimeInMillis() - ((XotsFutureTask<?>) other).getNextExecutionTimeInMillis();
 			} else {
 				delta = getDelay(TimeUnit.NANOSECONDS) - other.getDelay(TimeUnit.NANOSECONDS);
 			}
@@ -267,8 +260,8 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 			if (delta > 0L)
 				return 1;
 			//delta == 0 - compare sequence numbers
-			if ((other instanceof DominoFutureTask)) {
-				if (this.sequenceNumber < ((DominoFutureTask<?>) other).sequenceNumber) {
+			if ((other instanceof XotsFutureTask)) {
+				if (this.sequenceNumber < ((XotsFutureTask<?>) other).sequenceNumber) {
 					return -1;
 				}
 				return 1;
@@ -312,10 +305,10 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 	 * @return a List of tasks
 	 */
 	@Override
-	public List<DominoFutureTask<?>> getTasks(final Comparator<DominoFutureTask<?>> comparator) {
-		ArrayList<DominoFutureTask<?>> ret = new ArrayList<DominoFutureTask<?>>();
+	public List<XotsFutureTask<?>> getTasks(final Comparator<XotsFutureTask<?>> comparator) {
+		ArrayList<XotsFutureTask<?>> ret = new ArrayList<XotsFutureTask<?>>();
 
-		for (DominoFutureTask<?> task : tasks.values()) {
+		for (XotsFutureTask<?> task : tasks.values()) {
 			ret.add(task);
 		}
 		if (comparator == null) {
@@ -333,23 +326,23 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 	 *            The ID of the task to retrieve.
 	 * @return The task for the given ID, or null if the task is no longer in the queue.
 	 */
-	public DominoFutureTask<?> getTask(final long id) {
+	public XotsFutureTask<?> getTask(final long id) {
 		return tasks.get(id);
 	}
 
 	@Override
 	protected void beforeExecute(final Thread thread, final Runnable runnable) {
 		super.beforeExecute(thread, runnable);
-		if (runnable instanceof DominoFutureTask)
-			((DominoFutureTask<?>) runnable).setState(TaskState.RUNNING);
+		if (runnable instanceof XotsFutureTask)
+			((XotsFutureTask<?>) runnable).setState(TaskState.RUNNING);
 		thread.setName(getThreadName(runnable));
 	}
 
 	@Override
 	protected void afterExecute(final Runnable runnable, final Throwable error) {
 		super.afterExecute(runnable, error);
-		if (runnable instanceof DominoFutureTask) {
-			DominoFutureTask<?> task = (DominoFutureTask<?>) runnable;
+		if (runnable instanceof XotsFutureTask) {
+			XotsFutureTask<?> task = (XotsFutureTask<?>) runnable;
 			if (task.isDone()) {
 				task.setState(error == null ? TaskState.DONE : TaskState.ERROR);
 				tasks.remove(task.sequenceNumber);
@@ -360,43 +353,13 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 
 	private String getThreadName(final Runnable runnable) {
 		StringBuilder sb = new StringBuilder(executorName_).append(": ");
-		if (runnable instanceof DominoFutureTask)
-			sb.append(((DominoFutureTask<?>) runnable).getWrappedTask().getDescription()).append(" - "). //
+		if (runnable instanceof XotsFutureTask)
+			sb.append(((XotsFutureTask<?>) runnable).getWrappedTask().getDescription()).append(" - "). //
 					append(new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss").format(new Date()));
 		else
 			sb.append('#').append(Thread.currentThread().getId());
 		return sb.toString();
 	}
-
-	//	@Incomplete
-	//	//these can't use the IDominoListener interface. Will need to put something new together for that.
-	//	public void addListener(final IDominoListener listener) {
-	//		if (listeners_ == null) {
-	//			listeners_ = new LinkedHashSet<IDominoListener>();
-	//		}
-	//		listeners_.add(listener);
-	//	}
-	//
-	//	@Incomplete
-	//	public IDominoListener removeListener(final IDominoListener listener) {
-	//		if (listeners_ != null) {
-	//			listeners_.remove(listener);
-	//		}
-	//		return listener;
-	//	}
-
-	//	@Override
-	//	public void shutdown() {
-	//		//Factory.removeShutdownHook(shutdownHook);
-	//		super.shutdown();
-	//	}
-	//
-	//	@Override
-	//	public List<Runnable> shutdownNow() {
-	//		List<Runnable> ret = super.shutdownNow();
-	//		//Factory.removeShutdownHook(shutdownHook);
-	//		return ret;
-	//	}
 
 	protected <V> RunnableScheduledFuture<V> queue(final RunnableScheduledFuture<V> future) {
 		if (isShutdown()) {
@@ -406,8 +369,8 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 			prestartCoreThread();
 		}
 
-		if (future instanceof DominoFutureTask) {
-			DominoFutureTask<?> dft = (DominoFutureTask<?>) future;
+		if (future instanceof XotsFutureTask) {
+			XotsFutureTask<?> dft = (XotsFutureTask<?>) future;
 			tasks.put(dft.sequenceNumber, dft);
 			if (dft.getDelay(TimeUnit.NANOSECONDS) > 0) {
 				dft.setState(TaskState.SLEEPING);
@@ -419,13 +382,13 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 
 	@Override
 	public <V> ScheduledFuture<V> schedule(final Callable<V> callable, final long delay, final TimeUnit timeUnit) {
-		return queue(new DominoFutureTask<V>(wrap(callable), new PeriodicScheduler(delay, 0L, timeUnit)));
+		return queue(new XotsFutureTask<V>(wrap(callable), new PeriodicScheduler(delay, 0L, timeUnit)));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public ScheduledFuture<?> schedule(final Runnable runnable, final long delay, final TimeUnit timeUnit) {
-		return queue(new DominoFutureTask(wrap(runnable), null, new PeriodicScheduler(delay, 0L, timeUnit)));
+		return queue(new XotsFutureTask(wrap(runnable), null, new PeriodicScheduler(delay, 0L, timeUnit)));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -434,7 +397,7 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 		if (period <= 0) {
 			throw new IllegalStateException("period must be > 0");
 		}
-		return queue(new DominoFutureTask(wrap(runnable), null, new PeriodicScheduler(delay, period, timeUnit)));
+		return queue(new XotsFutureTask(wrap(runnable), null, new PeriodicScheduler(delay, period, timeUnit)));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -443,37 +406,22 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 		if (period <= 0) {
 			throw new IllegalStateException("period must be > 0");
 		}
-		return queue(new DominoFutureTask(wrap(runnable), null, new PeriodicScheduler(delay, -period, timeUnit)));
+		return queue(new XotsFutureTask(wrap(runnable), null, new PeriodicScheduler(delay, -period, timeUnit)));
 	}
 
 	protected abstract <V> IWrappedCallable<V> wrap(Callable<V> inner);
 
 	protected abstract IWrappedRunnable wrap(Runnable inner);
 
-	protected abstract IWrappedCallable<?> wrap(final String moduleName, final String className, final Object... ctorArgs);
-
 	@Override
 	public <V> ScheduledFuture<V> schedule(final Callable<V> callable, final Scheduler scheduler) {
-		return queue(new DominoFutureTask<V>(wrap(callable), scheduler));
+		return queue(new XotsFutureTask<V>(wrap(callable), scheduler));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public ScheduledFuture<?> schedule(final Runnable runnable, final Scheduler scheduler) {
-		return queue(new DominoFutureTask(wrap(runnable), null, scheduler));
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public ScheduledFuture<?> scheduleTasklet(final String moduleName, final String className, final Scheduler scheduler,
-			final Object... ctorArgs) {
-		return queue(new DominoFutureTask(wrap(moduleName, className, ctorArgs), scheduler));
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@Override
-	public ScheduledFuture<?> runTasklet(final String moduleName, final String className, final Object... ctorArgs) {
-		return queue(new DominoFutureTask(wrap(moduleName, className, ctorArgs), new PeriodicScheduler(0, 0L, TimeUnit.NANOSECONDS)));
+		return queue(new XotsFutureTask(wrap(runnable), null, scheduler));
 	}
 
 	//	@Override
@@ -488,12 +436,12 @@ public abstract class AbstractDominoExecutor extends ScheduledThreadPoolExecutor
 	// TODO RPr: check if this works now!
 	@Override
 	protected <T> RunnableFuture<T> newTaskFor(final Callable<T> callable) {
-		return new DominoFutureTask<T>(wrap(callable), new PeriodicScheduler(0, 0, TimeUnit.MILLISECONDS));
+		return new XotsFutureTask<T>(wrap(callable), new PeriodicScheduler(0, 0, TimeUnit.MILLISECONDS));
 	}
 
 	@Override
 	protected <T> RunnableFuture<T> newTaskFor(final Runnable runnable, final T type) {
-		return new DominoFutureTask<T>(wrap(runnable), type, new PeriodicScheduler(0, 0, TimeUnit.MILLISECONDS));
+		return new XotsFutureTask<T>(wrap(runnable), type, new PeriodicScheduler(0, 0, TimeUnit.MILLISECONDS));
 	};
 
 	@Override

@@ -1,4 +1,4 @@
-package org.openntf.domino.thread;
+package org.openntf.domino.xots.dominotasks;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -6,12 +6,12 @@ import java.util.concurrent.Callable;
 
 import lotus.domino.NotesThread;
 
-import org.openntf.domino.commons.IRequest;
 import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.session.ISessionFactory;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.xots.Tasklet;
+import org.openntf.domino.xots.tasks.AbstractWrappedTask;
 
 /**
  * A Wrapper for callables and runnable that provides proper setup/teardown
@@ -19,13 +19,9 @@ import org.openntf.domino.xots.Tasklet;
  * @author Roland Praml, FOCONIS AG
  * 
  */
-public abstract class AbstractWrappedTask implements IWrappedTask {
-	private Object wrappedTask;
+public abstract class AbstractWrappedDominoTask extends AbstractWrappedTask {
 
-	protected Tasklet.Scope scope;
-	protected Tasklet.Context context;
 	protected ISessionFactory sessionFactory;
-	protected IRequest taskRequest;
 
 	/**
 	 * Determines the sessionType under which the current runnable should run. The first non-null value of the following list is returned
@@ -38,6 +34,7 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 	 * @param task
 	 *            the runnable to determine the DominoSessionType
 	 */
+	@Override
 	protected synchronized void setWrappedTask(final Object task) {
 		wrappedTask = task;
 		if (task == null)
@@ -58,10 +55,13 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 		}
 
 		if (task instanceof Tasklet.Interface) {
-			Tasklet.Interface dominoRunnable = (Tasklet.Interface) task;
+			Tasklet.Interface taskletInterface = (Tasklet.Interface) task;
+			scope = taskletInterface.getScope();
+			context = taskletInterface.getContext();
+		}
+		if (task instanceof AbstractDominoRunnable) {
+			AbstractDominoRunnable dominoRunnable = (AbstractDominoRunnable) task;
 			sessionFactory = dominoRunnable.getSessionFactory();
-			scope = dominoRunnable.getScope();
-			context = dominoRunnable.getContext();
 			taskRequest = dominoRunnable.getThreadConfig();
 		}
 		Tasklet annot = task.getClass().getAnnotation(Tasklet.class);
@@ -190,6 +190,7 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 	 * @return
 	 * @throws Exception
 	 */
+	@Override
 	protected Object callOrRun() throws Exception {
 
 		NotesThread.sinitThread();
@@ -202,6 +203,7 @@ public abstract class AbstractWrappedTask implements IWrappedTask {
 		}
 	}
 
+	@Override
 	protected Object invokeWrappedTask() throws Exception {
 		Thread thread = Thread.currentThread();
 		ClassLoader oldCl = thread.getContextClassLoader();

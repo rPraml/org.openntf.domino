@@ -1,4 +1,4 @@
-package org.openntf.domino.thread;
+package org.openntf.domino.xots.tasks;
 
 import java.util.Comparator;
 import java.util.List;
@@ -6,11 +6,11 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
-import org.openntf.domino.thread.AbstractDominoExecutor.DominoFutureTask;
+import org.openntf.domino.xots.tasks.AbstractXotsExecutor.XotsFutureTask;
 
 public interface XotsExecutorService extends ScheduledExecutorService {
 
-	List<DominoFutureTask<?>> getTasks(Comparator<DominoFutureTask<?>> comparator);
+	List<XotsFutureTask<?>> getTasks(Comparator<XotsFutureTask<?>> comparator);
 
 	<V> ScheduledFuture<V> schedule(Callable<V> callable, Scheduler scheduler);
 

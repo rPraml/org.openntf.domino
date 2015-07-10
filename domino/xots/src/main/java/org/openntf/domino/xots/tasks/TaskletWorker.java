@@ -1,10 +1,10 @@
-package org.openntf.domino.thread;
+package org.openntf.domino.xots.tasks;
 
 import org.openntf.domino.xots.Tasklet;
 
 @Tasklet(session = Tasklet.Session.CLONE)
 /**
- * Interface for Workers that write objects asynchronius
+ * Interface for Workers that write objects asynchronous
  * @author Roland Praml, FOCONIS AG
  *
  * @param <T>

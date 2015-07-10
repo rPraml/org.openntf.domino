@@ -1,4 +1,4 @@
-package org.openntf.domino.thread;
+package org.openntf.domino.xots.tasks.impl;
 
 import java.util.Calendar;
 import java.util.StringTokenizer;
@@ -6,9 +6,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import org.openntf.domino.commons.Strings;
+import org.openntf.domino.xots.tasks.Scheduler;
 
 public class PeriodicScheduler implements Scheduler {
-	private static final Logger log_ = Logger.getLogger(DominoExecutor.class.getName());
+	private static final Logger log_ = Logger.getLogger(XotsExecutor.class.getName());
 
 	// computation is done on an calendar object, as this is easier.
 	final Calendar nextExecTime = Calendar.getInstance();
@@ -249,7 +250,8 @@ public class PeriodicScheduler implements Scheduler {
 		int secondOfTheDay = nextExecTime.get(Calendar.HOUR_OF_DAY) * 3600 + nextExecTime.get(Calendar.MINUTE) * 60
 				+ nextExecTime.get(Calendar.SECOND);
 
-		if ((dayBits & (1 << nextExecTime.get(Calendar.DAY_OF_WEEK))) == 0 || secondOfTheDay > startSecond) {
+		if ((dayBits & (1 << nextExecTime.get(Calendar.DAY_OF_WEEK))) == 0 //
+				|| secondOfTheDay > endSecond) {
 			// not allowed for this day, so goto next day
 			nextExecTime.set(Calendar.HOUR_OF_DAY, 0);
 			nextExecTime.set(Calendar.MINUTE, 0);

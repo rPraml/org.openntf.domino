@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openntf.domino.commons.IO;
-import org.openntf.domino.thread.AbstractDominoExecutor;
-import org.openntf.domino.thread.AbstractDominoExecutor.DominoFutureTask;
-import org.openntf.domino.thread.XotsExecutorService;
+import org.openntf.domino.xots.tasks.AbstractXotsExecutor;
+import org.openntf.domino.xots.tasks.XotsExecutorService;
+import org.openntf.domino.xots.tasks.AbstractXotsExecutor.XotsFutureTask;
 
 /*
  * This class and package is intended to become the space for the XPages implementation
@@ -19,9 +19,9 @@ public class Xots {
 
 	;
 
-	public static Comparator<DominoFutureTask<?>> TASKS_BY_ID = new Comparator<DominoFutureTask<?>>() {
+	public static Comparator<XotsFutureTask<?>> TASKS_BY_ID = new Comparator<XotsFutureTask<?>>() {
 		@Override
-		public int compare(final DominoFutureTask<?> o1, final DominoFutureTask<?> o2) {
+		public int compare(final XotsFutureTask<?> o1, final XotsFutureTask<?> o2) {
 			if (o1.sequenceNumber < o2.sequenceNumber) {
 				return -1;
 			} else if (o1.sequenceNumber == o2.sequenceNumber) {
@@ -34,15 +34,7 @@ public class Xots {
 	//private Set<TaskletDefinition> tasklets_ = new HashSet<TaskletDefinition>();
 
 	// This is our Threadpool that will execute all Runnables
-	private static AbstractDominoExecutor executor_;
-
-	//	public void addListener(final IDominoListener listener) {
-	//		executor_.addListener(listener);
-	//	}
-	//
-	//	public IDominoListener removeListener(final IDominoListener listener) {
-	//		return executor_.removeListener(listener);
-	//	}
+	private static AbstractXotsExecutor executor_;
 
 	private Xots() {
 		super();
@@ -55,7 +47,7 @@ public class Xots {
 		return executor_;
 	}
 
-	public static List<DominoFutureTask<?>> getTasks(final Comparator<DominoFutureTask<?>> comparator) {
+	public static List<XotsFutureTask<?>> getTasks(final Comparator<XotsFutureTask<?>> comparator) {
 		if (!isStarted())
 			return Collections.emptyList();
 		return executor_.getTasks(comparator);
@@ -64,7 +56,7 @@ public class Xots {
 	/**
 	 * Start the XOTS with the given Executor
 	 */
-	public static synchronized void start(final AbstractDominoExecutor executor) throws IllegalStateException {
+	public static synchronized void start(final AbstractXotsExecutor executor) throws IllegalStateException {
 		if (isStarted())
 			throw new IllegalStateException("XotsDaemon is already started");
 		IO.println(Xots.class, "Starting XPages OSGi Tasklet Service with " + executor.getCorePoolSize() + " core threads.");
@@ -97,7 +89,7 @@ public class Xots {
 
 			if (executor_.getActiveCount() > 0) {
 				IO.println(Xots.class, "he following Threads did not terminate gracefully:");
-				for (DominoFutureTask<?> task : executor_.getTasks(null)) {
+				for (XotsFutureTask<?> task : executor_.getTasks(null)) {
 					IO.println(Xots.class, "* " + task);
 				}
 

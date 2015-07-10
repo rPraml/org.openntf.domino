@@ -1,4 +1,4 @@
-package org.openntf.domino.thread;
+package org.openntf.domino.xots.tasks;
 
 public interface IWrappedRunnable extends IWrappedTask, Runnable {
 

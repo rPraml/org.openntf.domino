@@ -6,23 +6,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.openntf.domino.session.ISessionFactory;
-import org.openntf.domino.utils.Factory;
-import org.openntf.domino.utils.Factory.SessionType;
-
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
 @Inherited
 public @interface Tasklet {
 	public interface Interface {
-
-		/**
-		 * Returns the {@link ISessionFactory} that is used to create the Session. If <code>null</code> is returned, the
-		 * {@link Tasklet#session()} annotation counts.
-		 * 
-		 * @return a SessionFactory or null.
-		 */
-		public ISessionFactory getSessionFactory();
 
 		/**
 		 * Returns the {@link Context} where the Tasklet should run. If <code>null</code> is returned, the {@link Tasklet#scope()}
@@ -54,12 +42,6 @@ public @interface Tasklet {
 
 		public String getDescription();
 
-		/**
-		 * Returns the thread config or null, then the thread config will be cloned
-		 * 
-		 * @return the thread config or null
-		 */
-		public Factory.ThreadConfig getThreadConfig();
 	}
 
 	/**

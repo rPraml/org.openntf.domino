@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.openntf.domino.thread;
+package org.openntf.domino.xots.tasks;
 
 import java.security.AccessControlContext;
 import java.security.AccessController;
@@ -18,8 +18,8 @@ import java.util.logging.Logger;
  */
 // Not yet ready!
 @Deprecated
-public abstract class AbstractDominoDaemon<T> extends AbstractDominoRunnable {
-	private static final Logger log_ = Logger.getLogger(AbstractDominoDaemon.class.getName());
+public abstract class AbstractXotsDaemon<T> extends AbstractXotsRunnable {
+	private static final Logger log_ = Logger.getLogger(AbstractXotsDaemon.class.getName());
 	private static final long serialVersionUID = 1L;
 	private long delay_ = 100l;	//default to 100ms delay cycle
 	private AccessControlContext acc_;
@@ -27,15 +27,15 @@ public abstract class AbstractDominoDaemon<T> extends AbstractDominoRunnable {
 	/**
 	 * 
 	 */
-	public AbstractDominoDaemon() {
+	public AbstractXotsDaemon() {
 
 	}
 
-	public AbstractDominoDaemon(final AccessControlContext acc) {
+	public AbstractXotsDaemon(final AccessControlContext acc) {
 		acc_ = acc;
 	}
 
-	public AbstractDominoDaemon(final long delay, final AccessControlContext acc) {
+	public AbstractXotsDaemon(final long delay, final AccessControlContext acc) {
 		delay_ = delay;
 		acc_ = acc;
 	}
