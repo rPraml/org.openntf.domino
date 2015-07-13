@@ -46,6 +46,7 @@ public abstract class AbstractDesignNapiBase extends AbstractDesignBase implemen
 
 	// These values will be serialized
 	private String flags;
+	private String language;
 	private String flagsExt;
 	private String name;
 	private String alias;
@@ -413,6 +414,22 @@ public abstract class AbstractDesignNapiBase extends AbstractDesignBase implemen
 			}
 		}
 		return flags;
+	}
+
+	/**
+	 * Returns the language of the design element
+	 */
+	@Override
+	public String getLanguage() {
+		if (language == null) {
+			Document doc = getDocument();
+			if (doc != null) {
+				language = getDocument().getItemValueString(LANGUAGE_ITEM);
+			} else {
+				language = "";
+			}
+		}
+		return language;
 	}
 
 	/**

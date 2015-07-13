@@ -138,6 +138,21 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.openntf.domino.design.DesignBase#getLanguage()
+	 */
+	@Override
+	public final String getLanguage() {
+		switch (getDxlFormat(false)) {
+		case DXL:
+			return getDocumentElement().getAttribute("language");
+		default:
+			return getItemValueString(LANGUAGE_ITEM);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.openntf.domino.design.DesignBase#isNeedsRefresh()
 	 */
 	@Override
