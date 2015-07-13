@@ -4,4 +4,8 @@
     <service type="org.openntf.domino.commons.ILifeCycle"
             class="org.openntf.domino.utils.Factory$LifeCycle"/>
 </extension>
+<extension point="com.ibm.commons.Extension">
+    <service type="org.openntf.domino.xots.tasks.TaskletWorkerExecutor"
+            class="org.openntf.domino.xots.dominotasks.DominoTaskletWorkerExecutor"/>
+</extension>
 </plugin>
