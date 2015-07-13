@@ -10,9 +10,9 @@ import javax.script.ScriptException;
 import org.openntf.domino.Database;
 import org.openntf.domino.design.AnyFileResource;
 import org.openntf.domino.design.DatabaseDesign;
-import org.openntf.domino.thread.AbstractDominoRunnable;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
+import org.openntf.domino.xots.dominotasks.AbstractDominoRunnable;
 
 public class JSR223Tasklet extends AbstractDominoRunnable {
 	private static final long serialVersionUID = 1L;

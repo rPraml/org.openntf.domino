@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plugin>
+<extension point="com.ibm.commons.Extension">
+<service class="org.openntf.domino.xots.tasks.impl.XotsTaskletWorkerExecutor" type="org.openntf.domino.xots.tasks.TaskletWorkerExecutor"/>
+</extension>
+</plugin>

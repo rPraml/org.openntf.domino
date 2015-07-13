@@ -82,7 +82,13 @@
 			<groupId>org.javolution</groupId>
 			<artifactId>javolution-core-java</artifactId>
 			<version>6.1.0-ODA-151-SNAPSHOT</version>
-		</dependency> 
+		</dependency>
+		
+		<dependency>
+			<groupId>org.openntf.domino</groupId>
+			<artifactId>xots</artifactId>
+			<version>1.5.1-SNAPSHOT</version>
+		</dependency>
 		<!--
 		<dependency>
 			<groupId>org.openntf.domino</groupId>

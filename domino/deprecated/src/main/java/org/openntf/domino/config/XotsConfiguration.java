@@ -6,9 +6,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
-import org.openntf.domino.thread.DominoExecutor;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.xots.Tasklet;
+import org.openntf.domino.xots.dominotasks.DominoExecutor;
 
 @Deprecated
 public class XotsConfiguration extends ConfigurationObject {
