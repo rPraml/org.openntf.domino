@@ -7,10 +7,11 @@ package org.openntf.domino.logging.impl;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringTokenizer;
-import java.util.Vector;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -20,6 +21,8 @@ import lotus.domino.NotesException;
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
 import org.openntf.domino.Session;
+import org.openntf.domino.commons.IFormulaService;
+import org.openntf.domino.commons.Strings;
 import org.openntf.domino.commons.exception.IExceptionDetails;
 import org.openntf.domino.commons.logging.LogRecordAdditionalInfo;
 import org.openntf.domino.exceptions.OpenNTFNotesException;
@@ -44,7 +47,7 @@ public class LogGeneratorOpenLog {
 		String _accessLevel;
 		String _userName;
 		String _effectiveUserName;
-		Vector<Object> _userRoles;
+		List<String> _userRoles;
 		String[] _clientVersion;
 
 		OL_LogRecord(final LogRecord logRec, final List<IExceptionDetails.Entry> exceptionDetails, final String[] lastWrappedDocs) {
@@ -100,6 +103,7 @@ public class LogGeneratorOpenLog {
 
 	/*-------------------------------------------------------------*/
 	// TODO RPR: remove synchronized
+	@SuppressWarnings("unchecked")
 	synchronized void log(final Session sess, LogRecord logRec, final LogRecordAdditionalInfo lrai) {
 		//		if (!_xInitDone)
 		//			doStaticStartUp();
@@ -115,10 +119,15 @@ public class LogGeneratorOpenLog {
 			}
 			ollr._userName = sess.getUserName();
 			ollr._effectiveUserName = sess.getEffectiveUserName();
-			ollr._userRoles = sess.evaluate("@UserRoles");
+			List<?> urls = IFormulaService.$.evaluate("@UserRoles", Locale.ENGLISH, Locale.ENGLISH);
+			if (urls == null || urls.isEmpty() || !(urls.get(0) instanceof String))
+				ollr._userRoles = Collections.singletonList("Couldn't get roles via @UserRoles");
+			else
+				ollr._userRoles = (List<String>) urls;
+			//			ollr._userRoles = sess.evaluate("@UserRoles");
 			String clVer = sess.getNotesVersion();
 			if (clVer != null) {
-				ollr._clientVersion = clVer.split("\\|");
+				ollr._clientVersion = Strings.split(clVer, '|', true);
 				for (int i = 0; i < ollr._clientVersion.length; i++)
 					ollr._clientVersion[i] = ollr._clientVersion[i].trim();
 			}

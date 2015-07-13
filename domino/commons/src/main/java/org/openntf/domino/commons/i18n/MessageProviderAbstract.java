@@ -147,8 +147,8 @@ public abstract class MessageProviderAbstract {
 		getCurrentInstance().resetCache();
 	}
 
-	protected abstract Locale getExternalLocale();
+	public abstract Locale getExternalLocale();
 
-	protected abstract Locale getInternalLocale();
+	public abstract Locale getInternalLocale();
 
 }
