@@ -20,6 +20,7 @@ import java.io.File;
 import java.net.URI;
 
 import org.openntf.domino.Document;
+import org.openntf.domino.commons.Strings;
 import org.openntf.domino.design.DesignBase;
 import org.openntf.domino.design.DesignBaseNamed;
 import org.openntf.domino.design.DesignMapping;
@@ -35,6 +36,8 @@ public class OnDiskDesign extends OnDiskAbstract<DesignBase> {
 	private static final long serialVersionUID = -3298261314433290242L;
 
 	private String name_;
+	/** contains the name and variant (hidden notes/web) */
+	private String keysuffix_;
 	private DesignFactory odpMapping;
 
 	public OnDiskDesign(final File parent, final File file) {
@@ -57,20 +60,20 @@ public class OnDiskDesign extends OnDiskAbstract<DesignBase> {
 
 		if (ext == null) {
 			// no extension, so use the relative file uri
-			name_ = relUri.getPath();
+			keysuffix_ = relUri.getPath();
 		} else if (ext.equals("*")) {
 			// name is "*", so use the unescaped part.
-			name_ = relUri.getPath();
+			keysuffix_ = relUri.getPath();
 		} else if (ext.startsWith(".")) {
-			name_ = relUri.getPath();
+			keysuffix_ = relUri.getPath();
 		} else {
-			name_ = ext;
+			keysuffix_ = ext;
 		}
 
-		if (name_.indexOf(" [-") != -1) {
-			name_ = name_.replace(" [-nw]", "");
-			name_ = name_.replace(" [-n]", "");
-			name_ = name_.replace(" [-w]", "");
+		name_ = keysuffix_;
+
+		if (name_.indexOf(" [") != -1) { // remove variant (hidden opts + language)
+			name_ = name_.replaceFirst(" \\[.*\\]", "");
 		}
 	}
 
@@ -84,7 +87,7 @@ public class OnDiskDesign extends OnDiskAbstract<DesignBase> {
 
 	@Override
 	public String getKey() {
-		return (odpMapping.getImplClass().getName() + ":" + getName()).toLowerCase();
+		return (odpMapping.getImplClass().getName() + ":" + keysuffix_).toLowerCase();
 	}
 
 	public static String getOnDiskName(final DesignBase design) {
@@ -95,14 +98,21 @@ public class OnDiskDesign extends OnDiskAbstract<DesignBase> {
 
 		if (design instanceof DesignBaseNamed) {
 			ret = ((DesignBaseNamed) design).getName();
-			if (design.isHideFromWeb() || design.isHideFromNotes()) {
-				variant = " [-";
+
+			// variant (hidden, language)
+			String language = design.getLanguage();
+			if (design.isHideFromWeb() || design.isHideFromNotes() || !Strings.isEmptyString(language)) {
+				variant = " [";
 				if (design.isHideFromNotes()) {
-					variant += "n";
+					variant += "-n";
 				}
 				if (design.isHideFromWeb()) {
-					variant += "w";
+					variant += "-w";
 				}
+				if (variant.length() > 2 && !Strings.isEmptyString(language)) {
+					variant += ",";
+				}
+				variant += language;
 				variant += "]";
 			}
 		} else {
