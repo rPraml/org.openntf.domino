@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.openntf.domino.commons.IDateTime;
+import org.openntf.domino.commons.utils.TypeUtils;
 
 import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.util.Calendar;
@@ -364,34 +365,6 @@ public class DateTimeImpl implements IDateTime, Externalizable, Cloneable {
 		_noTime = false;
 	}
 
-	protected static boolean parseIsoInternal(final Calendar newCal, final String image, final ParsePosition p) {
-		newCal.setLenient(false);
-		newCal.clear();
-		p.setErrorIndex(-1);
-		p.setIndex(0);
-		DateFormat df = ISO.dateTimeFormat();
-		df.parse(image, newCal, p);
-		if (p.getErrorIndex() < 0)
-			return true;
-
-		newCal.setLenient(false);
-		newCal.clear();
-		p.setErrorIndex(-1);
-		p.setIndex(0);
-		df = ISO.dateFormat();
-		df.parse(image, newCal, p);
-		if (p.getErrorIndex() < 0)
-			return true;
-
-		newCal.setLenient(false);
-		newCal.clear();
-		p.setErrorIndex(-1);
-		p.setIndex(0);
-		df = ISO.timeFormat();
-		df.parse(image, newCal, p);
-		return (p.getErrorIndex() < 0);
-	}
-
 	protected static boolean parseInternal(final Calendar newCal, final String image, final ParsePosition p, final Locale locale) {
 		newCal.setLenient(false);
 		newCal.clear();
@@ -483,12 +456,12 @@ public class DateTimeImpl implements IDateTime, Externalizable, Cloneable {
 		boolean success = false;
 		ParsePosition p = new ParsePosition(0);
 		if (locale == null) {
-			success = parseIsoInternal(newCal, image, p);
+			success = TypeUtils.parseIsoDate(newCal, image, p);
 		} else {
 			success = parseInternal(newCal, image, p, locale);
 			if (!success) {
 				// Try if image is in ISO format
-				success = parseIsoInternal(newCal, image, p);
+				success = TypeUtils.parseIsoDate(newCal, image, p);
 			}
 		}
 		//		System.out.println("Lh=" + image.length() + " Index=" + p.getIndex() + " ErrIndex=" + p.getErrorIndex());

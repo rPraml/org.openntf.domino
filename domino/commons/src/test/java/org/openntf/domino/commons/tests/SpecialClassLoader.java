@@ -2,6 +2,12 @@ package org.openntf.domino.commons.tests;
 
 import javax.xml.bind.DatatypeConverter;
 
+/**
+ * Classloader for {@link TestThreadUtils}
+ * 
+ * @author Roland Praml, FOCONIS AG
+ *
+ */
 public class SpecialClassLoader extends ClassLoader {
 	/**
 	 * The Bytecode represents the following class
@@ -22,7 +28,7 @@ public class SpecialClassLoader extends ClassLoader {
 	 * 		this.value = value;
 	 * 	}
 	 * 
-	 * 	&#64;Override
+	 * 	&#064;Override
 	 * 	public String toString() {
 	 * 		return value;
 	 * 	}

@@ -89,7 +89,7 @@ public interface IDateTime extends Comparator<IDateTime> {
 		// We neither set english nor german dates as default.
 		// we use something that is machine readable 
 		// There is one rule: Never store a Date in a string, so you should NOT use "toString()" to present a date to the user
-		private static final String _DATE_PATTERN = "YYYY-MM-dd";
+		private static final String _DATE_PATTERN = "yyyy-MM-dd";
 		private static final String _TIME_PATTERN = "HH:mm:ss.SSS";
 		private static final String _DATE_TIME_PATTERN = _DATE_PATTERN + "'T'" + _TIME_PATTERN + "Z";
 		private static final ThreadLocal<DateFormat[]> _INSTANCE = new ThreadLocal<DateFormat[]>() {

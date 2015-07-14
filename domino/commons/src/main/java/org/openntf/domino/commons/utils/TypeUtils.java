@@ -6,6 +6,7 @@ import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -15,10 +16,12 @@ import java.util.regex.Pattern;
 
 import org.openntf.domino.commons.IDataConverter;
 import org.openntf.domino.commons.IDateTime;
+import org.openntf.domino.commons.IDateTime.ISO;
 import org.openntf.domino.commons.IName;
 import org.openntf.domino.commons.Strings;
 import org.openntf.domino.commons.exception.DataNotCompatibleException;
 
+import com.ibm.icu.text.DateFormat;
 import com.ibm.icu.util.Calendar;
 
 /**
@@ -49,7 +52,11 @@ public enum TypeUtils {
 	public static final String[] DEFAULT_STR_ARRAY = { "" };
 
 	/**
-	 * Converts the given object in a vector
+	 * Converts the given object in a vector.
+	 * <ul>
+	 * <li>Returns <code>null</code> if the parameter was null</li>
+	 * <li>Returns a {@link Vector} with all elements, if the parameter was an {@link Array}, {@link Iterable} or {@link Enumeration}</li>
+	 * <li>Returns a {@link Vector} of containing the parameter (Size=1) if the parameter is no "multi-value"
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Vector toVector(final Object o) {
@@ -88,6 +95,14 @@ public enum TypeUtils {
 			}
 			return dst;
 		}
+		if (o instanceof Enumeration) {
+			Vector dst = new Vector();
+			Enumeration e = (Enumeration) o;
+			while (e.hasMoreElements()) {
+				dst.add(e.nextElement());
+			}
+			return dst;
+		}
 		// it is not an array or an iterable
 		Vector dst = new Vector(1);
 		dst.add(o);
@@ -95,7 +110,7 @@ public enum TypeUtils {
 	}
 
 	/**
-	 * Converts the given object in a (array)list which may be a bit more efficient than a Vector
+	 * This is nearly the same as {@link #toVector(Object)}, but a bit more efficient than a Vector, because it uses an {@link ArrayList}
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static List toList(final Object o) {
@@ -103,7 +118,7 @@ public enum TypeUtils {
 			return null;
 		}
 		if (o instanceof List) {
-			return (Vector) o;
+			return (List) o;
 		}
 		if (o.getClass().isArray()) {
 			int l = Array.getLength(o);
@@ -113,13 +128,7 @@ public enum TypeUtils {
 			}
 			return dst;
 		}
-		if (o instanceof List) {
-			List dst = new ArrayList(((Collection) o).size());
-			for (int i = 0; i < ((List) o).size(); i++) {
-				dst.add(((List) o).get(i));
-			}
-			return dst;
-		}
+
 		if (o instanceof Collection) {
 			List dst = new ArrayList(((Collection) o).size());
 			for (Object collObj : (Collection) o) {
@@ -134,6 +143,14 @@ public enum TypeUtils {
 			}
 			return dst;
 		}
+		if (o instanceof Enumeration) {
+			List dst = new ArrayList();
+			Enumeration e = (Enumeration) o;
+			while (e.hasMoreElements()) {
+				dst.add(e.nextElement());
+			}
+			return dst;
+		}
 		// it is not an array or an iterable
 		List dst = new ArrayList(1);
 		dst.add(o);
@@ -145,6 +162,9 @@ public enum TypeUtils {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected static <T extends Collection> T createCollection(Class<T> collType, final int length) {
+		if (!Collection.class.isAssignableFrom(collType)) {
+			throw new IllegalArgumentException(collType.getName() + " is not a collection");
+		}
 		try {
 			// handle Interfaces
 			if (List.class == collType || Collection.class == collType) {
@@ -160,7 +180,7 @@ public enum TypeUtils {
 			Constructor<T> cTor = collType.getConstructor(int.class);
 			return cTor.newInstance(length);
 		} catch (Exception e) {
-			throw new DataNotCompatibleException("Cannot create a collection of type " + collType, e);
+			throw new IllegalArgumentException("Cannot create a collection of type " + collType, e);
 		}
 	}
 
@@ -222,6 +242,14 @@ public enum TypeUtils {
 			T dst = createCollection(collType, -1);
 			for (Object collObj : (Iterable) o) {
 				dst.add(collObj);
+			}
+			return dst;
+		}
+		if (o instanceof Enumeration) {
+			T dst = createCollection(collType, -1);
+			Enumeration e = (Enumeration) o;
+			while (e.hasMoreElements()) {
+				dst.add(e.nextElement());
 			}
 			return dst;
 		}
@@ -359,6 +387,7 @@ public enum TypeUtils {
 				if (cType == Boolean.TYPE) {
 					return (T) toBooleanArray(source);
 				}
+				// This should never happen, unless new primitives are introduced 
 				throw new DataNotCompatibleException("Primitive " + cType.getName() + " is not supported!");
 			}
 
@@ -388,6 +417,15 @@ public enum TypeUtils {
 				List li = new ArrayList();
 				for (Object collObj : (Iterable) source) {
 					li.add(collObj);
+				}
+				return objectToClass(li, targetType);
+			}
+
+			if (source instanceof Enumeration) {
+				List li = new ArrayList();
+				Enumeration e = (Enumeration) source;
+				while (e.hasMoreElements()) {
+					li.add(e.nextElement());
 				}
 				return objectToClass(li, targetType);
 			}
@@ -524,7 +562,7 @@ public enum TypeUtils {
 			}
 
 			if (source instanceof CharSequence) {
-				return ((com.ibm.icu.text.DateFormat) source).parse(Strings.toString(source));
+				return parseIsoDate(Strings.toString(source)).getTime();
 			}
 
 			if (source instanceof Number) {
@@ -562,10 +600,7 @@ public enum TypeUtils {
 			}
 
 			if (source instanceof CharSequence) {
-				Calendar cal = Calendar.getInstance();
-				ParsePosition p = new ParsePosition(0);
-				((com.ibm.icu.text.DateFormat) source).parse(Strings.toString(source), cal, p);
-				return cal;
+				return parseIsoDate(Strings.toString(source));
 			}
 
 			if (source instanceof Number) {
@@ -637,79 +672,78 @@ public enum TypeUtils {
 
 		// search through all methods TODO: this may not always find the correct constructor
 
-		//		Constructor<T>[] ctors = (Constructor<T>[]) clazz.getConstructors();
-		//		Constructor<T> bestMatch = null;
-		//		int matchLevel = 0;
-		//		for (int i = 0, size = ctors.length; i < size; i++) {
-		//			// compare parameters
-		//			Class<?>[] ctorParams = ctors[i].getParameterTypes();
-		//			if (ctorParams.length == 1) {
-		//				Class<?> ctorArg = ctorParams[0];
-		//				if (ctorArg.isAssignableFrom(givenArg)) {
-		//					return ctors[i];
-		//				}
-		//				if (ctorArg.isPrimitive()) {
-		//					if (ctorArg == Byte.TYPE) {
-		//						if (givenArg == Byte.class)
-		//							return ctors[i];
-		//						if (matchLevel < 1) {
-		//							matchLevel = 1;
-		//							bestMatch = ctors[i];
-		//						}
-		//					}
-		//					if (ctorArg == Short.TYPE) {
-		//						if (givenArg == Short.class)
-		//							return ctors[i];
-		//						if (matchLevel < 2) {
-		//							matchLevel = 2;
-		//							bestMatch = ctors[i];
-		//						}
-		//					}
-		//					if (ctorArg == Integer.TYPE) {
-		//						if (givenArg == Integer.class)
-		//							return ctors[i];
-		//						if (matchLevel < 3) {
-		//							matchLevel = 3;
-		//							bestMatch = ctors[i];
-		//						}
-		//					}
-		//					if (ctorArg == Long.TYPE) {
-		//						if (givenArg == Long.class)
-		//							return ctors[i];
-		//						if (matchLevel < 4) {
-		//							matchLevel = 4;
-		//							bestMatch = ctors[i];
-		//						}
-		//					}
-		//
-		//					if (ctorArg == Float.TYPE) {
-		//						if (givenArg == Float.class)
-		//							return ctors[i];
-		//						if (matchLevel < 5) {
-		//							matchLevel = 5;
-		//							bestMatch = ctors[i];
-		//						}
-		//					}
-		//
-		//					if (ctorArg == Double.TYPE) {
-		//						if (givenArg == Double.class)
-		//							return ctors[i];
-		//						if (matchLevel < 6) {
-		//							matchLevel = 6;
-		//							bestMatch = ctors[i];
-		//						}
-		//					}
-		//
-		//					if (ctorArg == Character.TYPE && givenArg == Character.class)
-		//						return ctors[i];
-		//					if (ctorArg == Boolean.TYPE && givenArg == Boolean.class)
-		//						return ctors[i];
-		//				}
-		//			}
-		//		}
-		//		if (bestMatch != null && Number.class.isAssignableFrom(givenArg))
-		//			return bestMatch;
-		//
+		Constructor<T>[] ctors = (Constructor<T>[]) clazz.getConstructors();
+		Constructor<T> bestMatch = null;
+		int matchLevel = 0;
+		for (int i = 0, size = ctors.length; i < size; i++) {
+			// compare parameters
+			Class<?>[] ctorParams = ctors[i].getParameterTypes();
+			if (ctorParams.length == 1) {
+				Class<?> ctorArg = ctorParams[0];
+				if (ctorArg.isAssignableFrom(givenArg)) {
+					return ctors[i];
+				}
+				if (ctorArg.isPrimitive()) {
+					if (ctorArg == Byte.TYPE) {
+						if (givenArg == Byte.class)
+							return ctors[i];
+						if (matchLevel < 1) {
+							matchLevel = 1;
+							bestMatch = ctors[i];
+						}
+					}
+					if (ctorArg == Short.TYPE) {
+						if (givenArg == Short.class)
+							return ctors[i];
+						if (matchLevel < 2) {
+							matchLevel = 2;
+							bestMatch = ctors[i];
+						}
+					}
+					if (ctorArg == Integer.TYPE) {
+						if (givenArg == Integer.class)
+							return ctors[i];
+						if (matchLevel < 3) {
+							matchLevel = 3;
+							bestMatch = ctors[i];
+						}
+					}
+					if (ctorArg == Long.TYPE) {
+						if (givenArg == Long.class)
+							return ctors[i];
+						if (matchLevel < 4) {
+							matchLevel = 4;
+							bestMatch = ctors[i];
+						}
+					}
+
+					if (ctorArg == Float.TYPE) {
+						if (givenArg == Float.class)
+							return ctors[i];
+						if (matchLevel < 5) {
+							matchLevel = 5;
+							bestMatch = ctors[i];
+						}
+					}
+
+					if (ctorArg == Double.TYPE) {
+						if (givenArg == Double.class)
+							return ctors[i];
+						if (matchLevel < 6) {
+							matchLevel = 6;
+							bestMatch = ctors[i];
+						}
+					}
+
+					if (ctorArg == Character.TYPE && givenArg == Character.class)
+						return ctors[i];
+					if (ctorArg == Boolean.TYPE && givenArg == Boolean.class)
+						return ctors[i];
+				}
+			}
+		}
+		if (bestMatch != null && Number.class.isAssignableFrom(givenArg))
+			return bestMatch;
 
 		return null;
 	}
@@ -1529,5 +1563,41 @@ public enum TypeUtils {
 			return toBooleanArray((Collection) arr);
 		}
 		return new boolean[] { toBoolean(arr) };
+	}
+
+	public static Calendar parseIsoDate(final String image) {
+		Calendar newCal = Calendar.getInstance();
+		ParsePosition p = new ParsePosition(0);
+		if (parseIsoDate(newCal, image, p))
+			return newCal;
+		throw new DataNotCompatibleException("The value '" + image + "' is not a valid ISO-Date");
+	}
+
+	public static boolean parseIsoDate(final Calendar newCal, final String image, final ParsePosition p) {
+		newCal.setLenient(false);
+		newCal.clear();
+		p.setErrorIndex(-1);
+		p.setIndex(0);
+		DateFormat df = ISO.dateTimeFormat();
+		df.parse(image, newCal, p);
+		if (p.getErrorIndex() < 0)
+			return true;
+
+		newCal.setLenient(false);
+		newCal.clear();
+		p.setErrorIndex(-1);
+		p.setIndex(0);
+		df = ISO.dateFormat();
+		df.parse(image, newCal, p);
+		if (p.getErrorIndex() < 0)
+			return true;
+
+		newCal.setLenient(false);
+		newCal.clear();
+		p.setErrorIndex(-1);
+		p.setIndex(0);
+		df = ISO.timeFormat();
+		df.parse(image, newCal, p);
+		return (p.getErrorIndex() < 0);
 	}
 }
