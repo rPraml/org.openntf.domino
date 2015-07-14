@@ -812,6 +812,8 @@ public enum TypeUtils {
 		}
 		if (value instanceof CharSequence) {
 			CharSequence cs = (CharSequence) value;
+			if (cs.length() == 0)
+				return 0;
 			try {
 				return Byte.valueOf(cs.toString());
 			} catch (NumberFormatException nfe) {
@@ -826,6 +828,10 @@ public enum TypeUtils {
 				return SafeCast.longToByte(((Number) value).longValue());
 			}
 		}
+
+		if (value instanceof Character) {
+			return SafeCast.longToByte(((Character) value).charValue());
+		}
 		//		for (IDataConverter dc : IDataConverter.$.getInstance())) {
 		//			T ret = dc.toByte(o);
 		//			if (ret != null)
@@ -838,6 +844,8 @@ public enum TypeUtils {
 	 * Converts a Collection<?> to byte[]
 	 */
 	public static <T> byte[] toByteArray(final Collection<T> coll) {
+		if (coll == null)
+			return null;
 		byte[] ret = new byte[coll.size()];
 		Iterator<T> iterator = coll.iterator();
 		for (int i = 0; i < ret.length; i++) {
@@ -850,6 +858,8 @@ public enum TypeUtils {
 	 * Converts a List<?> to byte[]
 	 */
 	public static <T> byte[] toByteArray(final List<T> list) {
+		if (list == null)
+			return null;
 		byte[] ret = new byte[list.size()];
 		for (int i = 0; i < ret.length; i++) {
 			ret[i] = toByte(list.get(i));
@@ -871,7 +881,7 @@ public enum TypeUtils {
 				return (byte[]) arr;
 
 			byte[] ret = new byte[Array.getLength(arr)];
-			if (cType == Short.TYPE || cType == Integer.TYPE || cType == Long.TYPE) {
+			if (cType == Short.TYPE || cType == Integer.TYPE || cType == Long.TYPE || cType == Character.TYPE) {
 				for (int i = 0; i < ret.length; i++) {
 					ret[i] = SafeCast.longToByte(Array.getLong(arr, i));
 				}
@@ -914,6 +924,8 @@ public enum TypeUtils {
 		}
 		if (value instanceof CharSequence) {
 			CharSequence cs = (CharSequence) value;
+			if (cs.length() == 0)
+				return 0;
 			try {
 				return Short.valueOf(cs.toString());
 			} catch (NumberFormatException nfe) {
@@ -929,7 +941,9 @@ public enum TypeUtils {
 				return SafeCast.longToShort(((Number) value).longValue());
 			}
 		}
-
+		if (value instanceof Character) {
+			return SafeCast.longToShort(((Character) value).charValue());
+		}
 		throw new DataNotCompatibleException("Cannot convert a " + value.getClass().getName() + " to short primitive.");
 	}
 
@@ -937,6 +951,8 @@ public enum TypeUtils {
 	 * Converts a Collection<?> to short[]
 	 */
 	public static <T> short[] toShortArray(final Collection<T> coll) {
+		if (coll == null)
+			return null;
 		short[] ret = new short[coll.size()];
 		Iterator<T> iterator = coll.iterator();
 		for (int i = 0; i < ret.length; i++) {
@@ -949,6 +965,8 @@ public enum TypeUtils {
 	 * Converts a List<?> to short[]
 	 */
 	public static <T> short[] toShortArray(final List<T> list) {
+		if (list == null)
+			return null;
 		short[] ret = new short[list.size()];
 		for (int i = 0; i < ret.length; i++) {
 			ret[i] = toShort(list.get(i));
@@ -1014,6 +1032,8 @@ public enum TypeUtils {
 		}
 		if (value instanceof CharSequence) {
 			CharSequence cs = (CharSequence) value;
+			if (cs.length() == 0)
+				return 0;
 			try {
 				return Integer.valueOf(cs.toString());
 			} catch (NumberFormatException nfe) {
@@ -1027,7 +1047,9 @@ public enum TypeUtils {
 				return SafeCast.longToInt(((Number) value).longValue());
 			}
 		}
-
+		if (value instanceof Character) {
+			return SafeCast.longToInt(((Character) value).charValue());
+		}
 		throw new DataNotCompatibleException("Cannot convert a " + value.getClass().getName() + " to int primitive.");
 	}
 
@@ -1035,6 +1057,8 @@ public enum TypeUtils {
 	 * Converts a Collection<?> to int[]
 	 */
 	public static <T> int[] toIntArray(final Collection<T> coll) {
+		if (coll == null)
+			return null;
 		int[] ret = new int[coll.size()];
 		Iterator<T> iterator = coll.iterator();
 		for (int i = 0; i < ret.length; i++) {
@@ -1047,6 +1071,8 @@ public enum TypeUtils {
 	 * Converts a List<?> to int[]
 	 */
 	public static <T> int[] toIntArray(final List<T> list) {
+		if (list == null)
+			return null;
 		int[] ret = new int[list.size()];
 		for (int i = 0; i < ret.length; i++) {
 			ret[i] = toInt(list.get(i));
@@ -1111,6 +1137,8 @@ public enum TypeUtils {
 		}
 		if (value instanceof CharSequence) {
 			CharSequence cs = (CharSequence) value;
+			if (cs.length() == 0)
+				return 0;
 			try {
 				return Long.valueOf(cs.toString());
 			} catch (NumberFormatException nfe) {
@@ -1134,7 +1162,9 @@ public enum TypeUtils {
 		if (value instanceof IDateTime) {
 			return ((IDateTime) value).toJavaDate().getTime();
 		}
-
+		if (value instanceof Character) {
+			return ((Character) value).charValue();
+		}
 		throw new DataNotCompatibleException("Cannot convert a " + value.getClass().getName() + " to long primitive.");
 	}
 
@@ -1142,6 +1172,8 @@ public enum TypeUtils {
 	 * Converts a Collection<?> to long[]
 	 */
 	public static <T> long[] toLongArray(final Collection<T> coll) {
+		if (coll == null)
+			return null;
 		long[] ret = new long[coll.size()];
 		Iterator<T> iterator = coll.iterator();
 		for (int i = 0; i < ret.length; i++) {
@@ -1154,6 +1186,8 @@ public enum TypeUtils {
 	 * Converts a List<?> to long[]
 	 */
 	public static <T> long[] toLongArray(final List<T> list) {
+		if (list == null)
+			return null;
 		long[] ret = new long[list.size()];
 		for (int i = 0; i < ret.length; i++) {
 			ret[i] = toLong(list.get(i));
@@ -1217,6 +1251,8 @@ public enum TypeUtils {
 		}
 		if (value instanceof CharSequence) {
 			CharSequence cs = (CharSequence) value;
+			if (cs.length() == 0)
+				return 0;
 			try {
 				return Float.valueOf(cs.toString());
 			} catch (NumberFormatException nfe) {
@@ -1231,7 +1267,9 @@ public enum TypeUtils {
 				return SafeCast.doubleToFloat(((Number) value).doubleValue());
 			}
 		}
-
+		if (value instanceof Character) {
+			return SafeCast.longToFloat(((Character) value).charValue());
+		}
 		throw new DataNotCompatibleException("Cannot convert a " + value.getClass().getName() + " to float primitive.");
 	}
 
@@ -1239,6 +1277,8 @@ public enum TypeUtils {
 	 * Converts a Collection<?> to float[]
 	 */
 	public static <T> float[] toFloatArray(final Collection<T> coll) {
+		if (coll == null)
+			return null;
 		float[] ret = new float[coll.size()];
 		Iterator<T> iterator = coll.iterator();
 		for (int i = 0; i < ret.length; i++) {
@@ -1251,6 +1291,8 @@ public enum TypeUtils {
 	 * Converts a List<?> to float[]
 	 */
 	public static <T> float[] toFloatArray(final List<T> list) {
+		if (list == null)
+			return null;
 		float[] ret = new float[list.size()];
 		for (int i = 0; i < ret.length; i++) {
 			ret[i] = toFloat(list.get(i));
@@ -1315,6 +1357,8 @@ public enum TypeUtils {
 		}
 		if (value instanceof CharSequence) {
 			CharSequence cs = (CharSequence) value;
+			if (cs.length() == 0)
+				return 0;
 			try {
 				return Double.valueOf(cs.toString());
 			} catch (NumberFormatException nfe) {
@@ -1330,6 +1374,10 @@ public enum TypeUtils {
 			}
 		}
 
+		if (value instanceof Character) {
+			return SafeCast.longToDouble(((Character) value).charValue());
+		}
+
 		throw new DataNotCompatibleException("Cannot convert a " + value.getClass().getName() + " to double primitive.");
 	}
 
@@ -1337,6 +1385,8 @@ public enum TypeUtils {
 	 * Converts a Collection<?> to double[]
 	 */
 	public static <T> double[] toDoubleArray(final Collection<T> coll) {
+		if (coll == null)
+			return null;
 		double[] ret = new double[coll.size()];
 		Iterator<T> iterator = coll.iterator();
 		for (int i = 0; i < ret.length; i++) {
@@ -1349,6 +1399,8 @@ public enum TypeUtils {
 	 * Converts a List<?> to double[]
 	 */
 	public static <T> double[] toDoubleArray(final List<T> list) {
+		if (list == null)
+			return null;
 		double[] ret = new double[list.size()];
 		for (int i = 0; i < ret.length; i++) {
 			ret[i] = toDouble(list.get(i));
@@ -1432,6 +1484,8 @@ public enum TypeUtils {
 	 * Converts a Collection<?> to short[]
 	 */
 	public static <T> char[] toCharArray(final Collection<T> coll) {
+		if (coll == null)
+			return null;
 		char[] ret = new char[coll.size()];
 		Iterator<T> iterator = coll.iterator();
 		for (int i = 0; i < ret.length; i++) {
@@ -1444,6 +1498,8 @@ public enum TypeUtils {
 	 * Converts a List<?> to short[]
 	 */
 	public static <T> char[] toCharArray(final List<T> list) {
+		if (list == null)
+			return null;
 		char[] ret = new char[list.size()];
 		for (int i = 0; i < ret.length; i++) {
 			ret[i] = toChar(list.get(i));

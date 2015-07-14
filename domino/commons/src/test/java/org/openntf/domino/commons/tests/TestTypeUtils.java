@@ -364,8 +364,8 @@ public class TestTypeUtils {
 		assertEquals(tmpLst, toList("a"));
 
 		assertEquals(null, toCollection(null, ArrayList.class));
-		assertEquals(vec, toCollection(arr, ArrayList.class));
-		assertEquals(vec, toCollection(lst, ArrayList.class));
+		assertEquals(vec, toCollection(arr, List.class));
+		assertEquals(vec, toCollection(lst, Collection.class));
 		assertEquals(vec, toCollection(vec, ArrayList.class));
 		assertEquals(vec, toCollection(col, ArrayList.class));
 		assertEquals(vec, toCollection(iterable(vec), ArrayList.class));
