@@ -1,11 +1,10 @@
 /**
  * 
  */
-package org.openntf.domino.xots.tasks;
+package org.openntf.domino.xots.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -14,6 +13,7 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -29,12 +29,15 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javolution.util.FastMap;
-
 import org.openntf.domino.commons.ILifeCycle;
 import org.openntf.domino.commons.IO;
 import org.openntf.domino.commons.LifeCycleManager;
-import org.openntf.domino.xots.tasks.impl.PeriodicScheduler;
+import org.openntf.domino.commons.ServiceLocator;
+import org.openntf.domino.xots.IXotsWrapper;
+import org.openntf.domino.xots.IXotsWrapperFactory;
+import org.openntf.domino.xots.Scheduler;
+import org.openntf.domino.xots.TaskState;
+import org.openntf.domino.xots.XotsExecutorService;
 
 /**
  * A ThreadPoolExecutor for Xots runnables. It sets up a shutdown hook for proper termination.
@@ -51,60 +54,17 @@ import org.openntf.domino.xots.tasks.impl.PeriodicScheduler;
  * @author Nathan T. Freeman
  * @author Roland Praml
  */
-public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor implements XotsExecutorService, ILifeCycle {
-	public enum TaskState {
-		/** The Task is Queued and will be executed next */
-
-		QUEUED,
-
-		/** The Task is sleeping and will be executed further */
-		SLEEPING,
-
-		/** The Task is currently running */
-		RUNNING,
-
-		/** The Task is finished */
-		DONE,
-
-		ERROR
-	}
-
-	private static final Logger log_ = Logger.getLogger(AbstractXotsExecutor.class.getName());
+public class XotsExecutor extends ScheduledThreadPoolExecutor implements XotsExecutorService, ILifeCycle {
+	static final Logger log_ = Logger.getLogger(XotsExecutor.class.getName());
 
 	/** This list contains ALL tasks */
-	protected Map<Long, XotsFutureTask<?>> tasks = new FastMap<Long, XotsFutureTask<?>>().atomic();
-
-	private static final AtomicLong sequencer = new AtomicLong(0L);
-
-	protected Calendar now_ = Calendar.getInstance();
+	protected Map<Long, XotsFutureTask<?>> tasks = new ConcurrentHashMap<Long, XotsFutureTask<?>>();
 
 	private String executorName_;
 
-	protected Calendar getNow() {
-		now_.setTimeInMillis(System.currentTimeMillis());
-		return now_;
-	}
+	private IXotsWrapperFactory wrapperFactory_;
 
-	private static ThreadFactory createThreadFactory() {
-		try {
-			return Executors.privilegedThreadFactory();
-		} catch (Throwable t) {
-			log_.log(Level.WARNING,
-					"cannot create a privilegedThreadFactory - this is the case if you run as java app or in an unsupported operation: "
-							+ t.toString(), t);
-			return Executors.defaultThreadFactory();
-		}
-	}
-
-	/**
-	 * Creates a new {@link AbstractXotsExecutor}. Specify the
-	 * 
-	 */
-	public AbstractXotsExecutor(final int corePoolSize, final String executorName) {
-		super(corePoolSize, createThreadFactory());
-		executorName_ = executorName;
-		LifeCycleManager.addLifeCycle(this);
-	}
+	private static final AtomicLong sequencer = new AtomicLong(0L);
 
 	/**
 	 * A FutureTask for {@link WrappedCallable}s and {@link WrappedRunnable}s. It is nearly identical with
@@ -112,20 +72,23 @@ public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor i
 	 * 
 	 * @author Roland Praml, FOCONIS AG
 	 */
-	public class XotsFutureTask<T> extends FutureTask<T> implements Delayed, RunnableScheduledFuture<T>, Observer {
+	public class XotsFutureTask<RET> extends FutureTask<RET> implements Delayed, RunnableScheduledFuture<RET>, Observer {
 
-		// the period. Values > 0: fixed rate. Values < 0: fixed delay
-		private IWrappedTask wrappedTask;
-		//		private long period;
-
-		// The next runtime;
-		//		private long time = 0;
-
+		/** the scheduler determines when this future will be executed the next time */
 		private Scheduler scheduler;
-		public long sequenceNumber = sequencer.incrementAndGet();
+
+		private final long sequenceNumber = sequencer.incrementAndGet();
+
 		private TaskState state = TaskState.QUEUED;
+
+		/** the objectState reported from the observable */
 		private Object objectState;
-		private Thread runner;
+
+		/** the thread that runs this future */
+		private volatile Thread runner;
+
+		/** the wrapped callable */
+		protected IXotsWrapper<RET> xotsWrapper;
 
 		/**
 		 * Sets the new state of this Thread
@@ -154,20 +117,11 @@ public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor i
 			return sequenceNumber;
 		}
 
-		public XotsFutureTask(final IWrappedCallable<T> callable, final Scheduler scheduler) {
-			super(callable);
-			this.wrappedTask = callable;
+		public XotsFutureTask(final IXotsWrapper<RET> wrappedCallable, final Scheduler scheduler) {
+			super(wrappedCallable);
 			this.scheduler = scheduler;
-			// the wrappedCallable itself is not observable, but maybe its wrapped object
-			callable.addObserver(this);
-		}
-
-		public XotsFutureTask(final IWrappedRunnable runnable, final T result, final Scheduler scheduler) {
-			super(runnable, result);
-			this.wrappedTask = runnable;
-			this.scheduler = scheduler;
-			// the wrappedCallable itself is not observable, but maybe its wrapped object
-			runnable.addObserver(this);
+			this.xotsWrapper = wrappedCallable;
+			wrappedCallable.setObserver(this);
 		}
 
 		@Override
@@ -183,19 +137,20 @@ public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor i
 			super.setException(t);
 			if (t instanceof ExecutionException) {
 				t = ((ExecutionException) t).getCause();
-				log_.log(Level.WARNING, "Task '" + getWrappedTask().getDescription() + "' failed: " + t.toString(), t);
+				log_.log(Level.WARNING, "Task '" + getDescription() + "' failed: " + t.toString(), t);
 			} else {
-				log_.log(Level.SEVERE, "Task '" + getWrappedTask().getDescription() + "' failed: " + t.toString(), t);
+				log_.log(Level.SEVERE, "Task '" + getDescription() + "' failed: " + t.toString(), t);
 			}
 		}
 
 		private void runPeriodic() {
 
-			scheduler.eventStart(getNow());
+			scheduler.eventStart();
 			boolean success = super.runAndReset();
 
 			if (success && (!isShutdown() || ((getContinueExistingPeriodicTasksAfterShutdownPolicy()) && (!isTerminating())))) {
-				scheduler.eventStop(getNow());
+				// Re-Add the future, if it runs periodically
+				scheduler.eventStop();
 				getQueue().add(this);
 			}
 		}
@@ -221,7 +176,8 @@ public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor i
 		 */
 		@Override
 		public boolean cancel(final boolean mayInterruptIfRunning) {
-			wrappedTask.stop();
+			xotsWrapper.stop();
+
 			if (super.cancel(mayInterruptIfRunning)) {
 				return true;
 			}
@@ -249,7 +205,7 @@ public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor i
 		@Override
 		public int compareTo(final Delayed other) {
 			long delta = 0;
-			if (other instanceof XotsFutureTask<?>) {
+			if (other instanceof XotsFutureTask) {
 				delta = getNextExecutionTimeInMillis() - ((XotsFutureTask<?>) other).getNextExecutionTimeInMillis();
 			} else {
 				delta = getDelay(TimeUnit.NANOSECONDS) - other.getDelay(TimeUnit.NANOSECONDS);
@@ -269,10 +225,14 @@ public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor i
 			return 0;
 		}
 
+		public String getDescription() {
+			return xotsWrapper.getDescription();
+		}
+
 		@Override
 		public String toString() {
 			// TODO increment Period/Time 
-			return sequenceNumber + "State: " + getState() + " Task: " + wrappedTask + " objectState: " + objectState;
+			return sequenceNumber + "State: " + getState() + " Task: " + getDescription() + " objectState: " + objectState;
 		}
 
 		@Override
@@ -280,10 +240,46 @@ public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor i
 			objectState = arg1;
 		}
 
-		public IWrappedTask getWrappedTask() {
-			return wrappedTask;
-		}
+	}
 
+	/**
+	 * Returns a privilegedThreadFactory, to run higher privileged operations
+	 */
+	private static ThreadFactory createThreadFactory() {
+		try {
+			return Executors.privilegedThreadFactory();
+		} catch (Throwable t) {
+			log_.log(Level.WARNING,
+					"cannot create a privilegedThreadFactory - this is the case if you run as java app or in an unsupported operation: "
+							+ t.toString(), t);
+			return Executors.defaultThreadFactory();
+		}
+	}
+
+	/**
+	 * Creates a new {@link AbstractXotsExecutor}.
+	 * 
+	 */
+	public XotsExecutor(final int corePoolSize, final String executorName, final IXotsWrapperFactory wrapperFactory) {
+		super(corePoolSize, createThreadFactory());
+		executorName_ = executorName;
+		wrapperFactory_ = wrapperFactory;
+		if (wrapperFactory_ == null)
+			throw new NullPointerException();
+		LifeCycleManager.addLifeCycle(this);
+	}
+
+	public XotsExecutor(final int corePoolSize) {
+		this(50, "Xots");
+	}
+
+	public XotsExecutor(final int corePoolSize, final String execName) {
+		super(corePoolSize, createThreadFactory());
+		executorName_ = execName;
+		wrapperFactory_ = ServiceLocator.findApplicationService(IXotsWrapperFactory.class);
+		if (wrapperFactory_ == null)
+			throw new NullPointerException();
+		LifeCycleManager.addLifeCycle(this);
 	}
 
 	@SuppressWarnings("unused")
@@ -300,7 +296,7 @@ public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor i
 	// --- end duplicate stuff
 
 	/**
-	 * Returns a list of all tasks sorted by next execution time or Sequence number
+	 * Returns a list of all tasks sorted by next execution time or comparator
 	 * 
 	 * @return a List of tasks
 	 */
@@ -330,6 +326,9 @@ public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor i
 		return tasks.get(id);
 	}
 
+	/**
+	 * Method is executed before a runnable starts. It mainly sets the Task state and the thread name
+	 */
 	@Override
 	protected void beforeExecute(final Thread thread, final Runnable runnable) {
 		super.beforeExecute(thread, runnable);
@@ -338,6 +337,9 @@ public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor i
 		thread.setName(getThreadName(runnable));
 	}
 
+	/**
+	 * Method is called after execution. It mainly sets the Task state and resets the thread name
+	 */
 	@Override
 	protected void afterExecute(final Runnable runnable, final Throwable error) {
 		super.afterExecute(runnable, error);
@@ -345,23 +347,31 @@ public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor i
 			XotsFutureTask<?> task = (XotsFutureTask<?>) runnable;
 			if (task.isDone()) {
 				task.setState(error == null ? TaskState.DONE : TaskState.ERROR);
-				tasks.remove(task.sequenceNumber);
+				tasks.remove(task.getId());
 			}
 		}
 		Thread.currentThread().setName("(IDLE) " + getThreadName(runnable));
 	}
 
+	/**
+	 * Returns the executor-name of the given runnable
+	 */
 	private String getThreadName(final Runnable runnable) {
 		StringBuilder sb = new StringBuilder(executorName_).append(": ");
-		if (runnable instanceof XotsFutureTask)
-			sb.append(((XotsFutureTask<?>) runnable).getWrappedTask().getDescription()).append(" - "). //
-					append(new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss").format(new Date()));
-		else
+		if (runnable instanceof XotsFutureTask) {
+			sb.append(((XotsFutureTask<?>) runnable).getDescription());
+			sb.append(" - ");
+			sb.append(new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss").format(new Date()));
+		} else {
 			sb.append('#').append(Thread.currentThread().getId());
+		}
 		return sb.toString();
 	}
 
-	protected <V> RunnableScheduledFuture<V> queue(final RunnableScheduledFuture<V> future) {
+	/**
+	 * Maintains startup and queues the given task
+	 */
+	protected <V> RunnableScheduledFuture<V> queue(final XotsFutureTask<V> future) {
 		if (isShutdown()) {
 			throw new RejectedExecutionException();
 		}
@@ -369,12 +379,9 @@ public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor i
 			prestartCoreThread();
 		}
 
-		if (future instanceof XotsFutureTask) {
-			XotsFutureTask<?> dft = (XotsFutureTask<?>) future;
-			tasks.put(dft.sequenceNumber, dft);
-			if (dft.getDelay(TimeUnit.NANOSECONDS) > 0) {
-				dft.setState(TaskState.SLEEPING);
-			}
+		tasks.put(future.getId(), future);
+		if (future.getDelay(TimeUnit.NANOSECONDS) > 0) {
+			future.setState(TaskState.SLEEPING);
 		}
 		super.getQueue().add(future);
 		return future;
@@ -382,66 +389,56 @@ public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor i
 
 	@Override
 	public <V> ScheduledFuture<V> schedule(final Callable<V> callable, final long delay, final TimeUnit timeUnit) {
-		return queue(new XotsFutureTask<V>(wrap(callable), new PeriodicScheduler(delay, 0L, timeUnit)));
+		IXotsWrapper<V> wrapper = wrapperFactory_.createWrapper(callable);
+		return queue(new XotsFutureTask<V>(wrapper, new PeriodicScheduler(delay, 0L, timeUnit)));
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public ScheduledFuture<?> schedule(final Runnable runnable, final long delay, final TimeUnit timeUnit) {
-		return queue(new XotsFutureTask(wrap(runnable), null, new PeriodicScheduler(delay, 0L, timeUnit)));
+		IXotsWrapper<Object> wrapper = wrapperFactory_.createWrapper(runnable, null);
+		return queue(new XotsFutureTask<Object>(wrapper, new PeriodicScheduler(delay, 0L, timeUnit)));
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public ScheduledFuture<?> scheduleAtFixedRate(final Runnable runnable, final long delay, final long period, final TimeUnit timeUnit) {
 		if (period <= 0) {
 			throw new IllegalStateException("period must be > 0");
 		}
-		return queue(new XotsFutureTask(wrap(runnable), null, new PeriodicScheduler(delay, period, timeUnit)));
+		IXotsWrapper<Object> wrapper = wrapperFactory_.createWrapper(runnable, null);
+		return queue(new XotsFutureTask<Object>(wrapper, new PeriodicScheduler(delay, period, timeUnit)));
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public ScheduledFuture<?> scheduleWithFixedDelay(final Runnable runnable, final long delay, final long period, final TimeUnit timeUnit) {
 		if (period <= 0) {
 			throw new IllegalStateException("period must be > 0");
 		}
-		return queue(new XotsFutureTask(wrap(runnable), null, new PeriodicScheduler(delay, -period, timeUnit)));
+		IXotsWrapper<Object> wrapper = wrapperFactory_.createWrapper(runnable, null);
+		return queue(new XotsFutureTask<Object>(wrapper, new PeriodicScheduler(delay, -period, timeUnit)));
 	}
-
-	protected abstract <V> IWrappedCallable<V> wrap(Callable<V> inner);
-
-	protected abstract IWrappedRunnable wrap(Runnable inner);
 
 	@Override
 	public <V> ScheduledFuture<V> schedule(final Callable<V> callable, final Scheduler scheduler) {
-		return queue(new XotsFutureTask<V>(wrap(callable), scheduler));
+		IXotsWrapper<V> wrapper = wrapperFactory_.createWrapper(callable);
+		return queue(new XotsFutureTask<V>(wrapper, scheduler));
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public ScheduledFuture<?> schedule(final Runnable runnable, final Scheduler scheduler) {
-		return queue(new XotsFutureTask(wrap(runnable), null, scheduler));
+		IXotsWrapper<Object> wrapper = wrapperFactory_.createWrapper(runnable, null);
+		return queue(new XotsFutureTask<Object>(wrapper, scheduler));
 	}
 
-	//	@Override
-	//	protected <T> RunnableFuture<T> newTaskFor(final Callable<T> callable) {
-	//		return super.newTaskFor(wrap(callable));
-	//	}
-	//
-	//	@Override
-	//	protected <T> RunnableFuture<T> newTaskFor(final Runnable runnable, final T type) {
-	//		return super.newTaskFor(wrap(runnable), type);
-	//	};
-	// TODO RPr: check if this works now!
 	@Override
 	protected <T> RunnableFuture<T> newTaskFor(final Callable<T> callable) {
-		return new XotsFutureTask<T>(wrap(callable), new PeriodicScheduler(0, 0, TimeUnit.MILLISECONDS));
+		IXotsWrapper<T> wrapper = wrapperFactory_.createWrapper(callable);
+		return queue(new XotsFutureTask<T>(wrapper, new PeriodicScheduler(0, 0, TimeUnit.MILLISECONDS)));
 	}
 
 	@Override
 	protected <T> RunnableFuture<T> newTaskFor(final Runnable runnable, final T type) {
-		return new XotsFutureTask<T>(wrap(runnable), type, new PeriodicScheduler(0, 0, TimeUnit.MILLISECONDS));
+		IXotsWrapper<T> wrapper = wrapperFactory_.createWrapper(runnable, type);
+		return queue(new XotsFutureTask<T>(wrapper, new PeriodicScheduler(0, 0, TimeUnit.MILLISECONDS)));
 	};
 
 	@Override
@@ -472,4 +469,5 @@ public abstract class AbstractXotsExecutor extends ScheduledThreadPoolExecutor i
 	public int getPriority() {
 		return 0;
 	}
+
 }
