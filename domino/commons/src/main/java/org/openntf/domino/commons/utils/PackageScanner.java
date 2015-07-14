@@ -30,7 +30,7 @@ public class PackageScanner {
 	 * @return the classes as list
 	 */
 	public final static List<Class<?>> findClasses(final String packageName) {
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		ClassLoader classLoader = ThreadUtils.getContextClassLoader();
 		String pathName = packageName.replace(DOT, SLASH);
 		try {
 			Enumeration<URL> resources = classLoader.getResources(pathName);

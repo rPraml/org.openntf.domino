@@ -28,8 +28,6 @@ public class OsgiServiceLocator extends ServiceLocator {
 	}
 
 	protected <T> List<T> locateAppService(final Class<T> serviceClazz) {
-		System.out.println("Loading " + serviceClazz);
-		// TODO Auto-generated method stub
 		ApplicationFactory aFactory = (ApplicationFactory) FactoryFinder.getFactory("javax.faces.application.ApplicationFactory");
 		final ApplicationEx app_ = aFactory == null ? null : (ApplicationEx) aFactory.getApplication();
 		if (app_ == null) {

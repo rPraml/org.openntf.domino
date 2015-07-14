@@ -15,7 +15,6 @@
  */
 package org.openntf.domino.thread;
 
-import java.util.Locale;
 import java.util.logging.Logger;
 
 import lotus.domino.NotesThread;
@@ -37,15 +36,23 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 	private transient Runnable runnable_;
 	protected int nativeId_;
 	private final ISessionFactory sessionFactory_;
-	private final Locale locale_;
-	private Factory.ThreadConfig sourceThreadConfig = Factory.getThreadConfig();
+	private final IRequest request_;
+
+	private static IRequest getRequest(final String action) {
+		IRequest request = LifeCycleManager.getCurrentRequest();
+		if (request == null) {
+			return new DominoRequest(action).threadConfig(Factory.STRICT_THREAD_CONFIG);
+		} else {
+			return request.clone(action);
+		}
+	}
 
 	/**
 	 * Instantiates a new domino thread.
 	 */
 	public DominoThread() {
 		sessionFactory_ = Factory.getSessionFactory(SessionType.CURRENT);
-		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
+		request_ = getRequest("DominoThread: " + getClass().getName());
 	}
 
 	/**
@@ -57,7 +64,8 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 	public DominoThread(final String threadName) {
 		super(threadName);
 		sessionFactory_ = Factory.getSessionFactory(SessionType.CURRENT);
-		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
+		request_ = getRequest("DominoThread: " + threadName + " (" + getClass().getName() + ")");
+
 	}
 
 	/**
@@ -70,7 +78,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 		super();
 		runnable_ = runnable;
 		sessionFactory_ = Factory.getSessionFactory(SessionType.CURRENT);
-		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
+		request_ = getRequest("DominoThread: " + runnable.getClass().getName());
 	}
 
 	/**
@@ -85,7 +93,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 		super(threadName);
 		runnable_ = runnable;
 		sessionFactory_ = Factory.getSessionFactory(SessionType.CURRENT);
-		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
+		request_ = getRequest("DominoThread: " + threadName + " (" + runnable.getClass().getName() + ")");
 	}
 
 	/**
@@ -102,7 +110,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 		super(threadName);
 		runnable_ = runnable;
 		sessionFactory_ = sessionFactory;
-		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
+		request_ = getRequest("DominoThread: " + threadName + " (" + runnable.getClass().getName() + ")");
 	}
 
 	/**
@@ -116,7 +124,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 	public DominoThread(final String threadName, final ISessionFactory sessionFactory) {
 		super(threadName);
 		sessionFactory_ = sessionFactory;
-		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
+		request_ = getRequest("DominoThread: " + threadName + " (" + getClass().getName() + ")");
 	}
 
 	/**
@@ -132,7 +140,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 	public DominoThread(final ISessionFactory sessionFactory) {
 		super();
 		sessionFactory_ = sessionFactory;
-		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
+		request_ = getRequest("DominoThread: " + getClass().getName());
 	}
 
 	/**
@@ -149,7 +157,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 		super();
 		runnable_ = runnable;
 		sessionFactory_ = sessionFactory;
-		locale_ = LifeCycleManager.getCurrentRequest().getLocale();
+		request_ = getRequest("DominoThread: " + runnable.getClass().getName());
 	}
 
 	public Runnable getRunnable() {
@@ -178,9 +186,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 		super.initThread();
 		nativeId_ = this.getNativeThreadID();
 		log_.fine("DEBUG: Initializing a " + toString());
-		IRequest request = new DominoRequest(Factory.STRICT_THREAD_CONFIG, "&dominoThread="
-				+ (runnable_ == null ? this : runnable_).getClass().getName());
-		LifeCycleManager.beforeRequest(request);
+		LifeCycleManager.beforeRequest(request_);
 		Factory.setSessionFactory(sessionFactory_, SessionType.CURRENT);
 		LifeCycleManager.addLifeCycle(this);
 	}
@@ -220,7 +226,7 @@ public class DominoThread extends NotesThread implements ILifeCycle {
 	public static void runApp(final Runnable app, final ISessionFactory sf) {
 		LifeCycleManager.startup();
 		lotus.domino.NotesThread.sinitThread(); // we must keep one thread open
-		IRequest request = new DominoRequest(Factory.STRICT_THREAD_CONFIG, "&app=" + app.getClass().getName());
+		IRequest request = new DominoRequest("app: " + app.getClass().getName()).threadConfig(Factory.STRICT_THREAD_CONFIG);
 		LifeCycleManager.beforeRequest(request);
 		Factory.setSessionFactory(sf, SessionType.CURRENT);
 

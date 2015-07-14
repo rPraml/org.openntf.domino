@@ -27,9 +27,11 @@ import java.util.logging.Logger;
 
 import org.eclipse.osgi.framework.console.CommandInterpreter;
 import org.eclipse.osgi.framework.console.CommandProvider;
-import org.openntf.domino.xots.Xots;
-import org.openntf.domino.xots.tasks.AbstractXotsExecutor.XotsFutureTask;
+import org.openntf.domino.commons.LifeCycleManager;
+import org.openntf.domino.thread.DominoRequest;
 import org.openntf.domino.xsp.xots.XotsNsfScanner;
+import org.openntf.tasklet.TaskletExecutor.TaskletFutureTask;
+import org.openntf.tasklet.TaskletLifeCylce;
 
 import com.ibm.commons.util.StringUtil;
 
@@ -119,6 +121,7 @@ public class OsgiCommandProvider implements CommandProvider {
 	}
 
 	public void _xots(final CommandInterpreter ci) {
+		LifeCycleManager.beforeRequest(new DominoRequest("osgiCommand: xots"));
 		try {
 			String cmd = ci.nextArgument();
 			if (StringUtil.isEmpty(cmd)) {
@@ -133,9 +136,11 @@ public class OsgiCommandProvider implements CommandProvider {
 			} else {
 				ci.println("Unknown command: " + cmd);
 			}
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			printThrowable(ci, e);
 
+		} finally {
+			LifeCycleManager.afterRequest();
 		}
 	}
 
@@ -194,11 +199,11 @@ public class OsgiCommandProvider implements CommandProvider {
 	private void xotsTasks(final CommandInterpreter ci) {
 		ci.println("ID\tSTATE\tNEXT EXEC TIME");
 
-		List<XotsFutureTask<?>> tasks = Xots.getTasks(null);
-		for (XotsFutureTask<?> task : tasks) {
+		List<TaskletFutureTask<?>> tasks = TaskletLifeCylce.getTasks(null);
+		for (TaskletFutureTask<?> task : tasks) {
 			ci.println(task.getId() + "\t" + // ID
-					task.getState() + "\t" + // State
-					convertTimeUnit(task.getNextExecutionTimeInMillis()));
+					task.getState()); // State
+			//convertTimeUnit(task.getNextExecutionTimeInMillis()));
 
 		}
 	}
@@ -219,7 +224,7 @@ public class OsgiCommandProvider implements CommandProvider {
 		String className = ci.nextArgument();
 
 		if (moduleName.equalsIgnoreCase("NsfScanner") && className == null) {
-			Xots.getService().submit(new XotsNsfScanner());
+			TaskletLifeCylce.getService().submit(new XotsNsfScanner());
 			return;
 		}
 
@@ -229,7 +234,7 @@ public class OsgiCommandProvider implements CommandProvider {
 		while ((arg = ci.nextArgument()) != null) {
 			args.add(arg);
 		}
-		Xots.getService().runTasklet(moduleName, className, args.toArray());
+		//Xots.getService().runTasklet(moduleName, className, args.toArray());
 
 	}
 

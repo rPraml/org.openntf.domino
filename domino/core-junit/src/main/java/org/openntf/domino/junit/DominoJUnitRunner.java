@@ -85,7 +85,7 @@ public class DominoJUnitRunner extends AbstractJUnitRunner {
 		try {
 			String runAs = getRunAs(method);
 			String db = getDatabase(method);
-			IRequest request = new JUnitRequest(Factory.STRICT_THREAD_CONFIG, method.getName(), runAs);
+			IRequest request = new JUnitRequest("JUnit: " + method.getName(), runAs);
 			LifeCycleManager.beforeRequest(request);
 			if (runAs == null) {
 				Factory.setSessionFactory(new NativeSessionFactory(db), SessionType.CURRENT);

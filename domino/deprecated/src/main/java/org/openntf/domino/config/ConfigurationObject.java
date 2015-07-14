@@ -11,8 +11,8 @@ import javolution.util.FastSet;
 
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
-import org.openntf.domino.xots.Tasklet;
-import org.openntf.domino.xots.dominotasks.DominoExecutor;
+import org.openntf.tasklet.TaskletExecutor;
+import org.openntf.tasklet.Tasklet;
 
 /**
  * 
@@ -66,7 +66,7 @@ public abstract class ConfigurationObject {
 		}
 	}
 
-	@Tasklet(session = Tasklet.Session.NATIVE, threadConfig = Tasklet.ThreadConfig.STRICT)
+	@Tasklet(session = Tasklet.Session.NATIVE)
 	protected class CacheSyncer implements Callable<Void> {
 		@Override
 		public Void call() {
@@ -82,7 +82,7 @@ public abstract class ConfigurationObject {
 	protected synchronized void initCache() {
 		if (System.currentTimeMillis() > nextDocAccess) {
 			nextDocAccess = System.currentTimeMillis() + 15 * 1000;
-			DominoExecutor executor = Configuration.getExecutor();
+			TaskletExecutor executor = Configuration.getExecutor();
 			if (executor != null) {
 				Future<Void> f = executor.submit(new CacheSyncer());
 				try {

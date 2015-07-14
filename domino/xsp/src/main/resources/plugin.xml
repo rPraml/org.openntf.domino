@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?eclipse version="3.4"?><plugin modifiedby="de.foconis.maven.syncpx.SyncPluginXMLMojo">
 <!-- <extension
-           id="org.openntf.domino.xsp.Servlet"
-           point="org.eclipse.equinox.http.registry.servlets">
-        <servlet
-              alias="/openntf_domino"
-              class="org.openntf.domino.xsp.OpenntfServlet"
-              load-on-startup="true">
-        </servlet>
-     </extension> -->
+id="org.openntf.domino.xsp.Servlet"
+point="org.eclipse.equinox.http.registry.servlets">
+<servlet
+alias="/openntf_domino"
+class="org.openntf.domino.xsp.OpenntfServlet"
+load-on-startup="true">
+</servlet>
+</extension> -->
 <extension point="com.ibm.commons.Extension">
     <service type="com.ibm.designer.runtime.extensions.JavaScriptProvider"
             class="org.openntf.domino.xsp.script.OpenDomJavaScriptExtension"/>
@@ -103,5 +103,9 @@ These are the basic functions to provied boolean and arithmetc operations -->
 <extension point="com.ibm.commons.Extension">
     <service type="org.openntf.formula.FunctionSet"
             class="org.openntf.formula.function.TextFunctions$Functions"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+    <service type="org.openntf.tasklet.ITaskletWrapperFactory"
+            class="org.openntf.domino.xsp.xots.XspXotsWrapperFactory"/>
 </extension>
 </plugin>

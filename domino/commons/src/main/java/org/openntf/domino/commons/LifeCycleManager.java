@@ -149,6 +149,8 @@ public enum LifeCycleManager {
 	 * Add a hook that will run on request end
 	 */
 	public static void addRequestLifeCycle(final IRequestLifeCycle hook) {
+		if (hook == null)
+			throw new NullPointerException();
 		synchronized (lazyRequestLifeCycles) {
 			lazyRequestLifeCycles.add(hook);
 		}
@@ -174,7 +176,7 @@ public enum LifeCycleManager {
 
 		IRequestLifeCycle[] copy;
 		synchronized (lazyRequestLifeCycles) {
-			copy = lazyRequestLifeCycles.toArray(new IRequestLifeCycle[lazyLifeCycles.size()]);
+			copy = lazyRequestLifeCycles.toArray(new IRequestLifeCycle[lazyRequestLifeCycles.size()]);
 		}
 		for (IRequestLifeCycle lifecycle : copy) {
 			try {
@@ -218,7 +220,7 @@ public enum LifeCycleManager {
 
 		IRequestLifeCycle[] copy;
 		synchronized (lazyRequestLifeCycles) {
-			copy = lazyRequestLifeCycles.toArray(new IRequestLifeCycle[lazyLifeCycles.size()]);
+			copy = lazyRequestLifeCycles.toArray(new IRequestLifeCycle[lazyRequestLifeCycles.size()]);
 		}
 		for (IRequestLifeCycle lifecycle : copy) {
 			try {

@@ -1,4 +1,4 @@
-package org.openntf.domino.xots;
+package org.openntf.tasklet;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -21,13 +21,6 @@ public @interface Tasklet {
 		public Scope getScope();
 
 		/**
-		 * Returns the {@link Context} of that tasklet. If <code>null</code> is returned, the {@link Tasklet#context()} annotation counts.
-		 * 
-		 * @return the context
-		 */
-		public Context getContext();
-
-		/**
 		 * Notifies the tasklet that it should stop if possible.
 		 */
 		public void stop();
@@ -40,6 +33,11 @@ public @interface Tasklet {
 		 */
 		public String[] getDynamicSchedule();
 
+		/**
+		 * Returns a description of this tasklet
+		 * 
+		 * @return
+		 */
 		public String getDescription();
 
 	}
@@ -150,67 +148,9 @@ public @interface Tasklet {
 		NONE
 	}
 
-	public enum Context {
-		/**
-		 * Run the Tasklet in Plugin context (this does NOT open/lock a module, and the code of that Tasklet MUST not reside in the NSF)
-		 */
-		PLUGIN,
-
-		/**
-		 * Run in Default Context. This means in MODULE, if there is one running or in PLUGIN-Context if not
-		 */
-		DEFAULT,
-
-		/**
-		 * Run the Tasklet in Module context (this does NOT work outside OSGI-Environment)
-		 */
-		MODULE,
-
-		/**
-		 * Run in XSP Context: with access to the Xsp dependencies, but without any context (faces or otherwise)
-		 */
-		@Deprecated
-		XSPBARE,
-
-		/**
-		 * would be "it's running with access to the scoped variables within it's environment." So that would set up access to
-		 * ApplicationScoped, ServerScope, IdentityScope in it
-		 */
-		@Deprecated
-		XSPSCOPED,
-		/**
-		 * would force the Tasklet to run in the same NSFComponentModule context as any given Xpage this would force the Application to be
-		 * activated, thus triggering ApplicationListeners, for instance
-		 */
-		@Deprecated
-		XSPFORCE
-	}
-
-	public enum ThreadConfig {
-		/**
-		 * Clone the ThreadConfig
-		 */
-		CLONE,
-		/**
-		 * Use {@link org.openntf.domino.utils.Factory#STRICT_THREAD_CONFIG} as Thread configuration (=all Fixes, AutoMime.WRAP_32K,
-		 * bubbleExceptions = true)
-		 */
-		STRICT,
-
-		/**
-		 * Use {@link org.openntf.domino.utils.Factory#PERMISSIVE_THREAD_CONFIG} as Thread configuration (=all Fixes, AutoMime.WRAP_ALL,
-		 * bubbleExceptions = false)
-		 */
-		PERMISSIVE
-	}
-
 	Tasklet.Session session() default Tasklet.Session.CLONE;
 
 	Tasklet.Scope scope() default Tasklet.Scope.APPLICATION;
-
-	Tasklet.Context context() default Tasklet.Context.DEFAULT;
-
-	Tasklet.ThreadConfig threadConfig() default Tasklet.ThreadConfig.CLONE;
 
 	/**
 	 * specifies the schedule.

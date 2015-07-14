@@ -1,4 +1,4 @@
-package org.openntf.domino.xots;
+package org.openntf.tasklet;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

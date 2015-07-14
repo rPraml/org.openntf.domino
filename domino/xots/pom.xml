@@ -20,7 +20,7 @@
 					<instructions>
 						<Export-Package>
 							!*.test,
-							org.openntf.domino.xots.*
+							org.openntf.tasklet.*
 						</Export-Package>
 					</instructions>
 				</configuration>
@@ -48,12 +48,6 @@
 			<groupId>org.openntf.domino</groupId>
 			<artifactId>commons</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.javolution</groupId>
-			<artifactId>javolution-core-java</artifactId>
-			<version>6.1.0-ODA-151-SNAPSHOT</version>
 		</dependency>
 		
 	</dependencies>

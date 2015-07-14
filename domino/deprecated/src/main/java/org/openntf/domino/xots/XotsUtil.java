@@ -3,7 +3,8 @@ package org.openntf.domino.xots;
 import java.util.Arrays;
 
 import org.openntf.domino.Database;
-import org.openntf.domino.xots.Tasklet.Interface;
+import org.openntf.tasklet.Tasklet;
+import org.openntf.tasklet.Tasklet.Interface;
 
 @Deprecated
 public enum XotsUtil {
@@ -13,7 +14,7 @@ public enum XotsUtil {
 	 * 
 	 */
 	public static ScheduleData getSchedule(final String replicaId, final Class<?> clazz) throws IllegalAccessException,
-	InstantiationException {
+			InstantiationException {
 		Tasklet annot = clazz.getAnnotation(Tasklet.class);
 		String[] effectiveSchedDefs = null;
 

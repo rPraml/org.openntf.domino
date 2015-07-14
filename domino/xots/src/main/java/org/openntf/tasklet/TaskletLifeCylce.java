@@ -1,30 +1,27 @@
-package org.openntf.domino.xots;
+package org.openntf.tasklet;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.openntf.domino.commons.ILifeCycle;
 import org.openntf.domino.commons.IO;
-import org.openntf.domino.xots.tasks.AbstractXotsExecutor;
-import org.openntf.domino.xots.tasks.XotsExecutorService;
-import org.openntf.domino.xots.tasks.AbstractXotsExecutor.XotsFutureTask;
+import org.openntf.tasklet.TaskletExecutor.TaskletFutureTask;
 
 /*
  * This class and package is intended to become the space for the XPages implementation
  * of IBM's DOTS. Except it will use modern thread management instead of acting like it was
  * written in Java 1.1
  */
-public class Xots {
+public class TaskletLifeCylce implements ILifeCycle {
 
-	;
-
-	public static Comparator<XotsFutureTask<?>> TASKS_BY_ID = new Comparator<XotsFutureTask<?>>() {
+	public static Comparator<TaskletFutureTask<?>> TASKS_BY_ID = new Comparator<TaskletFutureTask<?>>() {
 		@Override
-		public int compare(final XotsFutureTask<?> o1, final XotsFutureTask<?> o2) {
-			if (o1.sequenceNumber < o2.sequenceNumber) {
+		public int compare(final TaskletFutureTask<?> o1, final TaskletFutureTask<?> o2) {
+			if (o1.getId() < o2.getId()) {
 				return -1;
-			} else if (o1.sequenceNumber == o2.sequenceNumber) {
+			} else if (o1.getId() == o2.getId()) {
 				return 0;
 			} else {
 				return 1;
@@ -34,35 +31,19 @@ public class Xots {
 	//private Set<TaskletDefinition> tasklets_ = new HashSet<TaskletDefinition>();
 
 	// This is our Threadpool that will execute all Runnables
-	private static AbstractXotsExecutor executor_;
+	private static TaskletExecutor executor_;
 
-	private Xots() {
-		super();
-	}
-
-	public static XotsExecutorService getService() {
+	public static TaskletExecutor getService() {
 		if (!isStarted()) {
 			throw new IllegalStateException("Xots is not started");
 		}
 		return executor_;
 	}
 
-	public static List<XotsFutureTask<?>> getTasks(final Comparator<XotsFutureTask<?>> comparator) {
+	public static List<TaskletFutureTask<?>> getTasks(final Comparator<TaskletFutureTask<?>> comparator) {
 		if (!isStarted())
 			return Collections.emptyList();
 		return executor_.getTasks(comparator);
-	}
-
-	/**
-	 * Start the XOTS with the given Executor
-	 */
-	public static synchronized void start(final AbstractXotsExecutor executor) throws IllegalStateException {
-		if (isStarted())
-			throw new IllegalStateException("XotsDaemon is already started");
-		IO.println(Xots.class, "Starting XPages OSGi Tasklet Service with " + executor.getCorePoolSize() + " core threads.");
-
-		executor_ = executor;
-
 	}
 
 	/**
@@ -75,22 +56,22 @@ public class Xots {
 
 	public static synchronized void stop(int wait) {
 		if (isStarted()) {
-			IO.println(Xots.class, "Stopping XPages OSGi Tasklet Service...");
+			IO.println(TaskletLifeCylce.class, "Stopping XPages OSGi Tasklet Service...");
 
 			executor_.shutdown();
 			long running;
 			try {
 				while ((running = executor_.getActiveCount()) > 0 && wait-- > 0) {
-					IO.println(Xots.class, "There are " + running + " tasks running... waiting " + wait + " seconds.");
+					IO.println(TaskletLifeCylce.class, "There are " + running + " tasks running... waiting " + wait + " seconds.");
 					Thread.sleep(1000);
 				}
 			} catch (InterruptedException e) {
 			}
 
 			if (executor_.getActiveCount() > 0) {
-				IO.println(Xots.class, "he following Threads did not terminate gracefully:");
-				for (XotsFutureTask<?> task : executor_.getTasks(null)) {
-					IO.println(Xots.class, "* " + task);
+				IO.println(TaskletLifeCylce.class, "he following Threads did not terminate gracefully:");
+				for (TaskletFutureTask<?> task : executor_.getTasks(null)) {
+					IO.println(TaskletLifeCylce.class, "* " + task);
 				}
 
 			}
@@ -98,21 +79,38 @@ public class Xots {
 			try {
 				for (int i = 60; i > 0; i -= 10) {
 					if (executor_.getActiveCount() > 0) {
-						IO.println(Xots.class, "Trying to interrupt them and waiting again " + i + " seconds.");
+						IO.println(TaskletLifeCylce.class, "Trying to interrupt them and waiting again " + i + " seconds.");
 						executor_.shutdownNow();
 					}
 					if (executor_.awaitTermination(10, TimeUnit.SECONDS)) {
 						executor_ = null;
-						IO.println(Xots.class, " XPages OSGi Tasklet Service stopped.");
+						IO.println(TaskletLifeCylce.class, " XPages OSGi Tasklet Service stopped.");
 						return;
 					}
 				}
 			} catch (InterruptedException e) {
 			}
-			IO.println(Xots.class, "WARNING: Could not stop  XPages OSGi Tasklet Service!");
+			IO.println(TaskletLifeCylce.class, "WARNING: Could not stop  XPages OSGi Tasklet Service!");
 		} else {
-			IO.println(Xots.class, " XPages OSGi Tasklet Service not running");
+			IO.println(TaskletLifeCylce.class, " XPages OSGi Tasklet Service not running");
 		}
+	}
+
+	@Override
+	public int getPriority() {
+		return 99;
+	}
+
+	@Override
+	public void startup() {
+		// TODO read the value from Notes.ini
+		executor_ = new TaskletExecutor(10, 50, "Xots");
+		IO.println(TaskletLifeCylce.class, "Starting XPages OSGi Tasklet Service with " + executor_.getCorePoolSize() + " core threads.");
+	}
+
+	@Override
+	public void shutdown() {
+		stop(60);
 	}
 
 	//

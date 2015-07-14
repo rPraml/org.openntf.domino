@@ -47,7 +47,7 @@ public abstract class AbstractJUnitRunner extends BlockJUnit4ClassRunner {
 
 	protected String getDatabase(final FrameworkMethod method) {
 		SessionDb runTestDb = method.getAnnotation(SessionDb.class);
-		String ret = null;
+		String ret = "names.nsf";
 		if (runTestDb != null) {
 			ret = runTestDb.value();
 		}

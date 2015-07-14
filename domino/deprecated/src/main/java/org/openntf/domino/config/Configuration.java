@@ -2,7 +2,6 @@ package org.openntf.domino.config;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import javolution.util.FastMap;
 import javolution.util.FastSet;
@@ -12,8 +11,8 @@ import org.openntf.domino.Session;
 import org.openntf.domino.commons.Hash;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
-import org.openntf.domino.xots.Tasklet;
-import org.openntf.domino.xots.dominotasks.DominoExecutor;
+import org.openntf.tasklet.TaskletExecutor;
+import org.openntf.tasklet.Tasklet;
 
 /**
  * This is the interface to the ODA-Database
@@ -25,7 +24,7 @@ import org.openntf.domino.xots.dominotasks.DominoExecutor;
 public enum Configuration {
 	;
 
-	private static DominoExecutor executor_;
+	private static TaskletExecutor executor_;
 	private static Database odaDb_;
 	private static boolean initialized_ = false;
 	public static String ODA_NSF = "oda.nsf"; // will be overriden by Notes.ini "ODA_NSF" entry
@@ -48,7 +47,7 @@ public enum Configuration {
 	/**
 	 * The object-flusher processes the dirtyObjects-set and saves the configurationObjects from time to time
 	 */
-	@Tasklet(session = Tasklet.Session.NATIVE, threadConfig = Tasklet.ThreadConfig.STRICT)
+	@Tasklet(session = Tasklet.Session.NATIVE)
 	private static class ObjectFlusher implements Runnable {
 
 		@Override
@@ -79,11 +78,11 @@ public enum Configuration {
 	 * 
 	 * @return
 	 */
-	protected static synchronized DominoExecutor getExecutor() {
+	protected static synchronized TaskletExecutor getExecutor() {
 		if (executor_ == null) {
 			if (Factory.isStarted()) {
-				executor_ = new DominoExecutor(2, "Config");
-				executor_.scheduleAtFixedRate(new ObjectFlusher(), 5, 15, TimeUnit.SECONDS);
+				// executor_ = new XotsExecutor(2,4, "Config");
+				// executor_.scheduleAtFixedRate(new ObjectFlusher(), 5, 15, TimeUnit.SECONDS);
 				// TODO LifeCycleManager.addCleanupHook(SHUTDOWN_HOOK);
 			}
 		}

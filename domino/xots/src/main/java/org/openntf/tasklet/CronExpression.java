@@ -15,7 +15,7 @@
  * 
  */
 
-package org.openntf.domino.xots;
+package org.openntf.tasklet;
 
 import java.io.Serializable;
 import java.text.ParseException;
