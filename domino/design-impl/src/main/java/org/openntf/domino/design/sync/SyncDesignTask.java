@@ -33,7 +33,7 @@ import org.openntf.domino.design.DesignBase;
 import org.openntf.domino.design.DesignBaseNamed;
 import org.openntf.domino.design.DesignCollection;
 import org.openntf.domino.design.DxlConverter;
-import org.openntf.domino.design.impl.AbstractDesignDxlBase;
+import org.openntf.domino.design.impl.AbstractDesignBase;
 import org.openntf.domino.design.impl.DesignFactory;
 import org.openntf.domino.design.impl.HasMetadata;
 import org.openntf.domino.design.impl.HasXspConfig;
@@ -198,10 +198,9 @@ public class SyncDesignTask extends SyncTask<DesignBase, OnDiskDesign> implement
 
 	@Override
 	protected DesignBase createDbElement(final OnDiskDesign source) {
-		// TODO Auto-generated method stub
-		AbstractDesignDxlBase dbElem;
+		AbstractDesignBase dbElem;
 		try {
-			dbElem = (AbstractDesignDxlBase) source.getImplementingClass().newInstance();
+			dbElem = (AbstractDesignBase) source.getImplementingClass().newInstance();
 			dbElem.init(getDb());
 			if (dbElem instanceof DesignBaseNamed) {
 				((DesignBaseNamed) dbElem).setName(source.getName());

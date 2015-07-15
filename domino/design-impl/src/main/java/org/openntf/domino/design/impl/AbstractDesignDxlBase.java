@@ -138,6 +138,21 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.openntf.domino.design.DesignBase#getLanguage()
+	 */
+	@Override
+	public final String getLanguage() {
+		switch (getDxlFormat(false)) {
+		case DXL:
+			return getDocumentElement().getAttribute("language");
+		default:
+			return getItemValueString(LANGUAGE_ITEM);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.openntf.domino.design.DesignBase#isNeedsRefresh()
 	 */
 	@Override
@@ -317,8 +332,8 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 	 */
 	@Override
 	protected String getFlags() {
-		if (getDxlFormat(true) != DxlFormat.RAWNOTE)
-			throw new IllegalStateException("Flags are available only in DxlFormat.RAWNOTE");
+		if (getDxlFormat(false) == DxlFormat.DXL)
+			throw new IllegalStateException("Flags are not readable in DxlFormat.DXL");
 		return getItemValueString(FLAGS_ITEM);
 	}
 
@@ -337,8 +352,8 @@ public abstract class AbstractDesignDxlBase extends AbstractDesignBase {
 	 */
 	@Override
 	protected String getFlagsExt() {
-		if (getDxlFormat(true) != DxlFormat.RAWNOTE)
-			throw new IllegalStateException("Flags are available only in DxlFormat.RAWNOTE");
+		if (getDxlFormat(false) == DxlFormat.DXL)
+			throw new IllegalStateException("Flags are not readable in DxlFormat.DXL");
 		return getItemValueString(FLAGS_EXT_ITEM);
 	}
 
