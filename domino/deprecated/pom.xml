@@ -69,12 +69,13 @@
 			<artifactId>commons</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
-		
+		<!-- 
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
 			<artifactId>xots</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
+		 -->
 		
 		
 		<dependency>

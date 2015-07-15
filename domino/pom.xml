@@ -67,17 +67,16 @@
 				<module>core-junit</module>
 				<module>design</module>
 				<module>design-impl</module>				
-				<module>xots</module>
 
-				<!-- modules / not needed by FOCONIS -->
+				<!-- modules / not needed by FOCONIS 
+				<module>xots</module>
 				<module>deprecated</module>				
 				<module>schema</module>
 				<module>graph</module>
 				<module>xsp</module>
 				<module>rest</module>
 				
-				<module>updatesite</module>
-				<!--	-->		
+				<module>updatesite</module>-->
 			</modules>
 		</profile>
 
