@@ -196,4 +196,9 @@ public interface DesignBase extends org.openntf.domino.types.Design, org.openntf
 	 */
 	void flush();
 
+	/**
+	 * @return the language of the design element
+	 */
+	public String getLanguage();
+
 }

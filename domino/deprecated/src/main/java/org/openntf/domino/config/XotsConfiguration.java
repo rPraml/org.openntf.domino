@@ -7,8 +7,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.openntf.domino.Database;
 import org.openntf.domino.Document;
 import org.openntf.domino.utils.Factory;
-import org.openntf.domino.xots.Tasklet;
-import org.openntf.domino.xots.dominotasks.DominoExecutor;
+import org.openntf.tasklet.TaskletExecutor;
+import org.openntf.tasklet.Tasklet;
 
 @Deprecated
 public class XotsConfiguration extends ConfigurationObject {
@@ -205,7 +205,7 @@ public class XotsConfiguration extends ConfigurationObject {
 		}
 	}
 
-	@Tasklet(session = Tasklet.Session.NATIVE, threadConfig = Tasklet.ThreadConfig.STRICT)
+	@Tasklet(session = Tasklet.Session.NATIVE)
 	protected class _Logger implements Runnable {
 
 		protected Document getLogDocument() {
@@ -267,7 +267,7 @@ public class XotsConfiguration extends ConfigurationObject {
 	}
 
 	private void logCommon(final Object... kvPairs) {
-		DominoExecutor executor = Configuration.getExecutor();
+		TaskletExecutor executor = Configuration.getExecutor();
 		if (executor == null)
 			return;
 		synchronized (_logQueue) {

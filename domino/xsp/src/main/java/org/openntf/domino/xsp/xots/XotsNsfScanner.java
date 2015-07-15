@@ -18,13 +18,12 @@ import org.openntf.domino.exceptions.UserAccessException;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.xots.ScheduleData;
-import org.openntf.domino.xots.Tasklet;
-import org.openntf.domino.xots.Xots;
 import org.openntf.domino.xots.XotsUtil;
-import org.openntf.domino.xots.dominotasks.AbstractDominoCallable;
-import org.openntf.domino.xots.dominotasks.AbstractDominoRunnable;
-import org.openntf.domino.xots.tasks.AbstractXotsExecutor.XotsFutureTask;
-import org.openntf.domino.xots.tasks.IWrappedTask;
+import org.openntf.tasklet.TaskletCallable;
+import org.openntf.tasklet.TaskletRunnable;
+import org.openntf.tasklet.Tasklet;
+import org.openntf.tasklet.TaskletLifeCylce;
+import org.openntf.tasklet.TaskletExecutor.TaskletFutureTask;
 
 import com.ibm.designer.domino.napi.NotesAPIException;
 import com.ibm.designer.domino.napi.NotesSession;
@@ -38,11 +37,9 @@ import com.ibm.domino.xsp.module.nsf.RuntimeFileSystem.NSFXspClassResource;
 
 @Tasklet(session = Tasklet.Session.NATIVE, 	// use server's session
 scope = Tasklet.Scope.SERVER, 				// one scan per server may run concurrent
-context = Tasklet.Context.PLUGIN, 			// in the context of a plugn
 schedule = { "startup", "periodic:90m" }, 	// on Startup and every 90 minutes
-onAllServers = true,						// on all servers
-threadConfig = Tasklet.ThreadConfig.STRICT  // and strict thread config. BubbleExceptions = TRUE
-)
+onAllServers = true  // and strict thread config. BubbleExceptions = TRUE
+		)
 /**
  * A Runnable that scans for tasklet classes on a specified server
  * 
@@ -51,7 +48,7 @@ threadConfig = Tasklet.ThreadConfig.STRICT  // and strict thread config. BubbleE
  * @author Roland Praml, FOCONIS AG
  */
 @Deprecated
-public class XotsNsfScanner extends AbstractDominoRunnable implements Serializable {
+public class XotsNsfScanner extends TaskletRunnable implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final Logger log_ = Logger.getLogger(XotsNsfScanner.class.getName());
 
@@ -115,10 +112,10 @@ public class XotsNsfScanner extends AbstractDominoRunnable implements Serializab
 				try {
 					List<ScheduleData> fRet = future.get();
 					if (fRet != null) {
-						XotsFutureTask<?> adft = (XotsFutureTask<?>) future;
-						IWrappedTask iwt = adft.getWrappedTask();
-						XotsClassScanner xcs = (XotsClassScanner) iwt.getWrappedTask();
-						setLastScan(xcs.apiPath);
+						TaskletFutureTask<?> adft = (TaskletFutureTask<?>) future;
+						//IWrappedTask iwt = adft.getWrappedTask();
+						//XotsClassScanner xcs = (XotsClassScanner) iwt.getWrappedTask();
+						//setLastScan(xcs.apiPath);
 						ret.addAll(fRet);
 					}
 				} catch (Exception e) {
@@ -155,7 +152,7 @@ public class XotsNsfScanner extends AbstractDominoRunnable implements Serializab
 	 * @author Roland Praml, FOCONIS AG
 	 * 
 	 */
-	private static class XotsClassScanner extends AbstractDominoCallable<List<ScheduleData>> {
+	private static class XotsClassScanner extends TaskletCallable<List<ScheduleData>> {
 		private static final long serialVersionUID = 1L;
 
 		private String apiPath;
@@ -257,7 +254,7 @@ public class XotsNsfScanner extends AbstractDominoRunnable implements Serializab
 			}
 			if (design.isAPIEnabled()) {
 				log_.info("ODA enabled database: " + dbApiPath);
-				return Xots.getService().submit(new XotsClassScanner(dbApiPath));
+				return TaskletLifeCylce.getService().submit(new XotsClassScanner(dbApiPath));
 			}
 			setLastScan(dbApiPath);
 

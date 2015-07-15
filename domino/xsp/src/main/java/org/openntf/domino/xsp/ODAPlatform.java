@@ -7,16 +7,12 @@ import org.openntf.domino.AutoMime;
 import org.openntf.domino.commons.IO;
 import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.commons.ServiceLocator;
-import org.openntf.domino.config.Configuration;
-import org.openntf.domino.config.ServerConfiguration;
 import org.openntf.domino.ext.Session.Fixes;
 import org.openntf.domino.session.INamedSessionFactory;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.ThreadConfig;
-import org.openntf.domino.xots.Xots;
-import org.openntf.domino.xots.tasks.impl.XotsExecutor;
 import org.openntf.domino.xsp.session.XPageNamedSessionFactory;
-import org.openntf.domino.xsp.xots.XotsDominoExecutor;
+import org.openntf.tasklet.TaskletLifeCylce;
 
 import com.ibm.commons.Platform;
 import com.ibm.commons.extension.ExtensionManager;
@@ -43,7 +39,7 @@ public enum ODAPlatform {
 	 * <li>startup the {@link Factory}</li>
 	 * <li>Configure the Factory with proper {@link INamedSessionFactory}s for XPages</li>
 	 * <li>Call {@link #verifyIGetEntryByKey()}</li>
-	 * <li>Start the {@link Xots} with 10 threads (if it is not completely disabled with "XotsTasks=0" in oda.nsf)</li>
+	 * <li>Start the {@link TaskletService} with 10 threads (if it is not completely disabled with "XotsTasks=0" in oda.nsf)</li>
 	 * </ol>
 	 * 
 	 * This is done automatically on server start or can manually invoked with<br>
@@ -56,21 +52,21 @@ public enum ODAPlatform {
 		LifeCycleManager.startup();
 		// Setup the named factories 4 XPages
 		Factory.setNamedFactories4XPages(new XPageNamedSessionFactory(false), new XPageNamedSessionFactory(true));
-		ServerConfiguration cfg = Configuration.getServerConfiguration();
-		int xotsTasks = cfg.getXotsTasks();
-		// We must read the value here, because in the ShutDown, it is not possible to navigate through views and the code will fail.
-		xotsStopDelay = cfg.getXotsStopDelay();
-		if (xotsTasks > 0) {
-			XotsExecutor executor = new XotsDominoExecutor(xotsTasks);
-			Xots.start(executor);
-			if (!"false".equals(System.getProperty("oda.tasklet.autostart"))) {
-				startTasklets();
-			}
-		}
+		//		ServerConfiguration cfg = Configuration.getServerConfiguration();
+		//		int xotsTasks = cfg.getXotsTasks();
+		//		// We must read the value here, because in the ShutDown, it is not possible to navigate through views and the code will fail.
+		//		xotsStopDelay = cfg.getXotsStopDelay();
+		//		if (xotsTasks > 0) {
+		//			XotsExecutor executor = new XotsDominoExecutor(xotsTasks);
+		//			Xots.start(executor);
+		//			if (!"false".equals(System.getProperty("oda.tasklet.autostart"))) {
+		//				startTasklets();
+		//			}
+		//		}
 	}
 
 	public static boolean startTasklets() {
-		if (Xots.isStarted()) {
+		if (TaskletLifeCylce.isStarted()) {
 			List<?> tasklets = ExtensionManager.findServices(null, ODAPlatform.class, "org.openntf.domino.xots.tasklet");
 
 			for (Object tasklet : tasklets) {
@@ -81,9 +77,9 @@ public enum ODAPlatform {
 					IO.println("XOTS", "Registering tasklet " + tasklet);
 
 					if (tasklet instanceof Callable<?>) {
-						Xots.getService().submit((Callable<?>) tasklet);
+						TaskletLifeCylce.getService().submit((Callable<?>) tasklet);
 					} else {
-						Xots.getService().submit((Runnable) tasklet);
+						TaskletLifeCylce.getService().submit((Runnable) tasklet);
 					}
 				}
 			}
@@ -101,8 +97,8 @@ public enum ODAPlatform {
 	 */
 	public synchronized static void stop() {
 		if (isStarted()) {
-			if (Xots.isStarted()) {
-				Xots.stop(xotsStopDelay);
+			if (TaskletLifeCylce.isStarted()) {
+				TaskletLifeCylce.stop(xotsStopDelay);
 			}
 			LifeCycleManager.shutdown();
 			isStarted_ = false;

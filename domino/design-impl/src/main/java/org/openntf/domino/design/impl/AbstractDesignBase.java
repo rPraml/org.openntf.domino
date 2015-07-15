@@ -52,6 +52,7 @@ public abstract class AbstractDesignBase implements DesignBase {
 
 	protected static final String FLAGS_ITEM = "$Flags";
 	protected static final String FLAGS_EXT_ITEM = "$FlagsExt";
+	protected static final String LANGUAGE_ITEM = "$Language";
 	protected static final String DESIGNER_VERSION_ITEM = "$DesignerVersion";
 	protected static final String DESIGNER_VERSION_VALUE = "8.5.3";
 

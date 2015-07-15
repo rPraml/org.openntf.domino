@@ -355,10 +355,17 @@ public enum Factory {
 	}
 
 	public static ThreadConfig getThreadConfig() {
-		ThreadConfig tc = LifeCycleManager.getCurrentRequest().get(ThreadConfig.class);
-		if (tc == null)
-			throw new IllegalStateException(Factory.class.getName() + " is not initialized for this thread!");
-		return tc;
+		IRequest req = LifeCycleManager.getCurrentRequest();
+		ThreadConfig tc = null;
+		if (req instanceof DominoRequest) {
+			tc = ((DominoRequest) req).getThreadConfig();
+		}
+		return tc != null ? tc : STRICT_THREAD_CONFIG;
+		// TODO RPr: make this configurable again
+		//		ThreadConfig tc = LifeCycleManager.getCurrentRequest().get(ThreadConfig.class);
+		//		if (tc == null)
+		//			throw new IllegalStateException(Factory.class.getName() + " is not initialized for this thread!");
+		//		return tc;
 	}
 
 	private static Map<String, String> ENVIRONMENT;
@@ -1059,7 +1066,7 @@ public enum Factory {
 	 */
 	@Deprecated
 	public static void initThread(final ThreadConfig tc) { // RPr: Method was deliberately renamed
-		IRequest request = new DominoRequest(tc, "&DEPRECATED=true");
+		IRequest request = new DominoRequest("DEPRECATED CALL").threadConfig(tc);
 		LifeCycleManager.beforeRequest(request);
 	}
 

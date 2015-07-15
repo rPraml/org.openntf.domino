@@ -47,6 +47,7 @@
 							org.openntf.domino.design-impl;bundle-version="1.5.0";visibility:=reexport,
 							org.openntf.domino.deprecated;bundle-version="1.5.0";visibility:=reexport,
 							org.openntf.formula;bundle-version="1.5.0";visibility:=reexport,
+							org.openntf.domino.xots;bundle-version="1.5.0";visibility:=reexport,
 							<!-- provide new rest and graph API
 							org.openntf.domino.rest;bundle-version="1.5.0";visibility:=reexport,
 							org.openntf.domino.graph;bundle-version="1.5.0";visibility:=reexport, -->

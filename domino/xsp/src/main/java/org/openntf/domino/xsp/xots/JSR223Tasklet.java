@@ -12,9 +12,9 @@ import org.openntf.domino.design.AnyFileResource;
 import org.openntf.domino.design.DatabaseDesign;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
-import org.openntf.domino.xots.dominotasks.AbstractDominoRunnable;
+import org.openntf.tasklet.TaskletRunnable;
 
-public class JSR223Tasklet extends AbstractDominoRunnable {
+public class JSR223Tasklet extends TaskletRunnable {
 	private static final long serialVersionUID = 1L;
 
 	private final String script_;

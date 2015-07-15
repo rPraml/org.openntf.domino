@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plugin modifiedby="de.foconis.maven.syncpx.SyncPluginXMLMojo">
 <extension point="com.ibm.commons.Extension">
-    <service type="org.openntf.domino.xots.tasks.TaskletWorkerExecutor"
-            class="org.openntf.domino.xots.tasks.impl.XotsTaskletWorkerExecutor"/>
+    <service type="org.openntf.domino.commons.ILifeCycle"
+            class="org.openntf.tasklet.TaskletLifeCylce"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
+    <service type="org.openntf.tasklet.ITaskletWrapperFactory"
+            class="org.openntf.tasklet.impl.TaskletWrapperFactory"/>
 </extension>
 </plugin>

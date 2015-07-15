@@ -6,9 +6,25 @@ import com.ibm.icu.util.TimeZone;
 
 public interface IRequest {
 	/**
-	 * Returns the UserName that is performing the current request. (i.e. the authenticated HTTP User)
+	 * Returns the UserName that is performing the current request. (i.e. the authenticated HTTP User).
+	 * 
+	 * This is especially for logging purposes to determine the current user
 	 */
 	String getUserName();
+
+	/**
+	 * Returns the current Database-Context. This may be either a notes://... URL or also be a SQL connect string.
+	 * 
+	 * This is especially used for logging purposes to get the current context.
+	 */
+	String getDatabaseContext();
+
+	/**
+	 * Returns the current action. This can be any string (e.g. current request-URL, Tasklet invocation and so on)
+	 * 
+	 * This is especially used for logging purposes to get the current context.
+	 */
+	String getAction();
 
 	/**
 	 * Returns the locale for which the current request is performed. (i.e. the locale of the user's browser)
@@ -24,19 +40,16 @@ public interface IRequest {
 	 */
 	TimeZone getTimeZone();
 
-	/**
-	 * On a HTTP request, this returns the whole request URL that was entered in the browser
-	 */
-	String getRequestURL();
-
-	/**
-	 * Gets a certain element from the Request (has to be stored before)
-	 */
-	public <T> T get(Class<? extends T> key);
-
-	/**
-	 * Stores a certain element in this request
-	 */
-	public <T> void put(Class<? extends T> key, T value);
+	//	/**
+	//	 * Gets a certain element from the Request (has to be stored before)
+	//	 */
+	//	public <T> T get(Class<? extends T> key);
+	//
+	//	/**
+	//	 * Stores a certain element in this request
+	//	 */
+	//	public <T> void put(Class<? extends T> key, T value);
+	//
+	public IRequest clone(String nextAction);
 
 }
