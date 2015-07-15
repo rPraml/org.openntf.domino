@@ -2,10 +2,9 @@ package org.openntf.domino.logging.impl;
 
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
-import org.openntf.tasklet.TaskletRunnable;
 
 @SuppressWarnings("serial")
-public class LogTaskletOpenLog extends TaskletRunnable {
+public class LogTaskletOpenLog implements Runnable {
 
 	public LogTaskletOpenLog() {
 		super();
@@ -14,7 +13,9 @@ public class LogTaskletOpenLog extends TaskletRunnable {
 	@Override
 	public void run() {
 		// TODO RPr Review this!
-		while (!shouldStop()) {
+		while (true) {
+			if (Thread.interrupted())
+				return;
 			LogGeneratorOpenLog.OL_EntryToWrite oletw;
 			try {
 				oletw = LogGeneratorOpenLog._olQueue.take();

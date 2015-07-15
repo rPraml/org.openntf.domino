@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.Observable;
 import java.util.logging.Logger;
 
+import org.openntf.domino.xots.Tasklet;
+
 /**
  * An observable callable implementation. In your implementation you should check {@link #shouldStop()} periodically
  * 

@@ -16,7 +16,9 @@
 	<url>http://www.openntf.org</url>
 
 	<modules>
-		<module>tinkerpop-frames</module>
+		<!-- Not needed by FOCONIS, temporary commented out 
+			<module>tinkerpop-frames</module>
+		 -->
 		<module>javolution-core-java</module>
 		<module>notes-api-fragment</module>
 	</modules>

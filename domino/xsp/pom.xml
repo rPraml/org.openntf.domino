@@ -47,8 +47,8 @@
 							org.openntf.domino.design-impl;bundle-version="1.5.0";visibility:=reexport,
 							org.openntf.domino.deprecated;bundle-version="1.5.0";visibility:=reexport,
 							org.openntf.formula;bundle-version="1.5.0";visibility:=reexport,
-							org.openntf.domino.xots;bundle-version="1.5.0";visibility:=reexport,
 							<!-- provide new rest and graph API
+							org.openntf.domino.xots;bundle-version="1.5.0";visibility:=reexport,
 							org.openntf.domino.rest;bundle-version="1.5.0";visibility:=reexport,
 							org.openntf.domino.graph;bundle-version="1.5.0";visibility:=reexport, -->
 							<!-- TODO: org.openntf.junit.xsp is not part of this API! -->
@@ -144,13 +144,13 @@
 			<artifactId>java.sharedapi</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
-		
+		<!-- 
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
 			<artifactId>xots</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
-
+ -->
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
 			<artifactId>domino</artifactId>

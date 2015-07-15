@@ -14,8 +14,8 @@ import org.openntf.domino.junit.DominoJUnitRunner;
 import org.openntf.domino.junit.SessionUser;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
-import org.openntf.tasklet.Tasklet;
-import org.openntf.tasklet.TaskletLifeCylce;
+import org.openntf.domino.xots.DominoTasklet;
+import org.openntf.domino.xots.Xots;
 
 @RunWith(DominoJUnitRunner.class)
 public class XotsBaseTest {
@@ -33,12 +33,12 @@ public class XotsBaseTest {
 
 		if (false) {
 			// This does not work
-			results = TaskletLifeCylce.getService().invokeAll(concats);
+			results = Xots.getService().invokeAll(concats);
 		} else {
 			// this works:
 			results = new ArrayList<Future<String>>();
 			for (Callable<String> callable : concats) {
-				results.add(TaskletLifeCylce.getService().submit(callable));
+				results.add(Xots.getService().submit(callable));
 			}
 		}
 
@@ -58,7 +58,7 @@ public class XotsBaseTest {
 		//		}
 	}
 
-	@Tasklet(session = Tasklet.Session.CLONE)
+	@DominoTasklet(session = DominoTasklet.Session.CLONE)
 	private static class SessionPassingCallable implements Callable<String> {
 		@Override
 		public String call() {

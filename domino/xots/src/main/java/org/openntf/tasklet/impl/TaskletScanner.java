@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.openntf.domino.commons.utils.PackageScanner;
-import org.openntf.tasklet.Tasklet;
+import org.openntf.domino.xots.Tasklet;
 
 /**
  * This Scanner scans all classes annotated with &#64;{@link Tasklet}

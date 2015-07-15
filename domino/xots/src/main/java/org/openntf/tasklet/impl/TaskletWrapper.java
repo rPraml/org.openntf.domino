@@ -8,9 +8,9 @@ import java.util.concurrent.Executors;
 import org.openntf.domino.commons.IRequest;
 import org.openntf.domino.commons.LifeCycleManager;
 import org.openntf.domino.commons.utils.ThreadUtils;
+import org.openntf.domino.xots.Tasklet;
+import org.openntf.domino.xots.Tasklet.Scope;
 import org.openntf.tasklet.ITaskletWrapper;
-import org.openntf.tasklet.Tasklet;
-import org.openntf.tasklet.Tasklet.Scope;
 
 public class TaskletWrapper<T> implements ITaskletWrapper<T> {
 

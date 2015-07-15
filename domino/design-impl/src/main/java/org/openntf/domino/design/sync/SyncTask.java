@@ -48,14 +48,14 @@ import org.openntf.domino.progress.ProgressObservable;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.utils.ODAUtils;
-import org.openntf.tasklet.Tasklet;
+import org.openntf.domino.xots.DominoTasklet;
 
 /**
  * 
  * @author Alexander Wagner, FOCONIS AG
  * 
  */
-@Tasklet(session = Tasklet.Session.NATIVE)
+@DominoTasklet(session = DominoTasklet.Session.NATIVE)
 public abstract class SyncTask<DB, DISK extends OnDiskAbstract<DB>> extends ProgressObservable implements Callable<OnDiskStatistics> {
 
 	public static final String TIMESTAMPS_FILE_PREFIX = ".timeStamps_";
