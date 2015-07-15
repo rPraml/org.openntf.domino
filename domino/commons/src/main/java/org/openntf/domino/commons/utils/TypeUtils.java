@@ -1638,7 +1638,10 @@ public enum TypeUtils {
 		df.parse(image, newCal, p);
 		if (p.getErrorIndex() < 0)
 			return true;
-
+		if (image.length() >= 16) { // a valid time has 16 or more chars "1979-08-17T03:21"
+			if (p.getErrorIndex() >= image.length())
+				return true;
+		}
 		newCal.setLenient(false);
 		newCal.clear();
 		p.setErrorIndex(-1);
@@ -1654,6 +1657,12 @@ public enum TypeUtils {
 		p.setIndex(0);
 		df = ISO.timeFormat();
 		df.parse(image, newCal, p);
-		return (p.getErrorIndex() < 0);
+		if (p.getErrorIndex() < 0)
+			return true;
+		if (image.length() >= 4) { // a valid time has 4 or more chars "3:21"
+			if (p.getErrorIndex() >= image.length())
+				return true;
+		}
+		return false;
 	}
 }

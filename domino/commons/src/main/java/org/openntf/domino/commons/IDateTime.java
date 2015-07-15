@@ -69,6 +69,7 @@ public interface IDateTime extends Comparator<IDateTime> {
 		public static IDateTime create(final int year, final int month, final int day) {
 			IDateTime ret = create();
 			ret.setLocalDate(year, month, day);
+			ret.setLocalTime(0, 0, 0, 0);
 			return ret;
 		}
 

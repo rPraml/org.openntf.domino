@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plugin modifiedby="de.foconis.maven.syncpx.SyncPluginXMLMojo">
 <extension point="com.ibm.commons.Extension">
+    <service type="org.openntf.domino.commons.IDateTime"
+            class="org.openntf.domino.commons.impl.DateTimeImpl"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
     <service type="org.openntf.domino.commons.ILifeCycle"
             class="org.openntf.domino.commons.impl.CommonsLifeCycle"/>
 </extension>
