@@ -518,7 +518,7 @@ public abstract class ValueHolder implements Serializable {
 		throw new IllegalArgumentException("Cannot mix datatypes " + dataType + " and BOOLEAN");
 	}
 
-	public boolean add(final IDateTime bool) {
+	public boolean add(final IDateTime dateTime) {
 		throw new IllegalArgumentException("Cannot mix datatypes " + dataType + " and DATETIME");
 	}
 

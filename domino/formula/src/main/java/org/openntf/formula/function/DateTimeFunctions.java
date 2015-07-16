@@ -27,7 +27,6 @@ import org.openntf.formula.FunctionFactory;
 import org.openntf.formula.FunctionSet;
 import org.openntf.formula.ValueHolder;
 import org.openntf.formula.annotation.ParamCount;
-import org.openntf.formula.impl.DateTimeImpl;
 
 import com.ibm.icu.util.Calendar;
 
@@ -68,7 +67,7 @@ public enum DateTimeFunctions {
 	@ParamCount({ 0, 2 })
 	public static ValueHolder atNow(final FormulaContext ctx, final ValueHolder params[]) {
 		if (params == null || params.length == 0) {
-			IDateTime sdt = new DateTimeImpl();
+			IDateTime sdt = IDateTime.$.create();
 			sdt.setNow();
 			return ValueHolder.valueOf(sdt);
 		}
@@ -148,8 +147,7 @@ public enum DateTimeFunctions {
 		if (params.length == 2)
 			throw new IllegalArgumentException("Expected: 1, 3, or 6 parameters");
 		if (params.length >= 3) {
-			IDateTime sdt = new DateTimeImpl();
-			sdt.setLocalDate(params[0].getInt(0), params[1].getInt(0), params[2].getInt(0));
+			IDateTime sdt = IDateTime.$.create(params[0].getInt(0), params[1].getInt(0), params[2].getInt(0));
 			// 4 or 5 parameters are accepted by Lotus, but parameters 4 and 5 are ignored
 			if (params.length == 6)
 				sdt.setLocalTime(params[3].getInt(0), params[4].getInt(0), params[5].getInt(0), 0);
@@ -171,7 +169,7 @@ public enum DateTimeFunctions {
 			throw new IllegalArgumentException("Expected: 1, 3, or 6 parameters");
 		// 4 or 5 parameters are accepted by Lotus, but they are ignored
 		if (params.length >= 3 && params.length <= 5) {		// I was surprised.
-			IDateTime sdt = new DateTimeImpl();
+			IDateTime sdt = IDateTime.$.create();
 			sdt.setAnyDate();
 			sdt.setAnyTime();
 			return ValueHolder.valueOf(sdt);
@@ -201,7 +199,7 @@ public enum DateTimeFunctions {
 			IDateTime time = times.getDateTime(i);
 			Calendar calDate = date.toJavaCal();
 			Calendar calTime = time.toJavaCal();
-			IDateTime sdt = new DateTimeImpl();
+			IDateTime sdt = IDateTime.$.create();
 			if (date.isAnyDate())
 				sdt.setAnyDate();
 			else
@@ -359,9 +357,9 @@ public enum DateTimeFunctions {
 	/*----------------------------------------------------------------------------*/
 	/*private*/static Locale iLocale = null;
 	private static String[] localStrs = { "GERMANY", "US", "CANADA", //
-		"UK", "CHINA", "FRANCE" };
+			"UK", "CHINA", "FRANCE" };
 	private static Locale[] locales = { Locale.GERMANY, Locale.US, Locale.CANADA, //
-		Locale.UK, Locale.CHINA, Locale.FRANCE };
+			Locale.UK, Locale.CHINA, Locale.FRANCE };
 
 	/*----------------------------------------------------------------------------*/
 	@ParamCount(0)

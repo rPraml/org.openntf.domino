@@ -1,11 +1,11 @@
-package org.openntf.formula.tests;
+package org.openntf.domino.commons.tests;
 
 import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.openntf.domino.commons.IDateTime;
-import org.openntf.formula.impl.DateTimeImpl;
+import org.openntf.domino.commons.impl.DateTimeImpl;
 
 import com.ibm.icu.text.DateFormat;
 

@@ -1,4 +1,4 @@
-package org.openntf.formula.impl;
+package org.openntf.domino.commons.impl;
 
 import static com.ibm.icu.util.Calendar.DAY_OF_MONTH;
 import static com.ibm.icu.util.Calendar.HOUR;

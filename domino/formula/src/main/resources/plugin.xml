@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?eclipse version="3.4"?><plugin modifiedby="de.foconis.maven.syncpx.SyncPluginXMLMojo">
 <extension point="com.ibm.commons.Extension">
-    <service type="org.openntf.domino.commons.IDateTime"
-            class="org.openntf.formula.impl.DateTimeImpl"/>
-</extension>
-<extension point="com.ibm.commons.Extension">
     <service type="org.openntf.domino.commons.IFormulaService"
             class="org.openntf.formula.FormulaService"/>
 </extension>
