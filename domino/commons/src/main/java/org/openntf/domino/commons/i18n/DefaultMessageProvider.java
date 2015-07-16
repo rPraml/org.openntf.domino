@@ -18,4 +18,9 @@ public class DefaultMessageProvider extends MessageProviderAbstract {
 		return Locale.getDefault();
 	}
 
+	@Override
+	public int getPriority() {
+		return 99;
+	}
+
 }

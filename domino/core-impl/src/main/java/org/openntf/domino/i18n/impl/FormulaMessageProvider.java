@@ -46,4 +46,9 @@ public class FormulaMessageProvider extends FormulaMessageProviderAbstract {
 		}
 		return ret == null ? Locale.getDefault() : ret;
 	}
+
+	@Override
+	public int getPriority() {
+		return 50;
+	}
 }
