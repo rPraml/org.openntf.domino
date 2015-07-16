@@ -19,6 +19,7 @@ package org.openntf.domino.commons.i18n;
 import java.util.List;
 import java.util.Locale;
 
+import org.openntf.domino.commons.IPriority;
 import org.openntf.domino.commons.ServiceLocator;
 
 /**
@@ -29,7 +30,7 @@ import org.openntf.domino.commons.ServiceLocator;
  * @author Praml, Steinsiek
  *
  */
-public abstract class MessageProviderAbstract {
+public abstract class MessageProviderAbstract implements IPriority {
 
 	/** Returns the raw text for the triple bundleName/key/locale, returning some default, if no text is found. */
 	public String getRawText(final String bundleName, final String key, final Locale loc) {
