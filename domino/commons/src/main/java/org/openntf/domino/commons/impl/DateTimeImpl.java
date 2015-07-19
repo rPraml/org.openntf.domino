@@ -253,9 +253,6 @@ public class DateTimeImpl implements IDateTime, Externalizable, Cloneable {
 		_noDate = true;
 		// do not clear fields twice!
 		// CHECME RPr: should we clear these fields?
-		//		_cal.set(YEAR, 1900);
-		//		_cal.set(MONTH, 0);
-		//		_cal.set(DAY_OF_MONTH, 1);
 		_cal.clear(YEAR);
 		_cal.clear(MONTH);
 		_cal.clear(DAY_OF_MONTH);
@@ -300,6 +297,14 @@ public class DateTimeImpl implements IDateTime, Externalizable, Cloneable {
 		_noTime = !checkTime(_cal);
 		_noDate = !checkDate(_cal);
 	}
+
+	@Override
+	public void setLocalTime(final long timeMillis) {
+		_cal.clear();
+		_cal.setTimeInMillis(timeMillis);
+		_noTime = !checkTime(_cal);
+		_noDate = !checkDate(_cal);
+	};
 
 	@Override
 	public void setLocalTime(final Date date) {
@@ -537,12 +542,12 @@ public class DateTimeImpl implements IDateTime, Externalizable, Cloneable {
 	}
 
 	@Override
-	public int compare(final IDateTime sdt1, final IDateTime sdt2) {
-		boolean noDate1 = sdt1.isAnyDate();
+	public int compareTo(final IDateTime sdt2) {
+		boolean noDate1 = isAnyDate();
 		boolean noDate2 = sdt2.isAnyDate();
 		if (noDate1 != noDate2)
 			return (noDate2 ? 1 : -1);
-		boolean noTime1 = sdt1.isAnyTime();
+		boolean noTime1 = isAnyTime();
 		boolean noTime2 = sdt2.isAnyTime();
 		if (noDate1) {
 			if (noTime1 && noTime2)
@@ -550,7 +555,7 @@ public class DateTimeImpl implements IDateTime, Externalizable, Cloneable {
 			if (noTime1 != noTime2)
 				return (noTime2 ? 1 : -1);
 		}
-		Calendar cal1 = sdt1.toJavaCal();
+		Calendar cal1 = toJavaCal();
 		Calendar cal2 = sdt2.toJavaCal();
 		int i1, i2;
 		if (!noDate1) {
@@ -589,7 +594,7 @@ public class DateTimeImpl implements IDateTime, Externalizable, Cloneable {
 	@Override
 	public boolean equals(final Object o) {
 		if (o instanceof IDateTime)
-			return (compare(this, (IDateTime) o) == 0);
+			return (compareTo((IDateTime) o) == 0);
 		return super.equals(o);
 	}
 
@@ -601,6 +606,49 @@ public class DateTimeImpl implements IDateTime, Externalizable, Cloneable {
 	@Override
 	public void setIcuTimeZone(final TimeZone tc) {
 		_cal.setTimeZone(tc);
+	}
+
+	@Override
+	public boolean isAfter(final IDateTime compareDate) {
+		return toJavaCal().after(compareDate.toJavaCal());
+	}
+
+	@Override
+	public boolean isBefore(final IDateTime compareDate) {
+		return toJavaCal().before(compareDate.toJavaCal());
+	}
+
+	@Override
+	public boolean equals(final IDateTime compareDate) {
+		return isAnyTime() == compareDate.isAnyTime() && isAnyDate() == compareDate.isAnyDate()
+				&& toJavaCal().equals(compareDate.toJavaCal());
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openntf.domino.ext.DateTime#equalsIgnoreDate(org.openntf.domino.DateTime)
+	 */
+	@Override
+	public boolean equalsIgnoreDate(final IDateTime compareDate) {
+		Calendar cal = toJavaCal();
+		Calendar other = compareDate.toJavaCal();
+
+		return (cal.get(Calendar.HOUR_OF_DAY) == other.get(Calendar.HOUR_OF_DAY) && // 
+				cal.get(Calendar.MINUTE) == other.get(Calendar.MINUTE) && //
+				cal.get(Calendar.SECOND) == other.get(Calendar.SECOND) && //
+				cal.get(Calendar.MILLISECOND) == other.get(Calendar.MILLISECOND));
+
+	}
+
+	/* (non-Javadoc)
+	 * @see org.openntf.domino.ext.DateTime#equalsIgnoreTime(org.openntf.domino.DateTime)
+	 */
+	@Override
+	public boolean equalsIgnoreTime(final IDateTime compareDate) {
+		Calendar cal = toJavaCal();
+		Calendar other = compareDate.toJavaCal();
+		return (cal.get(Calendar.YEAR) == other.get(Calendar.YEAR) && // 
+				cal.get(Calendar.MONTH) == other.get(Calendar.MONTH) && //
+				cal.get(Calendar.DAY_OF_MONTH) == other.get(Calendar.DAY_OF_MONTH));
 	}
 
 }

@@ -23,7 +23,6 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedExceptionAction;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -38,6 +37,7 @@ import javolution.util.FastMap;
 
 import lotus.domino.NotesException;
 
+import org.openntf.domino.DateTime;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.commons.IDateTime;
@@ -66,7 +66,7 @@ import com.ibm.commons.util.NotImplementedException;
  * 
  */
 public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus.domino.Base, P extends org.openntf.domino.Base<?>>
-implements org.openntf.domino.Base<D> {
+		implements org.openntf.domino.Base<D> {
 	public static final int SOLO_NOTES_NAMES = 1000;
 	public static final int NOTES_SESSION = 1;
 	public static final int NOTES_DATABASE = 2;
@@ -738,35 +738,24 @@ implements org.openntf.domino.Base<D> {
 			// CHECKME: Is "doubleValue" really needed. (according to help.nsf only Integer and Double is supported, so keep it)
 			return ((Number) value).doubleValue();
 
-		} else if (value instanceof java.util.Date || value instanceof java.util.Calendar || value instanceof IDateTime) {
-
-			lotus.domino.Session lsess = toLotus(session);
-			try {
-
-				lotus.domino.DateTime dt = null;
-				if (value instanceof java.util.Date) {
-					dt = lsess.createDateTime((java.util.Date) value);
-				} else if (value instanceof IDateTime) {
-					IDateTime fdt = (IDateTime) value;
-					dt = lsess.createDateTime(fdt.toJavaDate());
-					if (fdt.isAnyDate())
-						dt.setAnyDate();
-					if (fdt.isAnyTime())
-						dt.setAnyTime();
-				} else {
-					// TODO Check this, check also if we have to support ICU Calendar
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					java.util.Calendar intermediate = (java.util.Calendar) value;
-					dt = lsess.createDateTime(sdf.format(intermediate.getTime()) + " " + intermediate.getTimeZone().getID());
-				}
-				if (recycleThis != null) {
-					recycleThis.add(dt);
-				}
-				return dt;
-			} catch (Throwable t) {
-				ODAUtils.handleException(t);
-				return null;
+		} else if (value instanceof java.util.Date || value instanceof java.util.Calendar || value instanceof IDateTime
+				|| value instanceof com.ibm.icu.util.Calendar) {
+			if (value instanceof DateTime) {
+				return ((org.openntf.domino.impl.Base) value).getDelegate();
 			}
+			IDateTime idt = null;
+			if (value instanceof java.util.Date) {
+				idt = IDateTime.$.create((java.util.Date) value);
+			} else if (value instanceof java.util.Calendar) {
+				idt = IDateTime.$.create((java.util.Calendar) value);
+			} else if (value instanceof com.ibm.icu.util.Calendar) {
+				idt = IDateTime.$.create((com.ibm.icu.util.Calendar) value);
+			} else if (value instanceof IDateTime) {
+				idt = (IDateTime) value;
+			} else {
+				throw new IllegalArgumentException("Cannot convert to Domino friendly from type " + value.getClass().getName());
+			}
+			return (new org.openntf.domino.impl.DateTime(idt, session)).getDelegate();
 			// return toLotus(Factory.getSession(context).createDateTime((java.util.Date) value));
 		} else if (value instanceof IName) {
 			return ((IName) value).getCanonical();
