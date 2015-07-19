@@ -49,7 +49,7 @@ public class ASTAtSort extends SimpleNode {
 	 */
 	@Override
 	@DiffersFromLotus({ "Options [ACCENT(IN)SENSITIVE] and [PITCH(IN)SENSITIVE] aren't yet supported",
-			"Standard string compare is done via String.compareTo" })
+	"Standard string compare is done via String.compareTo" })
 	public ValueHolder evaluate(final FormulaContext ctx) throws FormulaReturnException {
 		try {
 			boolean sortAscending = true;
@@ -166,7 +166,7 @@ public class ASTAtSort extends SimpleNode {
 	private int doSortDateTime(final FormulaContext ctx, final IDateTime d1, final IDateTime d2, final Node customSort)
 			throws FormulaReturnException {
 		if (customSort == null)
-			return d1.compare(d1, d2);
+			return d1.compareTo(d2);
 		ValueHolder oldA = ctx.setVarLC("$a", ValueHolder.valueOf(d1));
 		ValueHolder oldB = ctx.setVarLC("$b", ValueHolder.valueOf(d2));
 		try {

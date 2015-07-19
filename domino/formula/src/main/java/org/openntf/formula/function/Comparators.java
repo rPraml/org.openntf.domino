@@ -208,7 +208,7 @@ public class Comparators extends OperatorsAbstract {
 		Collection<IDateTime[]> values = new ParameterCollectionObject<IDateTime>(params, IDateTime.class, isPermutative);
 
 		for (IDateTime[] value : values) {
-			int delta = value[0].compare(value[0], value[1]);
+			int delta = value[0].compareTo(value[1]);
 			if (matcher.match(delta)) {
 				return ctx.TRUE;
 			}
@@ -218,7 +218,7 @@ public class Comparators extends OperatorsAbstract {
 
 	@Override
 	protected ValueHolder evaluateDateTime(final FormulaContext ctx, final IDateTime dt1, final IDateTime dt2) {
-		int delta = dt1.compare(dt1, dt2);
+		int delta = dt1.compareTo(dt2);
 		if (matcher.match(delta)) {
 			return ctx.TRUE;
 		}
