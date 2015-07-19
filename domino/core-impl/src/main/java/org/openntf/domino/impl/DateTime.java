@@ -385,7 +385,7 @@ public class DateTime extends BaseNonThreadSafe<org.openntf.domino.DateTime, lot
 		return (cal.get(Calendar.HOUR_OF_DAY) == other.get(Calendar.HOUR_OF_DAY) && // 
 				cal.get(Calendar.MINUTE) == other.get(Calendar.MINUTE) && //
 				cal.get(Calendar.SECOND) == other.get(Calendar.SECOND) && //
-		cal.get(Calendar.MILLISECOND) == other.get(Calendar.MILLISECOND));
+				cal.get(Calendar.MILLISECOND) == other.get(Calendar.MILLISECOND));
 
 	}
 
@@ -398,7 +398,7 @@ public class DateTime extends BaseNonThreadSafe<org.openntf.domino.DateTime, lot
 		Calendar other = compareDate.toJavaCal();
 		return (cal.get(Calendar.YEAR) == other.get(Calendar.YEAR) && // 
 				cal.get(Calendar.MONTH) == other.get(Calendar.MONTH) && //
-		cal.get(Calendar.DAY_OF_MONTH) == other.get(Calendar.DAY_OF_MONTH));
+				cal.get(Calendar.DAY_OF_MONTH) == other.get(Calendar.DAY_OF_MONTH));
 	}
 
 	/*
@@ -880,11 +880,6 @@ public class DateTime extends BaseNonThreadSafe<org.openntf.domino.DateTime, lot
 	}
 
 	@Override
-	public String toString(final Locale locale, final int dateStyle) {
-		return idt.toString(locale, dateStyle);
-	}
-
-	@Override
 	public String toString(final Locale locale) {
 		return idt.toString(locale);
 	}
@@ -917,6 +912,11 @@ public class DateTime extends BaseNonThreadSafe<org.openntf.domino.DateTime, lot
 	@Override
 	public void setLocalTime(final long timeMillis) {
 		idt.setLocalTime(timeMillis);
+	}
+
+	@Override
+	public long timeDifferenceMillis(final IDateTime other) {
+		return getMillis() - other.getMillis();
 	}
 
 }

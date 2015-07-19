@@ -27,6 +27,7 @@ import org.openntf.domino.DateTime;
 import org.openntf.domino.Session;
 import org.openntf.domino.WrapperFactory;
 import org.openntf.domino.annotations.Legacy;
+import org.openntf.domino.commons.IDateTime;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.Factory.SessionType;
 import org.openntf.domino.utils.ODAUtils;
@@ -62,7 +63,7 @@ import com.ibm.icu.util.Calendar;
  */
 @Legacy("DateRanges are broken in lotus.domino-API, do not use them")
 public class DateRange extends BaseNonThreadSafe<org.openntf.domino.DateRange, lotus.domino.DateRange, Session> implements
-org.openntf.domino.DateRange, lotus.domino.DateRange, Cloneable {
+		org.openntf.domino.DateRange, lotus.domino.DateRange, Cloneable {
 
 	//	private java.util.Date startDate_;
 	//	private java.util.Date endDate_;
@@ -267,7 +268,7 @@ org.openntf.domino.DateRange, lotus.domino.DateRange, Cloneable {
 	 * @see org.openntf.domino.ext.DateRange#contains(org.openntf.domino.DateTime)
 	 */
 	@Override
-	public boolean contains(final org.openntf.domino.DateTime dt) {
+	public boolean contains(final IDateTime dt) {
 		Calendar dtCal = dt.toJavaCal();
 		Calendar startCal = dt.toJavaCal();
 		Calendar endCal = dt.toJavaCal();

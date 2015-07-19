@@ -51,22 +51,47 @@ public interface IName {
 	 */
 	public String getRFC82xInternetAddress();
 
+	/**
+	 * Returns the ID-prefix. This is often used in @Uniqe and is RPRL for "Roland Praml"
+	 */
 	public String getIDprefix();
 
+	/**
+	 * Returns the name part according to the specified {@link NamePartKey}
+	 */
 	public String getNamePart(final NamePartKey key);
 
+	/**
+	 * Returns the {@link NameFormat}
+	 */
 	public NameFormat getNameFormat();
 
+	/**
+	 * Returns the {@link NameError} if the name could not parsed correctly
+	 */
 	public NameError getNameError();
 
+	/**
+	 * Returns true if the name is hierarchical
+	 */
 	public boolean isHierarchical();
 
+	/**
+	 * Returns the full canonical name (CN=...)
+	 */
 	public String getCanonical();
 
+	/**
+	 * Returns the A= ( administration management domain name ) component
+	 */
 	public String getADMD();
 
+	/**
+	 * Returns the full name in abbreviated format.
+	 */
 	public String getAbbreviated();
 
+	// TODO document this
 	public String getAddr821();
 
 	public String getAddr822Comment1();
@@ -80,44 +105,75 @@ public interface IName {
 	public String getAddr822Phrase();
 
 	/**
-	 * Returns the CN= part of a name
-	 * 
-	 * @return
+	 * Returns the CN= part of the name
 	 */
 	public String getCommon();
 
 	/**
-	 * Returns the C= part of a name
-	 * 
-	 * @return
+	 * Returns the C= part of the name
 	 */
 	public String getCountry();
 
+	/**
+	 * Returns the Q= part of the name
+	 */
 	public String getGeneration();
 
+	/**
+	 * Returns the G= part of the name
+	 */
 	public String getGiven();
 
+	/**
+	 * Returns the I= part of the name
+	 */
 	public String getInitials();
 
 	public String getKeyword();
 
+	/**
+	 * Returns the O= part of the name
+	 */
 	public String getOrganization();
 
+	/**
+	 * Returns the first organization unit of the name
+	 */
 	public String getOrgUnit1();
 
+	/**
+	 * Returns the second organization unit of the name
+	 */
 	public String getOrgUnit2();
 
+	/**
+	 * Returns the third organization unit of the name
+	 */
 	public String getOrgUnit3();
 
+	/**
+	 * Returns the fourth organization unit of the name
+	 */
 	public String getOrgUnit4();
 
+	/**
+	 * Returns the P= part of the name
+	 */
 	public String getPRMD();
 
+	/**
+	 * Returns the S= part of the name
+	 */
 	public String getSurname();
 
-	// Factory Method
+	/**
+	 * Internal factory method TODO: Create a NameFactory
+	 */
 	public IName create(final CharSequence name);
 
+	/**
+	 * Internal method. TODO: Should be moved also to nameFactory - maybe we can omit namefactory completely.
+	 */
 	public void setLocalServerName(String string);
 
 	//	/**

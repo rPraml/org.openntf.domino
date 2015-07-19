@@ -5,6 +5,11 @@ import java.util.logging.LogRecord;
 
 import org.openntf.domino.commons.exception.IExceptionDetails;
 
+/**
+ * TODO: document this.
+ * 
+ * @deprecate: It is not yet clear, how this fits in spring boot logging - so this interface is temporary marked as deprecated
+ */
 public interface ILoggingService {
 
 	/**

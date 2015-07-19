@@ -45,6 +45,7 @@ public enum Hash {
 	 *            the alg
 	 * @return the string
 	 * @throws NoSuchAlgorithmException
+	 *             if you specify an invalid algorithm
 	 */
 	public static String checksum(final byte[] bytes, final String alg) throws NoSuchAlgorithmException {
 		byte[] defaultBytes = bytes;
@@ -67,6 +68,7 @@ public enum Hash {
 	 *            the alg
 	 * @return the string
 	 * @throws NoSuchAlgorithmException
+	 *             if you specify an invalid algorithm
 	 */
 	public static String checksum(final String payload, final String alg) throws NoSuchAlgorithmException {
 		byte[] defaultBytes = payload.getBytes(Strings.UTF_8_CHARSET);
@@ -89,7 +91,9 @@ public enum Hash {
 	 *            the alg
 	 * @return the string
 	 * @throws FileNotFoundException
+	 *             if file not found
 	 * @throws NoSuchAlgorithmException
+	 *             if you specify an invalid algorithm
 	 */
 	public static String checksum(final File file, final String alg) throws IOException, NoSuchAlgorithmException {
 		byte[] dataBytes = new byte[4096];
@@ -120,8 +124,8 @@ public enum Hash {
 	 * @param algorithm
 	 *            the algorithm
 	 * @return the string
-	 * @throws IOException
 	 * @throws NoSuchAlgorithmException
+	 *             if you specify an invalid algorithm
 	 */
 	public static String checksum(final Serializable object, final String algorithm) throws NoSuchAlgorithmException {
 		String result = null;
@@ -174,7 +178,6 @@ public enum Hash {
 	 * @param object
 	 *            the Serializable object
 	 * @return the string representing the MD5 hash value of the serialized version of the object
-	 * @throws IOException
 	 */
 	public static String md5(final Serializable object) {
 		try {
@@ -190,7 +193,6 @@ public enum Hash {
 	 * @param object
 	 *            the Serializable object
 	 * @return the string representing the MD5 hash value of the serialized version of the object
-	 * @throws IOException
 	 */
 	public static String md5(final String s) {
 		try {

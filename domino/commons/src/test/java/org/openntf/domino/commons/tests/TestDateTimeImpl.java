@@ -48,9 +48,9 @@ public class TestDateTimeImpl {
 		dateTime.parse("8/17/79 11:00:00 AM", Locale.US, true);
 		dateTime.parse("17.08.1979 21:50:40", Locale.GERMAN, false);
 
-		System.out.println("Date1 " + dateTime.toString(Locale.US, DateFormat.LONG));
-		System.out.println("Date1 " + dateTime.toString(Locale.US, DateFormat.MEDIUM));
-		System.out.println("Date1 " + dateTime.toString(Locale.US, DateFormat.SHORT));
+		System.out.println("Date1 " + dateTime.toString(Locale.US, DateFormat.LONG, DateFormat.LONG));
+		System.out.println("Date1 " + dateTime.toString(Locale.US, DateFormat.MEDIUM, DateFormat.MEDIUM));
+		System.out.println("Date1 " + dateTime.toString(Locale.US, DateFormat.SHORT, DateFormat.SHORT));
 		dateTime.setNow();
 
 		dateTime.parse("1982-03-28T01:50:40.660+0100", Locale.US, false);

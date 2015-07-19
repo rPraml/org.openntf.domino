@@ -26,7 +26,8 @@ import com.ibm.icu.util.TimeZone;
 
 /**
  * This is the DateTime interface that is used in formulas. It is very similar to the org.opennft.domino.DateTime interface but this has no
- * dependency to the lotus API, so that the formula engine can be used in a non-notes environmment.
+ * dependency to the lotus API, so that the formula engine can be used in a non-notes environment. You should always use this interface
+ * instead of the DateTime in the ODA-core API
  */
 public interface IDateTime extends Comparable<IDateTime> {
 
@@ -137,78 +138,83 @@ public interface IDateTime extends Comparable<IDateTime> {
 
 	/**
 	 * Increments/decrements a IDateTime by the number of hours you specify. This will not preserve localtime, if you get over a DST-change
-	 * event. So addin 24 hours is NOT the same as adding 1 day.
+	 * event. So adding 24 hours is NOT the same as adding 1 day if you pass a DST boundary.
 	 */
 	public void adjustHour(final int n);
 
 	/**
-	 * Increments/decrements a IDateTime by the number of minutes you specify. This will not preserve localtime. See
+	 * Increments/decrements a IDateTime by the number of minutes you specify. This will not preserve local time. See
 	 * {@link #adjustHour(int)}
 	 */
 	public void adjustMinute(final int n);
 
 	/**
-	 * Increments/decrements a IDateTime by the number of seconds you specify. This will not preserve localtime. See
+	 * Increments/decrements a IDateTime by the number of seconds you specify. This will not preserve local time. See
 	 * {@link #adjustHour(int)}
 	 */
 	public void adjustSecond(final int n);
 
 	/**
-	 * Increments/decrements a IDateTime by the number of milliseconds you specify. This will not preserve localtime. See
+	 * Increments/decrements a IDateTime by the number of milliseconds you specify. This will not preserve local time. See
 	 * {@link #adjustHour(int)}
 	 */
 	public void adjustMilli(final long n);
 
 	/**
 	 * Returns the Milliseconds since 1970-01-01
-	 * 
-	 * @return
 	 */
 	public long getMillis();
 
-	// Converting date to string without specifying a locale is always a bad idea
 	/**
-	 * Returns a "Date Only" representation, formatted for the given locale and style {@link DateFormat#MEDIUM}
+	 * Return the time difference in milliseconds. It computes <code>this</code> value minus <code>other</code> value.
+	 */
+	public long timeDifferenceMillis(IDateTime other);
+
+	// Converting date to string without specifying a locale is always a bad idea, so the locale parameter should be applied
+	/**
+	 * Returns a "Date Only" representation, formatted for the given locale and style {@link DateFormat#MEDIUM}, if <code>locale</code> is
+	 * <code>null</code> the date is returned in ISO format (2003-08-23).
 	 */
 	public String getDateOnly(Locale locale);
 
 	/**
-	 * Returns a "Date Only" representation, formatted for the given locale and the given style (see {@link DateFormat})
+	 * Returns a "Date Only" representation, formatted for the given locale and the given style (see {@link DateFormat}). if
+	 * <code>locale</code> is <code>null</code> the date is returned in ISO format (2003-08-23) - style is ignored.
 	 */
 	public String getDateOnly(Locale locale, int style);
 
 	/**
-	 * Returns a "Date Only" representation, formatted for the given locale and style {@link DateFormat#MEDIUM}
+	 * Returns a "Date Only" representation, formatted for the given locale and style {@link DateFormat#MEDIUM}, if <code>locale</code> is
+	 * <code>null</code> the time is returned in ISO format (23:45:12.345).
 	 */
 	public String getTimeOnly(Locale locale);
 
 	/**
-	 * Returns a "Date Only" representation, formatted for the given locale and the given style (see {@link DateFormat})
+	 * Returns a "Date Only" representation, formatted for the given locale and the given style (see {@link DateFormat}), if
+	 * <code>locale</code> is <code>null</code> the time is returned in ISO format (23:45:12.345) - style is ignored
 	 */
 	public String getTimeOnly(Locale locale, int style);
 
 	/**
-	 * Returns the String representation for the given locale and the given styles (see {@link DateFormat})
+	 * Returns the String representation for the given locale and the given styles (see {@link DateFormat}). if <code>locale</code> is
+	 * <code>null</code> the date time is returned in ISO format (2003-08-23Z23:45:12.345+0100) - styles are ignored.
 	 */
 	public String toString(Locale locale, int dateStyle, int timeStyle);
 
 	/**
-	 * Returns the String representation for the given locale and the given styles (see {@link DateFormat})
-	 */
-	public String toString(Locale locale, int dateStyle);
-
-	/**
-	 * Returns the String representation for the given locale and {@link DateFormat#MEDIUM}
+	 * Returns the String representation for the given locale and {@link DateFormat#MEDIUM}. if <code>locale</code> is <code>null</code> the
+	 * date time is returned in ISO format (2003-08-23Z23:45:12.345+0100)
 	 */
 	public String toString(Locale locale);
 
 	/**
-	 * Returns the String in the given format
+	 * Returns the String in the given format. if <code>format</code> is <code>null</code> the date time is returned in ISO format
+	 * (2003-08-23Z23:45:12.345+0100)
 	 */
 	public String toString(DateFormat format);
 
 	/**
-	 * Converts the IDateTime to string by using the Default system locale. You should avoid using this method.
+	 * Converts the IDateTime to string by using the ISO format. You should avoid using this mehtod,
 	 * 
 	 * @deprecated use one of the other toString methods that accepts a {@link Locale} or {@link DateFormat}
 	 */

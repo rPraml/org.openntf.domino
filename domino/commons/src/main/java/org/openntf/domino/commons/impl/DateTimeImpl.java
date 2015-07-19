@@ -166,11 +166,6 @@ public class DateTimeImpl implements IDateTime, Externalizable, Cloneable {
 	}
 
 	@Override
-	public String toString(final Locale locale, final int style) {
-		return toString(locale, style, style);
-	}
-
-	@Override
 	public String toString(final Locale locale) {
 		return toString(locale, DateFormat.MEDIUM, DateFormat.MEDIUM);
 	}
@@ -649,6 +644,11 @@ public class DateTimeImpl implements IDateTime, Externalizable, Cloneable {
 		return (cal.get(Calendar.YEAR) == other.get(Calendar.YEAR) && // 
 				cal.get(Calendar.MONTH) == other.get(Calendar.MONTH) && //
 				cal.get(Calendar.DAY_OF_MONTH) == other.get(Calendar.DAY_OF_MONTH));
+	}
+
+	@Override
+	public long timeDifferenceMillis(final IDateTime other) {
+		return getMillis() - other.getMillis();
 	}
 
 }
