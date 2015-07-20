@@ -42,7 +42,7 @@ import com.ibm.icu.util.TimeZone;
  * The Class DateTime.
  */
 public class DateTime extends BaseNonThreadSafe<org.openntf.domino.DateTime, lotus.domino.DateTime, Session> implements
-		org.openntf.domino.DateTime {
+org.openntf.domino.DateTime {
 	private static final Logger log_ = Logger.getLogger(DateTime.class.getName());
 	private static final long serialVersionUID = 1L;
 	private static final int ANY = -1;
@@ -128,39 +128,21 @@ public class DateTime extends BaseNonThreadSafe<org.openntf.domino.DateTime, lot
 		try {
 
 			String innards = ((lotus.domino.local.DateTime) delegate).getReplicaID();
-			int dateInnard = Integer.valueOf(innards.substring(0, 8), 16);
-			int timeInnard = Integer.valueOf(innards.substring(8, 16), 16);
+			int dateInnard = (int) Long.parseLong(innards.substring(0, 8), 16);
+			int timeInnard = (int) Long.parseLong(innards.substring(8, 16), 16);
 			idt = IDateTime.$.create();
 
 			long millis = dateInnard == ANY ? 0 : ((dateInnard & 0xFFFFFF) - INNARD_OFFSET) * 86400000L;
 			if (timeInnard != ANY) {
-				millis = timeInnard * 10L;
+				millis += timeInnard * 10L;
 			}
 			idt.setLocalTime(millis);
-			if (dateInnard == ANY)
+			if (dateInnard == ANY) {
 				idt.setAnyDate();
-			if (timeInnard == ANY)
+			}
+			if (timeInnard == ANY) {
 				idt.setAnyTime();
-			//			dst_ = delegate.isDST();
-			//			notesZone_ = delegate.getTimeZone();
-			//			if (notesZone_ == -18000000) {
-			//				Throwable t = new Throwable();
-			//				t.printStackTrace();
-			//			}
-			//			String s = delegate.getDateOnly();
-			//			isTimeOnly_ = (s == null || s.length() == 0);
-			//			s = delegate.getTimeOnly();
-			//			isDateOnly_ = (s == null || s.length() == 0);
-			//			try {
-			//				if (isTimeOnly_ && isDateOnly_) {
-			//					date_ = null;
-			//				} else {
-			//					date_ = delegate.toJavaDate();
-			//				}
-			//			} catch (NotesException e1) {
-			//				// System.out.println("Error attempting to initialize a DateTime: " + delegate.getGMTTime());
-			//				throw new RuntimeException(e1);
-			//			}
+			}
 
 		} catch (NotesException ne) {
 			ODAUtils.handleException(ne);
@@ -385,7 +367,7 @@ public class DateTime extends BaseNonThreadSafe<org.openntf.domino.DateTime, lot
 		return (cal.get(Calendar.HOUR_OF_DAY) == other.get(Calendar.HOUR_OF_DAY) && // 
 				cal.get(Calendar.MINUTE) == other.get(Calendar.MINUTE) && //
 				cal.get(Calendar.SECOND) == other.get(Calendar.SECOND) && //
-				cal.get(Calendar.MILLISECOND) == other.get(Calendar.MILLISECOND));
+		cal.get(Calendar.MILLISECOND) == other.get(Calendar.MILLISECOND));
 
 	}
 
@@ -398,7 +380,7 @@ public class DateTime extends BaseNonThreadSafe<org.openntf.domino.DateTime, lot
 		Calendar other = compareDate.toJavaCal();
 		return (cal.get(Calendar.YEAR) == other.get(Calendar.YEAR) && // 
 				cal.get(Calendar.MONTH) == other.get(Calendar.MONTH) && //
-				cal.get(Calendar.DAY_OF_MONTH) == other.get(Calendar.DAY_OF_MONTH));
+		cal.get(Calendar.DAY_OF_MONTH) == other.get(Calendar.DAY_OF_MONTH));
 	}
 
 	/*
