@@ -15,6 +15,10 @@ public enum IO {
 	 * 
 	 */
 	public static class Printer {
+		public String getDomain() {
+			return "ODA";
+		}
+
 		public void println(final String s) {
 			System.out.println(s);
 		}
@@ -52,9 +56,9 @@ public enum IO {
 		String line;
 		try {
 			if (Strings.isBlankString(prefix)) {
-				prefix = "[ODA] ";
+				prefix = "[" + printer.getDomain() + "] ";
 			} else {
-				prefix = "[ODA::" + prefix + "] ";
+				prefix = "[" + printer.getDomain() + "::" + prefix + "] ";
 			}
 			while ((line = reader.readLine()) != null) {
 				if (line.length() > 0)
