@@ -727,7 +727,7 @@ public class WrapperFactory extends BaseImpl<lotus.domino.Base> implements org.o
 			if (value == null) {
 				result.add(null);
 			} else if (value instanceof lotus.domino.DateTime) {
-				Object wrapped = null;
+				Object wrapped;
 				try {
 					wrapped = fromLotus((lotus.domino.DateTime) value, DateTime.SCHEMA, session, prevent_recycling, referenceCache);
 				} catch (Throwable t) {
@@ -743,13 +743,10 @@ public class WrapperFactory extends BaseImpl<lotus.domino.Base> implements org.o
 
 						}
 					}
-
+					log_.log(Level.SEVERE, t.getMessage(), t);
+					wrapped = "ERROR: " + t.getMessage();
 				}
-				if (wrapped == null) {
-					result.add("");
-				} else {
-					result.add(wrapped);
-				}
+				result.add(wrapped);
 			} else if (value instanceof lotus.domino.DateRange) {
 				result.add(fromLotus((lotus.domino.DateRange) value, (FactorySchema) null, session, prevent_recycling, referenceCache));
 			} else if (value instanceof Collection) {
