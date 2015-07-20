@@ -20,7 +20,6 @@ public class DominoLifeCycle extends StandardLifeCycle implements IRequestLifeCy
 	@Override
 	public void afterRequest() {
 		BaseNonThreadSafe.setAllowAccessAcrossThreads(false);
-		DateTime.cleanupThread();
 	}
 
 	@Override

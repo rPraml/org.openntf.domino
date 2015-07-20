@@ -256,7 +256,7 @@ public enum DateTimeFunctions {
 					excludeDays[ex] = true;
 			}
 		}
-		TreeSet<IDateTime> excludeDates = new TreeSet<IDateTime>(fromDays.getDateTime(0));
+		TreeSet<IDateTime> excludeDates = new TreeSet<IDateTime>();
 		if (params.length == 4) {
 			ValueHolder exclVH = params[3];
 			for (int i = 0; i < exclVH.size; i++) {
@@ -294,14 +294,14 @@ public enum DateTimeFunctions {
 			sdtTo = sdtTo.clone();
 			sdtTo.setAnyTime();
 		}
-		if (sdtFrom.compare(sdtFrom, sdtTo) > 0)
+		if (sdtFrom.compareTo(sdtTo) > 0)
 			return -1;
 		int ret = 0;
 		do {
 			if (!excludeDays[sdtFrom.toJavaCal().get(Calendar.DAY_OF_WEEK)] && !excludeDates.contains(sdtFrom))
 				ret++;
 			sdtFrom.adjustDay(1);
-		} while (sdtFrom.compare(sdtFrom, sdtTo) <= 0);
+		} while (sdtFrom.compareTo(sdtTo) <= 0);
 		return ret;
 	}
 
@@ -357,9 +357,9 @@ public enum DateTimeFunctions {
 	/*----------------------------------------------------------------------------*/
 	/*private*/static Locale iLocale = null;
 	private static String[] localStrs = { "GERMANY", "US", "CANADA", //
-			"UK", "CHINA", "FRANCE" };
+		"UK", "CHINA", "FRANCE" };
 	private static Locale[] locales = { Locale.GERMANY, Locale.US, Locale.CANADA, //
-			Locale.UK, Locale.CHINA, Locale.FRANCE };
+		Locale.UK, Locale.CHINA, Locale.FRANCE };
 
 	/*----------------------------------------------------------------------------*/
 	@ParamCount(0)

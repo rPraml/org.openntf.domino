@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -130,6 +133,35 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 	private String currentDatabaseApiPath_;
 
 	private String username_;
+
+	protected static Method findOrCreateMethod;
+	protected static Method nCreateDateTimeMethod;
+	protected static Method nCreateDateRangeMethod;
+	static {
+		try {
+			AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
+
+				@Override
+				public Object run() throws Exception {
+					// This allows us to create DateTime/DateRanges from innards
+					findOrCreateMethod = lotus.domino.local.Session.class.getDeclaredMethod("FindOrCreate", long.class);
+					findOrCreateMethod.setAccessible(true);
+					nCreateDateTimeMethod = lotus.domino.local.DateTime.class.getDeclaredMethod("NrecreateDateTime",
+							lotus.domino.local.Session.class, int.class, int.class);
+
+					nCreateDateTimeMethod.setAccessible(true);
+					nCreateDateRangeMethod = lotus.domino.local.DateRange.class.getDeclaredMethod("NrecreateDateRange",
+							lotus.domino.local.Session.class, int.class, int.class, int.class, int.class);
+					nCreateDateRangeMethod.setAccessible(true);
+					return null;
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			ODAUtils.handleException(e);
+		}
+
+	}
 
 	private Set<Fixes> fixes_ = EnumSet.noneOf(Fixes.class);
 
@@ -348,6 +380,54 @@ public class Session extends BaseThreadSafe<org.openntf.domino.Session, lotus.do
 		ret.setLocalTime(date);
 		return ret;
 
+	}
+
+	private static lotus.domino.local.DateTime dti_prototype;
+	private static int dti_tz;
+	public static final int DTI_OFFSET = 0x253D8C; // Unix-Timestamp 0
+
+	private void initDtiPrototype() throws NotesException {
+		if (dti_prototype == null) {
+			synchronized (Session.class) {
+				if (dti_prototype == null) {
+					dti_prototype = (lotus.domino.local.DateTime) getDelegate().createDateTime(new Date());
+					dti_tz = Integer.valueOf(dti_prototype.getReplicaID().substring(0, 2), 16) << 24;
+					dti_prototype.recycle();
+				}
+			}
+		}
+	}
+
+	public lotus.domino.DateTime createNativeDateTime(final long timeMillis) {
+		try {
+			initDtiPrototype();
+			System.out.println("DTI: " + dti_tz);
+			int innardDate = (int) ((timeMillis / 86400000L) + DTI_OFFSET) | dti_tz;
+			int innardTime = (int) ((timeMillis % 86400000L) / 10L);
+			return createNativeDateTime(innardDate, innardTime);
+		} catch (Exception e) {
+			ODAUtils.handleException(e, this);
+			return null;
+
+		}
+	}
+
+	public lotus.domino.DateTime createNativeDateTime(final int innardDate, final int innardTime) {
+		try {
+			initDtiPrototype();
+			// we need a prototype here, however...
+			// and pay attention, innards are swapped!
+			long cpp = (Long) nCreateDateTimeMethod.invoke(dti_prototype, getDelegate(), innardTime, innardDate);
+			lotus.domino.DateTime ret = (lotus.domino.DateTime) findOrCreateMethod.invoke(getDelegate(), cpp);
+			System.out.println("DateTime(" + Integer.toHexString(innardDate) + ", " + Integer.toHexString(innardTime) + ") = "
+					+ ret.toString() + " TZ: " + ret.getZoneTime() + " GMT:" + ret.getGMTTime() + " TZ: " + ret.getTimeZone() + " DST "
+					+ ret.isDST());
+			return ret;
+		} catch (Exception e) {
+			ODAUtils.handleException(e, this);
+			return null;
+
+		}
 	}
 
 	/*

@@ -356,6 +356,7 @@ public class BaseOpenLogItem implements IOpenLogItem {
 	@Override
 	public Vector<Object> getUserRoles() {
 		if (_userRoles == null) {
+			// FIXME: evaluate @UserRoles uses the currentDB - ask Roland how to implement this correctly
 			setUserRoles(Factory.getSession(SessionType.CURRENT).evaluate("@UserRoles"));
 		}
 		return _userRoles;

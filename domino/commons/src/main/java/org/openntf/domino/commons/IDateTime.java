@@ -16,7 +16,6 @@
  */
 package org.openntf.domino.commons;
 
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
@@ -27,9 +26,10 @@ import com.ibm.icu.util.TimeZone;
 
 /**
  * This is the DateTime interface that is used in formulas. It is very similar to the org.opennft.domino.DateTime interface but this has no
- * dependency to the lotus API, so that the formula engine can be used in a non-notes environmment.
+ * dependency to the lotus API, so that the formula engine can be used in a non-notes environment. You should always use this interface
+ * instead of the DateTime in the ODA-core API
  */
-public interface IDateTime extends Comparator<IDateTime> {
+public interface IDateTime extends Comparable<IDateTime> {
 
 	/**
 	 * Factory to create a new instance. In Java 1.8 we can use a static method in the Interface
@@ -120,90 +120,101 @@ public interface IDateTime extends Comparator<IDateTime> {
 	};
 
 	/**
-	 * Increments/decrements a IDateTime by the number of years you specify.
+	 * Increments/decrements a IDateTime by the number of years you specify. This will not change smaller fields. i.e. it preserves
+	 * localtime
 	 */
 	public void adjustYear(final int n);
 
 	/**
-	 * Increments/decrements a IDateTime by the number of month you specify.
+	 * Increments/decrements a IDateTime by the number of month you specify. This will not change smaller fields. i.e. it preserves
+	 * localtime
 	 */
 	public void adjustMonth(final int n);
 
 	/**
-	 * Increments/decrements a IDateTime by the number of days you specify.
+	 * Increments/decrements a IDateTime by the number of days you specify. This will not change smaller fields. i.e. it preserves localtime
 	 */
 	public void adjustDay(final int n);
 
 	/**
-	 * Increments/decrements a IDateTime by the number of hours you specify.
+	 * Increments/decrements a IDateTime by the number of hours you specify. This will not preserve localtime, if you get over a DST-change
+	 * event. So adding 24 hours is NOT the same as adding 1 day if you pass a DST boundary.
 	 */
 	public void adjustHour(final int n);
 
 	/**
-	 * Increments/decrements a IDateTime by the number of minutes you specify.
+	 * Increments/decrements a IDateTime by the number of minutes you specify. This will not preserve local time. See
+	 * {@link #adjustHour(int)}
 	 */
 	public void adjustMinute(final int n);
 
 	/**
-	 * Increments/decrements a IDateTime by the number of seconds you specify.
+	 * Increments/decrements a IDateTime by the number of seconds you specify. This will not preserve local time. See
+	 * {@link #adjustHour(int)}
 	 */
 	public void adjustSecond(final int n);
 
 	/**
-	 * Increments/decrements a IDateTime by the number of milliseconds you specify.
+	 * Increments/decrements a IDateTime by the number of milliseconds you specify. This will not preserve local time. See
+	 * {@link #adjustHour(int)}
 	 */
 	public void adjustMilli(final long n);
 
 	/**
 	 * Returns the Milliseconds since 1970-01-01
-	 * 
-	 * @return
 	 */
 	public long getMillis();
 
-	// Converting date to string without specifying a locale is always a bad idea
 	/**
-	 * Returns a "Date Only" representation, formatted for the given locale and style {@link DateFormat#MEDIUM}
+	 * Return the time difference in milliseconds. It computes <code>this</code> value minus <code>other</code> value.
+	 */
+	public long timeDifferenceMillis(IDateTime other);
+
+	// Converting date to string without specifying a locale is always a bad idea, so the locale parameter should be applied
+	/**
+	 * Returns a "Date Only" representation, formatted for the given locale and style {@link DateFormat#MEDIUM}, if <code>locale</code> is
+	 * <code>null</code> the date is returned in ISO format (2003-08-23).
 	 */
 	public String getDateOnly(Locale locale);
 
 	/**
-	 * Returns a "Date Only" representation, formatted for the given locale and the given style (see {@link DateFormat})
+	 * Returns a "Date Only" representation, formatted for the given locale and the given style (see {@link DateFormat}). if
+	 * <code>locale</code> is <code>null</code> the date is returned in ISO format (2003-08-23) - style is ignored.
 	 */
 	public String getDateOnly(Locale locale, int style);
 
 	/**
-	 * Returns a "Date Only" representation, formatted for the given locale and style {@link DateFormat#MEDIUM}
+	 * Returns a "Date Only" representation, formatted for the given locale and style {@link DateFormat#MEDIUM}, if <code>locale</code> is
+	 * <code>null</code> the time is returned in ISO format (23:45:12.345).
 	 */
 	public String getTimeOnly(Locale locale);
 
 	/**
-	 * Returns a "Date Only" representation, formatted for the given locale and the given style (see {@link DateFormat})
+	 * Returns a "Date Only" representation, formatted for the given locale and the given style (see {@link DateFormat}), if
+	 * <code>locale</code> is <code>null</code> the time is returned in ISO format (23:45:12.345) - style is ignored
 	 */
 	public String getTimeOnly(Locale locale, int style);
 
 	/**
-	 * Returns the String representation for the given locale and the given styles (see {@link DateFormat})
+	 * Returns the String representation for the given locale and the given styles (see {@link DateFormat}). if <code>locale</code> is
+	 * <code>null</code> the date time is returned in ISO format (2003-08-23Z23:45:12.345+0100) - styles are ignored.
 	 */
 	public String toString(Locale locale, int dateStyle, int timeStyle);
 
 	/**
-	 * Returns the String representation for the given locale and the given styles (see {@link DateFormat})
-	 */
-	public String toString(Locale locale, int dateStyle);
-
-	/**
-	 * Returns the String representation for the given locale and {@link DateFormat#MEDIUM}
+	 * Returns the String representation for the given locale and {@link DateFormat#MEDIUM}. if <code>locale</code> is <code>null</code> the
+	 * date time is returned in ISO format (2003-08-23Z23:45:12.345+0100)
 	 */
 	public String toString(Locale locale);
 
 	/**
-	 * Returns the String in the given format
+	 * Returns the String in the given format. if <code>format</code> is <code>null</code> the date time is returned in ISO format
+	 * (2003-08-23Z23:45:12.345+0100)
 	 */
 	public String toString(DateFormat format);
 
 	/**
-	 * Converts the IDateTime to string by using the Default system locale. You should avoid using this method.
+	 * Converts the IDateTime to string by using the ISO format. You should avoid using this mehtod,
 	 * 
 	 * @deprecated use one of the other toString methods that accepts a {@link Locale} or {@link DateFormat}
 	 */
@@ -211,26 +222,15 @@ public interface IDateTime extends Comparator<IDateTime> {
 	@Deprecated
 	public String toString();
 
-	// int for timeZone is also a bad idea - the whole TimeZone support seems to be very old in Domino 
-	//public int getTimeZone();
-
-	// public void convertToZone(final int zone, final boolean isDST);
-
-	// public String getZoneTime();
-
+	/**
+	 * Returns the {@link TimeZone}
+	 */
 	public TimeZone getIcuTimeZone();
 
+	/**
+	 * Sets the {@link TimeZone}
+	 */
 	public void setIcuTimeZone(TimeZone tc);
-
-	/**
-	 * Returns <code>true</code> if IDateTime does not contain a Date-component (=time-only)
-	 */
-	public boolean isAnyDate();
-
-	/**
-	 * Returns <code>true</code> if IDateTime does not contain a Time-component (=date-only)
-	 */
-	public boolean isAnyTime();
 
 	/**
 	 * removes the Date component from the IDateTime
@@ -265,7 +265,7 @@ public interface IDateTime extends Comparator<IDateTime> {
 	/**
 	 * Sets the local date and time
 	 */
-	public void setLocalTime(final com.ibm.icu.util.Calendar calendar);
+	public void setLocalTime(long timeMillis);
 
 	/**
 	 * parses the time for the given locale
@@ -288,13 +288,91 @@ public interface IDateTime extends Comparator<IDateTime> {
 	public Date toJavaDate();
 
 	/**
-	 * Returns the ICU {@link Calendar}
-	 */
-	public com.ibm.icu.util.Calendar toJavaCal();
-
-	/**
 	 * Clones the IDateTime instance
 	 */
 	public IDateTime clone();
+
+	/**
+	 * Compares current date with another and returns boolean of whether they are the same.
+	 * 
+	 * @param comparDate
+	 *            DateTime to compare to current date
+	 * @return boolean, whether or not the two dates are the same
+	 * @since org.openntf.domino 1.0.0
+	 */
+	public boolean equals(final IDateTime compareDate);
+
+	/**
+	 * Compares two DateTimes to see if they are the same time (including millisecond), ignoring date element
+	 * 
+	 * @param comparDate
+	 *            DateTime to compare to the current DateTime
+	 * @return boolean true if time is the same
+	 * @since org.openntf.domino 1.0.0
+	 */
+	public boolean equalsIgnoreDate(final IDateTime compareDate);
+
+	/**
+	 * Compares two DateTimes to see if they are the same date, ignoring the time element
+	 * 
+	 * @param comparDate
+	 *            DateTime to compare to the current DateTime
+	 * @return boolean true if date is the same
+	 * @since org.openntf.domino 1.0.0
+	 */
+	public boolean equalsIgnoreTime(final IDateTime compareDate);
+
+	/**
+	 * Compares current date with another and returns boolean of whether current date is after parameter.
+	 * 
+	 * @param comparDate
+	 *            DateTime to compare to current date
+	 * @return boolean, whether or not current date is after the parameter
+	 * @since org.openntf.domino 1.0.0
+	 */
+	public boolean isAfter(final IDateTime compareDate);
+
+	/**
+	 * Checks whether the DateTime is defined as any time, so just a specific Date
+	 * 
+	 * @return boolean, whether the DateTime is a date-only value (e.g. [1/1/2013])
+	 * @since org.openntf.domino 1.0.0
+	 */
+	public boolean isAnyTime();
+
+	/**
+	 * Checks whether the DateTime is defined as any date, so just a specific Time
+	 * 
+	 * @return boolean, whether the DateTime is a time-only value (e.g. [1:00 PM])
+	 * @since org.openntf.domino 1.0.0
+	 */
+	public boolean isAnyDate();
+
+	/**
+	 * Compares current date with another and returns boolean of whether current date is before parameter.
+	 * 
+	 * @param comparDate
+	 *            DateTime to compare to current date
+	 * @return boolean, whether or not current date is before the parameter
+	 * @since org.openntf.domino 1.0.0
+	 */
+	public boolean isBefore(final IDateTime compareDate);
+
+	/**
+	 * Returns a Java Calendar object for the DateTime object, same as used internally by org.openntf.domino.DateTime class
+	 * 
+	 * @return Java Calendar object representing the DateTime object
+	 * @since org.openntf.domino 1.0.0
+	 */
+	public Calendar toJavaCal();
+
+	/**
+	 * Sets the date and time to the value of a specific Java Calendar instance
+	 * 
+	 * @param calendar
+	 *            Java calendar instance with relevant date and time
+	 * @since org.openntf.domino 1.0.0
+	 */
+	public void setLocalTime(final com.ibm.icu.util.Calendar calendar);
 
 }

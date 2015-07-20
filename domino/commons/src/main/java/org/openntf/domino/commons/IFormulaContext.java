@@ -13,6 +13,7 @@ package org.openntf.domino.commons;
  */
 public interface IFormulaContext {
 
+	// TODO document this
 	void setParam(String string, Object object);
 
 }

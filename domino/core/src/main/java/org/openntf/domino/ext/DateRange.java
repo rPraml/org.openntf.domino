@@ -5,6 +5,8 @@ package org.openntf.domino.ext;
 
 import java.util.Date;
 
+import org.openntf.domino.commons.IDateTime;
+
 /**
  * @author jgallagher
  * 
@@ -20,7 +22,7 @@ public interface DateRange {
 	 * @return boolean whether the DateTime is within the range
 	 * @since org.openntf.domino 2.5.0
 	 */
-	public boolean contains(final org.openntf.domino.DateTime dt);
+	public boolean contains(final IDateTime dt);
 
 	/**
 	 * Checks whether a DateRange contains a specific Java date/time
