@@ -41,6 +41,20 @@ public enum Strings {
 	}
 
 	/**
+	 * Same as {@link String#valueOf(Object)}, but the String for NULL may be chosen arbitrarily (instead of "null")
+	 */
+	public static String toString0(final Object o, final String nullValue) {
+		return o == null ? nullValue : o.toString();
+	}
+
+	/**
+	 * Convenience method - same as {@link #toString0(Object, String)}, with <code>nullValue=""</code>
+	 */
+	public static String toString0(final Object o) {
+		return toString0(o, EMPTY_STRING);
+	}
+
+	/**
 	 * Returns true iff the "String" to test is null or empty or consists of "white spaces" only (cf. {@link Character#isWhitespace(char)})
 	 */
 	public static boolean isBlankString(final CharSequence cs) {
@@ -226,35 +240,35 @@ public enum Strings {
 			if (_whatToSplit == null)
 				return 0;
 			int i = _whatToSplit.length >>> 2;
-		if (i < 4)
-			i = 4;
-		else if (i > 1024)
-			i = 1024;
-		_splitBegs = new int[i];
-		_splitEnds = new int[i];
-		_splitBegs[0] = 0;
-		_numSplits = 0;
-		for (i = _splitBegs[_numSplits]; i < _whatToSplit.length; i++) {
-			if (_specialSplitter == SpecialSplit.None) {
-				if (_whatToSplit[i] != _splitterC)
-					continue;
-				if (_splitterLh > 1 && !testVsSplitterS(i))
-					continue;
-			} else if (_specialSplitter == SpecialSplit.BlankOrTab) {
-				if (_whatToSplit[i] != ' ' && _whatToSplit[i] != '\t')
-					continue;
-			} else { // if (_specialSplitter == SpecialSplit.AnyWhiteSpace
-				if (!Character.isWhitespace(_whatToSplit[i]))
-					continue;
+			if (i < 4)
+				i = 4;
+			else if (i > 1024)
+				i = 1024;
+			_splitBegs = new int[i];
+			_splitEnds = new int[i];
+			_splitBegs[0] = 0;
+			_numSplits = 0;
+			for (i = _splitBegs[_numSplits]; i < _whatToSplit.length; i++) {
+				if (_specialSplitter == SpecialSplit.None) {
+					if (_whatToSplit[i] != _splitterC)
+						continue;
+					if (_splitterLh > 1 && !testVsSplitterS(i))
+						continue;
+				} else if (_specialSplitter == SpecialSplit.BlankOrTab) {
+					if (_whatToSplit[i] != ' ' && _whatToSplit[i] != '\t')
+						continue;
+				} else { // if (_specialSplitter == SpecialSplit.AnyWhiteSpace
+					if (!Character.isWhitespace(_whatToSplit[i]))
+						continue;
+				}
+				if (_numSplits + 1 >= _splitBegs.length)
+					reallocBegEnd();
+				_splitEnds[_numSplits++] = i;
+				_splitBegs[_numSplits] = i + _splitterLh;
+				i = _splitBegs[_numSplits] - 1;
 			}
-			if (_numSplits + 1 >= _splitBegs.length)
-				reallocBegEnd();
 			_splitEnds[_numSplits++] = i;
-			_splitBegs[_numSplits] = i + _splitterLh;
-			i = _splitBegs[_numSplits] - 1;
-		}
-		_splitEnds[_numSplits++] = i;
-		return _numSplits;
+			return _numSplits;
 		}
 
 		private boolean testVsSplitterS(final int i) {
