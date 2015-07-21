@@ -91,6 +91,7 @@
 			<groupId>org.openntf.domino</groupId>
 			<artifactId>core-junit</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
+			<scope>test</scope>
 		</dependency>
 		<!-- 
 		<dependency>
