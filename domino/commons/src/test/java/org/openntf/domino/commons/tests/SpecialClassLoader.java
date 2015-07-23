@@ -55,7 +55,6 @@ public class SpecialClassLoader extends ClassLoader {
 
 	@Override
 	protected synchronized Class<?> loadClass(final String className, final boolean resolveClass) throws ClassNotFoundException {
-		// TODO Auto-generated method stub
 		if ("ByteCodeClass".equals(className)) {
 			return defineClass(className, bytecode, 0, bytecode.length);
 		}
