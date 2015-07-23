@@ -326,9 +326,7 @@ public enum Factory {
 			}
 			namedSessionFactory = null;
 			namedSessionFullAccessFactory = null;
-
 		}
-
 	}
 
 	private static ISessionFactory[] defaultSessionFactories = new ISessionFactory[SessionType.SIZE];
@@ -1196,7 +1194,6 @@ public enum Factory {
 				log_.log(Level.FINER, "Factory.termThread()", new Throwable());
 			}
 			ThreadVariables tv = getThreadVariables();
-
 			try {
 				if (tv.wrapperFactory != null) {
 					tv.wrapperFactory.recycle();
@@ -1212,7 +1209,6 @@ public enum Factory {
 				log_.log(Level.SEVERE, "An error occured while terminating the factory", t);
 			} finally {
 				tv.clear();
-				System.gc();
 			}
 			if (counters != null) {
 				System.out.println(dumpCounters(true));
