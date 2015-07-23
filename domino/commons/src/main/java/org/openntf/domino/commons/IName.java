@@ -91,7 +91,7 @@ public interface IName {
 	 */
 	public String getAbbreviated();
 
-	// TODO document this
+	// TODO document this => JFOF-14
 	public String getAddr821();
 
 	public String getAddr822Comment1();
