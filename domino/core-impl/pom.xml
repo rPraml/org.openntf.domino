@@ -49,14 +49,13 @@
 			<version>1.5.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- 
 		<dependency>
 			<groupId>com.ibm.domino</groupId>
 			<artifactId>napi</artifactId>
 			<version>9.0.1</version>
+			<scope>provided</scope>
 		</dependency>
-		 -->
-		
+				
 		
 		<!-- add to plugin 
 		<dependency>

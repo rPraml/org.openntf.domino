@@ -109,9 +109,6 @@ public enum NapiUtil {
 
 		@Override
 		protected void doRecycle() throws NotesAPIException {
-			// TODO Auto-generated method stub
-
-			//System.out.println("Recycle");
 			try {
 				setHandleMethod.invoke(getParent(), new Object[] { 0 });
 			} catch (IllegalArgumentException e) {
@@ -128,12 +125,6 @@ public enum NapiUtil {
 
 	public static NotesNote createNotesNote(final Document doc) throws NotesAPIException {
 		NotesDatabase db = doc.getParentDatabase().getNapiDatabase();
-
-		//		if (dummyDXLImporter == null) {
-		//			dummyDXLImporter = new DXLImporter(db);
-		//			dummyDXLImporter.open();
-		//		}
-		//		NotesNote ret = NotesNote.constructNote(dummyDXLImporter, db, doc.getNapiHandle());
 		try {
 			NotesNote ret = notesNoteConstructor.newInstance(db, doc.getNapiHandle());
 			new RecyclePreventer(ret);
