@@ -92,6 +92,9 @@ public class DominoLifeCycle extends StandardLifeCycle implements IRequestLifeCy
 		View dummyView = new org.openntf.domino.impl.View();
 		try {
 			BackendBridge.getViewEntryByKeyWithOptions(dummyView, null, 42);
+		} catch (NoClassDefFoundError ncfe) {
+			IO.println("NAPI not present, need not verify BackendBridge.getViewEntryByKeyWithOptions");
+			return true;
 		} catch (BackendBridgeSanityCheckException allGood) {
 			IO.println("Operation of BackendBridge.getViewEntryByKeyWithOptions verified");
 			return true;
