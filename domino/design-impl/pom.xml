@@ -36,6 +36,12 @@
 
 	<dependencies>
 
+
+		<dependency>
+			<groupId>com.ibm.domino</groupId>
+			<artifactId>napi</artifactId>
+			<version>9.0.1</version>
+		</dependency>
 		
 		<!-- The notes-api is bundled by the ibm-build-management -->
 		<dependency>

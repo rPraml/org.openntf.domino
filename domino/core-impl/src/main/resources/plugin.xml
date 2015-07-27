@@ -13,6 +13,10 @@
             class="org.openntf.domino.logging.impl.Logging"/>
 </extension>
 <extension point="com.ibm.commons.Extension">
+    <service type="org.openntf.domino.commons.i18n.MessageProviderAbstract"
+            class="org.openntf.domino.i18n.impl.FormulaMessageProvider"/>
+</extension>
+<extension point="com.ibm.commons.Extension">
     <service type="org.openntf.tasklet.ITaskletWrapperFactory"
             class="org.openntf.domino.tasklet.impl.DominoTaskletWrapperFactory"/>
 </extension>

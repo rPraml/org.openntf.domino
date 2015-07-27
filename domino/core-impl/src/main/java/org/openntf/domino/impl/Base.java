@@ -52,8 +52,6 @@ import org.openntf.domino.types.Resurrectable;
 import org.openntf.domino.utils.Factory;
 import org.openntf.domino.utils.ODAUtils;
 
-import com.ibm.commons.util.NotImplementedException;
-
 /**
  * A common Base class for almost all org.openntf.domino types.
  * 
@@ -66,7 +64,7 @@ import com.ibm.commons.util.NotImplementedException;
  * 
  */
 public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus.domino.Base, P extends org.openntf.domino.Base<?>>
-		implements org.openntf.domino.Base<D> {
+implements org.openntf.domino.Base<D> {
 	public static final int SOLO_NOTES_NAMES = 1000;
 	public static final int NOTES_SESSION = 1;
 	public static final int NOTES_DATABASE = 2;
@@ -1107,46 +1105,46 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 	// ---- package private
 	@Deprecated
 	void markInvalid() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Deprecated
 	void ClearCppObj() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Deprecated
 	Object getWeak() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Deprecated
 	lotus.domino.Session getSession() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Deprecated
 	Object getGCParent() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Deprecated
 	boolean isInvalid() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	void restoreObject(final lotus.domino.Session paramSession, final long paramLong) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Deprecated
 	void CheckObject() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Deprecated
 	void CheckObjectActive() {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -1156,29 +1154,29 @@ public abstract class Base<T extends org.openntf.domino.Base<D>, D extends lotus
 
 	@Deprecated
 	void CheckArg(final Object paramObject) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Deprecated
 	boolean isEqual(final long paramLong) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Deprecated
 	Vector PropGetVector(final int paramInt) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Deprecated
 	void validateObjArg(final Object paramObject, final boolean paramBoolean) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Deprecated
 	Vector getStringArrayProperty(final int paramInt) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 	private static final int EXTERNALVERSIONUID = 20141205; // The current date (when it was implemented)
