@@ -19,7 +19,6 @@ package org.openntf.domino.commons;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -37,103 +36,45 @@ public enum Hash {
 	;
 
 	/**
-	 * Checksum.
-	 * 
-	 * @param bytes
-	 *            the bytes
-	 * @param alg
-	 *            the alg
-	 * @return the string
-	 * @throws NoSuchAlgorithmException
-	 *             if you specify an invalid algorithm
+	 * Checksum (various variants). The algorithm to be used has to be passed as parameter.
 	 */
-	public static String checksum(final byte[] bytes, final String alg) throws NoSuchAlgorithmException {
-		byte[] defaultBytes = bytes;
-
-		MessageDigest algorithm = MessageDigest.getInstance(alg);
+	public static String checksum(final byte[] whose, final String algorithmName) throws NoSuchAlgorithmException {
+		MessageDigest algorithm = MessageDigest.getInstance(algorithmName);
 		algorithm.reset();
-		algorithm.update(defaultBytes);
-		byte[] messageDigest = algorithm.digest();
-		BigInteger bi = new BigInteger(1, messageDigest);
+		algorithm.update(whose);
+		return finishChecksum(algorithm);
+	}
 
+	private static String finishChecksum(final MessageDigest algorithm) {
+		BigInteger bi = new BigInteger(1, algorithm.digest());
 		return bi.toString(16);
 	}
 
-	/**
-	 * Checksum.
-	 * 
-	 * @param bytes
-	 *            the bytes
-	 * @param alg
-	 *            the alg
-	 * @return the string
-	 * @throws NoSuchAlgorithmException
-	 *             if you specify an invalid algorithm
-	 */
-	public static String checksum(final String payload, final String alg) throws NoSuchAlgorithmException {
-		byte[] defaultBytes = payload.getBytes(Strings.UTF_8_CHARSET);
-
-		MessageDigest algorithm = MessageDigest.getInstance(alg);
-		algorithm.reset();
-		algorithm.update(defaultBytes);
-		byte[] messageDigest = algorithm.digest();
-		BigInteger bi = new BigInteger(1, messageDigest);
-
-		return bi.toString(16);
+	public static String checksum(final String whose, final String alg) throws NoSuchAlgorithmException {
+		return checksum(whose.getBytes(Strings.UTF_8_CHARSET), alg);
 	}
 
-	/**
-	 * Checksum.
-	 * 
-	 * @param bytes
-	 *            the bytes
-	 * @param alg
-	 *            the alg
-	 * @return the string
-	 * @throws FileNotFoundException
-	 *             if file not found
-	 * @throws NoSuchAlgorithmException
-	 *             if you specify an invalid algorithm
-	 */
-	public static String checksum(final File file, final String alg) throws IOException, NoSuchAlgorithmException {
-		byte[] dataBytes = new byte[4096];
-
-		FileInputStream fis = new FileInputStream(file);
-
+	public static String checksum(final File whose, final String alg) throws IOException, NoSuchAlgorithmException {
+		byte[] buffer = new byte[32768];
+		MessageDigest algorithm = MessageDigest.getInstance(alg);
+		algorithm.reset();
+		FileInputStream fis = new FileInputStream(whose);
+		int nread;
 		try {
-			MessageDigest algorithm = MessageDigest.getInstance(alg);
-			algorithm.reset();
-			int nread = 0;
-			while ((nread = fis.read(dataBytes)) != -1) {
-				algorithm.update(dataBytes, 0, nread);
-			}
-			byte[] messageDigest = algorithm.digest();
-			BigInteger bi = new BigInteger(1, messageDigest);
-
-			return bi.toString(16);
+			while ((nread = fis.read(buffer)) > 0)
+				algorithm.update(buffer, 0, nread);
+			return finishChecksum(algorithm);
 		} finally {
 			fis.close();
 		}
 	}
 
-	/**
-	 * Checksum.
-	 * 
-	 * @param object
-	 *            the object
-	 * @param algorithm
-	 *            the algorithm
-	 * @return the string
-	 * @throws NoSuchAlgorithmException
-	 *             if you specify an invalid algorithm
-	 */
-	public static String checksum(final Serializable object, final String algorithm) throws NoSuchAlgorithmException {
+	public static String checksum(final Serializable whose, final String algorithm) throws NoSuchAlgorithmException {
 		String result = null;
-
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
 			ObjectOutputStream out = new ObjectOutputStream(baos);
-			out.writeObject(object);
+			out.writeObject(whose);
 			result = checksum(baos.toByteArray(), algorithm);
 			out.close();
 		} catch (IOException ioex) {
@@ -143,60 +84,35 @@ public enum Hash {
 	}
 
 	/**
-	 * Md5.
-	 * 
-	 * @param bytes
-	 *            the byte array
-	 * @return the string representing the MD5 hash value of the byte array
+	 * Same variants for MD5.
 	 */
-	public static String md5(final byte[] bytes) {
+	public static String md5(final byte[] whose) {
 		try {
-			return checksum(bytes, "MD5");
+			return checksum(whose, "MD5");
 		} catch (NoSuchAlgorithmException e) {
 			throw new IllegalStateException("No MD5 algorithm present, why that?");
 		}
 	}
 
-	/**
-	 * Md5.
-	 * 
-	 * @param file
-	 *            the file
-	 * @return the string representing the MD5 hash value of the file
-	 */
-	public static String md5(final File file) throws IOException {
+	public static String md5(final String whose) {
 		try {
-			return checksum(file, "MD5");
+			return checksum(whose, "MD5");
 		} catch (NoSuchAlgorithmException e) {
 			throw new IllegalStateException("No MD5 algorithm present, why that?");
 		}
 	}
 
-	/**
-	 * Md5.
-	 * 
-	 * @param object
-	 *            the Serializable object
-	 * @return the string representing the MD5 hash value of the serialized version of the object
-	 */
-	public static String md5(final Serializable object) {
+	public static String md5(final File whose) throws IOException {
 		try {
-			return checksum(object, "MD5");
+			return checksum(whose, "MD5");
 		} catch (NoSuchAlgorithmException e) {
 			throw new IllegalStateException("No MD5 algorithm present, why that?");
 		}
 	}
 
-	/**
-	 * Md5.
-	 * 
-	 * @param object
-	 *            the Serializable object
-	 * @return the string representing the MD5 hash value of the serialized version of the object
-	 */
-	public static String md5(final String s) {
+	public static String md5(final Serializable whose) {
 		try {
-			return checksum(s, "MD5");
+			return checksum(whose, "MD5");
 		} catch (NoSuchAlgorithmException e) {
 			throw new IllegalStateException("No MD5 algorithm present, why that?");
 		}
