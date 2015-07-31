@@ -76,26 +76,25 @@ public enum Strings {
 	/**
 	 * Joins elements into a String using a specified delimiter.
 	 */
-	public static String join(final Collection<?> source, final String delimiter) {
-		if (source == null || source.isEmpty())
-			return EMPTY_STRING;
-		StringBuilder sb = new StringBuilder();
-		for (Object o : source) {
-			if (sb.length() != 0)
-				sb.append(delimiter);
-			sb.append(toString(o));
-		}
-		return sb.toString();
-	}
 
-	public static String join(final Object[] source, final String delimiter) {
-		if (source == null || source.length == 0)
+	public static String join(final Object source, final String delimiter) {
+		if (source == null)
 			return EMPTY_STRING;
 		StringBuilder sb = new StringBuilder();
-		for (Object o : source) {
-			if (sb.length() != 0)
-				sb.append(delimiter);
-			sb.append(toString(o));
+		Class<? extends Object> cls = source.getClass();
+		if (cls.isArray()) {
+			int len = Array.getLength(source);
+			for (int i = 0; i < len; i++) {
+				if (sb.length() != 0)
+					sb.append(delimiter);
+				sb.append(toString(Array.get(source, i)));
+			}
+		} else {
+			for (Object o : (Iterable) source) {
+				if (sb.length() != 0)
+					sb.append(delimiter);
+				sb.append(toString(o));
+			}
 		}
 		return sb.toString();
 	}
@@ -413,10 +412,10 @@ public enum Strings {
 			return null;
 		if (object instanceof String) {
 			return (String) object;
-		} else if (object instanceof Collection) {
-			return join((Collection<?>) object, ", ");
+		} else if (object instanceof Iterable) {
+			return join(object, ", ");
 		} else if (object.getClass().isArray()) {
-			return join((Object[]) object, ", ");
+			return join(object, ", ");
 		} else if (object instanceof org.openntf.domino.commons.IDateTime) {
 			throw new UnsupportedOperationException("Explain me your use-case");
 			// 2015-06-30/RPr: How should we convert DateTime-Values?

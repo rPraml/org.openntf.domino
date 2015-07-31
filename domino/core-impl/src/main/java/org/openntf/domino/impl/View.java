@@ -621,7 +621,8 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 	 * @return
 	 * @throws NotesException
 	 */
-	protected ViewEntry iGetEntryByKey(final Vector<?> paramVector, final boolean paramBoolean, final int paramInt) {
+	@Override
+	public ViewEntry iGetEntryByKey(final Vector<?> paramVector, final boolean paramBoolean, final int paramInt) {
 		if (paramVector == null && paramInt == 42) {
 			throw new BackendBridgeSanityCheckException("It seems that the backend bridge has called the correct method :)");
 		}
@@ -2622,7 +2623,7 @@ public class View extends BaseThreadSafe<org.openntf.domino.View, lotus.domino.V
 			if (candidate != null) {
 				log_.log(Level.WARNING,
 						"The view name '" + name_ + "' is not unique in " + getAncestorDatabase() + ". View1: " + candidate.getAliases()
-						+ ", View2:" + ret.getAliases());
+								+ ", View2:" + ret.getAliases());
 				// recycle our first view by adding a wrapper (a recycle call will probably hard recycle the delegate)
 				fromLotus(ret, View.SCHEMA, getAncestorDatabase());
 				ret = candidate;
