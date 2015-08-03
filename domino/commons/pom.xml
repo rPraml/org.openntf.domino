@@ -6,7 +6,7 @@
 		<version>1.5.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>commons</artifactId>
+	<artifactId>openntf-domino-commons</artifactId>
 	<name>OpenNTF Domino API Common classes</name>
 	<description>ODA-Commons - All classes in this bundle are independent of lotus.*</description>
 

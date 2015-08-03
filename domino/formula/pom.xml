@@ -9,7 +9,7 @@
 	</parent>
 
 	<groupId>org.openntf</groupId>
-	<artifactId>formula</artifactId>
+	<artifactId>openntf-formula</artifactId>
 	<name>OpenNTF Formula Engine</name>
 	<description>Alternative Java-based engine for executing Notes/Domino @Formula</description>
 
@@ -23,7 +23,7 @@
 
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
-			<artifactId>commons</artifactId>
+			<artifactId>openntf-domino-commons</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
 

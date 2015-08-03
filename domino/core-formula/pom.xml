@@ -6,7 +6,7 @@
 		<version>1.5.1-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>core-formula</artifactId>
+	<artifactId>openntf-domino-core-formula</artifactId>
 	<name>OpenNTF Domino Notes-Formula-extension</name>
 
 	<packaging>bundle</packaging>
@@ -36,18 +36,18 @@
 		<!-- The notes-api is bundled by the ibm-build-management -->
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
-			<artifactId>core</artifactId>
+			<artifactId>openntf-domino-core</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.openntf</groupId>
-			<artifactId>formula</artifactId>
+			<artifactId>openntf-formula</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
-			<artifactId>commons</artifactId>
+			<artifactId>openntf-domino-commons</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>		
 		
@@ -55,14 +55,14 @@
 		
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
-			<artifactId>core-impl</artifactId>
+			<artifactId>openntf-domino-core-impl</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
-			<artifactId>core-junit</artifactId>
+			<artifactId>openntf-domino-core-junit</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>

@@ -6,7 +6,7 @@
 		<version>1.5.1-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>core-junit</artifactId>
+	<artifactId>openntf-domino-core-junit</artifactId>
 	<name>OpenNTF Domino API JUnit Runners</name>
 
 	<packaging>bundle</packaging>
@@ -35,13 +35,13 @@
 		<!-- The notes-api is bundled by the ibm-build-management -->
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
-			<artifactId>core</artifactId>
+			<artifactId>openntf-domino-core</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
 	
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
-			<artifactId>commons</artifactId>
+			<artifactId>openntf-domino-commons</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

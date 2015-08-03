@@ -6,7 +6,7 @@
 		<version>1.5.1-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>design</artifactId>
+	<artifactId>openntf-domino-design</artifactId>
 	<name>OpenNTF Domino Design virtual file system</name>
 
 	<packaging>bundle</packaging>
@@ -36,7 +36,7 @@
 		<!-- The notes-api is bundled by the ibm-build-management -->
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
-			<artifactId>core</artifactId>
+			<artifactId>openntf-domino-core</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
 		

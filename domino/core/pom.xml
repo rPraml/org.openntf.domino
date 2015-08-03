@@ -6,7 +6,7 @@
 		<version>1.5.1-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>core</artifactId>
+	<artifactId>openntf-domino-core</artifactId>
 	<name>OpenNTF Domino API core</name>
 	<description>The drop-in replacement for the IBM-supported lotus.domino API</description>
 
@@ -74,7 +74,7 @@
 		
 		<dependency>
 			<groupId>org.openntf.domino</groupId>
-			<artifactId>commons</artifactId>
+			<artifactId>openntf-domino-commons</artifactId>
 			<version>1.5.1-SNAPSHOT</version>
 		</dependency>
 
