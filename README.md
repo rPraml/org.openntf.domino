@@ -1,3 +1,16 @@
+Important Note
+==============
+
+This is a fork of https://github.com/OpenNTF/org.openntf.domino/. It is stripped down to the needs of FOCONIS for our vaadin spring applications. That means:
+- we use no Graph-API - so we do not maintain it.
+- we use no XSP/OSGi-stuff - so we do not maintain it.
+- we use no Rest-Plugin - so we do not maintain it.
+- we do not plan to use Xots - at least the scheduling part.
+
+__Caution:__ Please merge with care. The above projects are excluded from our build and won't compile. 
+
+ 
+
 org.openntf.domino
 ==================
 
