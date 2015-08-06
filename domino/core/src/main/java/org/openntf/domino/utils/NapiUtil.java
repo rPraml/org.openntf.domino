@@ -142,6 +142,24 @@ public enum NapiUtil {
 
 	}
 
+	public static NotesNote createNotesNote(final NotesDatabase db, final int handle) throws NotesAPIException {
+		try {
+			NotesNote ret = notesNoteConstructor.newInstance(db, handle);
+			new RecyclePreventer(ret);
+			return ret;
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
 	public static NotesSession getNapiSession() {
 		// TODO Auto-generated method stub
 		NotesSession ret = napiSession_.get();

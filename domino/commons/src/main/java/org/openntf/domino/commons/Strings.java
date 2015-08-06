@@ -416,14 +416,18 @@ public enum Strings {
 			return join(object, ", ");
 		} else if (object.getClass().isArray()) {
 			return join(object, ", ");
-		} else if (object instanceof org.openntf.domino.commons.IDateTime) {
-			throw new UnsupportedOperationException("Explain me your use-case");
-			// 2015-06-30/RPr: How should we convert DateTime-Values?
-			// - getGMTTime is available only in lotus - and heavily depends on your locale settings
-			// - getGMTTime is not "user readable", because it is computed with the wrong timezone
-			// - toString() is "readable", but not intended to write in a field
-			// - if you want to write a "stable" date, we should use an ISO-format (e.g. ISO-8601)
-			//return ((org.openntf.domino.commons.IDateTime) object).getGMTTime();
+			// 2015-08-06/RPr: We use the deprecated "toString" of IDateTime here.
+			// This returns an (ugly readable) Date in ISO format, so you should immediately
+			// notice, that something is going wrong if you see the value in the UI.
+
+			//		} else if (object instanceof org.openntf.domino.commons.IDateTime) {
+			//			throw new UnsupportedOperationException("Explain me your use-case");
+			//			// 2015-06-30/RPr: How should we convert DateTime-Values?
+			//			// - getGMTTime is available only in lotus - and heavily depends on your locale settings
+			//			// - getGMTTime is not "user readable", because it is computed with the wrong timezone
+			//			// - toString() is "readable", but not intended to write in a field
+			//			// - if you want to write a "stable" date, we should use an ISO-format (e.g. ISO-8601)
+			//			//return ((org.openntf.domino.commons.IDateTime) object).getGMTTime();
 		} else {
 			return String.valueOf(object);
 		}
