@@ -70,6 +70,7 @@ public enum ODAPlatform {
 				startTasklets();
 			}
 		}
+		isStarted_ = true;
 	}
 
 	public static boolean startTasklets() {
