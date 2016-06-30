@@ -8,8 +8,6 @@ import java.util.Map;
 import jline.ANSIBuffer;
 import jline.Terminal;
 
-import org.openntf.formula.Formulas;
-
 public abstract class TestRunnerCommon implements Runnable {
 
 	private boolean VIRTUAL_CONSOLE = false;
@@ -136,24 +134,15 @@ public abstract class TestRunnerCommon implements Runnable {
 						equals = false;
 						break;
 					}
-				} else if ((a instanceof org.openntf.formula.DateTime || a instanceof lotus.domino.DateTime) && // LF
-						(b instanceof org.openntf.formula.DateTime || b instanceof lotus.domino.DateTime)) {
+				} else if ((a instanceof org.openntf.formula.DateTime) && // LF
+						(b instanceof org.openntf.formula.DateTime)) {
 					try {
 						org.openntf.formula.DateTime sdt1, sdt2;
-						if (a instanceof org.openntf.formula.DateTime)
-							sdt1 = (org.openntf.formula.DateTime) a;
-						else {
-							lotus.domino.DateTime ldt = (lotus.domino.DateTime) a;
-							sdt1 = Formulas.getFormatter().getNewInitializedSDTInstance(ldt.toJavaDate(), ldt.getDateOnly().isEmpty(),
-									ldt.getTimeOnly().isEmpty());
-						}
-						if (b instanceof org.openntf.formula.DateTime)
-							sdt2 = (org.openntf.formula.DateTime) b;
-						else {
-							lotus.domino.DateTime ldt = (lotus.domino.DateTime) b;
-							sdt2 = Formulas.getFormatter().getNewInitializedSDTInstance(ldt.toJavaDate(), ldt.getDateOnly().isEmpty(),
-									ldt.getTimeOnly().isEmpty());
-						}
+
+						sdt1 = (org.openntf.formula.DateTime) a;
+
+						sdt2 = (org.openntf.formula.DateTime) b;
+
 						equals = (sdt1.compare(sdt1, sdt2) == 0);
 					} catch (Exception e) {
 						e.printStackTrace();

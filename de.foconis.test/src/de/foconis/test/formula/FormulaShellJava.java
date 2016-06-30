@@ -8,11 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import jline.ArgumentCompletor;
-import jline.Completor;
-import jline.ConsoleReader;
-import jline.SimpleCompletor;
-
 import org.openntf.formula.ASTNode;
 import org.openntf.formula.EvaluateException;
 import org.openntf.formula.FormulaContext;
@@ -21,6 +16,11 @@ import org.openntf.formula.FormulaParser;
 import org.openntf.formula.Formulas;
 import org.openntf.formula.Function;
 import org.openntf.formula.FunctionFactory;
+
+import jline.ArgumentCompletor;
+import jline.Completor;
+import jline.ConsoleReader;
+import jline.SimpleCompletor;
 
 public class FormulaShellJava extends TestRunnerCommon {
 
